@@ -4,10 +4,13 @@ imageurl: 'https://unfolddata.github.io/marine-plastic-explorer/assets/uploads'
 siteurl: 'https://unfolddata.github.io/marine-plastic-explorer/'
 permalink: /:categories/:title
 markdown: kramdown
-source: content
 languages: &languages
   - name: 'English'
     value: 'en'
+exclude:
+  - app
+  - internals
+  - server
 prose:
   media: "assets/uploads"
   rooturl: '_posts'

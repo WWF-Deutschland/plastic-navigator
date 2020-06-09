@@ -11,8 +11,8 @@ module.exports = options => ({
   output: Object.assign(
     {
       // Compile into js/build.js
-      path: path.resolve(process.cwd(), 'content'),
-      publicPath: '/',
+      path: path.resolve(process.cwd(), 'build'),
+      publicPath: './build/',
     },
     options.output,
   ), // Merge with env dependent settings

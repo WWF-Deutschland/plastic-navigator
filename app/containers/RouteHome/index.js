@@ -52,7 +52,7 @@ export function HomePage() {
         <meta name="description" content="home" />
       </Helmet>
       <MainContent ref={targetRef}>
-        Hello World
+        Good night
         <Footer />
       </MainContent>
     </Styled>
