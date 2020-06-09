@@ -1,0 +1,10 @@
+{
+  "name": "Global Ecosystem Typology",
+  "short_name": "Global Ecosystem Typology",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "Global Ecosystem Typology",
+  "background_color": "#fafafa",
+  "theme_color": "#b1624d"
+}
