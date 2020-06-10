@@ -126,9 +126,9 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'Global Ecosystem Typology',
-      short_name: 'Global Ecosystem Typology',
-      description: 'Global Ecosystem Typology',
+      name: 'Marine Plastic Explorer',
+      short_name: 'Marine Plastic Explorer',
+      description: 'Marine Plastic Explorer',
       background_color: '#fafafa',
       theme_color: '#b1624d',
       inject: true,
