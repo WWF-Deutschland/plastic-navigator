@@ -35,7 +35,13 @@
     "lint:eslint:fix": "eslint --ignore-path ./build --ignore-pattern ./build --ignore-path .gitignore --ignore-pattern internals/scripts --fix",
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
-    "prettify": "prettier --write"
+    "prettify": "prettier --write",
+    "build:jekyll": "jekyll build",
+    "predeploy": "npm run build && npm run predeploy:addjs && npm run predeploy:commitjs",
+    "predeploy:addjs": "cd build && git add . && cd ..",
+    "predeploy:commitjs": "git commit -n -m 'update js build'",
+    "deploy": "git push origin gh-pages",
+    "deploy:js": "npm run predeploy && npm run deploy"
   },
   "browserslist": [
     "last 2 versions",
