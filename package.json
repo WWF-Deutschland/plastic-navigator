@@ -36,12 +36,14 @@
     "lint:js": "npm run lint:eslint -- . ",
     "lint:staged": "lint-staged",
     "prettify": "prettier --write",
-    "build:jekyll": "jekyll build",
-    "predeploy": "npm run build && npm run predeploy:addjs && npm run predeploy:commitjs",
-    "predeploy:addjs": "cd build && git add . && cd ..",
-    "predeploy:commitjs": "git commit -n -m 'update js build'",
-    "deploy": "git push origin gh-pages",
-    "deploy:js": "npm run predeploy && npm run deploy"
+    "build-jekyll": "jekyll build",
+    "build-all": "npm run build && jekyll build",
+    "start-jekyll": "jekyll serve",
+    "predeploy": "npm run build && npm run predeploy-addjs && npm run predeploy-commitjs",
+    "predeploy-addjs": "git add index.html && cd build && git add . && cd ..",
+    "predeploy-commitjs": "git commit -m \"update js build\" -n --allow-empty",
+    "deploy-ghpages": "git push origin gh-pages",
+    "deploy-js": "npm run predeploy && npm run deploy-ghpages"
   },
   "browserslist": [
     "last 2 versions",
