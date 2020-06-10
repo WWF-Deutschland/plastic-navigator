@@ -1,0 +1,206 @@
+[
+  {
+    "id": "basemap",
+    "source": "mapbox",
+    "type": "vector-tiles",
+    "style-id": "ckae0r0to0say1ir3a13wvscu",
+    "title": {
+      "en": "Basemap"
+    },
+    "about": {
+      "en": "The basemap"
+    },
+    "attribution": {
+      "author": "Mapbox"
+    }
+  },
+  {
+    "id": "surface-concentration",
+    "subject": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "xxxxxxx",
+    "title": {
+      "en": "Floating plastic concentration"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste",
+    "subject": "plastic",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "xxxxxxx",
+    "title": {
+      "en": "Mismanaged plastic waste"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year per grid cell"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 1000,
+          "color": "blue"
+        }
+      ]
+    }
+  },
+  {
+    "id": "river-emissons",
+    "subject": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "river-emissions.json",
+    "title": {
+      "en": "River plastic emissions"
+    },
+    "about": {
+      "en": "Short text about river plastic emissions"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year"
+      },
+      "unit-short": {
+        "en": "t/yr"
+      },
+      "values": "continuous",
+      "feature-type": "point"
+    },
+    "style": {
+      "color": "black",
+      "fillColor": "rgba(0, 0, 0, 0.3)"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions by weight"
+      },
+      "values": [100, 10000, 333000]
+    }
+  },
+  {
+    "id": "currents",
+    "subject": "other",
+    "group": "hydro",
+    "source": "data",
+    "type": "geojson",
+    "file": "currents.json",
+    "title": {
+      "en": "Predominant ocean currents"
+    },
+    "title-short": {
+      "en": "Currents"
+    },
+    "about": {
+      "en": "Short text about predominant ocean currents"
+    },
+    "attribution": {
+      "author": "Own illustration",
+      "year": "2020"
+    },
+    "data": {
+      "type": "direction",
+      "feature-type": "LineString"
+    },
+    "style": {
+      "color": "green"
+    }
+  },
+  {
+    "id": "gyres",
+    "subject": "other",
+    "group": "hydro",
+    "source": "data",
+    "type": "geojson",
+    "file": "gyres.json",
+    "title": {
+      "en": "The 5 principal gyres"
+    },
+    "title-short": {
+      "en": "Gyres"
+    },
+    "about": {
+      "en": "Short text about principal gyres"
+    },
+    "attribution": {
+      "author": "Own illustration",
+      "year": "2020"
+    },
+    "data": {
+      "type": "location",
+      "feature-type": "Point"
+    },
+    "icon": {
+      "iconUrl": "icon-gyre.png"
+    }
+  }
+]

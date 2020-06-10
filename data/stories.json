@@ -1,0 +1,43 @@
+[
+  {
+    "id": "intro",
+    "chapters": [
+      {
+        "title": {
+          "en": "Plastic has been detected on the surface of all oceans"
+        },
+        "description": {
+          "en": "About this chapter..."
+        },
+        "layers": ["surface-concentration"]
+      },
+      {
+        "title": {
+          "en": "Poor Waste Management is a major source of debris"
+        },
+        "description": {
+          "en": "About this chapter..."
+        },
+        "layers": ["mismanaged-waste"]
+      },
+      {
+        "title": {
+          "en": "Rivers carry plastic from land to see"
+        },
+        "description": {
+          "en": "About this chapter..."
+        },
+        "layers": ["river-emissions"]
+      },
+      {
+        "title": {
+          "en": "Currents concentrate floating debris"
+        },
+        "description": {
+          "en": "About this chapter..."
+        },
+        "layers": ["currents", "gyres"]
+      }
+    ]
+  }
+]
