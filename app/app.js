@@ -28,7 +28,7 @@ import configureStore from 'configureStore';
 // Load the favicon and the .htaccess file
 /* eslint-disable import/no-unresolved, import/extensions */
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-import 'file-loader?name=.htaccess!./.htaccess';
+// import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
 // Create redux store with history
@@ -77,12 +77,12 @@ if (!window.Intl) {
 // it's not most important operation and if main code fails,
 // we do not want it installed
 // updating SW according to https://github.com/react-boilerplate/react-boilerplate/issues/2750#issuecomment-536215256
-if (process.env.NODE_ENV === 'production') {
-  const runtime = require('offline-plugin/runtime'); // eslint-disable-line global-require
-  runtime.install({
-    onUpdateReady: () => {
-      // Tells to new SW to take control immediately
-      runtime.applyUpdate();
-    },
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const runtime = require('offline-plugin/runtime'); // eslint-disable-line global-require
+//   runtime.install({
+//     onUpdateReady: () => {
+//       // Tells to new SW to take control immediately
+//       runtime.applyUpdate();
+//     },
+//   });
+// }
