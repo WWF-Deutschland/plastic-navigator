@@ -1,3 +1,5 @@
+// application routes and paths
+
 export const ROUTES = {
   HOME: '',
   EXPLORE: 'explore',
@@ -5,8 +7,16 @@ export const ROUTES = {
   PAGE: 'page',
 };
 
+export const PAGES = {
+  about: {
+    path: 'about',
+  },
+};
+
+// data/config & content locations
+
 // use local, relative resources for production and remote resources during development
-export const PATHS = {
+export const RESOURCES = {
   // TODO: consider local resource for data
   DATA:
     process && process.env && process.env.NODE_ENV === 'production'
@@ -23,21 +33,19 @@ export const PATHS = {
       : 'https://unfolddata.github.io/marine-plastic-explorer/assets/uploads',
 };
 
-export const PAGES = {
-  about: {
-    path: 'about',
-  },
+export const CONFIG = {
+  stories: 'stories.json',
+  explore: 'explore.json',
+  layers: 'layers.json',
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
 
+// map config
+
 export const MAPBOX = {
   TOKEN: 'pk.eyJ1IjoidG1mcm56IiwiYSI6IkRNZURKUHcifQ._ljgPcF75Yig1Of8adL93A',
   USER: 'tmfrnz',
-  BASEMAP_STYLES: {
-    light: 'ckae0r0to0say1ir3a13wvscu',
-    satellite: 'ckacdj3yp5pmb1iqky0khmlc8',
-  },
   RASTER_URL_TEMPLATE:
     'https://api.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
   STYLE_URL_TEMPLATE:

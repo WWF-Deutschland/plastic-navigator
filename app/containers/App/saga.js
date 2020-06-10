@@ -4,23 +4,33 @@ import extend from 'lodash/extend';
 import 'whatwg-fetch';
 import 'url-search-params-polyfill';
 
-import { MAX_LOAD_ATTEMPTS, PATHS, PAGES } from 'config';
+import { MAX_LOAD_ATTEMPTS, RESOURCES, PAGES, CONFIG } from 'config';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
-import { LOAD_CONTENT, NAVIGATE, CHANGE_LOCALE } from './constants';
+import {
+  LOAD_CONTENT,
+  NAVIGATE,
+  CHANGE_LOCALE,
+  LOAD_CONFIG,
+} from './constants';
 
 import {
   selectLocale,
   selectRouterLocation,
   selectContentReadyByKey,
   selectContentRequestedByKey,
+  selectConfigReadyByKey,
+  selectConfigRequestedByKey,
 } from './selectors';
 
 import {
   setContentRequested,
   setContentLoadError,
   setContentLoadSuccess,
+  setConfigRequested,
+  setConfigLoadError,
+  setConfigLoadSuccess,
 } from './actions';
 
 /**
@@ -56,6 +66,9 @@ const autoRestart = (generator, handleError, maxTries = MAX_LOAD_ATTEMPTS) =>
 function* loadContentErrorHandler(err, { key, contentType, locale }) {
   yield put(setContentLoadError(err, contentType, locale, key));
 }
+function* loadConfigErrorHandler(err, { key }) {
+  yield put(setConfigLoadError(err, key));
+}
 
 // key expected to include full path, for at risk data metric/country
 export function* loadContentSaga({ key, contentType }) {
@@ -74,7 +87,7 @@ export function* loadContentSaga({ key, contentType }) {
       let url;
       if (contentType === 'pages') {
         const page = PAGES[key];
-        url = `${PATHS.CONTENT}/${currentLocale}/${page.path}/`;
+        url = `${RESOURCES.CONTENT}/${currentLocale}/${page.path}/`;
       }
       if (url) {
         try {
@@ -115,6 +128,42 @@ export function* loadContentSaga({ key, contentType }) {
           );
           throw new Error(err);
         }
+      }
+    }
+  }
+}
+export function* loadConfigSaga({ key }) {
+  if (CONFIG[key]) {
+    const requestedAt = yield select(selectConfigRequestedByKey, {
+      key,
+    });
+    const ready = yield select(selectConfigReadyByKey, {
+      key,
+    });
+    // If haven't loaded yet, do so now.
+    if (!requestedAt && !ready) {
+      const url = `${RESOURCES.DATA}/${CONFIG[key]}`;
+      try {
+        // First record that we are requesting
+        yield put(setConfigRequested(key, Date.now()));
+        const response = yield fetch(url);
+        const responseOk = yield response.ok;
+        if (responseOk && typeof response.json === 'function') {
+          const json = yield response.json();
+          if (json) {
+            yield put(setConfigLoadSuccess(key, json, Date.now()));
+          } else {
+            yield put(setConfigRequested(key, false));
+            throw new Error(response.statusText);
+          }
+        } else {
+          yield put(setConfigRequested(key, false));
+          throw new Error(response.statusText);
+        }
+      } catch (err) {
+        yield put(setConfigRequested(key, false));
+        // throw error
+        throw new Error(err);
       }
     }
   }
@@ -262,6 +311,10 @@ export default function* defaultSaga() {
   yield takeEvery(
     LOAD_CONTENT,
     autoRestart(loadContentSaga, loadContentErrorHandler, MAX_LOAD_ATTEMPTS),
+  );
+  yield takeEvery(
+    LOAD_CONFIG,
+    autoRestart(loadConfigSaga, loadConfigErrorHandler, MAX_LOAD_ATTEMPTS),
   );
   yield takeLatest(NAVIGATE, navigateSaga);
   yield takeLatest(CHANGE_LOCALE, changeLocaleSaga);

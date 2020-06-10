@@ -6,11 +6,14 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 // import { injectIntl, intlShape } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+// import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import { Grommet } from 'grommet';
 import theme from 'theme';
@@ -20,6 +23,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
+import { loadConfig } from 'containers/App/actions';
 
 import RouteHome from 'containers/RouteHome/Loadable';
 import RoutePage from 'containers/RoutePage/Loadable';
@@ -27,7 +31,7 @@ import RoutePage from 'containers/RoutePage/Loadable';
 import Header from 'containers/Header';
 import { getHeaderHeight } from 'utils/responsive';
 
-import { ROUTES } from 'config';
+import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
 import { appLocales } from 'i18n';
 
@@ -55,9 +59,12 @@ const Content = styled.div`
   }
 `;
 
-function App() {
+function App({ onLoadConfig }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
+  useEffect(() => {
+    onLoadConfig();
+  }, []);
   return (
     <Grommet theme={theme}>
       <AppWrapper>
@@ -92,23 +99,23 @@ function App() {
   );
 }
 
-// App.propTypes = {
-//   intl: intlShape.isRequired,
-// };
+App.propTypes = {
+  onLoadConfig: PropTypes.func,
+};
 
-// export default injectIntl(App);
-// export default App;
+export function mapDispatchToProps(dispatch) {
+  return {
+    onLoadConfig: () => {
+      Object.keys(CONFIG).forEach(key => {
+        dispatch(loadConfig(key));
+      });
+    },
+  };
+}
 
-// App.propTypes = {};
+const withConnect = connect(
+  null,
+  mapDispatchToProps,
+);
 
-// export function mapDispatchToProps(dispatch) {
-//   return {
-//   };
-// }
-//
-// const withConnect = connect(
-//   null,
-//   mapDispatchToProps,
-// );
-
-export default App;
+export default compose(withConnect)(App);
