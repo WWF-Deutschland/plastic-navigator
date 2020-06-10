@@ -25,6 +25,11 @@ import {
   CONTENT_LOAD_SUCCESS,
   CONTENT_LOAD_ERROR,
   CONTENT_READY,
+  LOAD_CONFIG,
+  CONFIG_REQUESTED,
+  CONFIG_LOAD_SUCCESS,
+  CONFIG_LOAD_ERROR,
+  CONFIG_READY,
 } from './constants';
 
 export function setLocale(locale) {
@@ -108,5 +113,45 @@ export function setContentReady(contentType, key, locale, time) {
     time,
     contentType,
     locale,
+  };
+}
+
+export function loadConfig(key) {
+  return {
+    type: LOAD_CONFIG,
+    key,
+  };
+}
+
+export function setConfigLoadSuccess(key, data, time) {
+  return {
+    type: CONFIG_LOAD_SUCCESS,
+    data,
+    key,
+    time,
+  };
+}
+
+export function setConfigRequested(key, time) {
+  return {
+    type: CONFIG_REQUESTED,
+    key,
+    time,
+  };
+}
+
+export function setConfigLoadError(error, key) {
+  return {
+    type: CONFIG_LOAD_ERROR,
+    error,
+    key,
+  };
+}
+
+export function setConfigReady(key, time) {
+  return {
+    type: CONFIG_READY,
+    key,
+    time,
   };
 }

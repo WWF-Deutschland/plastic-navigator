@@ -8,12 +8,15 @@
  */
 
 import produce from 'immer';
-import { PAGES } from 'config';
+import { PAGES, CONFIG } from 'config';
 import { appLocales } from 'i18n';
 import {
   CONTENT_REQUESTED,
   CONTENT_LOAD_SUCCESS,
   CONTENT_LOAD_ERROR,
+  CONFIG_REQUESTED,
+  CONFIG_LOAD_SUCCESS,
+  CONFIG_LOAD_ERROR,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -27,10 +30,13 @@ const initialContent = {
     memo[key] = Object.assign({}, locales);
     return memo;
   }, {}),
-  realms: {},
-  biomes: {},
-  groups: {},
+  layers: {},
 };
+
+const initialConfig = Object.keys(CONFIG).reduce((memo, key) => {
+  memo[key] = null;
+  return memo;
+}, {});
 
 // The initial state of the App
 export const initialState = {
@@ -39,9 +45,13 @@ export const initialState = {
   contentRequested: Object.assign({}, initialContent),
   // record return time
   contentReady: Object.assign({}, initialContent),
+  config: Object.assign({}, initialConfig),
+  // record request time
+  configRequested: Object.assign({}, initialConfig),
+  // record return time
+  configReady: Object.assign({}, initialConfig),
   // // record error time
   // contentError: Object.assign({}, initialContent),
-  showDisclaimer: true,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -73,6 +83,17 @@ const appReducer = (state = initialState, action) =>
           draft.contentRequested[action.contentType][action.key] = {
             [action.locale]: action.time,
           };
+        break;
+      case CONFIG_REQUESTED:
+        draft.configRequested[action.key] = action.time;
+        break;
+      case CONFIG_LOAD_SUCCESS:
+        draft.config[action.key] = action.data;
+        draft.configReady[action.key] = action.time;
+        break;
+      case CONFIG_LOAD_ERROR:
+        console.log('Error loading config file ... giving up!', action.key);
+        draft.configRequested[action.key] = action.time;
         break;
     }
   });

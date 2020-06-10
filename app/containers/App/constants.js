@@ -12,8 +12,15 @@
 export const NAVIGATE = 'app/App/NAVIGATE';
 export const CHANGE_LOCALE = 'app/App/CHANGE_LOCALE';
 
-export const LOAD_CONTENT = 'rle/App/LOAD_CONTENT';
-export const CONTENT_REQUESTED = 'rle/App/CONTENT_REQUESTED';
-export const CONTENT_LOAD_ERROR = 'rle/App/CONTENT_LOAD_ERROR';
-export const CONTENT_LOAD_SUCCESS = 'rle/App/CONTENT_LOAD_SUCCESS';
-export const CONTENT_READY = 'rle/App/CONTENT_READY';
+// loading editorial content
+export const LOAD_CONTENT = 'app/App/LOAD_CONTENT';
+export const CONTENT_REQUESTED = 'app/App/CONTENT_REQUESTED';
+export const CONTENT_LOAD_ERROR = 'app/App/CONTENT_LOAD_ERROR';
+export const CONTENT_LOAD_SUCCESS = 'app/App/CONTENT_LOAD_SUCCESS';
+export const CONTENT_READY = 'app/App/CONTENT_READY';
+// loading dynamic configuration files
+export const LOAD_CONFIG = 'app/App/LOAD_CONFIG';
+export const CONFIG_REQUESTED = 'app/App/CONFIG_REQUESTED';
+export const CONFIG_LOAD_ERROR = 'app/App/CONFIG_LOAD_ERROR';
+export const CONFIG_LOAD_SUCCESS = 'app/App/CONFIG_LOAD_SUCCESS';
+export const CONFIG_READY = 'app/App/CONFIG_READY';

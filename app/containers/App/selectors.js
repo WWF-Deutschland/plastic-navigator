@@ -73,7 +73,7 @@ export const selectContentReadyByKey = createSelector(
 
 export const selectContentRequested = createSelector(
   selectGlobal,
-  global => global.contentReady,
+  global => global.contentRequested,
 );
 const selectContentRequestedByType = createSelector(
   (state, { contentType }) => contentType,
@@ -85,4 +85,33 @@ export const selectContentRequestedByKey = createSelector(
   selectLocale,
   selectContentRequestedByType,
   (key, locale, content) => content[key] && content[key][locale],
+);
+export const selectConfig = createSelector(
+  selectGlobal,
+  global => global.config,
+);
+export const selectConfigByKey = createSelector(
+  (state, { key }) => key,
+  selectConfig,
+  (key, config) => config[key],
+);
+
+export const selectConfigReady = createSelector(
+  selectGlobal,
+  global => global.configReady,
+);
+export const selectConfigReadyByKey = createSelector(
+  (state, { contentType }) => contentType,
+  selectConfigReady,
+  (key, config) => config[key],
+);
+
+export const selectConfigRequested = createSelector(
+  selectGlobal,
+  global => global.configReady,
+);
+export const selectConfigRequestedByKey = createSelector(
+  (state, { key }) => key,
+  selectConfigRequested,
+  (key, config) => config[key],
 );
