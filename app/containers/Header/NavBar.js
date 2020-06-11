@@ -11,8 +11,8 @@ export default styled(props => (
   left: 0;
   right: 0;
   width: 100%;
-  z-index: ${({ theme }) => theme.dimensions.header.zIndex}};
-  background: ${({ theme }) => theme.global.colors.header.background}};
+  z-index: ${({ theme }) => theme.dimensions.header.zIndex};
+  background: ${({ theme }) => theme.global.colors.header.background};
   /* responsive height */
   height: ${getHeaderHeight('small')}px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {

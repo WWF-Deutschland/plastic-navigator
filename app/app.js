@@ -72,17 +72,3 @@ if (!window.Intl) {
 } else {
   render(translationMessages);
 }
-
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-// updating SW according to https://github.com/react-boilerplate/react-boilerplate/issues/2750#issuecomment-536215256
-// if (process.env.NODE_ENV === 'production') {
-//   const runtime = require('offline-plugin/runtime'); // eslint-disable-line global-require
-//   runtime.install({
-//     onUpdateReady: () => {
-//       // Tells to new SW to take control immediately
-//       runtime.applyUpdate();
-//     },
-//   });
-// }

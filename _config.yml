@@ -1,7 +1,5 @@
 title: Marine Plastic Explorer
 baseurl: ''
-imageurl: 'https://unfolddata.github.io/marine-plastic-explorer/assets/uploads'
-siteurl: 'https://unfolddata.github.io/marine-plastic-explorer/'
 permalink: /:categories/:title
 markdown: kramdown
 languages: &languages
