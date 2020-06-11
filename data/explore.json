@@ -1,39 +1,41 @@
 {
-  "subjects": [
+  "categories": [
     {
       "id": "plastic",
       "title": {
         "en": "Plastic"
-      }
+      },
+      "groups": [
+        {
+          "id": "destination",
+          "title": {
+            "en": "Where does plastic waste accumulate in the oceans?"
+          },
+          "description": {
+            "en": "Optional description"
+          }
+        },
+        {
+          "id": "source",
+          "title": {
+            "en": "Where does plastic waste come from?"
+          }
+        }
+      ]
     },
     {
       "id": "other",
       "title": {
         "en": "Other"
-      }
-    }
-  ],
-  "groups": [
-    {
-      "id": "destination",
-      "subject": "plastic",
-      "title": {
-        "en": "Where does plastic waste accumulate in the oceans?"
-      }
-    },
-    {
-      "id": "source",
-      "subject": "plastic",
-      "title": {
-        "en": "Where does plastic waste come from?"
-      }
-    },
-    {
-      "id": "hydro",
-      "subject": "other",
-      "title": {
-        "en": "Ocean currents & circulation"
-      }
+      },
+      "groups": [
+        {
+          "id": "hydro",
+          "title": {
+            "en": "Ocean currents & circulation"
+          }
+        }
+      ]
     }
   ]
 }
