@@ -15,48 +15,49 @@ prose:
   media: "assets/uploads"
   rooturl: '_posts'
   siteurl: 'https://unfolddata.github.io/marine-plastic-explorer/'
-  _posts:
-    - name: "layout"
-      field:
-        element: "hidden"
-        value: "default"
-    - name: "permalink"
-      field:
-        element: "text"
-        label: "Permalink"
-        value: "/"
-    - name: "title"
-      field:
-        element: "text"
-        label: "Title"
-        value: ""
-  _posts/layers:
-    - name: "layout"
-      field:
-        element: "hidden"
-        value: "default"
-    - name: "permalink"
-      field:
-        element: "text"
-        label: "Permalink"
-        value: "/"
-    - name: "title"
-      field:
-        element: "text"
-        label: "Title"
-        value: ""
-    - name: "image_caption"
-      field:
-        element: "text"
-        label: "Image caption"
-        value: ""
-    - name: "fact"
-      field:
-        element: "textarea"
-        label: "Optional fact"
-        value: ""
-    - name: "text_references"
-      field:
-        element: "textarea"
-        label: "Text references"
-        value: ""
+  metadata:
+    _posts:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "default"
+      - name: "permalink"
+        field:
+          element: "text"
+          label: "Permalink"
+          value: "/"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Title"
+          value: ""
+    _posts/layers:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "default"
+      - name: "permalink"
+        field:
+          element: "text"
+          label: "Permalink"
+          value: "/"
+      - name: "title"
+        field:
+          element: "text"
+          label: "Title"
+          value: ""
+      - name: "image_caption"
+        field:
+          element: "text"
+          label: "Image caption"
+          value: ""
+      - name: "fact"
+        field:
+          element: "textarea"
+          label: "Optional fact"
+          value: ""
+      - name: "text_references"
+        field:
+          element: "textarea"
+          label: "Text references"
+          value: ""
