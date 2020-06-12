@@ -1,0 +1,27 @@
+---
+layout: default
+---
+
+{% if page.image and page.image != '' %}
+<figure class="mpx-figure">
+  <div class="mpx-image-wrap">
+    <img class="mpx-img" src="/{{site.prose.media}}/{{page.image}}" alt="{{page.image_caption}}">
+  </div>
+  <figcaption class="mpx-figcaption">
+    {{page.image_caption}}
+  </figcaption>
+</figure>
+{% endif %}
+<div class="mpx-layer-content">
+  {% if page.fact_lead and page.fact_lead != '' %}
+<p class="mpx-layer-lead">
+  {{page.fact_lead}}
+</p>
+  {% endif %}
+  {{content}}
+</div>
+{% if page.text_references and page.text_references != '' %}
+<div class="mpx-layer-references">
+  {{page.text_references}}
+</div>
+{% endif %}

@@ -1,11 +1,12 @@
 ---
-layout: default
+layout: layer
 published: true
 permalink: /content/en/layers/surface-concentration/
 lang: en
 title: Floating plastic concentration
+image: surface-concentration.png
 image_caption: image credits and caption
-fact: an optional fact
+fact_lead: an optional fact or lead paragraph
 text_references: text references
 ---
 
