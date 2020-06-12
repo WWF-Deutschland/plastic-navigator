@@ -5,7 +5,7 @@ permalink: /content/en/layers/mismanaged-waste/
 lang: en
 title: Mismanaged plastic waste
 image_caption: image credits and caption
-fact: an optional fact
+fact_lead: an optional fact or lead paragraph
 text_references: text references
 ---
 
