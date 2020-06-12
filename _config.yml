@@ -49,10 +49,10 @@ prose:
           element: "text"
           label: "Image caption"
           value: ""
-      - name: "fact"
+      - name: "fact_lead"
         field:
           element: "textarea"
-          label: "Optional fact"
+          label: "Optional fact or lead paragraph"
           value: ""
       - name: "text_references"
         field:
