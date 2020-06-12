@@ -44,6 +44,11 @@ prose:
           element: "text"
           label: "Title"
           value: ""
+      - name: "image_file_name"
+        field:
+          element: "text"
+          label: "Image file name (located in assets/uploads/ folder)"
+          value: ""
       - name: "image_caption"
         field:
           element: "text"
