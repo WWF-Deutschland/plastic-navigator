@@ -33,7 +33,7 @@ prose:
       - name: "layout"
         field:
           element: "hidden"
-          value: "default"
+          value: "layer"
       - name: "permalink"
         field:
           element: "text"
