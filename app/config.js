@@ -1,15 +1,26 @@
-// application routes and paths
+import { DocumentText, Layer } from 'grommet-icons';
+import React from 'react';
 
+// application routes and paths
 export const ROUTES = {
-  HOME: '',
+  INTRO: 'intro',
   EXPLORE: 'explore',
   ANALYSE: 'analyse',
-  PAGE: 'page',
 };
 
 export const PAGES = {
   about: {
     path: 'about',
+  },
+};
+export const MODULES = {
+  intro: {
+    path: ROUTES.INTRO,
+    icon: <DocumentText color="white" />,
+  },
+  explore: {
+    path: ROUTES.EXPLORE,
+    icon: <Layer color="white" />,
   },
 };
 

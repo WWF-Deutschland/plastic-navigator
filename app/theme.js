@@ -37,36 +37,18 @@ export const sizes = {
 export const dimensions = {
   header: {
     // by breakpoint
-    height: [50, 50, 95, 95, 95],
+    height: [50, 50, 50, 50, 50],
     zIndex: 1200,
-    primaryIcons: 40,
   },
-  aside: {
+  layerSelect: {
     // by breakpoint
     width: [0, 0, 350, 420, 550],
     zIndex: 1150,
   },
-  realmIcons: {
-    single: 68,
-    multi: 42,
-  },
-  topGraphic: {
+  layerInfo: {
     // by breakpoint
-    height: [300, 300, 350, 420, 550],
-  },
-  mainContent: {
-    zIndex: 1100,
-    // by breakpoint
-    maxWidth: [700, 700, 700, 800, 900],
-  },
-  home: {
-    maxWidth: [700, 700, 1000, 1100, 1200],
-  },
-  settings: {
-    height: {
-      small: 40,
-      large: 110,
-    },
+    width: [0, 0, 350, 420, 550],
+    zIndex: 1150,
   },
 };
 
@@ -235,10 +217,13 @@ const theme = {
     },
   },
   layer: {
+    border: {
+      radius: 0,
+    },
     overlay: {
       background: 'rgba(0, 0, 0, 0.5)',
     },
-    zIndex: 1300,
+    zIndex: 3000,
   },
 };
 

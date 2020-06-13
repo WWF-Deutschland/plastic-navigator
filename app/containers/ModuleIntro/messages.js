@@ -5,6 +5,6 @@
  */
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.RouteHome';
+export const scope = 'app.containers.ModuleIntro';
 
 export default defineMessages({});
