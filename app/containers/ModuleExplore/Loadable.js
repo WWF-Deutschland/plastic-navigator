@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for RoutePage
+ * Asynchronously loads the component for ModuleExplore
  *
  */
 

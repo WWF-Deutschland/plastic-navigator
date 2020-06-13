@@ -18,7 +18,7 @@ import { navigate } from 'containers/App/actions';
 // dangerouslySetInnerHTML={{ __html: setLinkTarget(innerhtml) }}
 // />
 const HTMLWrapper = ({ innerhtml, onNavigate }) => (
-  <div className="rle-html">
+  <div className="app-html">
     {ReactHtmlParser(innerhtml, {
       transform: (node, index) => {
         if (node.name === 'a' && node.attribs && node.attribs.href) {

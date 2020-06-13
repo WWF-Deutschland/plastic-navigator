@@ -59,12 +59,17 @@ export function navigate(location, args) {
  * @return {object} `{type: action id, location: new location, args: navigation arguments}`
  */
 export function navigatePage(id, args) {
-  return navigate(`${ROUTES.PAGE}/${id}`, args);
+  return navigate(
+    {
+      search: { page: id },
+    },
+    args,
+  );
 }
 
 // proxy action: navigate home, optionally resetting all search params
 export function navigateHome(reset = true) {
-  return navigate(ROUTES.HOME, reset ? { deleteSearchParams: true } : {});
+  return navigate(ROUTES.INTRO, reset ? { deleteSearchParams: true } : {});
 }
 
 export function loadContent(contentType, key) {

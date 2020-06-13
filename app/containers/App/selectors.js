@@ -14,13 +14,17 @@ export const selectRouterLocation = createSelector(
   selectRouter,
   routerState => routerState.location,
 );
+export const selectRouterPath = createSelector(
+  selectRouterLocation,
+  location => location && location.pathname,
+);
 export const selectRouterSearchParams = createSelector(
   selectRouterLocation,
   location => location && new URLSearchParams(location.search),
 );
-export const selectRouterPath = createSelector(
-  selectRouterLocation,
-  location => location && location.pathname,
+export const selectPageSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('page') ? search.get('page') : ''),
 );
 
 /**

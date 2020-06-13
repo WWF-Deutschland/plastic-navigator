@@ -6,7 +6,7 @@ import { getHeaderHeight } from 'utils/responsive';
 export default styled(props => (
   <Header {...props} align="start" pad={{ horizontal: 'medium' }} />
 ))`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;

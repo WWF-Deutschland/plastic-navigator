@@ -6,8 +6,6 @@ import 'url-search-params-polyfill';
 
 import { MAX_LOAD_ATTEMPTS, RESOURCES, PAGES, CONFIG } from 'config';
 
-import { DEFAULT_LOCALE } from 'i18n';
-
 import {
   LOAD_CONTENT,
   NAVIGATE,
@@ -176,7 +174,7 @@ export function* navigateSaga({ location, args }) {
   // default args
   const myArgs = extend(
     {
-      needsLocale: currentLocale !== DEFAULT_LOCALE,
+      needsLocale: true,
       replaceSearch: false, // if location search should fully replace previous
       deleteSearchParams: null, //  a list of specific search params to remove
     },
@@ -185,37 +183,42 @@ export function* navigateSaga({ location, args }) {
 
   // 1. figure out path ========================
   // the new pathname
-  let newPathname = '/';
+  let path = '';
+  let newPathname = '';
 
   // if location is string
   // use as pathname and keep old search
   // note: location path is expected not to contain the locale
   if (typeof location === 'string') {
     newPathname += location;
+    path = myArgs.needsLocale
+      ? `/${currentLocale}/${newPathname}${newPathname === '' ? '' : '/'}`
+      : newPathname;
   }
 
   // if location is object, use pathname and replace or extend search
   // location path is expected not to contain the locale
   else if (
+    location &&
     typeof location === 'object' &&
     typeof location.pathname !== 'undefined'
   ) {
     newPathname += location.pathname;
+    path = myArgs.needsLocale
+      ? `/${currentLocale}/${newPathname}${newPathname === '' ? '' : '/'}`
+      : newPathname;
   }
 
   // keep old pathname
   else {
-    newPathname += currentLocation.pathname;
+    path = currentLocation.pathname;
   }
-  // add locale
-  const path = myArgs.needsLocale
-    ? `/${currentLocale}${newPathname}`
-    : newPathname;
 
   // 2. figure out new search params =================================
   let newSearchParams;
   // fully replace previous search
   if (
+    location &&
     typeof location === 'object' &&
     typeof location.search !== 'undefined' &&
     myArgs.replaceSearch
@@ -265,6 +268,7 @@ export function* navigateSaga({ location, args }) {
 
     // merge params
     if (
+      location &&
       typeof location === 'object' &&
       typeof location.search !== 'undefined' &&
       !myArgs.replaceSearch
@@ -277,7 +281,6 @@ export function* navigateSaga({ location, args }) {
   // convert to string and append if necessary
   const newSearch = newSearchParams.toString();
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
-
   // finally combine new path and search  ============================
   yield put(push(`${path}${search}`));
 }
@@ -287,21 +290,7 @@ export function* changeLocaleSaga({ locale }) {
   const currentLocation = yield select(selectRouterLocation);
   let path = '/';
   if (currentLocation.pathname) {
-    // changing from default: add locale
-    if (currentLocale === DEFAULT_LOCALE) {
-      path = `/${locale}${currentLocation.pathname}`;
-    }
-    // changing to default: remove locale
-    else if (locale === DEFAULT_LOCALE) {
-      path = currentLocation.pathname.replace(`/${currentLocale}`, '');
-    }
-    // changing from non-default to other non-default
-    else {
-      path = currentLocation.pathname.replace(
-        `/${currentLocale}`,
-        `/${locale}`,
-      );
-    }
+    path = currentLocation.pathname.replace(`/${currentLocale}`, `/${locale}`);
   }
   yield put(push(`${path}${currentLocation.search}`));
 }

@@ -12,9 +12,13 @@ export default defineMessages({
     id: `${scope}.appTitle`,
     defaultMessage: 'Marine Plastic Explorer',
   },
-  navExplore: {
-    id: `${scope}.navExplore`,
+  module_explore: {
+    id: `${scope}.module_explore`,
     defaultMessage: 'Explore',
+  },
+  module_intro: {
+    id: `${scope}.module_intro`,
+    defaultMessage: 'Intro',
   },
   page_about: {
     id: `${scope}.page_about`,
