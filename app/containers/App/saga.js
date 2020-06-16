@@ -21,6 +21,8 @@ import {
   SET_LAYER_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
+  SET_STORY,
+  SET_CHAPTER,
 } from './constants';
 
 import {
@@ -326,6 +328,7 @@ function* setLayerInfoSaga({ id }) {
     yield put(push(`${currentLocation.pathname}${search}`));
   }
 }
+
 function* toggleLayerSaga({ id }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
@@ -353,6 +356,7 @@ function* toggleLayerSaga({ id }) {
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
   yield put(push(`${currentLocation.pathname}${search}`));
 }
+
 function* setLayersSaga({ layers }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
@@ -363,7 +367,33 @@ function* setLayersSaga({ layers }) {
   }
   const newSearch = searchParams.toString();
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
-  yield put(push(`${currentLocation.pathname}${search}`));
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* setStorySaga({ index }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  searchParams.set('st', index);
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* setChapterSaga({ index }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  searchParams.set('ch', index);
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
 }
 
 export default function* defaultSaga() {
@@ -381,4 +411,6 @@ export default function* defaultSaga() {
   yield takeLatest(SET_LAYER_INFO, setLayerInfoSaga);
   yield takeLatest(TOGGLE_LAYER, toggleLayerSaga);
   yield takeLatest(SET_LAYERS, setLayersSaga);
+  yield takeLatest(SET_STORY, setStorySaga);
+  yield takeLatest(SET_CHAPTER, setChapterSaga);
 }

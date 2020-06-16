@@ -110,6 +110,7 @@ function Header({ nav, navPage, path }) {
                     )
                   }
                   active={route === m.path}
+                  disabled={route === m.path}
                   last={index === Object.keys(PAGES).length - 1}
                   icon={m.icon}
                 />

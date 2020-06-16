@@ -36,6 +36,14 @@ export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('info') ? search.get('info') : ''),
 );
+export const selectChapterSearch = createSelector(
+  selectRouterSearchParams,
+  search => search.has('ch') && parseInt(search.get('ch'), 10),
+);
+export const selectStorySearch = createSelector(
+  selectRouterSearchParams,
+  search => search.has('st') && parseInt(search.get('st'), 10),
+);
 
 /**
  * Get the language locale

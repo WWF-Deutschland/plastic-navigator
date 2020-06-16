@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,8 +16,11 @@ import {
   selectLayersConfig,
   selectStoriesConfig,
   selectUIStateByKey,
+  selectChapterSearch,
+  selectStorySearch,
 } from 'containers/App/selectors';
-import { setUIState } from 'containers/App/actions';
+// import { setUIState, setChapter, setStory } from 'containers/App/actions';
+import { setChapter, setStory } from 'containers/App/actions';
 
 import PanelChapter from 'containers/PanelChapter';
 import ModuleWrap from 'components/ModuleWrap';
@@ -29,21 +32,33 @@ const Styled = styled.div``;
 
 const COMPONENT_KEY = 'ModuleStories';
 
-const DEFAULT_UI_STATE = {
-  story: 0,
-  chapter: 0,
-};
+// const DEFAULT_UI_STATE = {
+//   open: true,
+// };
 
 export function ModuleStories({
-  uiState,
+  // uiState,
   layersConfig,
   storiesConfig,
   onPrevious,
   onNext,
+  story,
+  chapter,
+  onSetStory,
+  onSetChapter,
 }) {
-  const { story, chapter } = uiState
-    ? Object.assign({}, DEFAULT_UI_STATE, uiState)
-    : DEFAULT_UI_STATE;
+  // const { open } = uiState
+  //   ? Object.assign({}, DEFAULT_UI_STATE, uiState)
+  //   : DEFAULT_UI_STATE;
+
+  useEffect(() => {
+    if (!story) {
+      onSetStory(0);
+    }
+    if (!chapter) {
+      onSetChapter(0);
+    }
+  }, []);
 
   if (!storiesConfig) return null;
 
@@ -82,31 +97,29 @@ export function ModuleStories({
 ModuleStories.propTypes = {
   layersConfig: PropTypes.array,
   storiesConfig: PropTypes.array,
-  uiState: PropTypes.object,
+  // uiState: PropTypes.object,
   onPrevious: PropTypes.func,
   onNext: PropTypes.func,
+  onSetChapter: PropTypes.func,
+  onSetStory: PropTypes.func,
+  story: PropTypes.number,
+  chapter: PropTypes.number,
 };
 
 const mapStateToProps = createStructuredSelector({
   layersConfig: state => selectLayersConfig(state),
   storiesConfig: state => selectStoriesConfig(state),
+  story: state => selectStorySearch(state),
+  chapter: state => selectChapterSearch(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onNext: (current, max) =>
-      dispatch(
-        setUIState(COMPONENT_KEY, {
-          chapter: Math.min(current + 1, max),
-        }),
-      ),
-    onPrevious: current =>
-      dispatch(
-        setUIState(COMPONENT_KEY, {
-          chapter: Math.max(current - 1, 0),
-        }),
-      ),
+    onNext: (current, max) => dispatch(setChapter(Math.min(current + 1, max))),
+    onPrevious: current => dispatch(setChapter(Math.max(current - 1, 0))),
+    onSetChapter: chapter => dispatch(setChapter(chapter)),
+    onSetStory: chapter => dispatch(setStory(chapter)),
   };
 }
 
