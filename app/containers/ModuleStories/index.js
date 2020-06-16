@@ -58,7 +58,7 @@ export function ModuleStories({
     if (!chapter) {
       onSetChapter(0);
     }
-  }, []);
+  });
 
   if (!storiesConfig) return null;
 
