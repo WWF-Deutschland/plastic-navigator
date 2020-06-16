@@ -21,7 +21,7 @@ const MainContent = styled.div`
   position: relative;
 `;
 
-export function ModuleIntro() {
+export function ModuleStories() {
   return (
     <Styled>
       <Helmet>
@@ -50,4 +50,4 @@ export function ModuleIntro() {
 //   mapDispatchToProps,
 // );
 
-export default ModuleIntro;
+export default ModuleStories;

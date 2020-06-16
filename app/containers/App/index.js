@@ -37,7 +37,7 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import ModuleIntro from 'containers/ModuleIntro/Loadable';
+import ModuleStories from 'containers/ModuleStories/Loadable';
 import ModuleExplore from 'containers/ModuleExplore/Loadable';
 import Header from 'containers/Header';
 import Map from 'containers/Map';
@@ -125,7 +125,7 @@ function App({
             <Route
               exact
               path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
-              component={ModuleIntro}
+              component={ModuleStories}
             />
             <Route
               path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}

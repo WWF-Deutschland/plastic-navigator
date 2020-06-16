@@ -3,7 +3,7 @@ import React from 'react';
 
 // application routes and paths
 export const ROUTES = {
-  INTRO: 'intro',
+  INTRO: 'stories',
   EXPLORE: 'explore',
   ANALYSE: 'analyse',
 };
@@ -14,7 +14,7 @@ export const PAGES = {
   },
 };
 export const MODULES = {
-  intro: {
+  stories: {
     path: ROUTES.INTRO,
     icon: <DocumentText color="white" />,
   },
