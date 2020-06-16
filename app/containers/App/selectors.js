@@ -162,5 +162,6 @@ export const selectUIStateByKey = createSelector(
 
 export const selectActiveLayers = createSelector(
   selectLayersSearch,
-  layerSearch => layerSearch.split(URL_SEARCH_SEPARATOR),
+  layerSearch =>
+    layerSearch === '' ? [] : layerSearch.split(URL_SEARCH_SEPARATOR),
 );
