@@ -24,3 +24,7 @@ export const CONFIG_REQUESTED = 'app/App/CONFIG_REQUESTED';
 export const CONFIG_LOAD_ERROR = 'app/App/CONFIG_LOAD_ERROR';
 export const CONFIG_LOAD_SUCCESS = 'app/App/CONFIG_LOAD_SUCCESS';
 export const CONFIG_READY = 'app/App/CONFIG_READY';
+
+export const SET_UI_STATE = 'app/App/SET_UI_STATE';
+export const SET_LAYER_INFO = 'app/App/SET_LAYER_INFO';
+export const TOGGLE_LAYER = 'app/App/TOGGLE_LAYER';

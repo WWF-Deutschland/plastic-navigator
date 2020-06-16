@@ -30,6 +30,9 @@ import {
   CONFIG_LOAD_SUCCESS,
   CONFIG_LOAD_ERROR,
   CONFIG_READY,
+  SET_UI_STATE,
+  SET_LAYER_INFO,
+  TOGGLE_LAYER,
 } from './constants';
 
 export function setLocale(locale) {
@@ -158,5 +161,24 @@ export function setConfigReady(key, time) {
     type: CONFIG_READY,
     key,
     time,
+  };
+}
+export function setUIState(component, state) {
+  return {
+    type: SET_UI_STATE,
+    component,
+    state,
+  };
+}
+export function setLayerInfo(id) {
+  return {
+    type: SET_LAYER_INFO,
+    id,
+  };
+}
+export function toggleLayer(id) {
+  return {
+    type: TOGGLE_LAYER,
+    id,
   };
 }

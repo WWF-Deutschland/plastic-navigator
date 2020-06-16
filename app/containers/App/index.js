@@ -25,14 +25,24 @@ import { getHeaderHeight } from 'utils/responsive';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
-import { loadConfig, navigateHome, navigate } from 'containers/App/actions';
-import { selectRouterPath, selectPageSearch } from 'containers/App/selectors';
+import {
+  loadConfig,
+  navigateHome,
+  navigate,
+  setLayerInfo,
+} from 'containers/App/actions';
+import {
+  selectRouterPath,
+  selectPageSearch,
+  selectInfoSearch,
+} from 'containers/App/selectors';
 
 import ModuleIntro from 'containers/ModuleIntro/Loadable';
 import ModuleExplore from 'containers/ModuleExplore/Loadable';
 import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
+import LayerInfo from 'containers/LayerInfo';
 
 import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
@@ -80,7 +90,15 @@ const Brand = styled(props => <Button {...props} plain color="white" />)`
     theme.global.colors[route === ROUTES.INTRO ? 'white' : 'black']};
 `;
 
-function App({ onLoadConfig, navHome, path, page, onClosePage }) {
+function App({
+  onLoadConfig,
+  navHome,
+  path,
+  page,
+  info,
+  onClosePage,
+  onCloseLayerInfo,
+}) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
   useEffect(() => {
@@ -89,6 +107,7 @@ function App({ onLoadConfig, navHome, path, page, onClosePage }) {
 
   // figure out route for Brand element colours
   const route = path.split('/')[path[0] === '/' ? 1 : 0];
+  console.log(info);
 
   return (
     <Grommet theme={appTheme}>
@@ -115,6 +134,9 @@ function App({ onLoadConfig, navHome, path, page, onClosePage }) {
             <Redirect to={`/${DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
           </Switch>
           {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
+          {info !== '' && (
+            <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
+          )}
           <Brand
             onClick={() => navHome()}
             label={<FormattedMessage {...commonMessages.appTitle} />}
@@ -131,13 +153,16 @@ App.propTypes = {
   navHome: PropTypes.func,
   onLoadConfig: PropTypes.func,
   onClosePage: PropTypes.func,
+  onCloseLayerInfo: PropTypes.func,
   path: PropTypes.string,
   page: PropTypes.string,
+  info: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   path: state => selectRouterPath(state),
   page: state => selectPageSearch(state),
+  info: state => selectInfoSearch(state),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -153,6 +178,7 @@ export function mapDispatchToProps(dispatch) {
           deleteSearchParams: ['page'],
         }),
       ),
+    onCloseLayerInfo: () => dispatch(setLayerInfo()),
     navHome: () => dispatch(navigateHome()),
   };
 }

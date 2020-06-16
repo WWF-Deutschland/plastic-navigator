@@ -4,6 +4,8 @@
 import { createSelector } from 'reselect';
 import { DEFAULT_LOCALE, appLocales } from 'i18n';
 
+import { URL_SEARCH_SEPARATOR } from 'config';
+
 import { initialState } from './reducer';
 
 const selectGlobal = state => state.global || initialState;
@@ -25,6 +27,14 @@ export const selectRouterSearchParams = createSelector(
 export const selectPageSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('page') ? search.get('page') : ''),
+);
+export const selectLayersSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('layers') ? search.get('layers') : ''),
+);
+export const selectInfoSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('info') ? search.get('info') : ''),
 );
 
 /**
@@ -99,6 +109,18 @@ export const selectConfigByKey = createSelector(
   selectConfig,
   (key, config) => config[key],
 );
+export const selectLayersConfig = createSelector(
+  selectConfig,
+  config => config.layers,
+);
+export const selectExploreConfig = createSelector(
+  selectConfig,
+  config => config.explore,
+);
+export const selectStoriesConfig = createSelector(
+  selectConfig,
+  config => config.stories,
+);
 
 export const selectConfigReady = createSelector(
   selectGlobal,
@@ -118,4 +140,19 @@ export const selectConfigRequestedByKey = createSelector(
   (state, { key }) => key,
   selectConfigRequested,
   (key, config) => config[key],
+);
+
+export const selectUIState = createSelector(
+  selectGlobal,
+  global => global.uiState,
+);
+export const selectUIStateByKey = createSelector(
+  (state, { key }) => key,
+  selectUIState,
+  (key, uiState) => uiState[key],
+);
+
+export const selectActiveLayers = createSelector(
+  selectLayersSearch,
+  layerSearch => layerSearch.split(URL_SEARCH_SEPARATOR),
 );

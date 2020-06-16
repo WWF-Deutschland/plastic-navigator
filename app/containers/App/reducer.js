@@ -17,6 +17,8 @@ import {
   CONFIG_REQUESTED,
   CONFIG_LOAD_SUCCESS,
   CONFIG_LOAD_ERROR,
+  SET_UI_STATE,
+  SET_LAYER_INFO,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -52,6 +54,8 @@ export const initialState = {
   configReady: Object.assign({}, initialConfig),
   // // record error time
   // contentError: Object.assign({}, initialContent),
+  uiState: {},
+  layerInfo: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -94,6 +98,12 @@ const appReducer = (state = initialState, action) =>
       case CONFIG_LOAD_ERROR:
         console.log('Error loading config file ... giving up!', action.key);
         draft.configRequested[action.key] = action.time;
+        break;
+      case SET_UI_STATE:
+        draft.uiState[action.component] = action.state;
+        break;
+      case SET_LAYER_INFO:
+        draft.layerInfo = action.id;
         break;
     }
   });

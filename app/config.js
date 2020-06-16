@@ -44,6 +44,8 @@ export const RESOURCES = {
       : 'https://unfolddata.github.io/marine-plastic-explorer/assets/uploads',
 };
 
+export const LAYER_CONTENT_PATH = 'layers';
+
 export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
@@ -62,3 +64,5 @@ export const MAPBOX = {
   STYLE_URL_TEMPLATE:
     'https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}',
 };
+
+export const URL_SEARCH_SEPARATOR = '|';
