@@ -16,7 +16,7 @@
   },
   {
     "id": "surface-concentration",
-    "subject": "plastic",
+    "category": "plastic",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -60,7 +60,7 @@
   },
   {
     "id": "mismanaged-waste",
-    "subject": "plastic",
+    "category": "plastic",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -107,7 +107,7 @@
   },
   {
     "id": "river-emissons",
-    "subject": "plastic",
+    "category": "plastic",
     "group": "source",
     "source": "data",
     "type": "geojson",
@@ -149,7 +149,7 @@
   },
   {
     "id": "currents",
-    "subject": "other",
+    "category": "other",
     "group": "hydro",
     "source": "data",
     "type": "geojson",
@@ -177,7 +177,7 @@
   },
   {
     "id": "gyres",
-    "subject": "other",
+    "category": "other",
     "group": "hydro",
     "source": "data",
     "type": "geojson",
