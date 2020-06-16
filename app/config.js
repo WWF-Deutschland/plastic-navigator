@@ -44,6 +44,8 @@ export const RESOURCES = {
       : 'https://unfolddata.github.io/marine-plastic-explorer/assets/uploads',
 };
 
+export const LAYER_CONTENT_PATH = 'layers';
+
 export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',

@@ -10,6 +10,7 @@ import {
   PAGES,
   CONFIG,
   URL_SEARCH_SEPARATOR,
+  LAYER_CONTENT_PATH,
 } from 'config';
 
 import {
@@ -78,7 +79,7 @@ function* loadConfigErrorHandler(err, { key }) {
 
 // key expected to include full path, for at risk data metric/country
 function* loadContentSaga({ key, contentType }) {
-  if (PAGES[key]) {
+  if (contentType === 'layers' || PAGES[key]) {
     const requestedAt = yield select(selectContentRequestedByKey, {
       contentType,
       key,
@@ -94,6 +95,11 @@ function* loadContentSaga({ key, contentType }) {
       if (contentType === 'pages') {
         const page = PAGES[key];
         url = `${RESOURCES.CONTENT}/${currentLocale}/${page.path}/`;
+      }
+      if (contentType === 'layers') {
+        url = `${
+          RESOURCES.CONTENT
+        }/${currentLocale}/${LAYER_CONTENT_PATH}/${key}`;
       }
       if (url) {
         try {

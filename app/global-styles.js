@@ -33,8 +33,8 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1.5em;
   }
 
-  .rle-caption-markdown p {
-    margin: 0;
+  .mpx-img {
+    max-width: 100%;
   }
 `;
 

@@ -32,9 +32,9 @@ export const selectLayersSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('layers') ? search.get('layers') : ''),
 );
-export const selectLayerInfo = createSelector(
+export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
-  search => (search.has('info') ? search.get('info') : null),
+  search => (search.has('info') ? search.get('info') : ''),
 );
 
 /**
