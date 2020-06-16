@@ -9,26 +9,19 @@ import React, { useState } from 'react';
 // import { connect } from 'react-redux';
 // import { createStructuredSelector } from 'reselect';
 import { Helmet } from 'react-helmet';
-// import { compose } from 'redux';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Button } from 'grommet';
-import { Close, Layer } from 'grommet-icons';
+import { Layer } from 'grommet-icons';
 
-import ModuleWrap from 'components/ModuleWrap';
-// import { selectContentByKey } from 'containers/App/selectors';
 // import { loadContent } from 'containers/App/actions';
 
-// import messages from './messages';
+import PanelExplore from 'containers/PanelExplore';
+import ModuleWrap from 'components/ModuleWrap';
+
+import messages from './messages';
 // import commonMessages from 'messages';
 
-const ExplorePanel = styled(props => <Box {...props} />)`
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 300px;
-  pointer-events: all;
-`;
 const Show = styled(props => <Box {...props} />)`
   position: absolute;
   right: 10px;
@@ -38,6 +31,7 @@ const Show = styled(props => <Box {...props} />)`
 
 export function ModuleExplore() {
   const [show, setShow] = useState(true);
+
   return (
     <div>
       <Helmet>
@@ -45,24 +39,16 @@ export function ModuleExplore() {
         <meta name="description" content="Description of ModuleExplore" />
       </Helmet>
       <ModuleWrap>
-        {show && (
-          <ExplorePanel background="white">
-            <Button
-              onClick={() => setShow(false)}
-              icon={<Close />}
-              plain
-              alignSelf="end"
-            />
-            Hello
-          </ExplorePanel>
-        )}
+        {show && <PanelExplore onClose={() => setShow(false)} />}
         {!show && (
           <Show background="white">
             <Button
               onClick={() => setShow(true)}
               icon={<Layer />}
+              label={<FormattedMessage {...messages.showLayerPanel} />}
               plain
               alignSelf="end"
+              reverse
             />
           </Show>
         )}
@@ -71,12 +57,20 @@ export function ModuleExplore() {
   );
 }
 
-ModuleExplore.propTypes = {};
-
-// const mapStateToProps = createStructuredSelector({});
-
+// ModuleExplore.propTypes = {
+//   layersConfig: PropTypes.array,
+//   exploreConfig: PropTypes.array,
+// };
+//
+// const mapStateToProps = createStructuredSelector({
+//   layersConfig: state => selectLayersConfig(state),
+//   exploreConfig: state => selectExploreConfig(state),
+// });
+//
 // function mapDispatchToProps(dispatch) {
-//   return {};
+//   return {
+//
+//   };
 // }
 
 // const withConnect = connect(

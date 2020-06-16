@@ -4,13 +4,21 @@ import extend from 'lodash/extend';
 import 'whatwg-fetch';
 import 'url-search-params-polyfill';
 
-import { MAX_LOAD_ATTEMPTS, RESOURCES, PAGES, CONFIG } from 'config';
+import {
+  MAX_LOAD_ATTEMPTS,
+  RESOURCES,
+  PAGES,
+  CONFIG,
+  URL_SEARCH_SEPARATOR,
+} from 'config';
 
 import {
   LOAD_CONTENT,
   NAVIGATE,
   CHANGE_LOCALE,
   LOAD_CONFIG,
+  SET_LAYER_INFO,
+  TOGGLE_LAYER,
 } from './constants';
 
 import {
@@ -69,7 +77,7 @@ function* loadConfigErrorHandler(err, { key }) {
 }
 
 // key expected to include full path, for at risk data metric/country
-export function* loadContentSaga({ key, contentType }) {
+function* loadContentSaga({ key, contentType }) {
   if (PAGES[key]) {
     const requestedAt = yield select(selectContentRequestedByKey, {
       contentType,
@@ -130,7 +138,7 @@ export function* loadContentSaga({ key, contentType }) {
     }
   }
 }
-export function* loadConfigSaga({ key }) {
+function* loadConfigSaga({ key }) {
   if (CONFIG[key]) {
     const requestedAt = yield select(selectConfigRequestedByKey, {
       key,
@@ -168,7 +176,7 @@ export function* loadConfigSaga({ key }) {
 }
 
 // location can either be string or object { pathname, search }
-export function* navigateSaga({ location, args }) {
+function* navigateSaga({ location, args }) {
   const currentLocale = yield select(selectLocale);
   const currentLocation = yield select(selectRouterLocation);
   // default args
@@ -285,7 +293,7 @@ export function* navigateSaga({ location, args }) {
   yield put(push(`${path}${search}`));
 }
 
-export function* changeLocaleSaga({ locale }) {
+function* changeLocaleSaga({ locale }) {
   const currentLocale = yield select(selectLocale);
   const currentLocation = yield select(selectRouterLocation);
   let path = '/';
@@ -293,6 +301,50 @@ export function* changeLocaleSaga({ locale }) {
     path = currentLocation.pathname.replace(`/${currentLocale}`, `/${locale}`);
   }
   yield put(push(`${path}${currentLocation.search}`));
+}
+
+function* setLayerInfoSaga({ id }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+  // only update if not already active
+  if (searchParams.get('info') !== id) {
+    if (typeof id === 'undefined' || id === '') {
+      searchParams.delete('info');
+    } else {
+      searchParams.set('info', id);
+    }
+    // convert to string and append if necessary
+    const newSearch = searchParams.toString();
+    const search = newSearch.length > 0 ? `?${newSearch}` : '';
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* toggleLayerSaga({ id }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  const activeLayersParams = searchParams.get('layers');
+  const activeLayers = activeLayersParams
+    ? activeLayersParams.split(URL_SEARCH_SEPARATOR)
+    : [];
+  let newLayers = [];
+  // remove if already present
+  if (activeLayers.indexOf(id) > -1) {
+    newLayers = activeLayers.reduce((memo, layer) => {
+      if (layer !== id) return [...memo, layer];
+      return memo;
+    }, []);
+  } else {
+    newLayers = [...activeLayers, id];
+  }
+  if (newLayers.length > 0) {
+    searchParams.set('layers', newLayers.join(URL_SEARCH_SEPARATOR));
+  } else {
+    searchParams.delete('layers');
+  }
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  yield put(push(`${currentLocation.pathname}${search}`));
 }
 
 export default function* defaultSaga() {
@@ -307,4 +359,6 @@ export default function* defaultSaga() {
   );
   yield takeLatest(NAVIGATE, navigateSaga);
   yield takeLatest(CHANGE_LOCALE, changeLocaleSaga);
+  yield takeLatest(SET_LAYER_INFO, setLayerInfoSaga);
+  yield takeLatest(TOGGLE_LAYER, toggleLayerSaga);
 }
