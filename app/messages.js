@@ -16,8 +16,8 @@ export default defineMessages({
     id: `${scope}.module_explore`,
     defaultMessage: 'Explore',
   },
-  module_intro: {
-    id: `${scope}.module_intro`,
+  module_stories: {
+    id: `${scope}.module_stories`,
     defaultMessage: 'Intro',
   },
   page_about: {

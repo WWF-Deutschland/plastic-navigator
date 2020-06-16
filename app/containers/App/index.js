@@ -37,7 +37,7 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import ModuleIntro from 'containers/ModuleIntro/Loadable';
+import ModuleStories from 'containers/ModuleStories/Loadable';
 import ModuleExplore from 'containers/ModuleExplore/Loadable';
 import Header from 'containers/Header';
 import Map from 'containers/Map';
@@ -107,7 +107,6 @@ function App({
 
   // figure out route for Brand element colours
   const route = path.split('/')[path[0] === '/' ? 1 : 0];
-  console.log(info);
 
   return (
     <Grommet theme={appTheme}>
@@ -125,7 +124,7 @@ function App({
             <Route
               exact
               path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
-              component={ModuleIntro}
+              component={ModuleStories}
             />
             <Route
               path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}

@@ -18,7 +18,8 @@
         "description": {
           "en": "About this chapter..."
         },
-        "layers": ["mismanaged-waste"]
+        "layers": ["surface-concentration", "mismanaged-waste"],
+        "layersFocus": ["mismanaged-waste"]
       },
       {
         "title": {
@@ -27,7 +28,12 @@
         "description": {
           "en": "About this chapter..."
         },
-        "layers": ["river-emissions"]
+        "layers": [
+          "surface-concentration",
+          "mismanaged-waste",
+          "river-emissions"
+        ],
+        "layersFocus": ["river-emissions"]
       },
       {
         "title": {
@@ -36,7 +42,14 @@
         "description": {
           "en": "About this chapter..."
         },
-        "layers": ["currents", "gyres"]
+        "layers": [
+          "surface-concentration",
+          "mismanaged-waste",
+          "river-emissions",
+          "currents",
+          "gyres"
+        ],
+        "layersFocus": ["currents", "gyres"]
       }
     ]
   }

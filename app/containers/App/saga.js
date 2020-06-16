@@ -20,6 +20,7 @@ import {
   LOAD_CONFIG,
   SET_LAYER_INFO,
   TOGGLE_LAYER,
+  SET_LAYERS,
 } from './constants';
 
 import {
@@ -352,6 +353,18 @@ function* toggleLayerSaga({ id }) {
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
   yield put(push(`${currentLocation.pathname}${search}`));
 }
+function* setLayersSaga({ layers }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+  searchParams.delete('layers');
+
+  if (layers.length > 0) {
+    searchParams.set('layers', layers.join(URL_SEARCH_SEPARATOR));
+  }
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  yield put(push(`${currentLocation.pathname}${search}`));
+}
 
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
@@ -367,4 +380,5 @@ export default function* defaultSaga() {
   yield takeLatest(CHANGE_LOCALE, changeLocaleSaga);
   yield takeLatest(SET_LAYER_INFO, setLayerInfoSaga);
   yield takeLatest(TOGGLE_LAYER, toggleLayerSaga);
+  yield takeLatest(SET_LAYERS, setLayersSaga);
 }
