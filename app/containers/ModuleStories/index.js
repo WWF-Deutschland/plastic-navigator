@@ -1,53 +1,118 @@
 /*
- * HomePage
+ * ModuleStories
  *
- * This is the first thing users see of our App, at the '/' route
+ *
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
-// import { connect } from 'react-redux';
-// import { compose } from 'redux';
-// import { createStructuredSelector } from 'reselect';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+
+import {
+  selectLayersConfig,
+  selectStoriesConfig,
+  selectUIStateByKey,
+} from 'containers/App/selectors';
+import { setUIState } from 'containers/App/actions';
+
+import PanelChapter from 'containers/PanelChapter';
+import ModuleWrap from 'components/ModuleWrap';
 
 // import commonMessages from 'messages';
 // import messages from './messages';
 
 const Styled = styled.div``;
 
-const MainContent = styled.div`
-  position: relative;
-`;
+const COMPONENT_KEY = 'ModuleStories';
 
-export function ModuleStories() {
+const DEFAULT_UI_STATE = {
+  story: 0,
+  chapter: 0,
+};
+
+export function ModuleStories({
+  uiState,
+  layersConfig,
+  storiesConfig,
+  onPrevious,
+  onNext,
+}) {
+  const { story, chapter } = uiState
+    ? Object.assign({}, DEFAULT_UI_STATE, uiState)
+    : DEFAULT_UI_STATE;
+
+  if (!storiesConfig) return null;
+
+  const storyConfig =
+    storiesConfig.length === 1 ? storiesConfig[0] : storiesConfig[story];
+  const chapterConfig =
+    storyConfig.chapters &&
+    storyConfig.chapters.length > 0 &&
+    storyConfig.chapters[chapter];
+
   return (
     <Styled>
       <Helmet>
-        <title>Home Page</title>
-        <meta name="description" content="home" />
+        <title>Module Stories</title>
+        <meta name="description" content="stories" />
       </Helmet>
-      <MainContent />
+      <ModuleWrap>
+        {layersConfig && storyConfig.chapters && (
+          <PanelChapter
+            onPrevious={() => onPrevious(chapter)}
+            onNext={() => onNext(chapter, storyConfig.chapters.length - 1)}
+            chapter={chapterConfig}
+            layers={layersConfig.filter(
+              layer =>
+                chapterConfig &&
+                chapterConfig.layers &&
+                chapterConfig.layers.indexOf(layer.id) > -1,
+            )}
+          />
+        )}
+      </ModuleWrap>
     </Styled>
   );
 }
 
-// HomePage.propTypes = {};
-//
-// const mapStateToProps = createStructuredSelector({
-//   locale: state => selectLocale(state),
-// });
-//
-// export function mapDispatchToProps(dispatch) {
-//   return {
-//     navPage: id => dispatch(navigatePage(id)),
-//   };
-// }
+ModuleStories.propTypes = {
+  layersConfig: PropTypes.array,
+  storiesConfig: PropTypes.array,
+  uiState: PropTypes.object,
+  onPrevious: PropTypes.func,
+  onNext: PropTypes.func,
+};
 
-// const withConnect = connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// );
+const mapStateToProps = createStructuredSelector({
+  layersConfig: state => selectLayersConfig(state),
+  storiesConfig: state => selectStoriesConfig(state),
+  uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+});
 
-export default ModuleStories;
+function mapDispatchToProps(dispatch) {
+  return {
+    onNext: (current, max) =>
+      dispatch(
+        setUIState(COMPONENT_KEY, {
+          chapter: Math.min(current + 1, max),
+        }),
+      ),
+    onPrevious: current =>
+      dispatch(
+        setUIState(COMPONENT_KEY, {
+          chapter: Math.max(current - 1, 0),
+        }),
+      ),
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(ModuleStories);

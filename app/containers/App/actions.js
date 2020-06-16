@@ -33,6 +33,7 @@ import {
   SET_UI_STATE,
   SET_LAYER_INFO,
   TOGGLE_LAYER,
+  SET_LAYERS,
 } from './constants';
 
 export function setLocale(locale) {
@@ -180,5 +181,11 @@ export function toggleLayer(id) {
   return {
     type: TOGGLE_LAYER,
     id,
+  };
+}
+export function setLayers(layers) {
+  return {
+    type: SET_LAYERS,
+    layers,
   };
 }

@@ -107,7 +107,6 @@ function App({
 
   // figure out route for Brand element colours
   const route = path.split('/')[path[0] === '/' ? 1 : 0];
-  console.log(info);
 
   return (
     <Grommet theme={appTheme}>
