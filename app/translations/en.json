@@ -3,6 +3,7 @@
   "app.common.module_explore": "Explore",
   "app.common.module_stories": "Intro",
   "app.common.page_about": "About",
+  "app.common.page_glossary": "Glossary",
   "app.components.GroupLayers.columnInfo": "Read more",
   "app.components.GroupLayers.columnKey": "Key",
   "app.components.GroupLayers.columnLayer": "Layer",

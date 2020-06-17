@@ -3,6 +3,7 @@
   "app.common.module_explore": "Explore",
   "app.common.module_stories": "Intro",
   "app.common.page_about": "Über",
+  "app.common.page_glossary": "Glossar",
   "app.components.GroupLayers.columnInfo": "Mehr",
   "app.components.GroupLayers.columnKey": "Legende",
   "app.components.GroupLayers.columnLayer": "Ebene",
