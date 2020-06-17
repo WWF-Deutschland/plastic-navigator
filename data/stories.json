@@ -9,7 +9,8 @@
         "description": {
           "en": "About this chapter..."
         },
-        "layers": ["surface-concentration"]
+        "layers": ["surface-concentration"],
+        "layersFocus": ["surface-concentration"]
       },
       {
         "title": {
