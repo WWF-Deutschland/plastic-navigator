@@ -13,6 +13,9 @@ import styled from 'styled-components';
 import { Button, Box } from 'grommet';
 import { Close } from 'grommet-icons';
 
+import { useInjectSaga } from 'utils/injectSaga';
+
+import saga from 'containers/App/saga';
 import { selectContentByKey } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
 
@@ -21,19 +24,26 @@ import HTMLWrapper from 'components/HTMLWrapper';
 const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 
 const Styled = styled(props => <Box {...props} background="white" />)`
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   bottom: 0;
-  width: 500px;
+  left: 0;
+  width: 100%;
   pointer-events: all;
   overflow-y: auto;
-  z-index: 3000;
+  z-index: 3001;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    position: absolute;
+    width: 500px;
+    left: auto;
+  }
 `;
 
 // import messages from './messages';
 // import commonMessages from 'messages';
 export function LayerInfo({ id, onLoadContent, content, onClose }) {
+  useInjectSaga({ key: 'default', saga });
   useEffect(() => {
     // kick off loading of page content
     onLoadContent(id);

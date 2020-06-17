@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -21,7 +21,12 @@ import {
   selectUIStateByKey,
   selectActiveLayers,
 } from 'containers/App/selectors';
-import { setUIState, setLayerInfo, toggleLayer } from 'containers/App/actions';
+import {
+  setUIState,
+  setLayerInfo,
+  toggleLayer,
+  setLayers,
+} from 'containers/App/actions';
 
 import GroupLayers from 'components/GroupLayers';
 
@@ -55,12 +60,15 @@ const COMPONENT_KEY = 'PanelExplore';
 
 const DEFAULT_UI_STATE = {
   tab: 0,
+  layersMemo: null,
 };
 
 export function PanelExplore({
   onClose,
   onLayerInfo,
   onToggleLayer,
+  onSetLayers,
+  onMemoLayers,
   onSetTab,
   layersConfig,
   exploreConfig,
@@ -68,9 +76,18 @@ export function PanelExplore({
   uiState,
   activeLayers,
 }) {
-  const { tab } = uiState
+  const { tab, layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
+  useEffect(() => {
+    if (layersMemo && (!activeLayers || activeLayers.length === 0)) {
+      onSetLayers(layersMemo);
+    }
+  }, []);
+  useEffect(() => {
+    onMemoLayers(activeLayers, uiState);
+  }, [activeLayers]);
+
   const activeCategory = exploreConfig && exploreConfig[tab];
   return (
     <Styled background="white">
@@ -92,7 +109,7 @@ export function PanelExplore({
             exploreConfig.map((category, index) => (
               <TabLink
                 key={category.id}
-                onClick={() => onSetTab(index)}
+                onClick={() => onSetTab(index, uiState)}
                 active={tab === index}
                 label={
                   <TabLinkAnchor active={tab === index}>
@@ -147,6 +164,8 @@ PanelExplore.propTypes = {
   onSetTab: PropTypes.func,
   onLayerInfo: PropTypes.func,
   onToggleLayer: PropTypes.func,
+  onSetLayers: PropTypes.func,
+  onMemoLayers: PropTypes.func,
   layersConfig: PropTypes.array,
   exploreConfig: PropTypes.array,
   activeLayers: PropTypes.array,
@@ -164,12 +183,23 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetTab: tab =>
+    onSetTab: (tab, uiState) =>
       dispatch(
-        setUIState(COMPONENT_KEY, Object.assign({}, DEFAULT_UI_STATE, { tab })),
+        setUIState(
+          COMPONENT_KEY,
+          Object.assign({}, DEFAULT_UI_STATE, uiState, { tab }),
+        ),
+      ),
+    onMemoLayers: (layers, uiState) =>
+      dispatch(
+        setUIState(
+          COMPONENT_KEY,
+          Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
+        ),
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
+    onSetLayers: layers => dispatch(setLayers(layers)),
   };
 }
 

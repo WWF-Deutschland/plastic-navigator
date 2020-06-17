@@ -11,8 +11,8 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Button } from 'grommet';
-import { Layer } from 'grommet-icons';
+import { Box, Button, ResponsiveContext, Layer } from 'grommet';
+import { Layer as LayerIcon } from 'grommet-icons';
 
 // import { loadContent } from 'containers/App/actions';
 
@@ -31,29 +31,44 @@ const Show = styled(props => <Box {...props} />)`
 
 export function ModuleExplore() {
   const [show, setShow] = useState(true);
+  const [showSmall, setShowSmall] = useState(false);
 
   return (
-    <div>
-      <Helmet>
-        <title>ModuleExplore</title>
-        <meta name="description" content="Description of ModuleExplore" />
-      </Helmet>
-      <ModuleWrap>
-        {show && <PanelExplore onClose={() => setShow(false)} />}
-        {!show && (
-          <Show background="white">
-            <Button
-              onClick={() => setShow(true)}
-              icon={<Layer />}
-              label={<FormattedMessage {...messages.showLayerPanel} />}
-              plain
-              alignSelf="end"
-              reverse
-            />
-          </Show>
-        )}
-      </ModuleWrap>
-    </div>
+    <ResponsiveContext.Consumer>
+      {size => (
+        <div>
+          <Helmet>
+            <title>ModuleExplore</title>
+            <meta name="description" content="Description of ModuleExplore" />
+          </Helmet>
+          <ModuleWrap>
+            {show && size !== 'small' && (
+              <PanelExplore onClose={() => setShow(false)} />
+            )}
+            {showSmall && size === 'small' && (
+              <Layer full>
+                <PanelExplore onClose={() => setShowSmall(false)} />
+              </Layer>
+            )}
+            {(!show || !showSmall) && (
+              <Show background="white">
+                <Button
+                  onClick={() => {
+                    setShow(true);
+                    setShowSmall(true);
+                  }}
+                  icon={<LayerIcon />}
+                  label={<FormattedMessage {...messages.showLayerPanel} />}
+                  plain
+                  alignSelf="end"
+                  reverse
+                />
+              </Show>
+            )}
+          </ModuleWrap>
+        </div>
+      )}
+    </ResponsiveContext.Consumer>
   );
 }
 

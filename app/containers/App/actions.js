@@ -34,6 +34,8 @@ import {
   SET_LAYER_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
+  SET_STORY,
+  SET_CHAPTER,
 } from './constants';
 
 export function setLocale(locale) {
@@ -187,5 +189,17 @@ export function setLayers(layers) {
   return {
     type: SET_LAYERS,
     layers,
+  };
+}
+export function setChapter(index) {
+  return {
+    type: SET_CHAPTER,
+    index,
+  };
+}
+export function setStory(index) {
+  return {
+    type: SET_STORY,
+    index,
   };
 }

@@ -21,6 +21,8 @@ import {
   SET_LAYER_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
+  SET_STORY,
+  SET_CHAPTER,
 } from './constants';
 
 import {
@@ -297,17 +299,24 @@ function* navigateSaga({ location, args }) {
   const newSearch = newSearchParams.toString();
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
   // finally combine new path and search  ============================
-  yield put(push(`${path}${search}`));
+  if (search !== currentLocation.search || path !== currentLocation.pathname) {
+    yield put(push(`${path}${search}`));
+  }
 }
 
 function* changeLocaleSaga({ locale }) {
   const currentLocale = yield select(selectLocale);
-  const currentLocation = yield select(selectRouterLocation);
-  let path = '/';
-  if (currentLocation.pathname) {
-    path = currentLocation.pathname.replace(`/${currentLocale}`, `/${locale}`);
+  if (currentLocale !== locale) {
+    const currentLocation = yield select(selectRouterLocation);
+    let path = '/';
+    if (currentLocation.pathname) {
+      path = currentLocation.pathname.replace(
+        `/${currentLocale}`,
+        `/${locale}`,
+      );
+    }
+    yield put(push(`${path}${currentLocation.search}`));
   }
-  yield put(push(`${path}${currentLocation.search}`));
 }
 
 function* setLayerInfoSaga({ id }) {
@@ -323,9 +332,12 @@ function* setLayerInfoSaga({ id }) {
     // convert to string and append if necessary
     const newSearch = searchParams.toString();
     const search = newSearch.length > 0 ? `?${newSearch}` : '';
-    yield put(push(`${currentLocation.pathname}${search}`));
+    if (search !== currentLocation.search) {
+      yield put(push(`${currentLocation.pathname}${search}`));
+    }
   }
 }
+
 function* toggleLayerSaga({ id }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
@@ -341,7 +353,9 @@ function* toggleLayerSaga({ id }) {
       if (layer !== id) return [...memo, layer];
       return memo;
     }, []);
-  } else {
+  }
+  // else add
+  else {
     newLayers = [...activeLayers, id];
   }
   if (newLayers.length > 0) {
@@ -353,6 +367,7 @@ function* toggleLayerSaga({ id }) {
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
   yield put(push(`${currentLocation.pathname}${search}`));
 }
+
 function* setLayersSaga({ layers }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
@@ -363,7 +378,33 @@ function* setLayersSaga({ layers }) {
   }
   const newSearch = searchParams.toString();
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
-  yield put(push(`${currentLocation.pathname}${search}`));
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* setStorySaga({ index }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  searchParams.set('st', index);
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* setChapterSaga({ index }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  searchParams.set('ch', index);
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
 }
 
 export default function* defaultSaga() {
@@ -381,4 +422,6 @@ export default function* defaultSaga() {
   yield takeLatest(SET_LAYER_INFO, setLayerInfoSaga);
   yield takeLatest(TOGGLE_LAYER, toggleLayerSaga);
   yield takeLatest(SET_LAYERS, setLayersSaga);
+  yield takeLatest(SET_STORY, setStorySaga);
+  yield takeLatest(SET_CHAPTER, setChapterSaga);
 }
