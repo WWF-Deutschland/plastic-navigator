@@ -35,6 +35,7 @@ import {
   selectRouterPath,
   selectPageSearch,
   selectInfoSearch,
+  selectLocale,
 } from 'containers/App/selectors';
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
@@ -98,6 +99,7 @@ function App({
   info,
   onClosePage,
   onCloseLayerInfo,
+  locale,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -122,7 +124,6 @@ function App({
           <Map />
           <Switch>
             <Route
-              exact
               path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
               component={ModuleStories}
             />
@@ -130,7 +131,7 @@ function App({
               path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
               component={ModuleExplore}
             />
-            <Redirect to={`/${DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
+            <Redirect to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
           </Switch>
           {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
           {info !== '' && (
@@ -156,12 +157,14 @@ App.propTypes = {
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
+  locale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   path: state => selectRouterPath(state),
   page: state => selectPageSearch(state),
   info: state => selectInfoSearch(state),
+  locale: state => selectLocale(state),
 });
 
 export function mapDispatchToProps(dispatch) {

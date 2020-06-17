@@ -10,6 +10,9 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { CheckBox, Button } from 'grommet';
 import { Layer } from 'grommet-icons';
+
+import { DEFAULT_LOCALE } from 'i18n';
+
 import messages from './messages';
 
 const Styled = styled.div`
@@ -73,7 +76,7 @@ function GroupLayers({
                 <CheckBox
                   checked={activeLayers.indexOf(layer.id) > -1}
                   onChange={() => onToggleLayer(layer.id)}
-                  label={layer.title[locale]}
+                  label={layer.title[locale] || layer.title[DEFAULT_LOCALE]}
                 />
               </ListBodyCell>
               <ListBodyCell>Key</ListBodyCell>

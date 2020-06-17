@@ -1,0 +1,16 @@
+{
+  "app.common.appTitle": "Marine Plastic Explorer",
+  "app.common.module_explore": "Explore",
+  "app.common.module_stories": "Intro",
+  "app.common.page_about": "Über",
+  "app.components.GroupLayers.columnInfo": "Mehr",
+  "app.components.GroupLayers.columnKey": "Key",
+  "app.components.GroupLayers.columnLayer": "Ebene",
+  "app.components.GroupLayers.info": "Info",
+  "app.containers.LocaleToggle.de": "DE",
+  "app.containers.LocaleToggle.en": "EN",
+  "app.containers.NotFoundPage.header": "Seite nicht gefunden",
+  "app.containers.PanelChapter.next": "Weiter",
+  "app.containers.PanelExplore.showLayerPanel": "Ebenen",
+  "app.containers.PanelExplore.title": "Kartenebenen"
+}
