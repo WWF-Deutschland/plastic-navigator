@@ -15,7 +15,6 @@ import styled from 'styled-components';
 import {
   selectLayersConfig,
   selectStoriesConfig,
-  selectUIStateByKey,
   selectChapterSearch,
   selectStorySearch,
 } from 'containers/App/selectors';
@@ -30,14 +29,7 @@ import ModuleWrap from 'components/ModuleWrap';
 
 const Styled = styled.div``;
 
-const COMPONENT_KEY = 'ModuleStories';
-
-// const DEFAULT_UI_STATE = {
-//   open: true,
-// };
-
 export function ModuleStories({
-  // uiState,
   layersConfig,
   storiesConfig,
   onPrevious,
@@ -47,10 +39,6 @@ export function ModuleStories({
   onSetStory,
   onSetChapter,
 }) {
-  // const { open } = uiState
-  //   ? Object.assign({}, DEFAULT_UI_STATE, uiState)
-  //   : DEFAULT_UI_STATE;
-
   useEffect(() => {
     if (!story) {
       onSetStory(0);
@@ -68,7 +56,7 @@ export function ModuleStories({
     storyConfig.chapters &&
     storyConfig.chapters.length > 0 &&
     storyConfig.chapters[chapter];
-
+  // prettier-ignore
   return (
     <Styled>
       <Helmet>
@@ -76,11 +64,17 @@ export function ModuleStories({
         <meta name="description" content="stories" />
       </Helmet>
       <ModuleWrap>
-        {layersConfig && storyConfig.chapters && (
+        {layersConfig &&
+          storyConfig.chapters &&
+          chapter < storyConfig.chapters.length && (
           <PanelChapter
             onPrevious={() => onPrevious(chapter)}
-            onNext={() => onNext(chapter, storyConfig.chapters.length - 1)}
+            onNext={() => {
+              onNext(chapter, storyConfig.chapters.length);
+            }}
             chapter={chapterConfig}
+            isFirst={chapter === 0}
+            isLast={chapter === storyConfig.chapters.length - 1}
             layers={layersConfig.filter(
               layer =>
                 chapterConfig &&
@@ -97,7 +91,6 @@ export function ModuleStories({
 ModuleStories.propTypes = {
   layersConfig: PropTypes.array,
   storiesConfig: PropTypes.array,
-  // uiState: PropTypes.object,
   onPrevious: PropTypes.func,
   onNext: PropTypes.func,
   onSetChapter: PropTypes.func,
@@ -111,7 +104,6 @@ const mapStateToProps = createStructuredSelector({
   storiesConfig: state => selectStoriesConfig(state),
   story: state => selectStorySearch(state),
   chapter: state => selectChapterSearch(state),
-  uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
 });
 
 function mapDispatchToProps(dispatch) {
