@@ -102,7 +102,7 @@ function* loadContentSaga({ key, contentType }) {
       if (contentType === 'layers') {
         url = `${
           RESOURCES.CONTENT
-        }/${currentLocale}/${LAYER_CONTENT_PATH}/${key}`;
+        }/${currentLocale}/${LAYER_CONTENT_PATH}/${key}/`;
       }
       if (url) {
         try {
