@@ -10,7 +10,7 @@ fact_lead: an optional fact or lead paragraph
 text_references: text references
 ---
 
-Section describing layer
+Ebenenbeschreibung
 
 ### How to read the data
 
