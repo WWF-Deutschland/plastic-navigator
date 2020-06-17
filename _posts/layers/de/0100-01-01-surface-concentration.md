@@ -4,7 +4,7 @@ published: true
 permalink: /content/de/layers/surface-concentration/
 lang: de
 title: Floating plastic concentration
-image: surface-concentration.png
+image_file_name: surface-concentration.png
 image_caption: image credits and caption
 fact_lead: an optional fact or lead paragraph
 text_references: text references

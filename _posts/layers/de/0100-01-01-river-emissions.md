@@ -4,7 +4,7 @@ published: true
 permalink: /content/de/layers/river-emissions/
 lang: de
 title: River emissions
-image: river-emissions.png
+image_file_name: river-emissions.png
 image_caption: image credits and caption
 fact_lead: an optional fact or lead paragraph
 text_references: text references
