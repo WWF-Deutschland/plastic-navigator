@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { Box, Button, Text, Heading, Paragraph } from 'grommet';
 import { Close, Layer } from 'grommet-icons';
 
+import { DEFAULT_LOCALE } from 'i18n';
+
 import {
   selectLayersConfig,
   selectExploreConfig,
@@ -113,7 +115,7 @@ export function PanelExplore({
                 active={tab === index}
                 label={
                   <TabLinkAnchor active={tab === index}>
-                    {category.title[locale]}
+                    {category.title[locale] || category.title[DEFAULT_LOCALE]}
                   </TabLinkAnchor>
                 }
               />
@@ -126,9 +128,14 @@ export function PanelExplore({
           activeCategory.groups &&
           activeCategory.groups.map(group => (
             <SectionLayerGroup key={group.id}>
-              <TitleGroup>{group.title[locale]}</TitleGroup>
+              <TitleGroup>
+                {group.title[locale] || group.title[DEFAULT_LOCALE]}
+              </TitleGroup>
               {group.description && (
-                <DescriptionGroup>{group.description[locale]}</DescriptionGroup>
+                <DescriptionGroup>
+                  {group.description[locale] ||
+                    group.description[DEFAULT_LOCALE]}
+                </DescriptionGroup>
               )}
               <GroupLayers
                 group={group}

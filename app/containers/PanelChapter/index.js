@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { Heading, Box, Button, ResponsiveContext, Text } from 'grommet';
 import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
 
+import { DEFAULT_LOCALE } from 'i18n';
+
 import {
   selectLayersConfig,
   selectExploreConfig,
@@ -153,7 +155,11 @@ export function PanelChapter({
             <ContentWrap>
               {(size !== 'small' || step === 0) && (
                 <Content>
-                  {chapter && locale && <Title>{chapter.title[locale]}</Title>}
+                  {chapter && locale && (
+                    <Title>
+                      {chapter.title[locale] || chapter.title[DEFAULT_LOCALE]}
+                    </Title>
+                  )}
                   {layersFocus && layersFocus.length > 0 && (
                     <LayersFocusWrap>
                       {layersFocus.map(layer => (
@@ -164,8 +170,11 @@ export function PanelChapter({
                             {locale && (
                               <LayerTitle>
                                 {layer['title-short'] &&
-                                  layer['title-short'][locale]}
-                                {!layer['title-short'] && layer.title[locale]}
+                                  (layer['title-short'][locale] ||
+                                    layer['title-short'][DEFAULT_LOCALE])}
+                                {!layer['title-short'] &&
+                                  (layer.title[locale] ||
+                                    layer.title[DEFAULT_LOCALE])}
                               </LayerTitle>
                             )}
                             <LayerButtonInfo
@@ -184,7 +193,10 @@ export function PanelChapter({
               {(size !== 'small' || step === 1) && (
                 <Content>
                   {chapter && locale && (
-                    <Description>{chapter.description[locale]}</Description>
+                    <Description>
+                      {chapter.description[locale] ||
+                        chapter.description[DEFAULT_LOCALE]}
+                    </Description>
                   )}
                 </Content>
               )}
