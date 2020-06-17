@@ -50,7 +50,8 @@ export function ModuleExplore() {
                 <PanelExplore onClose={() => setShowSmall(false)} />
               </Layer>
             )}
-            {(!show || !showSmall) && (
+            {((!show && size !== 'small') ||
+              (!showSmall && size === 'small')) && (
               <Show background="white">
                 <Button
                   onClick={() => {
