@@ -6,6 +6,8 @@ markdown: kramdown
 languages: &languages
   - name: 'English'
     value: 'en'
+  - name: 'German'
+    value: 'de'
 exclude:
   - app
   - internals
