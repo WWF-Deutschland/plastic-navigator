@@ -36,24 +36,27 @@ const NavSecondary = styled(props => (
   <Box {...props} direction="row" gap="small" align="center" fill="vertical" />
 ))``;
 const NavPrimary = styled(props => (
-  <Box {...props} direction="row" gap="small" align="center" fill="vertical" />
+  <Box {...props} direction="row" align="center" fill="vertical" />
 ))``;
 
 // prettier-ignore
-const Primary = styled(props => <Button {...props} plain />)`
+const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
   color: ${({ theme }) => theme.global.colors.white};
+  opacity: 1;
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   text-transform: uppercase;
-  background: transparent;
+  background: ${({ theme, active }) =>
+    active ? theme.global.colors.brandDark : 'transparent'};
   &:hover {
     text-decoration: underline;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
-    padding-right: ${({ theme, last }) =>
-    last ? 0 : theme.global.edgeSize.small};
   }
+  border-right: 1px solid;
+  border-left: 1px solid;
+  border-color: ${({ theme }) => theme.global.colors.brandDark};
 `;
 // prettier-ignore
 const Secondary = styled(props => <Button {...props} plain />)`

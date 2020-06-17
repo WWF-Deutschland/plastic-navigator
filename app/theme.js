@@ -62,6 +62,7 @@ export const colors = {
   white: '#ffffff',
   // active: '#ffffff',
   brand: '#009191',
+  brandDark: '#046F6F',
   focus: '#333333',
   hover: '#AD190F',
   // placeholder: '#ffffff',

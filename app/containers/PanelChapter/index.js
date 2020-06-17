@@ -213,9 +213,11 @@ export function PanelChapter({
                           if (!isFirst) {
                             setStep(STEPS - 1);
                           }
+                          onLayerInfo();
                           onPrevious();
                         }
                       } else {
+                        onLayerInfo();
                         onPrevious();
                       }
                     }}
@@ -233,9 +235,11 @@ export function PanelChapter({
                         if (!isLast) {
                           setStep(0);
                         }
+                        onLayerInfo();
                         onNext();
                       }
                     } else {
+                      onLayerInfo();
                       onNext();
                     }
                   }}

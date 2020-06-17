@@ -45,18 +45,33 @@ const Styled = styled(props => <Box {...props} />)`
 `;
 
 const PanelHeader = styled(p => <Box background="black" {...p} />)``;
-const PanelBody = styled(p => <Box {...p} />)``;
-const TitleWrap = styled(Box)``;
+const PanelBody = styled(p => <Box {...p} pad="small" />)``;
+const TitleWrap = styled(p => (
+  <Box {...p} pad={{ horizontal: 'small', bottom: 'small' }} />
+))``;
 const Title = styled(Text)``;
-const Tabs = styled(p => <Box {...p} direction="row" />)``;
-const TabLink = styled(p => <Button plain {...p} />)``;
+const Tabs = styled(p => <Box {...p} direction="row" gap="hair" />)`
+  padding: 1px;
+`;
+const TabLink = styled(p => <Button plain {...p} />)`
+  padding: 0 ${({ theme }) => theme.global.edgeSize.small};
+  font-weight: 600;
+  color: ${({ theme, active }) =>
+    theme.global.colors[active ? 'white' : 'light-4']};
+  opacity: 1;
+  border-bottom: 3px solid;
+  border-color: ${({ theme, active }) =>
+    active ? theme.global.colors.white : 'transparent'};
+`;
 const TabLinkAnchor = styled(Text)``;
 
 const SectionLayerGroup = styled(Box)``;
 const TitleGroup = styled(p => <Heading {...p} level={4} />)`
   margin-bottom: 0;
 `;
-const DescriptionGroup = styled(Paragraph)``;
+const DescriptionGroup = styled(Paragraph)`
+  margin-bottom: 0;
+`;
 
 const COMPONENT_KEY = 'PanelExplore';
 
@@ -113,6 +128,7 @@ export function PanelExplore({
                 key={category.id}
                 onClick={() => onSetTab(index, uiState)}
                 active={tab === index}
+                disabled={tab === index}
                 label={
                   <TabLinkAnchor active={tab === index}>
                     {category.title[locale] || category.title[DEFAULT_LOCALE]}
