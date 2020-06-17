@@ -106,7 +106,7 @@
     }
   },
   {
-    "id": "river-emissons",
+    "id": "river-emissions",
     "category": "plastic",
     "group": "source",
     "source": "data",
