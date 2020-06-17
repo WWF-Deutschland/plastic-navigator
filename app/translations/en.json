@@ -1,7 +1,15 @@
 {
   "app.common.appTitle": "Marine Plastic Explorer",
-  "app.common.navExplore": "Explore",
+  "app.common.module_explore": "Explore",
+  "app.common.module_stories": "Intro",
   "app.common.page_about": "About",
+  "app.components.GroupLayers.columnInfo": "Read more",
+  "app.components.GroupLayers.columnKey": "Key",
+  "app.components.GroupLayers.columnLayer": "Layer",
+  "app.components.GroupLayers.info": "Info",
   "app.containers.LocaleToggle.en": "en",
-  "app.containers.NotFoundPage.header": "Page not found."
+  "app.containers.NotFoundPage.header": "Page not found.",
+  "app.containers.PanelChapter.next": "Next",
+  "app.containers.PanelExplore.showLayerPanel": "Layers",
+  "app.containers.PanelExplore.title": "Map layers"
 }
