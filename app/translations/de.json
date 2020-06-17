@@ -4,7 +4,7 @@
   "app.common.module_stories": "Intro",
   "app.common.page_about": "Über",
   "app.components.GroupLayers.columnInfo": "Mehr",
-  "app.components.GroupLayers.columnKey": "Key",
+  "app.components.GroupLayers.columnKey": "Legende",
   "app.components.GroupLayers.columnLayer": "Ebene",
   "app.components.GroupLayers.info": "Info",
   "app.containers.LocaleToggle.de": "DE",

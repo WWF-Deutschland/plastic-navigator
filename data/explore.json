@@ -2,36 +2,49 @@
   {
     "id": "plastic",
     "title": {
-      "en": "Plastic"
+      "en": "Plastic",
+      "de": "Plastik"
     },
     "groups": [
       {
         "id": "destination",
         "title": {
-          "en": "Where does plastic waste accumulate in the oceans?"
+          "en": "Where does plastic waste accumulate in the oceans?",
+          "de": "Wo endet der Plastikmüll in den Ozeanan?"
         },
         "description": {
-          "en": "Optional description"
+          "en": "Optional description",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       },
       {
         "id": "source",
         "title": {
-          "en": "Where does plastic waste come from?"
+          "en": "Where does plastic waste come from?",
+          "de": "Wo kommt der Plastikmüll her?"
         }
       }
     ]
   },
   {
+    "id": "projects",
+    "title": {
+      "en": "WWF projects",
+      "de": "WWF Projekte"
+    }
+  },
+  {
     "id": "other",
     "title": {
-      "en": "Other"
+      "en": "Other",
+      "de": "Weitere"
     },
     "groups": [
       {
         "id": "hydro",
         "title": {
-          "en": "Ocean currents & circulation"
+          "en": "Ocean currents & circulation",
+          "de": "Meeresströmungen"
         }
       }
     ]

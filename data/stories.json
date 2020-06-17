@@ -4,30 +4,36 @@
     "chapters": [
       {
         "title": {
-          "en": "Plastic has been detected on the surface of all oceans"
+          "en": "Plastic has been detected on the surface of all oceans",
+          "de": "Plastic has been detected on the surface of all oceans"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "About this chapter...",
+          "de": "About this chapter..."
         },
         "layers": ["surface-concentration"],
         "layersFocus": ["surface-concentration"]
       },
       {
         "title": {
-          "en": "Poor Waste Management is a major source of debris"
+          "en": "Poor Waste Management is a major source of debris",
+          "de": "Poor Waste Management is a major source of debris"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "About this chapter...",
+          "de": "About this chapter..."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
       },
       {
         "title": {
-          "en": "Rivers carry plastic from land to see"
+          "en": "Rivers carry plastic from land to see",
+          "de": "Rivers carry plastic from land to see"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "About this chapter...",
+          "de": "About this chapter..."
         },
         "layers": [
           "surface-concentration",
@@ -38,10 +44,12 @@
       },
       {
         "title": {
-          "en": "Currents concentrate floating debris"
+          "en": "Currents concentrate floating debris",
+          "de": "Currents concentrate floating debris"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "About this chapter...",
+          "de": "About this chapter..."
         },
         "layers": [
           "surface-concentration",

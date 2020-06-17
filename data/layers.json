@@ -5,10 +5,12 @@
     "type": "vector-tiles",
     "style-id": "ckae0r0to0say1ir3a13wvscu",
     "title": {
-      "en": "Basemap"
+      "en": "Basemap",
+      "de": "Basiskarte"
     },
     "about": {
-      "en": "The basemap"
+      "en": "The basemap",
+      "de": "Die Basiskarte"
     },
     "attribution": {
       "author": "Mapbox"
@@ -22,10 +24,12 @@
     "type": "raster-tiles",
     "tileset": "xxxxxxx",
     "title": {
-      "en": "Floating plastic concentration"
+      "en": "Floating plastic concentration",
+      "de": "Konzentration von treibendem Plastik"
     },
     "about": {
-      "en": "Short text about floating plastic concentration"
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
     },
     "attribution": {
       "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
@@ -37,10 +41,12 @@
     "data": {
       "type": "weight",
       "unit": {
-        "en": "g per km<sup>2</sup>"
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
       },
       "unit-short": {
-        "en": "g/km<sup>2</sup>"
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
       },
       "scale": "log",
       "values": "continuous"
@@ -66,10 +72,12 @@
     "type": "raster-tiles",
     "tileset": "xxxxxxx",
     "title": {
-      "en": "Mismanaged plastic waste"
+      "en": "Mismanaged plastic waste",
+      "de": "Schlechte Handhabung von Plastikmüll"
     },
     "about": {
-      "en": "Short text about mismanaged plastic waste"
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
     },
     "attribution": {
       "author": "Lebreton LCM, Andrady A",
@@ -81,13 +89,16 @@
     "data": {
       "type": "weight",
       "unit": {
-        "en": "kg per year per grid cell"
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
       },
       "unit-short": {
-        "en": "kg/yr/cell"
+        "en": "kg/yr/cell",
+        "en": "kg/Jahr/Zelle"
       },
       "unit-additional": {
-        "en": "30 by 30 arc seconds"
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
       },
       "scale": "log",
       "values": "continuous"
@@ -113,10 +124,12 @@
     "type": "geojson",
     "file": "river-emissions.json",
     "title": {
-      "en": "River plastic emissions"
+      "en": "River plastic emissions",
+      "de": "Flusseinträge von Plastik"
     },
     "about": {
-      "en": "Short text about river plastic emissions"
+      "en": "Short text about river plastic emissions",
+      "de": "Short text about river plastic emissions"
     },
     "attribution": {
       "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
@@ -128,10 +141,12 @@
     "data": {
       "type": "weight",
       "unit": {
-        "en": "tonnes per year"
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
       },
       "unit-short": {
-        "en": "t/yr"
+        "en": "t/yr",
+        "de": "t/Jahr"
       },
       "values": "continuous",
       "feature-type": "point"
@@ -142,7 +157,8 @@
     },
     "key": {
       "title": {
-        "en": "Annual emissions by weight"
+        "en": "Annual emissions by weight",
+        "de": "Jährliche Emissionen nach Gewicht"
       },
       "values": [100, 10000, 333000]
     }
@@ -155,13 +171,15 @@
     "type": "geojson",
     "file": "currents.json",
     "title": {
-      "en": "Predominant ocean currents"
+      "en": "Predominant ocean currents",
+      "de": "Vorherrschende Meeresströmungen"
     },
     "title-short": {
       "en": "Currents"
     },
     "about": {
-      "en": "Short text about predominant ocean currents"
+      "en": "Short text about predominant ocean currents",
+      "de": "Short text about predominant ocean currents"
     },
     "attribution": {
       "author": "Own illustration",
@@ -183,13 +201,16 @@
     "type": "geojson",
     "file": "gyres.json",
     "title": {
-      "en": "The 5 principal gyres"
+      "en": "The 5 principal gyres",
+      "de": "Die 5 hauptsächlichen Meeresstrudel"
     },
     "title-short": {
-      "en": "Gyres"
+      "en": "Gyres",
+      "de": "Meeresstrudel"
     },
     "about": {
-      "en": "Short text about principal gyres"
+      "en": "Short text about principal gyres",
+      "de": "Short text about principal gyres"
     },
     "attribution": {
       "author": "Own illustration",
