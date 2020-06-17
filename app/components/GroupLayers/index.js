@@ -54,7 +54,7 @@ function GroupLayers({
       <ListHeader>
         <ListHeaderRow>
           <ListHeaderCell>
-            <Layer size="xlarge" />
+            <Layer size="small" />
             <FormattedMessage {...messages.columnLayer} />
           </ListHeaderCell>
           <ListHeaderCell>

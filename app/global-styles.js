@@ -36,6 +36,10 @@ const GlobalStyle = createGlobalStyle`
   .mpx-img {
     max-width: 100%;
   }
+
+  .leaflet-top .leaflet-control-zoom {
+    margin-top: 80px;
+  }
 `;
 
 export default GlobalStyle;

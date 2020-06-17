@@ -24,14 +24,20 @@ import HTMLWrapper from 'components/HTMLWrapper';
 const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 
 const Styled = styled(props => <Box {...props} background="white" />)`
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   bottom: 0;
-  width: 500px;
+  left: 0;
+  width: 100%;
   pointer-events: all;
   overflow-y: auto;
-  z-index: 3000;
+  z-index: 3001;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    position: absolute;
+    width: 500px;
+    left: auto;
+  }
 `;
 
 // import messages from './messages';

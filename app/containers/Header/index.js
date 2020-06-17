@@ -159,6 +159,7 @@ function Header({ nav, navPage, path }) {
               animate={false}
               background="black"
               position="top"
+              style={{ zIndex: 3000 }}
             >
               <Box background="black">
                 {pagesArray.map(p => (

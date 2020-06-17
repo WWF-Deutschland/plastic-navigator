@@ -76,10 +76,10 @@ const Content = styled.div`
   }
 `;
 
-const Brand = styled(props => <Button {...props} plain color="white" />)`
+const Brand = styled(props => <Button {...props} plain />)`
   position: absolute;
   z-index: 3000;
-  top: 100px;
+  top: 20px;
   left: 0;
   max-width: 140px;
   padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
@@ -106,8 +106,8 @@ function App({
   }, []);
 
   // figure out route for Brand element colours
-  const route = path.split('/')[path[0] === '/' ? 1 : 0];
-
+  const paths = path.split('/');
+  const route = paths.length > 1 ? paths[2] : '';
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>

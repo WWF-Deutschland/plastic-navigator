@@ -61,7 +61,7 @@ export const colors = {
   dark: '#999999',
   white: '#ffffff',
   // active: '#ffffff',
-  brand: '#AD190F',
+  brand: '#009191',
   focus: '#333333',
   hover: '#AD190F',
   // placeholder: '#ffffff',
@@ -80,9 +80,6 @@ export const colors = {
   //   F: '',
   //   S: '',
   // },
-  header: {
-    background: '#000000',
-  },
 };
 
 // grommet text
