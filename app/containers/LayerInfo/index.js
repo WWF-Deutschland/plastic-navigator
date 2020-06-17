@@ -13,6 +13,9 @@ import styled from 'styled-components';
 import { Button, Box } from 'grommet';
 import { Close } from 'grommet-icons';
 
+import { useInjectSaga } from 'utils/injectSaga';
+
+import saga from 'containers/App/saga';
 import { selectContentByKey } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
 
@@ -34,6 +37,7 @@ const Styled = styled(props => <Box {...props} background="white" />)`
 // import messages from './messages';
 // import commonMessages from 'messages';
 export function LayerInfo({ id, onLoadContent, content, onClose }) {
+  useInjectSaga({ key: 'default', saga });
   useEffect(() => {
     // kick off loading of page content
     onLoadContent(id);

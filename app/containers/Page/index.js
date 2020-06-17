@@ -12,9 +12,10 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { ResponsiveContext, Button, Layer, Box } from 'grommet';
 import { Close } from 'grommet-icons';
-
+import { useInjectSaga } from 'utils/injectSaga';
 import { isMinSize } from 'utils/responsive';
 
+import saga from 'containers/App/saga';
 import { selectContentByKey } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
 
@@ -25,10 +26,12 @@ const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 // import messages from './messages';
 // import commonMessages from 'messages';
 export function Page({ page, onLoadContent, content, onClose }) {
+  useInjectSaga({ key: 'default', saga });
+
   useEffect(() => {
     // kick off loading of page content
     onLoadContent(page);
-  }, [page]);
+  }, []);
 
   return (
     <ResponsiveContext.Consumer>
