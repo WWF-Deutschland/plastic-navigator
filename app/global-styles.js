@@ -42,6 +42,10 @@ const GlobalStyle = createGlobalStyle`
     // compare theme.js colors.brand
     color: #009191;
   }
+  
+  figure {
+    margin: 0;
+  }
 
 
   .leaflet-top .leaflet-control-zoom {
