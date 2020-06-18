@@ -25,7 +25,7 @@ The visualisation shows the estimated concentration of floating plastic waste by
 
 [KEY]
 
-### Please beware
+### Please note
 
 * The accumulated trash does not form patches (or even solid islands) as it is often portrayed in popular media, but instead the often tiny particles, mostly measuring 1 mm and less, are better to be understood as a plastic smog that is omnipresent and thicker in the centre of the gyres.
 
