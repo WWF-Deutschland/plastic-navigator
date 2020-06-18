@@ -6,7 +6,6 @@ lang: en
 title: Mismanaged plastic waste
 image_file_name: mismanaged-waste.png
 image_caption: image credits and caption
-text_references: text references?
 fact_lead: >-
   Mismanaged plastic waste entering our environment is a growing global concern.
   Wind and rain carry it into our rivers and out to sea where it endangers
