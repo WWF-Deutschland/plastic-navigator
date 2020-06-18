@@ -36,6 +36,13 @@ const GlobalStyle = createGlobalStyle`
   .mpx-img {
     max-width: 100%;
   }
+  .mpx-layer-lead {
+    font-size: 20px;
+    font-weight: 600;
+    // compare theme.js colors.brand
+    color: #009191;
+  }
+
 
   .leaflet-top .leaflet-control-zoom {
     margin-top: 80px;

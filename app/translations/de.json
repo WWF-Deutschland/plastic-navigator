@@ -8,6 +8,7 @@
   "app.components.GroupLayers.columnKey": "Legende",
   "app.components.GroupLayers.columnLayer": "Ebene",
   "app.components.GroupLayers.info": "Info",
+  "app.containers.LayerInfo.titleReference": "Quellenangaben",
   "app.containers.LocaleToggle.de": "DE",
   "app.containers.LocaleToggle.en": "EN",
   "app.containers.NotFoundPage.header": "Seite nicht gefunden",

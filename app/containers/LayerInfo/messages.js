@@ -8,4 +8,9 @@ import { defineMessages } from 'react-intl';
 
 export const scope = 'app.containers.LayerInfo';
 
-export default defineMessages({});
+export default defineMessages({
+  titleReference: {
+    id: `${scope}.titleReference`,
+    defaultMessage: 'Reference',
+  },
+});

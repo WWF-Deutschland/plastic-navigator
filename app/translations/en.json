@@ -8,6 +8,7 @@
   "app.components.GroupLayers.columnKey": "Key",
   "app.components.GroupLayers.columnLayer": "Layer",
   "app.components.GroupLayers.info": "Info",
+  "app.containers.LayerInfo.titleReference": "Reference",
   "app.containers.LocaleToggle.de": "DE",
   "app.containers.LocaleToggle.en": "EN",
   "app.containers.NotFoundPage.header": "Page not found.",

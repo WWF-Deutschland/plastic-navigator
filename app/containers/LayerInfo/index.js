@@ -10,16 +10,26 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box } from 'grommet';
+import { Button, Box, Heading } from 'grommet';
 import { Close } from 'grommet-icons';
+
+import { DEFAULT_LOCALE } from 'i18n';
 
 import { useInjectSaga } from 'utils/injectSaga';
 
 import saga from 'containers/App/saga';
-import { selectContentByKey } from 'containers/App/selectors';
+import {
+  selectContentByKey,
+  selectSingleLayerConfig,
+  // selectSingleLayerCategory,
+  // selectSingleLayerGroup,
+  selectLocale,
+} from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
 
 import HTMLWrapper from 'components/HTMLWrapper';
+
+import LayerReference from './LayerReference';
 
 const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 
@@ -40,9 +50,22 @@ const Styled = styled(props => <Box {...props} background="white" />)`
   }
 `;
 
+const Title = styled(p => <Heading level={1} {...p} />)`
+  font-size: 1.6em;
+`;
+
 // import messages from './messages';
 // import commonMessages from 'messages';
-export function LayerInfo({ id, onLoadContent, content, onClose }) {
+export function LayerInfo({
+  id,
+  onLoadContent,
+  content,
+  onClose,
+  layer,
+  // layerCategory,
+  // layerGroup,
+  locale,
+}) {
   useInjectSaga({ key: 'default', saga });
   useEffect(() => {
     // kick off loading of page content
@@ -58,7 +81,11 @@ export function LayerInfo({ id, onLoadContent, content, onClose }) {
           plain
           alignSelf="end"
         />
+        <Title>
+          {locale && (layer.title[locale] || layer.title[DEFAULT_LOCALE])}
+        </Title>
         {content && <HTMLWrapper innerhtml={content} />}
+        <LayerReference attribution={layer.attribution} />
       </ContentWrap>
     </Styled>
   );
@@ -69,6 +96,10 @@ LayerInfo.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   id: PropTypes.string,
   onClose: PropTypes.func,
+  layer: PropTypes.object,
+  // layerCategory: PropTypes.object,
+  // layerGroup: PropTypes.object,
+  locale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -77,6 +108,19 @@ const mapStateToProps = createStructuredSelector({
       contentType: 'layers',
       key: props.id,
     }),
+  layer: (state, props) =>
+    selectSingleLayerConfig(state, {
+      key: props.id,
+    }),
+  // layerCategory: (state, props) =>
+  //   selectSingleLayerCategory(state, {
+  //     key: props.id,
+  //   }),
+  // layerGroup: (state, props) =>
+  //   selectSingleLayerGroup(state, {
+  //     key: props.id,
+  //   }),
+  locale: state => selectLocale(state),
 });
 
 function mapDispatchToProps(dispatch) {

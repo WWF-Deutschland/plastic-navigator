@@ -129,6 +129,30 @@ export const selectStoriesConfig = createSelector(
   selectConfig,
   config => config.stories,
 );
+export const selectSingleLayerConfig = createSelector(
+  (state, { key }) => key,
+  selectLayersConfig,
+  (key, layers) => layers && layers.find(l => l.id === key),
+);
+export const selectSingleLayerCategory = createSelector(
+  selectSingleLayerConfig,
+  selectExploreConfig,
+  (layer, explore) => {
+    if (!layer || !explore) return null;
+    return explore.find(cat => cat.id === layer.category);
+  },
+);
+export const selectSingleLayerGroup = createSelector(
+  selectSingleLayerConfig,
+  selectSingleLayerCategory,
+  (layer, exploreCategory) => {
+    if (!layer || !exploreCategory) return null;
+    return (
+      exploreCategory.groups &&
+      exploreCategory.groups.find(g => g.id === layer.group)
+    );
+  },
+);
 
 export const selectConfigReady = createSelector(
   selectGlobal,
