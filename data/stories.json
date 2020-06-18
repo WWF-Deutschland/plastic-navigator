@@ -44,12 +44,12 @@
       },
       {
         "title": {
-          "en": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres.",
-          "de": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres."
+          "en": "Currents concentrate floating debris",
+          "de": "Currents concentrate floating debris"
         },
         "description": {
-          "en": "About this chapter...",
-          "de": "About this chapter..."
+          "en": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres.",
+          "de": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres."
         },
         "layers": [
           "surface-concentration",
