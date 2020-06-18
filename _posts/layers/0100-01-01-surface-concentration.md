@@ -31,4 +31,4 @@ The visualisation shows the estimated concentration of floating plastic waste by
 
 ### About the study
 
-The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios and calibrated the model results using the survey data from 24 expeditions that collected data for four different size classes. You can further explore the survey data in the interactive [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/)
+The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios and calibrated the model results using the survey data from 24 expeditions that collected data for four different size classes. You can further explore the survey data in the interactive [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/).
