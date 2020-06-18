@@ -8,20 +8,20 @@
           "de": "Plastic has been detected on the surface of all oceans"
         },
         "description": {
-          "en": "About this chapter...",
-          "de": "About this chapter..."
+          "en": "Plastic in the ocean is a threat to marine wildlife as well as seafood consumers. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste.",
+          "de": "Plastic in the ocean is a threat to marine wildlife as well as seafood consumers. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste."
         },
         "layers": ["surface-concentration"],
         "layersFocus": ["surface-concentration"]
       },
       {
         "title": {
-          "en": "Poor Waste Management is a major source of debris",
-          "de": "Poor Waste Management is a major source of debris"
+          "en": "Poor waste management is a major source of debris",
+          "de": "Poor waste management is a major source of debris"
         },
         "description": {
-          "en": "About this chapter...",
-          "de": "About this chapter..."
+          "en": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste.",
+          "de": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
@@ -32,8 +32,8 @@
           "de": "Rivers carry plastic from land to see"
         },
         "description": {
-          "en": "About this chapter...",
-          "de": "About this chapter..."
+          "en": "Wind and rain carries plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information.",
+          "de": "Wind and rain carries plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information."
         },
         "layers": [
           "surface-concentration",
@@ -44,8 +44,8 @@
       },
       {
         "title": {
-          "en": "Currents concentrate floating debris",
-          "de": "Currents concentrate floating debris"
+          "en": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres.",
+          "de": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres."
         },
         "description": {
           "en": "About this chapter...",
