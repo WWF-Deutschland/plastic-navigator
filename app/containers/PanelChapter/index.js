@@ -86,9 +86,12 @@ const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`
   right: ${({ theme }) => theme.global.edgeSize.small};
   transform: translateY(50%);
 `;
-const ButtonNext = styled(p => (
-  <Button {...p} reverse color="brand" primary />
-))``;
+const ButtonNext = styled(p => <Button {...p} reverse plain />)`
+  background: ${({ theme }) => theme.global.colors.brand};
+  color: ${({ theme }) => theme.global.colors.white};
+  border-radius: 20px;
+  padding: 5px 15px;
+`;
 const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
 
 const Description = styled(Text)``;

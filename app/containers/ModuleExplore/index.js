@@ -24,9 +24,16 @@ import messages from './messages';
 
 const Show = styled(props => <Box {...props} />)`
   position: absolute;
-  right: 10px;
-  top: 10px;
+  right: 20px;
+  top: 20px;
   pointer-events: all;
+`;
+
+const ShowButton = styled(p => <Button plain reverse {...p} />)`
+  background: ${({ theme }) => theme.global.colors.black};
+  color: ${({ theme }) => theme.global.colors.white};
+  border-radius: 20px;
+  padding: 5px 15px;
 `;
 
 export function ModuleExplore() {
@@ -52,17 +59,14 @@ export function ModuleExplore() {
             )}
             {((!show && size !== 'small') ||
               (!showSmall && size === 'small')) && (
-              <Show background="white">
-                <Button
+              <Show>
+                <ShowButton
                   onClick={() => {
                     setShow(true);
                     setShowSmall(true);
                   }}
-                  icon={<LayerIcon />}
+                  icon={<LayerIcon color="white" />}
                   label={<FormattedMessage {...messages.showLayerPanel} />}
-                  plain
-                  alignSelf="end"
-                  reverse
                 />
               </Show>
             )}

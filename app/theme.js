@@ -168,7 +168,7 @@ const theme = {
     focus: {
       // shadow or outline are required for accessibility
       border: {
-        color: 'rgba(0, 0, 0, 0.7)',
+        color: 'transparent',
       },
       // not effective?
       outline: { color: 'red', size: '1px' },
