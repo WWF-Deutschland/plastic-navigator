@@ -32,8 +32,8 @@
           "de": "Rivers carry plastic from land to see"
         },
         "description": {
-          "en": "Wind and rain carries plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information.",
-          "de": "Wind and rain carries plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information."
+          "en": "Wind and rain carry plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information.",
+          "de": "Wind and rain carry plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans through rivers based on waste management, population density and river information."
         },
         "layers": [
           "surface-concentration",
