@@ -81,11 +81,11 @@ export function LayerInfo({
           plain
           alignSelf="end"
         />
-        <Title>
-          {locale && (layer.title[locale] || layer.title[DEFAULT_LOCALE])}
-        </Title>
+        {locale && layer && (
+          <Title>{layer.title[locale] || layer.title[DEFAULT_LOCALE]}</Title>
+        )}
         {content && <HTMLWrapper innerhtml={content} />}
-        <LayerReference attribution={layer.attribution} />
+        {layer && <LayerReference attribution={layer.attribution} />}
       </ContentWrap>
     </Styled>
   );
