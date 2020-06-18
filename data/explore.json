@@ -22,6 +22,10 @@
         "title": {
           "en": "Where does plastic waste come from?",
           "de": "Wo kommt der Plastikmüll her?"
+        },
+        "description": {
+          "en": "Optional description",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       }
     ]
