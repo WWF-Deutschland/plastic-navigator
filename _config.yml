@@ -62,8 +62,3 @@ prose:
           element: "textarea"
           label: "Optional fact or lead paragraph"
           value: ""
-      - name: "text_references"
-        field:
-          element: "textarea"
-          label: "Text references"
-          value: ""
