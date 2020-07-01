@@ -22,6 +22,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 //
 // import messages from './messages';
 
+import { selectActiveLayers } from 'containers/App/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { selectLayers, selectLayerConfig } from './selectors';
@@ -44,12 +45,13 @@ const MapContainer = styled.div`
   background: light-grey;
 `;
 
-export function Map({ layerConfig }) {
+export function Map({ layerConfig, layerIds }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
 
   const mapRef = useRef(null);
-  // const basemapLayerGroupRef = useRef(null);
+  const basemapLayerGroupRef = useRef(null);
+  const rasterLayerGroupRef = useRef(null);
 
   // init map
   useEffect(() => {
@@ -57,13 +59,18 @@ export function Map({ layerConfig }) {
       center: [30, 180],
       zoom: 2,
     });
+    mapRef.current.createPane('rasterPane');
+    mapRef.current.getPane('rasterPane').style.zIndex = 600;
+    mapRef.current.getPane('rasterPane').style.pointerEvents = 'none';
+    basemapLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
+    rasterLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
   }, []);
   useEffect(() => {
     if (layerConfig) {
       const basemapConfig =
         layerConfig && layerConfig.find(c => c.id === 'basemap');
       if (basemapConfig.type === 'vector-tiles') {
-        mapRef.current.addLayer(
+        basemapLayerGroupRef.current.addLayer(
           L.tileLayer(MAPBOX.STYLE_URL_TEMPLATE, {
             style_id: basemapConfig['style-id'],
             username: MAPBOX.USER,
@@ -74,6 +81,31 @@ export function Map({ layerConfig }) {
     }
   }, [layerConfig]);
 
+  useEffect(() => {
+    if (layerIds && layerConfig) {
+      if (rasterLayerGroupRef) {
+        rasterLayerGroupRef.current.clearLayers();
+      }
+      layerIds.forEach(id => {
+        const config = layerConfig.find(c => c.id === id);
+        if (config) {
+          if (config.type === 'raster-tiles' && config.source === 'mapbox') {
+            if (rasterLayerGroupRef) {
+              console.log('add layer', config);
+              rasterLayerGroupRef.current.addLayer(
+                L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
+                  id: config.tileset,
+                  accessToken: MAPBOX.TOKEN,
+                  pane: 'rasterPane',
+                }),
+              );
+            }
+          }
+        }
+      });
+    }
+  }, [layerIds]);
+
   return (
     <Styled>
       <MapContainer id="ll-map" />
@@ -83,7 +115,7 @@ export function Map({ layerConfig }) {
 
 Map.propTypes = {
   layerConfig: PropTypes.array,
-  // layers: PropTypes.object,
+  layerIds: PropTypes.array,
   // onLoadLayer: PropTypes.func,
   // locale: PropTypes.string,
 };
@@ -91,6 +123,7 @@ Map.propTypes = {
 const mapStateToProps = createStructuredSelector({
   layers: state => selectLayers(state),
   layerConfig: state => selectLayerConfig(state),
+  layerIds: state => selectActiveLayers(state),
 });
 
 function mapDispatchToProps(dispatch) {
