@@ -22,7 +22,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "xxxxxxx",
+    "tileset": "tmfrnz.301421rt",
     "title": {
       "en": "Floating plastic concentration",
       "de": "Konzentration von treibendem Plastik"
@@ -70,7 +70,7 @@
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "xxxxxxx",
+    "tileset": "tmfrnz.5a3zqj6p",
     "title": {
       "en": "Mismanaged plastic waste",
       "de": "Schlechte Handhabung von Plastikmüll"
