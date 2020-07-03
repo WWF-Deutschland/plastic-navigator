@@ -147,9 +147,7 @@
       "unit-short": {
         "en": "t/yr",
         "de": "t/Jahr"
-      },
-      "values": "continuous",
-      "feature-type": "point"
+      }
     },
     "render": {
       "type": "scaledCircle",
@@ -237,6 +235,9 @@
     "data": {
       "type": "location",
       "feature-type": "Point"
+    },
+    "render": {
+      "type": "marker"
     },
     "icon": {
       "iconUrl": "icon-gyre.png"
