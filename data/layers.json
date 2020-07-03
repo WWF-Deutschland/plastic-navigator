@@ -176,7 +176,7 @@
     "group": "hydro",
     "source": "data",
     "type": "geojson",
-    "file": "currents.json",
+    "file": "layers/currents.json",
     "title": {
       "en": "Ocean currents",
       "de": "Meeresströmungen"
@@ -212,7 +212,7 @@
     "group": "hydro",
     "source": "data",
     "type": "geojson",
-    "file": "gyres.json",
+    "file": "layers/gyres.json",
     "title": {
       "en": "The 5 principal gyres",
       "de": "Die 5 hauptsächlichen Meeresstrudel"
