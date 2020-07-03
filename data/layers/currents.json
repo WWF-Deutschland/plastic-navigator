@@ -251,7 +251,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": "Barzil", "type": 2 },
+      "properties": { "name": "Brazil", "type": 2 },
       "geometry": {
         "type": "MultiLineString",
         "coordinates": [
