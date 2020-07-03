@@ -202,6 +202,10 @@
       "type": "direction",
       "feature-type": "LineString"
     },
+    "render": {
+      "type": "polyline",
+      "bezier": "true"
+    },
     "style": {
       "color": "green"
     }
