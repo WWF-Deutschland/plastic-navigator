@@ -3,7 +3,7 @@
   "name": "gyres",
   "crs": {
     "type": "name",
-    "properties": { "name": "urn:ogc:def:crs:EPSG::3857" }
+    "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" }
   },
   "features": [
     {
@@ -11,7 +11,7 @@
       "properties": { "name": "N. Pacific" },
       "geometry": {
         "type": "Point",
-        "coordinates": [-16091490.724207451567054, 3403967.615851946175098]
+        "coordinates": [-144.552320618230596, 29.222278301119779]
       }
     },
     {
@@ -19,7 +19,7 @@
       "properties": { "name": "N. Atlantic" },
       "geometry": {
         "type": "Point",
-        "coordinates": [-5413753.862255834043026, 3257697.247880004346371]
+        "coordinates": [-48.632578389255059, 28.069169219141838]
       }
     },
     {
@@ -27,7 +27,7 @@
       "properties": { "name": "S. Atlantic" },
       "geometry": {
         "type": "Point",
-        "coordinates": [-879372.455125696957111, -3324469.3108572922647]
+        "coordinates": [-7.899537168731215, -28.59713277980233]
       }
     },
     {
@@ -35,7 +35,7 @@
       "properties": { "name": "S. Pacific" },
       "geometry": {
         "type": "Point",
-        "coordinates": [-11264568.581133432686329, -3275712.521533314138651]
+        "coordinates": [-101.191341254447138, -28.211873297431797]
       }
     },
     {
@@ -43,7 +43,7 @@
       "properties": { "name": "Indian Ocean" },
       "geometry": {
         "type": "Point",
-        "coordinates": [10432202.668037660419941, -3714523.625449132174253]
+        "coordinates": [93.714071037306795, -31.627581858135585]
       }
     }
   ]

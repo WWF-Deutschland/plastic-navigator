@@ -122,14 +122,14 @@
     "group": "source",
     "source": "data",
     "type": "geojson",
-    "file": "river-emissions.json",
+    "file": "layers/river-emissions-top-1000.json",
     "title": {
-      "en": "River plastic emissions",
-      "de": "Flusseinträge von Plastik"
+      "en": "River plastic emissions (top 1000)",
+      "de": "Plastikeinträge der Top 1000 Flüsse"
     },
     "about": {
-      "en": "Short text about river plastic emissions",
-      "de": "Short text about river plastic emissions"
+      "en": "1000 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
     },
     "attribution": {
       "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
@@ -158,7 +158,7 @@
     "key": {
       "title": {
         "en": "Annual emissions by weight",
-        "de": "Jährliche Emissionen nach Gewicht"
+        "de": "Jährliche Einträge nach Gewicht"
       },
       "values": [100, 10000, 333000]
     }
