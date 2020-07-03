@@ -1,0 +1,50 @@
+{
+  "type": "FeatureCollection",
+  "name": "gyres",
+  "crs": {
+    "type": "name",
+    "properties": { "name": "urn:ogc:def:crs:EPSG::3857" }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "N. Pacific" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-16091490.724207451567054, 3403967.615851946175098]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "N. Atlantic" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-5413753.862255834043026, 3257697.247880004346371]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "S. Atlantic" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-879372.455125696957111, -3324469.3108572922647]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "S. Pacific" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-11264568.581133432686329, -3275712.521533314138651]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Indian Ocean" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [10432202.668037660419941, -3714523.625449132174253]
+      }
+    }
+  ]
+}

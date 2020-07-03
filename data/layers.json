@@ -171,19 +171,25 @@
     "type": "geojson",
     "file": "currents.json",
     "title": {
-      "en": "Predominant ocean currents",
-      "de": "Vorherrschende Meeresströmungen"
+      "en": "Ocean currents",
+      "de": "Meeresströmungen"
     },
     "title-short": {
-      "en": "Currents"
+      "en": "Currents",
+      "en": "Strömungen"
     },
     "about": {
-      "en": "Short text about predominant ocean currents",
-      "de": "Short text about predominant ocean currents"
+      "en": "Major currents of the world's oceans",
+      "de": "Vorherrschende Strömungen auf unseren Meeren"
     },
     "attribution": {
-      "author": "Own illustration",
-      "year": "2020"
+      "author": {
+        "en": "Own representation",
+        "de": "Eigene Darstellung"
+      },
+      "year": "2020",
+      "derived": "WikiMedia: Corriented-oceanicas.png",
+      "url": "https://commons.wikimedia.org/wiki/File:Corrientes-oceanicas.png"
     },
     "data": {
       "type": "direction",
@@ -213,7 +219,10 @@
       "de": "Short text about principal gyres"
     },
     "attribution": {
-      "author": "Own illustration",
+      "author": {
+        "en": "Own representation",
+        "de": "Eigene Darstellung"
+      },
       "year": "2020"
     },
     "data": {
