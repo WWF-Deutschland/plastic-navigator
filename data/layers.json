@@ -122,7 +122,7 @@
     "group": "source",
     "source": "data",
     "type": "geojson",
-    "file": "layers/river-emissions-top-1000.json",
+    "file": "layers/river-emissions-top.json",
     "title": {
       "en": "River plastic emissions (top 1000)",
       "de": "Plastikeinträge der Top 1000 Flüsse"
