@@ -59,7 +59,7 @@ export function* loadDataSaga({ key, config }) {
     const ready = yield select(selectLayerReadyByKey, key);
     // If haven't loaded yet, do so now.
     if (!requestedAt && !ready) {
-      const url = `${RESOURCES.DATA}/${config.path}`;
+      const url = `${RESOURCES.DATA}/${config.path || config.file}`;
       try {
         // First record that we are requesting
         yield put(setLayerRequested(key, Date.now()));

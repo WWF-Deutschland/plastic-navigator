@@ -49,3 +49,8 @@ export const selectLayerConfig = createSelector(
   state => selectConfigByKey(state, { key: 'layers' }),
   config => config,
 );
+
+export const selectMapLayers = createSelector(
+  selectDomain,
+  domain => domain.mapLayers,
+);
