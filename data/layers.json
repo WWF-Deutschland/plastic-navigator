@@ -151,6 +151,12 @@
       "values": "continuous",
       "feature-type": "point"
     },
+    "render": {
+      "type": "scaledCircle",
+      "min": "3",
+      "max": "15",
+      "attribute": "i_mid"
+    },
     "style": {
       "color": "black",
       "weight": "1",
