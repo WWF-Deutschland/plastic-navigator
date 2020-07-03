@@ -155,12 +155,14 @@
       "type": "scaledCircle",
       "min": "3",
       "max": "15",
-      "attribute": "i_mid"
+      "attribute": "i_mid",
+      "exponent": "0.5"
     },
     "style": {
       "color": "black",
-      "weight": "1",
-      "fillColor": "rgba(0, 0, 0, 0.3)"
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
     },
     "key": {
       "title": {
