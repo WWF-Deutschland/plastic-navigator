@@ -251,16 +251,6 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": null, "type": null },
-      "geometry": { "type": "MultiLineString", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": null, "type": null },
-      "geometry": { "type": "MultiLineString", "coordinates": [] }
-    },
-    {
-      "type": "Feature",
       "properties": { "name": "Barzil", "type": 2 },
       "geometry": {
         "type": "MultiLineString",
