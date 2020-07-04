@@ -204,7 +204,8 @@
     },
     "render": {
       "type": "polyline",
-      "bezier": "true"
+      "bezier": "true",
+      "decorate": "arrow"
     },
     "style": {
       "color": "black",
