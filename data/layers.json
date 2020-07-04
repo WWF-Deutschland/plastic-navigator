@@ -208,7 +208,8 @@
     },
     "style": {
       "color": "black",
-      "opacity": "0.3"
+      "opacity": "0.2",
+      "weight": "7"
     }
   },
   {
