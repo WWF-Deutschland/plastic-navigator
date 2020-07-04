@@ -282,6 +282,7 @@ export function Map({
                             feature.geometry.coordinates,
                             360,
                             config.render.bezier === 'true',
+                            config.render.decorate === 'arrow',
                           ),
                           options,
                         );
@@ -304,6 +305,7 @@ export function Map({
                             feature.geometry.coordinates,
                             360,
                             config.render.bezier === 'true',
+                            config.render.decorate === 'arrow',
                           ),
                           options,
                         );
