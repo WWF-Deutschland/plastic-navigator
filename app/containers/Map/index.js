@@ -12,7 +12,10 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
+import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
+// import bezierSpline from '@turf/bezier-spline';
+// import { lineString } from '@turf/helpers';
 
 import { MAPBOX } from 'config';
 
@@ -71,12 +74,64 @@ const scaleCircle = (feature, range, config) => {
   return Math.max(config.min, scale(val));
 };
 
-const coordinatesToLatLon = coordinates =>
-  coordinates &&
-  coordinates.length > 0 &&
-  coordinates[0].map(coord =>
-    coord.length === 2 ? [coord[1], coord[0]] : null,
-  );
+const coordinatesToLatLon = (coordinates, offsetLon = 0, bezier, reverse) => {
+  if (coordinates && coordinates.length > 0) {
+    const coords = reverse ? [...coordinates[0]].reverse() : coordinates[0];
+    // if (bezier) {
+    //   const bezierFeature = bezierSpline(lineString(coords), {
+    //     resolution: 10000,
+    //     sharpness: 0.95,
+    //   });
+    //   return bezierFeature.geometry.coordinates.map(coord =>
+    //     coord.length === 2 ? [coord[1], coord[0] + offsetLon] : null,
+    //   );
+    // }
+    return coords.map(coord =>
+      coord.length === 2 ? [coord[1], coord[0] + offsetLon] : null,
+    );
+  }
+  return [];
+};
+
+const decorateLine = (line, type, options) => {
+  if (type === 'arrow') {
+    return L.polylineDecorator(line, {
+      patterns: [
+        {
+          repeat: 0,
+          offset: 0,
+          symbol: L.Symbol.arrowHead({
+            pixelSize: 6,
+            headAngle: 300,
+            polygon: false,
+            pathOptions: {
+              stroke: true,
+              weight: 1,
+              color: options.color,
+              opacity: 0.3,
+            },
+          }),
+        },
+      ],
+    });
+  }
+  return line;
+};
+
+const MAP_OPTIONS = {
+  CENTER: [0, 180],
+  ZOOM: {
+    INIT: 2,
+    MIN: 2,
+    MAX: 7,
+  },
+  BOUNDS: {
+    N: 85,
+    W: -180,
+    S: -85,
+    E: 540,
+  },
+};
 
 export function Map({
   layerConfig,
@@ -93,23 +148,29 @@ export function Map({
   const basemapLayerGroupRef = useRef(null);
   const rasterLayerGroupRef = useRef(null);
   const vectorLayerGroupRef = useRef(null);
-
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
-      center: [30, 180],
-      zoom: 2,
+      center: MAP_OPTIONS.CENTER,
+      zoom: MAP_OPTIONS.ZOOM.INIT,
+      minZoom: MAP_OPTIONS.ZOOM.MIN,
+      maxZoom: MAP_OPTIONS.ZOOM.MAX,
+      maxBounds: [
+        [MAP_OPTIONS.BOUNDS.N, MAP_OPTIONS.BOUNDS.W],
+        [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
+      ],
     });
     mapRef.current.createPane('rasterPane');
-    mapRef.current.getPane('rasterPane').style.zIndex = 600;
+    mapRef.current.getPane('rasterPane').style.zIndex = 200;
     mapRef.current.getPane('rasterPane').style.pointerEvents = 'none';
     mapRef.current.createPane('vectorPane');
-    mapRef.current.getPane('vectorPane').style.zIndex = 700;
+    mapRef.current.getPane('vectorPane').style.zIndex = 300;
     basemapLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
     rasterLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
     vectorLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
   }, []);
 
+  // add basemap
   useEffect(() => {
     if (layerConfig) {
       const basemapConfig =
@@ -126,6 +187,7 @@ export function Map({
     }
   }, [layerConfig]);
 
+  // update layers
   useEffect(() => {
     if (layerIds && layerConfig) {
       const newMapLayers = {};
@@ -146,9 +208,16 @@ export function Map({
       });
       // add layers not already present
       layerIds.forEach(id => {
-        if (Object.keys(mapLayers).indexOf(id) < 0) {
+        // also check if map does not have layer,
+        // otherwise they will not be adeded when hot reloading
+        const llayer = mapLayers[id] && mapLayers[id].layer;
+        const hasLayer =
+          rasterLayerGroupRef.current.hasLayer(llayer) ||
+          vectorLayerGroupRef.current.hasLayer(llayer);
+        if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
           const config = layerConfig.find(c => c.id === id);
           if (config) {
+            // raster layer
             if (config.type === 'raster-tiles' && config.source === 'mapbox') {
               if (rasterLayerGroupRef) {
                 const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
@@ -160,30 +229,93 @@ export function Map({
                 newMapLayers[id] = { layer, config };
               }
             }
+            // geojson layer
             if (config.type === 'geojson' && config.source === 'data') {
               // kick of loading of vector data for group if not present
               if (!jsonLayers[id]) {
                 onLoadLayer(id, config);
               }
+              const options = {
+                pane: 'vectorPane',
+                ...config.style,
+              };
               if (jsonLayers[id] && vectorLayerGroupRef) {
                 const { data } = jsonLayers[id];
-                // polyline-beziewr
+                const layer = L.featureGroup(null, { pane: 'vectorPane' });
+                // polyline
                 if (
                   config.render &&
                   config.render.type === 'polyline' &&
                   data.features
                 ) {
-                  const layer = L.featureGroup();
                   data.features.forEach(feature => {
                     if (feature.geometry && feature.geometry.coordinates) {
-                      layer.addLayer(
-                        L.polyline(
-                          coordinatesToLatLon(feature.geometry.coordinates),
-                          {
-                            pane: 'vectorPane',
-                          },
+                      const line = L.polyline(
+                        coordinatesToLatLon(
+                          feature.geometry.coordinates,
+                          0,
+                          config.render.bezier === 'true',
+                          config.render.decorate === 'arrow',
                         ),
+                        options,
                       );
+                      const lineBounds = line.getBounds();
+                      // make sure we are within map bounds
+                      if (
+                        lineBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
+                        lineBounds.getEast() < MAP_OPTIONS.BOUNDS.E
+                      ) {
+                        if (config.render.decorate === 'arrow') {
+                          layer.addLayer(decorateLine(line, 'arrow', options));
+                          layer.addLayer(line);
+                        } else {
+                          layer.addLayer(line);
+                        }
+                      }
+                      // duplicate layer to West if fit within bounds
+                      if (
+                        lineBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
+                        lineBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
+                      ) {
+                        const lineWest = L.polyline(
+                          coordinatesToLatLon(
+                            feature.geometry.coordinates,
+                            360,
+                            config.render.bezier === 'true',
+                          ),
+                          options,
+                        );
+                        if (config.render.decorate === 'arrow') {
+                          layer.addLayer(
+                            decorateLine(lineWest, 'arrow', options),
+                          );
+                          layer.addLayer(lineWest);
+                        } else {
+                          layer.addLayer(lineWest);
+                        }
+                      }
+                      // duplicate layer to East if fit within bounds
+                      if (
+                        lineBounds.getEast() < MAP_OPTIONS.BOUNDS.E &&
+                        lineBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
+                      ) {
+                        const lineEast = L.polyline(
+                          coordinatesToLatLon(
+                            feature.geometry.coordinates,
+                            360,
+                            config.render.bezier === 'true',
+                          ),
+                          options,
+                        );
+                        if (config.render.decorate === 'arrow') {
+                          layer.addLayer(
+                            decorateLine(lineEast, 'arrow', options),
+                          );
+                          layer.addLayer(lineEast);
+                        } else {
+                          layer.addLayer(lineEast);
+                        }
+                      }
                     }
                   });
                   vectorLayerGroupRef.current.addLayer(layer);
@@ -192,12 +324,34 @@ export function Map({
 
                 // regular point marker
                 if (config.render && config.render.type === 'marker') {
-                  const layer = L.geoJSON(data, {
+                  const jsonLayer = L.geoJSON(data, {
                     pointToLayer: (feature, latlng) =>
-                      L.marker(latlng, {
-                        pane: 'vectorPane',
-                      }),
+                      L.marker(latlng, options),
                   });
+                  layer.addLayer(jsonLayer);
+                  const layerBounds = jsonLayer.getBounds();
+                  // duplicate layer to West if fit within bounds
+                  if (
+                    layerBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
+                    layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
+                  ) {
+                    const layerWest = L.geoJSON(data, {
+                      pointToLayer: (feature, latlng) =>
+                        L.marker([latlng.lat, latlng.lng - 360], options),
+                    });
+                    layer.addLayer(layerWest);
+                  }
+                  // // duplicate layer to East if fit within bounds
+                  if (
+                    layerBounds.getEast() < MAP_OPTIONS.BOUNDS.E &&
+                    layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
+                  ) {
+                    const layerEast = L.geoJSON(data, {
+                      pointToLayer: (feature, latlng) =>
+                        L.marker([latlng.lat, latlng.lng + 360], options),
+                    });
+                    layer.addLayer(layerEast);
+                  }
                   vectorLayerGroupRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
                 }
@@ -207,14 +361,43 @@ export function Map({
                     data.features,
                     config.render.attribute,
                   );
-                  const layer = L.geoJSON(data, {
+                  const jsonLayer = L.geoJSON(data, {
                     pointToLayer: (feature, latlng) =>
                       L.circleMarker(latlng, {
-                        pane: 'vectorPane',
+                        ...options,
                         radius: scaleCircle(feature, range, config.render),
-                        ...config.style,
                       }),
                   });
+                  layer.addLayer(jsonLayer);
+                  const layerBounds = jsonLayer.getBounds();
+                  // duplicate layer to West if fit within bounds
+                  if (
+                    layerBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
+                    layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
+                  ) {
+                    const layerWest = L.geoJSON(data, {
+                      pointToLayer: (feature, latlng) =>
+                        L.circleMarker([latlng.lat, latlng.lng - 360], {
+                          ...options,
+                          radius: scaleCircle(feature, range, config.render),
+                        }),
+                    });
+                    layer.addLayer(layerWest);
+                  }
+                  // // duplicate layer to East if fit within bounds
+                  if (
+                    layerBounds.getEast() < MAP_OPTIONS.BOUNDS.E &&
+                    layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
+                  ) {
+                    const layerEast = L.geoJSON(data, {
+                      pointToLayer: (feature, latlng) =>
+                        L.circleMarker([latlng.lat, latlng.lng + 360], {
+                          ...options,
+                          radius: scaleCircle(feature, range, config.render),
+                        }),
+                    });
+                    layer.addLayer(layerEast);
+                  }
                   vectorLayerGroupRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
                 }
