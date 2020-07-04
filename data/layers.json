@@ -207,7 +207,8 @@
       "bezier": "true"
     },
     "style": {
-      "color": "green"
+      "color": "black",
+      "opacity": "0.5"
     }
   },
   {
