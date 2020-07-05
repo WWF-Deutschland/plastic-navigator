@@ -121,6 +121,9 @@ const decorateLine = (line, type, options) => {
   return line;
 };
 
+const filterByProject = (feature, project) =>
+  quasiEquals(feature.properties.project_id, project.project_id);
+
 const MAP_OPTIONS = {
   CENTER: [0, 180],
   ZOOM: {
@@ -198,14 +201,22 @@ export function Map({
       // remove layers no longer active
       Object.keys(mapLayers).forEach(id => {
         if (layerIds.indexOf(id) < 0) {
-          const config = layerConfig.find(c => c.id === id);
-          if (config && mapLayers[id]) {
+          const project =
+            projects &&
+            projects.find(p => p.project_id === id.replace('project-', ''));
+          if (project && mapLayers[id]) {
             const { layer } = mapLayers[id];
-            if (config.type === 'raster-tiles') {
-              rasterLayerGroupRef.current.removeLayer(layer);
-            }
-            if (config.type === 'geojson') {
-              vectorLayerGroupRef.current.removeLayer(layer);
+            vectorLayerGroupRef.current.removeLayer(layer);
+          } else {
+            const config = layerConfig.find(c => c.id === id);
+            if (config && mapLayers[id]) {
+              const { layer } = mapLayers[id];
+              if (config.type === 'raster-tiles') {
+                rasterLayerGroupRef.current.removeLayer(layer);
+              }
+              if (config.type === 'geojson') {
+                vectorLayerGroupRef.current.removeLayer(layer);
+              }
             }
           }
         }
@@ -219,6 +230,7 @@ export function Map({
           rasterLayerGroupRef.current.hasLayer(llayer) ||
           vectorLayerGroupRef.current.hasLayer(llayer);
         if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
+          // check if this layer is a project
           const project =
             projects &&
             projects.find(p => p.project_id === id.replace('project-', ''));
@@ -234,11 +246,7 @@ export function Map({
                 ...config.style,
               };
               const jsonLayer = L.geoJSON(data, {
-                filter: feature =>
-                  quasiEquals(
-                    feature.properties.project_id,
-                    project.project_id,
-                  ),
+                filter: feature => filterByProject(feature, project),
                 pointToLayer: (feature, latlng) => L.marker(latlng, options),
               });
               layer.addLayer(jsonLayer);
@@ -249,6 +257,7 @@ export function Map({
                 layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
               ) {
                 const layerWest = L.geoJSON(data, {
+                  filter: feature => filterByProject(feature, project),
                   pointToLayer: (feature, latlng) =>
                     L.marker([latlng.lat, latlng.lng - 360], options),
                 });
@@ -260,6 +269,7 @@ export function Map({
                 layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
               ) {
                 const layerEast = L.geoJSON(data, {
+                  filter: feature => filterByProject(feature, project),
                   pointToLayer: (feature, latlng) =>
                     L.marker([latlng.lat, latlng.lng + 360], options),
                 });
