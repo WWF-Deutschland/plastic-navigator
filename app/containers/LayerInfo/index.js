@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { Button, Box, Heading } from 'grommet';
 import { Close } from 'grommet-icons';
 import Markdown from 'react-remarkable';
+import anchorme from 'anchorme';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -104,7 +105,19 @@ export function LayerInfo({
         {project && (
           <div>
             <Markdown
-              source={projectInfo
+              options={{
+                html: true,
+              }}
+              source={anchorme({
+                input: projectInfo,
+                options: {
+                  truncate: 40,
+                  attributes: {
+                    target: '_blank',
+                    class: 'mpx-content-link',
+                  },
+                },
+              })
                 .split(' __ ')
                 .map(i => i.trim())
                 .join('\n\n ')}

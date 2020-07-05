@@ -184,6 +184,7 @@ function* loadConfigSaga({ key }) {
             if (csv) {
               const parsed = yield Papa.parse(csv, {
                 header: true,
+                skipEmptyLines: true,
               });
               yield put(setConfigLoadSuccess(key, parsed.data, Date.now()));
             } else {

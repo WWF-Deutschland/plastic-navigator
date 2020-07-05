@@ -68,6 +68,7 @@
     "@babel/polyfill": "7.4.3",
     "@turf/bezier-spline": "^6.0.3",
     "@turf/helpers": "^6.1.4",
+    "anchorme": "^2.1.2",
     "chalk": "^2.4.2",
     "compression": "1.7.4",
     "connected-react-router": "6.4.0",
