@@ -364,59 +364,6 @@
     }
   },
   {
-    "id": "mismanaged-waste-purple",
-    "content-id": "mismanaged-waste",
-    "category": "plastic",
-    "group": "source",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.7a17z3d2",
-    "title": {
-      "en": "Mismanaged plastic waste (purple)",
-      "de": "Schlechte Handhabung von Plastikmüll (lila)"
-    },
-    "about": {
-      "en": "Short text about mismanaged plastic waste",
-      "de": "Short text about mismanaged plastic waste"
-    },
-    "attribution": {
-      "author": "Lebreton LCM, Andrady A",
-      "year": "2019",
-      "title": "Future scenarios of global plastic waste generation and disposal",
-      "publication": "Palgrave Communications 5, 6",
-      "url": "https://doi.org/10.1057/s41599-018-0212-7"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "kg per year and grid cell",
-        "de": "kg pro Jahr und Zelle"
-      },
-      "unit-short": {
-        "en": "kg/yr/cell",
-        "de": "kg/Jahr/Zelle"
-      },
-      "unit-additional": {
-        "en": "30 by 30 arc seconds",
-        "de": "30 mal 30 Winkelsekunden"
-      },
-      "scale": "log",
-      "values": "continuous"
-    },
-    "key": {
-      "values": [
-        {
-          "value": 0,
-          "color": "#fff"
-        },
-        {
-          "value": 1000,
-          "color": "blue"
-        }
-      ]
-    }
-  },
-  {
     "id": "mismanaged-waste-purple-dark",
     "content-id": "mismanaged-waste",
     "category": "plastic",
