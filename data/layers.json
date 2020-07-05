@@ -18,14 +18,260 @@
   },
   {
     "id": "surface-concentration",
+    "content-id": "surface-concentration",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.aeqpvfcx",
+    "tileset": "tmfrnz.4z3hh6gr",
     "title": {
-      "en": "Floating plastic concentration",
-      "de": "Konzentration von treibendem Plastik"
+      "en": "Floating plastic concentration (purple)",
+      "de": "Konzentration von treibendem Plastik (lila)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-orange",
+    "content-id": "surface-concentration",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.b80xg49f",
+    "title": {
+      "en": "Floating plastic concentration (orange)",
+      "de": "Konzentration von treibendem Plastik (orange)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-red",
+    "content-id": "surface-concentration",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.diu1w8va",
+    "title": {
+      "en": "Floating plastic concentration (red)",
+      "de": "Konzentration von treibendem Plastik (rot)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-yellow",
+    "content-id": "surface-concentration",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.diu1w8va",
+    "title": {
+      "en": "Floating plastic concentration (yellow)",
+      "de": "Konzentration von treibendem Plastik (gelb)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-yellow-dark",
+    "content-id": "surface-concentration",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.diu1w8va",
+    "title": {
+      "en": "Floating plastic concentration (dark yellow)",
+      "de": "Konzentration von treibendem Plastik (dunkel gelb)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 10000,
+          "color": "red"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-yellow-red",
+    "content-id": "surface-concentration",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.cbty4jsk",
+    "title": {
+      "en": "Floating plastic concentration (yellow-red)",
+      "de": "Konzentration von treibendem Plastik (gelb-rot)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -66,14 +312,15 @@
   },
   {
     "id": "mismanaged-waste",
+    "content-id": "mismanaged-waste",
     "category": "plastic",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.5a3zqj6p",
+    "tileset": "tmfrnz.c6fo1o6s",
     "title": {
-      "en": "Mismanaged plastic waste",
-      "de": "Schlechte Handhabung von Plastikmüll"
+      "en": "Mismanaged plastic waste (yellow)",
+      "de": "Schlechte Handhabung von Plastikmüll (gelb)"
     },
     "about": {
       "en": "Short text about mismanaged plastic waste",
@@ -94,7 +341,166 @@
       },
       "unit-short": {
         "en": "kg/yr/cell",
-        "en": "kg/Jahr/Zelle"
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 1000,
+          "color": "blue"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-purple",
+    "content-id": "mismanaged-waste",
+    "category": "plastic",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.7a17z3d2",
+    "title": {
+      "en": "Mismanaged plastic waste (purple)",
+      "de": "Schlechte Handhabung von Plastikmüll (lila)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 1000,
+          "color": "blue"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-purple-dark",
+    "content-id": "mismanaged-waste",
+    "category": "plastic",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.0xnx85d4",
+    "title": {
+      "en": "Mismanaged plastic waste (dark purple)",
+      "de": "Schlechte Handhabung von Plastikmüll (dunkel lila)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      },
+      "scale": "log",
+      "values": "continuous"
+    },
+    "key": {
+      "values": [
+        {
+          "value": 0,
+          "color": "#fff"
+        },
+        {
+          "value": 1000,
+          "color": "blue"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-orange",
+    "content-id": "mismanaged-waste",
+    "category": "plastic",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.3ff3k3h0",
+    "title": {
+      "en": "Mismanaged plastic waste (orange)",
+      "de": "Schlechte Handhabung von Plastikmüll (orange)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
       },
       "unit-additional": {
         "en": "30 by 30 arc seconds",
@@ -183,7 +589,7 @@
     },
     "title-short": {
       "en": "Currents",
-      "en": "Strömungen"
+      "de": "Strömungen"
     },
     "about": {
       "en": "Major currents of the world's oceans",
