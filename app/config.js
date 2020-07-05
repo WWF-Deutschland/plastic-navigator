@@ -59,8 +59,10 @@ export const CONFIG = {
   },
 };
 
-export const PROJECTS = {
-  locations: 'projects/projectLocations.csv',
+export const PROJECT_LOCATIONS = {
+  type: 'csv',
+  source: 'data',
+  file: 'layers/project_locations.csv',
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;

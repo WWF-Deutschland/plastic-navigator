@@ -109,7 +109,7 @@ function GroupLayers({
       <ListBody>
         {layers &&
           layers.map(layer => {
-            const id = projects ? layer.project_id : layer.id;
+            const id = projects ? `project-${layer.project_id}` : layer.id;
             const contentId = projects ? id : layer['content-id'] || layer.id;
             const title = projects
               ? layer[`project_title_${locale}`] ||

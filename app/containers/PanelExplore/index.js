@@ -23,15 +23,12 @@ import {
   selectLocale,
   selectUIStateByKey,
   selectActiveLayers,
-  selectActiveProjects,
 } from 'containers/App/selectors';
 import {
   setUIState,
   setLayerInfo,
   toggleLayer,
-  toggleProject,
   setLayers,
-  setProjects,
 } from 'containers/App/actions';
 
 import { PROJECT_CATEGORY } from 'config';
@@ -92,9 +89,6 @@ export function PanelExplore({
   onClose,
   onLayerInfo,
   onToggleLayer,
-  onToggleProject,
-  onSetProjects,
-  onMemoProjects,
   onSetLayers,
   onMemoLayers,
   onSetTab,
@@ -104,25 +98,18 @@ export function PanelExplore({
   locale,
   uiState,
   activeLayers,
-  activeProjects,
 }) {
-  const { tab, layersMemo, projectsMemo } = uiState
+  const { tab, layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
   useEffect(() => {
     if (layersMemo && (!activeLayers || activeLayers.length === 0)) {
       onSetLayers(layersMemo);
     }
-    if (projectsMemo && (!activeProjects || activeProjects.length === 0)) {
-      onSetProjects(projectsMemo);
-    }
   }, []);
   useEffect(() => {
     onMemoLayers(activeLayers, uiState);
   }, [activeLayers]);
-  useEffect(() => {
-    onMemoProjects(activeProjects, uiState);
-  }, [activeProjects]);
 
   const activeCategory = exploreConfig && exploreConfig[tab];
 
@@ -214,9 +201,9 @@ export function PanelExplore({
                 layers={projects}
                 projects
                 locale={locale}
-                activeLayers={activeProjects}
-                onLayerInfo={id => onLayerInfo(`project-${id}`)}
-                onToggleLayer={onToggleProject}
+                activeLayers={activeLayers}
+                onLayerInfo={onLayerInfo}
+                onToggleLayer={onToggleLayer}
               />
             </SectionLayerGroup>
           )}
@@ -231,16 +218,12 @@ PanelExplore.propTypes = {
   onSetTab: PropTypes.func,
   onLayerInfo: PropTypes.func,
   onToggleLayer: PropTypes.func,
-  onToggleProject: PropTypes.func,
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
-  onSetProjects: PropTypes.func,
-  onMemoProjects: PropTypes.func,
   layersConfig: PropTypes.array,
   exploreConfig: PropTypes.array,
   projects: PropTypes.array,
   activeLayers: PropTypes.array,
-  activeProjects: PropTypes.array,
   locale: PropTypes.string,
   uiState: PropTypes.object,
 };
@@ -252,7 +235,6 @@ const mapStateToProps = createStructuredSelector({
   locale: state => selectLocale(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
-  activeProjects: state => selectActiveProjects(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -282,9 +264,7 @@ function mapDispatchToProps(dispatch) {
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
-    onToggleProject: id => dispatch(toggleProject(id)),
     onSetLayers: layers => dispatch(setLayers(layers)),
-    onSetProjects: layers => dispatch(setProjects(layers)),
   };
 }
 
