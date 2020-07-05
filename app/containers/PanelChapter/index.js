@@ -181,7 +181,9 @@ export function PanelChapter({
                               </LayerTitle>
                             )}
                             <LayerButtonInfo
-                              onClick={() => onLayerInfo(layer.id)}
+                              onClick={() =>
+                                onLayerInfo(layer['content-id'] || layer.id)
+                              }
                               icon={<CircleInformation />}
                               stretch={layersFocus.length === 1}
                             />

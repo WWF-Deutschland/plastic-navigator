@@ -119,7 +119,7 @@ function GroupLayers({
               <ListBodyCellCenter>[Key]</ListBodyCellCenter>
               <ListBodyCellCenter>
                 <InfoButton
-                  onClick={() => onLayerInfo(layer.id)}
+                  onClick={() => onLayerInfo(layer['content-id'] || layer.id)}
                   label={<FormattedMessage {...messages.info} />}
                 />
               </ListBodyCellCenter>
