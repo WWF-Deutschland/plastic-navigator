@@ -1,6 +1,7 @@
 import { takeEvery, takeLatest, select, put, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import extend from 'lodash/extend';
+import Papa from 'papaparse';
 import 'whatwg-fetch';
 import 'url-search-params-polyfill';
 
@@ -21,6 +22,8 @@ import {
   SET_LAYER_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
+  TOGGLE_PROJECT,
+  SET_PROJECTS,
   SET_STORY,
   SET_CHAPTER,
 } from './constants';
@@ -157,19 +160,38 @@ function* loadConfigSaga({ key }) {
     });
     // If haven't loaded yet, do so now.
     if (!requestedAt && !ready) {
-      const url = `${RESOURCES.DATA}/${CONFIG[key]}`;
+      const config = CONFIG[key];
+      const url = `${RESOURCES.DATA}/${
+        typeof config === 'string' ? config : config.file
+      }`;
       try {
         // First record that we are requesting
         yield put(setConfigRequested(key, Date.now()));
         const response = yield fetch(url);
         const responseOk = yield response.ok;
-        if (responseOk && typeof response.json === 'function') {
-          const json = yield response.json();
-          if (json) {
-            yield put(setConfigLoadSuccess(key, json, Date.now()));
-          } else {
-            yield put(setConfigRequested(key, false));
-            throw new Error(response.statusText);
+        const type = config.type || 'json';
+        if (responseOk) {
+          if (type === 'json' && typeof response.json === 'function') {
+            const json = yield response.json();
+            if (json) {
+              yield put(setConfigLoadSuccess(key, json, Date.now()));
+            } else {
+              yield put(setConfigRequested(key, false));
+              throw new Error(response.statusText);
+            }
+          }
+          if (type === 'csv' && typeof response.text === 'function') {
+            const csv = yield response.text();
+            // console.log(csv)
+            if (csv) {
+              const parsed = yield Papa.parse(csv, {
+                header: true,
+              });
+              yield put(setConfigLoadSuccess(key, parsed.data, Date.now()));
+            } else {
+              yield put(setConfigRequested(key, false));
+              throw new Error(response.statusText);
+            }
           }
         } else {
           yield put(setConfigRequested(key, false));
@@ -368,6 +390,36 @@ function* toggleLayerSaga({ id }) {
   yield put(push(`${currentLocation.pathname}${search}`));
 }
 
+function* toggleProjectSaga({ id }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  const activeProjectsParams = searchParams.get('projects');
+  const activeProjects = activeProjectsParams
+    ? activeProjectsParams.split(URL_SEARCH_SEPARATOR)
+    : [];
+  let newProjects = [];
+  // remove if already present
+  if (activeProjects.indexOf(id) > -1) {
+    newProjects = activeProjects.reduce((memo, layer) => {
+      if (layer !== id) return [...memo, layer];
+      return memo;
+    }, []);
+  }
+  // else add
+  else {
+    newProjects = [...activeProjects, id];
+  }
+  if (newProjects.length > 0) {
+    searchParams.set('projects', newProjects.join(URL_SEARCH_SEPARATOR));
+  } else {
+    searchParams.delete('projects');
+  }
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  yield put(push(`${currentLocation.pathname}${search}`));
+}
+
 function* setLayersSaga({ layers }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
@@ -375,6 +427,21 @@ function* setLayersSaga({ layers }) {
 
   if (layers.length > 0) {
     searchParams.set('layers', layers.join(URL_SEARCH_SEPARATOR));
+  }
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+
+function* setProjectsSaga({ projects }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+  searchParams.delete('projects');
+
+  if (projects.length > 0) {
+    searchParams.set('projects', projects.join(URL_SEARCH_SEPARATOR));
   }
   const newSearch = searchParams.toString();
   const search = newSearch.length > 0 ? `?${newSearch}` : '';
@@ -422,6 +489,8 @@ export default function* defaultSaga() {
   yield takeLatest(SET_LAYER_INFO, setLayerInfoSaga);
   yield takeLatest(TOGGLE_LAYER, toggleLayerSaga);
   yield takeLatest(SET_LAYERS, setLayersSaga);
+  yield takeLatest(TOGGLE_PROJECT, toggleProjectSaga);
+  yield takeLatest(SET_PROJECTS, setProjectsSaga);
   yield takeLatest(SET_STORY, setStorySaga);
   yield takeLatest(SET_CHAPTER, setChapterSaga);
 }

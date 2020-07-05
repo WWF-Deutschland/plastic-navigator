@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading } from 'grommet';
 import { Close } from 'grommet-icons';
+import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -21,6 +22,7 @@ import saga from 'containers/App/saga';
 import {
   selectContentByKey,
   selectSingleLayerConfig,
+  selectSingleProjectConfig,
   // selectSingleLayerCategory,
   // selectSingleLayerGroup,
   selectLocale,
@@ -58,6 +60,7 @@ const Title = styled(p => <Heading level={1} {...p} />)`
 // import commonMessages from 'messages';
 export function LayerInfo({
   id,
+  project = false,
   onLoadContent,
   content,
   onClose,
@@ -69,9 +72,24 @@ export function LayerInfo({
   useInjectSaga({ key: 'default', saga });
   useEffect(() => {
     // kick off loading of page content
-    onLoadContent(id);
+    if (project) {
+      // onLoadLocation
+      console.log('load locations');
+    } else {
+      onLoadContent(id);
+    }
   }, [id]);
+  if (!layer) return null;
 
+  const title = project
+    ? layer[`project_title_${locale}`] ||
+      layer[`project_title_${DEFAULT_LOCALE}`]
+    : layer.title[locale] || layer.title[DEFAULT_LOCALE];
+  let projectInfo;
+  if (project) {
+    projectInfo =
+      layer[`project_info_${locale}` || `project_info_${DEFAULT_LOCALE}`];
+  }
   return (
     <Styled>
       <ContentWrap>
@@ -81,11 +99,19 @@ export function LayerInfo({
           plain
           alignSelf="end"
         />
-        {locale && layer && (
-          <Title>{layer.title[locale] || layer.title[DEFAULT_LOCALE]}</Title>
+        <Title>{title}</Title>
+        {!project && content && <HTMLWrapper innerhtml={content} />}
+        {project && (
+          <div>
+            <Markdown
+              source={projectInfo
+                .split(' __ ')
+                .map(i => i.trim())
+                .join('\n\n ')}
+            />
+          </div>
         )}
-        {content && <HTMLWrapper innerhtml={content} />}
-        {layer && <LayerReference attribution={layer.attribution} />}
+        {!project && <LayerReference attribution={layer.attribution} />}
       </ContentWrap>
     </Styled>
   );
@@ -97,21 +123,32 @@ LayerInfo.propTypes = {
   id: PropTypes.string,
   onClose: PropTypes.func,
   layer: PropTypes.object,
+  project: PropTypes.bool,
   // layerCategory: PropTypes.object,
   // layerGroup: PropTypes.object,
   locale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  content: (state, props) =>
-    selectContentByKey(state, {
-      contentType: 'layers',
-      key: props.id,
-    }),
-  layer: (state, props) =>
-    selectSingleLayerConfig(state, {
-      key: props.id,
-    }),
+  content: (state, { id, project }) => {
+    if (!project) {
+      return selectContentByKey(state, {
+        contentType: 'layers',
+        key: id,
+      });
+    }
+    return null;
+  },
+  layer: (state, { id, project }) => {
+    if (project) {
+      return selectSingleProjectConfig(state, {
+        key: id,
+      });
+    }
+    return selectSingleLayerConfig(state, {
+      key: id,
+    });
+  },
   // layerCategory: (state, props) =>
   //   selectSingleLayerCategory(state, {
   //     key: props.id,
@@ -126,6 +163,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     onLoadContent: id => {
+      console.log('loadContent');
       dispatch(loadContent('layers', id));
     },
   };

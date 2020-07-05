@@ -22,6 +22,7 @@ import { Grommet, Button } from 'grommet';
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { getHeaderHeight } from 'utils/responsive';
+import { startsWith } from 'utils/string';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
@@ -135,7 +136,11 @@ function App({
           </Switch>
           {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
           {info !== '' && (
-            <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
+            <LayerInfo
+              id={info}
+              project={startsWith(info, 'project-')}
+              onClose={() => onCloseLayerInfo()}
+            />
           )}
           <Brand
             onClick={() => navHome()}

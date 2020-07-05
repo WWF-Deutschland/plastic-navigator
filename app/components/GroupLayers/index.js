@@ -82,6 +82,7 @@ function GroupLayers({
   onToggleLayer,
   onLayerInfo,
   locale,
+  projects,
 }) {
   return (
     <Styled>
@@ -90,12 +91,16 @@ function GroupLayers({
           <ListHeaderCell>
             <Box direction="row" gap="small" align="center">
               <Layer size="small" color="dark-4" />
-              <FormattedMessage {...messages.columnLayer} />
+              <FormattedMessage
+                {...messages[projects ? 'columnProject' : 'columnLayer']}
+              />
             </Box>
           </ListHeaderCell>
-          <ListHeaderKey>
-            <FormattedMessage {...messages.columnKey} />
-          </ListHeaderKey>
+          {!projects && (
+            <ListHeaderKey>
+              <FormattedMessage {...messages.columnKey} />
+            </ListHeaderKey>
+          )}
           <ListHeaderInfo>
             <FormattedMessage {...messages.columnInfo} />
           </ListHeaderInfo>
@@ -103,28 +108,32 @@ function GroupLayers({
       </ListHeader>
       <ListBody>
         {layers &&
-          layers.map(layer => (
-            <ListBodyRow key={layer.id}>
-              <ListBodyCell>
-                <StyledCheckBox
-                  checked={activeLayers.indexOf(layer.id) > -1}
-                  onChange={() => onToggleLayer(layer.id)}
-                  label={
-                    <Label>
-                      {layer.title[locale] || layer.title[DEFAULT_LOCALE]}
-                    </Label>
-                  }
-                />
-              </ListBodyCell>
-              <ListBodyCellCenter>[Key]</ListBodyCellCenter>
-              <ListBodyCellCenter>
-                <InfoButton
-                  onClick={() => onLayerInfo(layer['content-id'] || layer.id)}
-                  label={<FormattedMessage {...messages.info} />}
-                />
-              </ListBodyCellCenter>
-            </ListBodyRow>
-          ))}
+          layers.map(layer => {
+            const id = projects ? layer.project_id : layer.id;
+            const contentId = projects ? id : layer['content-id'] || layer.id;
+            const title = projects
+              ? layer[`project_title_${locale}`] ||
+                layer[`project_title_${DEFAULT_LOCALE}`]
+              : layer.title[locale] || layer.title[DEFAULT_LOCALE];
+            return (
+              <ListBodyRow key={id}>
+                <ListBodyCell>
+                  <StyledCheckBox
+                    checked={activeLayers.indexOf(id) > -1}
+                    onChange={() => onToggleLayer(id)}
+                    label={<Label>{title}</Label>}
+                  />
+                </ListBodyCell>
+                {!projects && <ListBodyCellCenter>[Key]</ListBodyCellCenter>}
+                <ListBodyCellCenter>
+                  <InfoButton
+                    onClick={() => onLayerInfo(contentId)}
+                    label={<FormattedMessage {...messages.info} />}
+                  />
+                </ListBodyCellCenter>
+              </ListBodyRow>
+            );
+          })}
       </ListBody>
     </Styled>
   );
@@ -133,6 +142,7 @@ function GroupLayers({
 GroupLayers.propTypes = {
   // group: PropTypes.object,
   layers: PropTypes.array,
+  projects: PropTypes.bool,
   activeLayers: PropTypes.array,
   onToggleLayer: PropTypes.func,
   onLayerInfo: PropTypes.func,

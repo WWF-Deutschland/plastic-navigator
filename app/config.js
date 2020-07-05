@@ -53,6 +53,14 @@ export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
   layers: 'layers.json',
+  projects: {
+    file: 'projects.csv',
+    type: 'csv',
+  },
+};
+
+export const PROJECTS = {
+  locations: 'projects/projectLocations.csv',
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
@@ -69,3 +77,5 @@ export const MAPBOX = {
 };
 
 export const URL_SEARCH_SEPARATOR = '|';
+
+export const PROJECT_CATEGORY = 'projects';

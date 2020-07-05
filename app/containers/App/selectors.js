@@ -6,6 +6,8 @@ import { DEFAULT_LOCALE, appLocales } from 'i18n';
 
 import { URL_SEARCH_SEPARATOR } from 'config';
 
+import { startsWith } from 'utils/string';
+
 import { initialState } from './reducer';
 
 const selectGlobal = state => state.global || initialState;
@@ -31,6 +33,10 @@ export const selectPageSearch = createSelector(
 export const selectLayersSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('layers') ? search.get('layers') : ''),
+);
+export const selectProjectsSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('projects') ? search.get('projects') : ''),
 );
 export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
@@ -174,6 +180,15 @@ export const selectConfigRequestedByKey = createSelector(
   (key, config) => config[key],
 );
 
+export const selectSingleProjectConfig = createSelector(
+  (state, { key }) => key,
+  state => selectConfigByKey(state, { key: 'projects' }),
+  (key, projects) => {
+    const pid = startsWith(key, 'project-') ? key.replace('project-', '') : key;
+    return projects && projects.find(p => p.project_id === pid);
+  },
+);
+
 export const selectUIState = createSelector(
   selectGlobal,
   global => global.uiState,
@@ -186,6 +201,11 @@ export const selectUIStateByKey = createSelector(
 
 export const selectActiveLayers = createSelector(
   selectLayersSearch,
-  layerSearch =>
-    layerSearch === '' ? [] : layerSearch.split(URL_SEARCH_SEPARATOR),
+  layersSearch =>
+    layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
+);
+export const selectActiveProjects = createSelector(
+  selectProjectsSearch,
+  projectsSearch =>
+    projectsSearch === '' ? [] : projectsSearch.split(URL_SEARCH_SEPARATOR),
 );

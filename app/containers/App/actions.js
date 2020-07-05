@@ -34,6 +34,8 @@ import {
   SET_LAYER_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
+  TOGGLE_PROJECT,
+  SET_PROJECTS,
   SET_STORY,
   SET_CHAPTER,
 } from './constants';
@@ -166,6 +168,7 @@ export function setConfigReady(key, time) {
     time,
   };
 }
+
 export function setUIState(component, state) {
   return {
     type: SET_UI_STATE,
@@ -189,6 +192,18 @@ export function setLayers(layers) {
   return {
     type: SET_LAYERS,
     layers,
+  };
+}
+export function toggleProject(id) {
+  return {
+    type: TOGGLE_PROJECT,
+    id,
+  };
+}
+export function setProjects(projects) {
+  return {
+    type: SET_PROJECTS,
+    projects,
   };
 }
 export function setChapter(index) {

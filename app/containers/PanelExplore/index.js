@@ -18,17 +18,23 @@ import { DEFAULT_LOCALE } from 'i18n';
 
 import {
   selectLayersConfig,
+  selectConfigByKey,
   selectExploreConfig,
   selectLocale,
   selectUIStateByKey,
   selectActiveLayers,
+  selectActiveProjects,
 } from 'containers/App/selectors';
 import {
   setUIState,
   setLayerInfo,
   toggleLayer,
+  toggleProject,
   setLayers,
+  setProjects,
 } from 'containers/App/actions';
+
+import { PROJECT_CATEGORY } from 'config';
 
 import GroupLayers from 'components/GroupLayers';
 
@@ -79,34 +85,48 @@ const COMPONENT_KEY = 'PanelExplore';
 const DEFAULT_UI_STATE = {
   tab: 0,
   layersMemo: null,
+  prrojectsMemo: null,
 };
 
 export function PanelExplore({
   onClose,
   onLayerInfo,
   onToggleLayer,
+  onToggleProject,
+  onSetProjects,
+  onMemoProjects,
   onSetLayers,
   onMemoLayers,
   onSetTab,
+  projects,
   layersConfig,
   exploreConfig,
   locale,
   uiState,
   activeLayers,
+  activeProjects,
 }) {
-  const { tab, layersMemo } = uiState
+  const { tab, layersMemo, projectsMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
   useEffect(() => {
     if (layersMemo && (!activeLayers || activeLayers.length === 0)) {
       onSetLayers(layersMemo);
     }
+    if (projectsMemo && (!activeProjects || activeProjects.length === 0)) {
+      onSetProjects(projectsMemo);
+    }
   }, []);
   useEffect(() => {
     onMemoLayers(activeLayers, uiState);
   }, [activeLayers]);
+  useEffect(() => {
+    onMemoProjects(activeProjects, uiState);
+  }, [activeProjects]);
 
   const activeCategory = exploreConfig && exploreConfig[tab];
+
+  // prettier-ignore
   return (
     <Styled background="white">
       <div>
@@ -143,6 +163,7 @@ export function PanelExplore({
         <PanelBody>
           {layersConfig &&
             activeCategory &&
+            activeCategory.id !== PROJECT_CATEGORY &&
             activeCategory.groups &&
             activeCategory.groups.map(group => (
               <SectionLayerGroup key={group.id}>
@@ -167,7 +188,10 @@ export function PanelExplore({
                 />
               </SectionLayerGroup>
             ))}
-          {layersConfig && activeCategory && !activeCategory.groups && (
+          {layersConfig &&
+            activeCategory &&
+            activeCategory.id !== PROJECT_CATEGORY &&
+            !activeCategory.groups && (
             <SectionLayerGroup>
               <GroupLayers
                 group={activeCategory}
@@ -178,6 +202,21 @@ export function PanelExplore({
                 activeLayers={activeLayers}
                 onLayerInfo={onLayerInfo}
                 onToggleLayer={onToggleLayer}
+              />
+            </SectionLayerGroup>
+          )}
+          {projects &&
+            activeCategory &&
+            activeCategory.id === PROJECT_CATEGORY && (
+            <SectionLayerGroup>
+              <GroupLayers
+                group={activeCategory.id}
+                layers={projects}
+                projects
+                locale={locale}
+                activeLayers={activeProjects}
+                onLayerInfo={id => onLayerInfo(`project-${id}`)}
+                onToggleLayer={onToggleProject}
               />
             </SectionLayerGroup>
           )}
@@ -192,21 +231,28 @@ PanelExplore.propTypes = {
   onSetTab: PropTypes.func,
   onLayerInfo: PropTypes.func,
   onToggleLayer: PropTypes.func,
+  onToggleProject: PropTypes.func,
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
+  onSetProjects: PropTypes.func,
+  onMemoProjects: PropTypes.func,
   layersConfig: PropTypes.array,
   exploreConfig: PropTypes.array,
+  projects: PropTypes.array,
   activeLayers: PropTypes.array,
+  activeProjects: PropTypes.array,
   locale: PropTypes.string,
   uiState: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
+  projects: state => selectConfigByKey(state, { key: 'projects' }),
   layersConfig: state => selectLayersConfig(state),
   exploreConfig: state => selectExploreConfig(state),
   locale: state => selectLocale(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
+  activeProjects: state => selectActiveProjects(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -225,9 +271,20 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
         ),
       ),
+    onMemoProjects: (projects, uiState) =>
+      dispatch(
+        setUIState(
+          COMPONENT_KEY,
+          Object.assign({}, DEFAULT_UI_STATE, uiState, {
+            projectsMemo: projects,
+          }),
+        ),
+      ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
+    onToggleProject: id => dispatch(toggleProject(id)),
     onSetLayers: layers => dispatch(setLayers(layers)),
+    onSetProjects: layers => dispatch(setProjects(layers)),
   };
 }
 
