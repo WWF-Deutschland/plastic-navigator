@@ -42,6 +42,7 @@ const Styled = styled(props => <Box {...props} />)`
   bottom: 0;
   width: 400px;
   pointer-events: all;
+  overflow-y: auto;
 `;
 
 const PanelHeader = styled(p => <Box background="black" {...p} />)``;
@@ -108,76 +109,80 @@ export function PanelExplore({
   const activeCategory = exploreConfig && exploreConfig[tab];
   return (
     <Styled background="white">
-      <PanelHeader>
-        <Button
-          onClick={() => onClose()}
-          icon={<Close size="xlarge" />}
-          plain
-          alignSelf="end"
-        />
-        <TitleWrap>
-          <Layer size="xlarge" />
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
-        </TitleWrap>
-        <Tabs>
-          {exploreConfig &&
-            exploreConfig.map((category, index) => (
-              <TabLink
-                key={category.id}
-                onClick={() => onSetTab(index, uiState)}
-                active={tab === index}
-                disabled={tab === index}
-                label={
-                  <TabLinkAnchor active={tab === index}>
-                    {category.title[locale] || category.title[DEFAULT_LOCALE]}
-                  </TabLinkAnchor>
-                }
-              />
+      <div>
+        <PanelHeader>
+          <Button
+            onClick={() => onClose()}
+            icon={<Close size="xlarge" />}
+            plain
+            alignSelf="end"
+          />
+          <TitleWrap>
+            <Layer size="xlarge" />
+            <Title>
+              <FormattedMessage {...messages.title} />
+            </Title>
+          </TitleWrap>
+          <Tabs>
+            {exploreConfig &&
+              exploreConfig.map((category, index) => (
+                <TabLink
+                  key={category.id}
+                  onClick={() => onSetTab(index, uiState)}
+                  active={tab === index}
+                  disabled={tab === index}
+                  label={
+                    <TabLinkAnchor active={tab === index}>
+                      {category.title[locale] || category.title[DEFAULT_LOCALE]}
+                    </TabLinkAnchor>
+                  }
+                />
+              ))}
+          </Tabs>
+        </PanelHeader>
+        <PanelBody>
+          {layersConfig &&
+            activeCategory &&
+            activeCategory.groups &&
+            activeCategory.groups.map(group => (
+              <SectionLayerGroup key={group.id}>
+                <TitleGroup>
+                  {group.title[locale] || group.title[DEFAULT_LOCALE]}
+                </TitleGroup>
+                {group.description && (
+                  <DescriptionGroup>
+                    {group.description[locale] ||
+                      group.description[DEFAULT_LOCALE]}
+                  </DescriptionGroup>
+                )}
+                <GroupLayers
+                  group={group}
+                  layers={layersConfig.filter(
+                    layer => layer.group === group.id,
+                  )}
+                  locale={locale}
+                  activeLayers={activeLayers}
+                  onLayerInfo={onLayerInfo}
+                  onToggleLayer={onToggleLayer}
+                />
+              </SectionLayerGroup>
             ))}
-        </Tabs>
-      </PanelHeader>
-      <PanelBody>
-        {layersConfig &&
-          activeCategory &&
-          activeCategory.groups &&
-          activeCategory.groups.map(group => (
-            <SectionLayerGroup key={group.id}>
-              <TitleGroup>
-                {group.title[locale] || group.title[DEFAULT_LOCALE]}
-              </TitleGroup>
-              {group.description && (
-                <DescriptionGroup>
-                  {group.description[locale] ||
-                    group.description[DEFAULT_LOCALE]}
-                </DescriptionGroup>
-              )}
+          {layersConfig && activeCategory && !activeCategory.groups && (
+            <SectionLayerGroup>
               <GroupLayers
-                group={group}
-                layers={layersConfig.filter(layer => layer.group === group.id)}
+                group={activeCategory}
+                layers={layersConfig.filter(
+                  layer => layer.category === activeCategory.id,
+                )}
                 locale={locale}
                 activeLayers={activeLayers}
                 onLayerInfo={onLayerInfo}
                 onToggleLayer={onToggleLayer}
               />
             </SectionLayerGroup>
-          ))}
-        {layersConfig && activeCategory && !activeCategory.groups && (
-          <SectionLayerGroup>
-            <GroupLayers
-              group={activeCategory}
-              layers={layersConfig.filter(
-                layer => layer.category === activeCategory.id,
-              )}
-              locale={locale}
-              activeLayers={activeLayers}
-              onLayerInfo={onLayerInfo}
-              onToggleLayer={onToggleLayer}
-            />
-          </SectionLayerGroup>
-        )}
-      </PanelBody>
+          )}
+        </PanelBody>
+      </div>
     </Styled>
   );
 }
