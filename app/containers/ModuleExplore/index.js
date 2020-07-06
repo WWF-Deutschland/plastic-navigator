@@ -93,7 +93,8 @@ export function ModuleExplore({ onSetLayers, layerIds, projects }) {
     })
     .map(id => id.replace('project-', ''));
   // const hasActiveProjects = activeProjects.length > 0;
-  const hasAllProjectsActive = activeProjects.length >= projects.length;
+  const hasAllProjectsActive =
+    projects && activeProjects.length >= projects.length;
   return (
     <ResponsiveContext.Consumer>
       {size => (

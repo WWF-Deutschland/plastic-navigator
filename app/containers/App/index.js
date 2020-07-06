@@ -139,6 +139,7 @@ function App({
             <LayerInfo
               id={info}
               project={startsWith(info, 'project-')}
+              location={startsWith(info, 'projloc-')}
               onClose={() => onCloseLayerInfo()}
             />
           )}

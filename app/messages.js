@@ -28,4 +28,8 @@ export default defineMessages({
     id: `${scope}.page_glossary`,
     defaultMessage: 'Glossary',
   },
+  locations: {
+    id: `${scope}.locations`,
+    defaultMessage: 'Locations',
+  },
 });

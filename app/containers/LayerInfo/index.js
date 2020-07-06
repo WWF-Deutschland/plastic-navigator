@@ -12,28 +12,29 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, ResponsiveContext } from 'grommet';
 import { Close } from 'grommet-icons';
-import Markdown from 'react-remarkable';
-import anchorme from 'anchorme';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { getAsideInfoWidth } from 'utils/responsive';
 
+import { PROJECT_LOCATIONS } from 'config';
 import saga from 'containers/App/saga';
 import {
   selectContentByKey,
   selectSingleLayerConfig,
-  selectSingleProjectConfig,
-  // selectSingleLayerCategory,
-  // selectSingleLayerGroup,
   selectLocale,
 } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
+import { loadLayer } from 'containers/Map/actions';
+import { selectLayerByKey } from 'containers/Map/selectors';
 
 import HTMLWrapper from 'components/HTMLWrapper';
 
 import LayerReference from './LayerReference';
+import ProjectInfo from './ProjectInfo';
+import ProjectLocationInfo from './ProjectLocationInfo';
+// import messages from './messages';
 
 const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 
@@ -58,11 +59,10 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   font-size: 1.6em;
 `;
 
-// import messages from './messages';
-// import commonMessages from 'messages';
 export function LayerInfo({
   id,
   project = false,
+  location = false,
   onLoadContent,
   content,
   onClose,
@@ -70,28 +70,19 @@ export function LayerInfo({
   // layerCategory,
   // layerGroup,
   locale,
+  onLoadLocations,
+  locations,
 }) {
   useInjectSaga({ key: 'default', saga });
   useEffect(() => {
     // kick off loading of page content
-    if (project) {
-      // onLoadLocation
-      console.log('load locations');
+    if (project || location) {
+      onLoadLocations();
     } else {
       onLoadContent(id);
     }
   }, [id]);
-  if (!layer) return null;
 
-  const title = project
-    ? layer[`project_title_${locale}`] ||
-      layer[`project_title_${DEFAULT_LOCALE}`]
-    : layer.title[locale] || layer.title[DEFAULT_LOCALE];
-  let projectInfo;
-  if (project) {
-    projectInfo =
-      layer[`project_info_${locale}` || `project_info_${DEFAULT_LOCALE}`];
-  }
   return (
     <ResponsiveContext.Consumer>
       {size => (
@@ -103,31 +94,19 @@ export function LayerInfo({
               plain
               alignSelf="end"
             />
-            <Title>{title}</Title>
-            {!project && content && <HTMLWrapper innerhtml={content} />}
             {project && (
-              <div>
-                <Markdown
-                  options={{
-                    html: true,
-                  }}
-                  source={anchorme({
-                    input: projectInfo,
-                    options: {
-                      truncate: 40,
-                      attributes: {
-                        target: '_blank',
-                        class: 'mpx-content-link',
-                      },
-                    },
-                  })
-                    .split(' __ ')
-                    .map(i => i.trim())
-                    .join('\n\n ')}
-                />
-              </div>
+              <ProjectInfo id={id} locations={locations} project={layer} />
             )}
-            {!project && <LayerReference attribution={layer.attribution} />}
+            {location && <ProjectLocationInfo id={id} locations={locations} />}
+            {layer && !project && !location && (
+              <>
+                <Title>
+                  {layer.title[locale] || layer.title[DEFAULT_LOCALE]}
+                </Title>
+                {content && <HTMLWrapper innerhtml={content} />}
+                <LayerReference attribution={layer.attribution} />
+              </>
+            )}
           </ContentWrap>
         </Styled>
       )}
@@ -137,11 +116,14 @@ export function LayerInfo({
 
 LayerInfo.propTypes = {
   onLoadContent: PropTypes.func.isRequired,
+  onLoadLocations: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   id: PropTypes.string,
   onClose: PropTypes.func,
   layer: PropTypes.object,
   project: PropTypes.bool,
+  location: PropTypes.bool,
+  locations: PropTypes.object, // geojson
   // layerCategory: PropTypes.object,
   // layerGroup: PropTypes.object,
   locale: PropTypes.string,
@@ -157,32 +139,19 @@ const mapStateToProps = createStructuredSelector({
     }
     return null;
   },
-  layer: (state, { id, project }) => {
-    if (project) {
-      return selectSingleProjectConfig(state, {
-        key: id,
-      });
-    }
-    return selectSingleLayerConfig(state, {
-      key: id,
-    });
-  },
-  // layerCategory: (state, props) =>
-  //   selectSingleLayerCategory(state, {
-  //     key: props.id,
-  //   }),
-  // layerGroup: (state, props) =>
-  //   selectSingleLayerGroup(state, {
-  //     key: props.id,
-  //   }),
+  layer: (state, { id }) => selectSingleLayerConfig(state, { key: id }),
+  locations: (state, { project, location }) =>
+    project || location ? selectLayerByKey(state, 'projectLocations') : null,
   locale: state => selectLocale(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onLoadContent: id => {
-      console.log('loadContent');
       dispatch(loadContent('layers', id));
+    },
+    onLoadLocations: () => {
+      dispatch(loadLayer('projectLocations', PROJECT_LOCATIONS));
     },
   };
 }
