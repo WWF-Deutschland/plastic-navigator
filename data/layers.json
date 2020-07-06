@@ -604,8 +604,9 @@
       "flip": {
         "latitude": "south"
       },
-      "options": {
-        "iconSize": "50"
+      "size": {
+        "x": "40",
+        "y": "40"
       }
     }
   }
