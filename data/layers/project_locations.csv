@@ -1,4 +1,4 @@
-project_id,id,location_title_en,location_title_de,latitude,longitude,location_info_en,location_info_de,location_link,country_en,country_de
+project_id,location_id,location_title_en,location_title_de,latitude,longitude,location_info_en,location_info_de,location_link,country_en,country_de
 1,1.1,German Baltic Sea ,,54.3108,13.087,,,,Germany,
 2,2.1,Cape Town,,-33.9249,18.4241,,,,South Africa,
 3,3.1,Porto Santo Island,,38.67888889,-27.23083333,,,,Portugal,
