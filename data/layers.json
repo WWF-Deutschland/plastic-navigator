@@ -599,8 +599,11 @@
     "render": {
       "type": "marker"
     },
-    "icon": {
-      "iconUrl": "icon-gyre.png"
+    "marker": {
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 39'><defs><style>.cls-1{opacity:0.25;}.cls-2{fill:#fff;}.cls-3{fill:none;stroke:#000;stroke-miterlimit:10;}</style></defs><image class='cls-1' width='38' height='38' transform='translate(1 1)' xlink:href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAYAAACoPemuAAAACXBIWXMAAAsSAAALEgHS3X78AAAC8ElEQVRYR+3Yz2tbRxTF8c8oVkPr0kUMjQOOTaANzaKbBNN16R+edSjNposGt2AcuzgJOLShTnBka7K470pPimRZsSVcyAEhoTfvna/O/NDcKbVW86iUUvLjuQ2HqlDnNCoXbd8AdbCCm+iaDVfRwwlO0b8o4EywFlAXq7iFdXwjIKfBVQHzBi/wGscCdCbguWCllAT6GmvYxPf4AbdFcufpBC/xDH/iOY7wH3q11v60G6eClVJu4Et8i3u4jx8F2F2RWHfizUP1RGL7Aux37GAXr/Cu1no26caJYC2oDTzET3iALZHcqvnG2LFIag9/4Ame4sAUuJXxL1pQd7GNn/EId0SXdsWYmwWVmjU+90spH8GNgDVjKpPaxi/N+wa+Mh9QquCGIeBN4dtprlcclFLetsfcAKyZfV0xph6KpLZFcgl1GSXgqngm9MXMfY+/Synvc7a2E+uIrronxtQjo0ldlTrimRuGy8lL/It/cJaN2mmtidn3QIypq4ZKJdwd4XVfeHfznyVNOyLiLbEkbIn0FgGVyh5qe6423+s0hCtixnzXvNZcbDm4jNq9lL63sFKaWUjMlHWxom9qkS9Y2VObwntd82+S078r1pbbhiv6ItNKTfXOVLLBF5YHlZroPd5dywQa14j3MsbRJ+kz2Lz6DDavxsEuVCgsSCPe7T1RT2w/euONFqyJ3p3Whdx+vLE8uKnemdiJKLGeiUrmWGziFq2+8HouvF8IFp1mx3gq6r6/mteRxaeWaR0Z+r7Gaa11kFiS74kSa0/UfotMrS882p6DnuowOFdI+h1RYh3ircXA9cWzD4XXjqaXJu358xfsirovS6yrKkZSCXWA34TXrrEeGoDVWmsppScq5KdGS6zLlG+pahTqVzwWXq+00mKsrqy19ksp75obEyBLrE8teBOoJ1I5FEk9FnBZjY8MmY8q8VrrWQO3b/TEZqlHBP+vQ5XBxet4DDVocB0P7tq6dked48oS3myoVGX+w+EPle1eGSDNClQAAAAASUVORK5CYII='/><circle id='Ellipse_196-2' data-name='Ellipse 196-2' class='cls-2' cx='20' cy='20' r='16'/><path class='cls-3' d='M13.7,9.8a10,10,0,0,1,11.93,4.82'/><polygon points='24.37 14.79 26.3 16.2 26.56 13.82 24.37 14.79'/><path class='cls-3' d='M26.3,30.2a10,10,0,0,1-11.93-4.82'/><polygon points='15.63 25.21 13.7 23.8 13.44 26.18 15.63 25.21'/><path class='cls-3' d='M30.2,13.7a10,10,0,0,1-4.82,11.93'/><polygon points='25.21 24.37 23.8 26.3 26.18 26.56 25.21 24.37'/><path class='cls-3' d='M9.8,26.3a10,10,0,0,1,4.82-11.93'/><polygon points='14.79 15.63 16.2 13.7 13.82 13.44 14.79 15.63'/><path class='cls-3' d='M31.67,22.76a10,10,0,0,1-11.84,5'/><polygon points='20.59 26.78 18.23 27.14 19.73 29.01 20.59 26.78'/><path class='cls-3' d='M8.33,17.24a10,10,0,0,1,11.84-5'/><polygon points='19.41 13.22 21.77 12.86 20.27 10.99 19.41 13.22'/><path class='cls-3' d='M22.76,8.33a10,10,0,0,1,5,11.84'/><polygon points='26.78 19.41 27.14 21.77 29.01 20.27 26.78 19.41'/><path class='cls-3' d='M17.24,31.67a10,10,0,0,1-5-11.84'/><polygon points='13.22 20.59 12.86 18.23 10.99 19.73 13.22 20.59'/></svg>",
+      "flip": {
+        "latitude": "south"
+      }
     }
   }
 ]
