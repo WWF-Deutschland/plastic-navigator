@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box, Heading } from 'grommet';
+import { Button, Box, Heading, ResponsiveContext } from 'grommet';
 import { Close } from 'grommet-icons';
 import Markdown from 'react-remarkable';
 import anchorme from 'anchorme';
@@ -18,6 +18,7 @@ import anchorme from 'anchorme';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import { useInjectSaga } from 'utils/injectSaga';
+import { getAsideInfoWidth } from 'utils/responsive';
 
 import saga from 'containers/App/saga';
 import {
@@ -48,7 +49,7 @@ const Styled = styled(props => <Box {...props} background="white" />)`
   z-index: 3001;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     position: absolute;
-    width: 500px;
+    width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
   }
 `;
@@ -92,41 +93,45 @@ export function LayerInfo({
       layer[`project_info_${locale}` || `project_info_${DEFAULT_LOCALE}`];
   }
   return (
-    <Styled>
-      <ContentWrap>
-        <Button
-          onClick={() => onClose()}
-          icon={<Close />}
-          plain
-          alignSelf="end"
-        />
-        <Title>{title}</Title>
-        {!project && content && <HTMLWrapper innerhtml={content} />}
-        {project && (
-          <div>
-            <Markdown
-              options={{
-                html: true,
-              }}
-              source={anchorme({
-                input: projectInfo,
-                options: {
-                  truncate: 40,
-                  attributes: {
-                    target: '_blank',
-                    class: 'mpx-content-link',
-                  },
-                },
-              })
-                .split(' __ ')
-                .map(i => i.trim())
-                .join('\n\n ')}
+    <ResponsiveContext.Consumer>
+      {size => (
+        <Styled panelWidth={getAsideInfoWidth(size)}>
+          <ContentWrap>
+            <Button
+              onClick={() => onClose()}
+              icon={<Close />}
+              plain
+              alignSelf="end"
             />
-          </div>
-        )}
-        {!project && <LayerReference attribution={layer.attribution} />}
-      </ContentWrap>
-    </Styled>
+            <Title>{title}</Title>
+            {!project && content && <HTMLWrapper innerhtml={content} />}
+            {project && (
+              <div>
+                <Markdown
+                  options={{
+                    html: true,
+                  }}
+                  source={anchorme({
+                    input: projectInfo,
+                    options: {
+                      truncate: 40,
+                      attributes: {
+                        target: '_blank',
+                        class: 'mpx-content-link',
+                      },
+                    },
+                  })
+                    .split(' __ ')
+                    .map(i => i.trim())
+                    .join('\n\n ')}
+                />
+              </div>
+            )}
+            {!project && <LayerReference attribution={layer.attribution} />}
+          </ContentWrap>
+        </Styled>
+      )}
+    </ResponsiveContext.Consumer>
   );
 }
 

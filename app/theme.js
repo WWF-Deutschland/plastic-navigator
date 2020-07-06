@@ -40,14 +40,16 @@ export const dimensions = {
     height: [50, 50, 50, 50, 50],
     zIndex: 1200,
   },
-  layerSelect: {
+  // layer select
+  aside: {
     // by breakpoint
-    width: [0, 0, 350, 420, 550],
+    width: [0, 0, 350, 420, 500],
     zIndex: 1150,
   },
-  layerInfo: {
+  // layer info
+  asideInfo: {
     // by breakpoint
-    width: [0, 0, 350, 420, 550],
+    width: [0, 0, 350, 500, 600],
     zIndex: 1150,
   },
 };

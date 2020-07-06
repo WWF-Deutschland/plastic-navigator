@@ -11,8 +11,17 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Button, Text, Heading, Paragraph } from 'grommet';
+import {
+  Box,
+  Button,
+  Text,
+  Heading,
+  Paragraph,
+  ResponsiveContext,
+} from 'grommet';
 import { Close, Layer } from 'grommet-icons';
+
+import { getAsideWidth } from 'utils/responsive';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -43,7 +52,7 @@ const Styled = styled(props => <Box {...props} />)`
   right: 0;
   top: 0;
   bottom: 0;
-  width: 400px;
+  width: ${({ panelWidth }) => panelWidth || 400}px;
   pointer-events: all;
   overflow-y: auto;
 `;
@@ -115,101 +124,105 @@ export function PanelExplore({
 
   // prettier-ignore
   return (
-    <Styled background="white">
-      <div>
-        <PanelHeader>
-          <Button
-            onClick={() => onClose()}
-            icon={<Close size="xlarge" />}
-            plain
-            alignSelf="end"
-          />
-          <TitleWrap>
-            <Layer size="xlarge" />
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
-          </TitleWrap>
-          <Tabs>
-            {exploreConfig &&
-              exploreConfig.map((category, index) => (
-                <TabLink
-                  key={category.id}
-                  onClick={() => onSetTab(index, uiState)}
-                  active={tab === index}
-                  disabled={tab === index}
-                  label={
-                    <TabLinkAnchor active={tab === index}>
-                      {category.title[locale] || category.title[DEFAULT_LOCALE]}
-                    </TabLinkAnchor>
-                  }
-                />
-              ))}
-          </Tabs>
-        </PanelHeader>
-        <PanelBody>
-          {layersConfig &&
-            activeCategory &&
-            activeCategory.id !== PROJECT_CATEGORY &&
-            activeCategory.groups &&
-            activeCategory.groups.map(group => (
-              <SectionLayerGroup key={group.id}>
-                <TitleGroup>
-                  {group.title[locale] || group.title[DEFAULT_LOCALE]}
-                </TitleGroup>
-                {group.description && (
-                  <DescriptionGroup>
-                    {group.description[locale] ||
-                      group.description[DEFAULT_LOCALE]}
-                  </DescriptionGroup>
-                )}
-                <GroupLayers
-                  group={group}
-                  layers={layersConfig.filter(
-                    layer => layer.group === group.id,
-                  )}
-                  locale={locale}
-                  activeLayers={activeLayers}
-                  onLayerInfo={onLayerInfo}
-                  onToggleLayer={onToggleLayer}
-                />
-              </SectionLayerGroup>
-            ))}
-          {layersConfig &&
-            activeCategory &&
-            activeCategory.id !== PROJECT_CATEGORY &&
-            !activeCategory.groups && (
-            <SectionLayerGroup>
-              <GroupLayers
-                group={activeCategory}
-                layers={layersConfig.filter(
-                  layer => layer.category === activeCategory.id,
-                )}
-                locale={locale}
-                activeLayers={activeLayers}
-                onLayerInfo={onLayerInfo}
-                onToggleLayer={onToggleLayer}
+    <ResponsiveContext.Consumer>
+      {size => (
+        <Styled background="white" panelWidth={getAsideWidth(size)}>
+          <div>
+            <PanelHeader>
+              <Button
+                onClick={() => onClose()}
+                icon={<Close size="xlarge" />}
+                plain
+                alignSelf="end"
               />
-            </SectionLayerGroup>
-          )}
-          {projects &&
-            activeCategory &&
-            activeCategory.id === PROJECT_CATEGORY && (
-            <SectionLayerGroup>
-              <GroupLayers
-                group={activeCategory.id}
-                layers={projects}
-                projects
-                locale={locale}
-                activeLayers={activeLayers}
-                onLayerInfo={onLayerInfo}
-                onToggleLayer={onToggleLayer}
-              />
-            </SectionLayerGroup>
-          )}
-        </PanelBody>
-      </div>
-    </Styled>
+              <TitleWrap>
+                <Layer size="xlarge" />
+                <Title>
+                  <FormattedMessage {...messages.title} />
+                </Title>
+              </TitleWrap>
+              <Tabs>
+                {exploreConfig &&
+                  exploreConfig.map((category, index) => (
+                    <TabLink
+                      key={category.id}
+                      onClick={() => onSetTab(index, uiState)}
+                      active={tab === index}
+                      disabled={tab === index}
+                      label={
+                        <TabLinkAnchor active={tab === index}>
+                          {category.title[locale] || category.title[DEFAULT_LOCALE]}
+                        </TabLinkAnchor>
+                      }
+                    />
+                  ))}
+              </Tabs>
+            </PanelHeader>
+            <PanelBody>
+              {layersConfig &&
+                activeCategory &&
+                activeCategory.id !== PROJECT_CATEGORY &&
+                activeCategory.groups &&
+                activeCategory.groups.map(group => (
+                  <SectionLayerGroup key={group.id}>
+                    <TitleGroup>
+                      {group.title[locale] || group.title[DEFAULT_LOCALE]}
+                    </TitleGroup>
+                    {group.description && (
+                      <DescriptionGroup>
+                        {group.description[locale] ||
+                          group.description[DEFAULT_LOCALE]}
+                      </DescriptionGroup>
+                    )}
+                    <GroupLayers
+                      group={group}
+                      layers={layersConfig.filter(
+                        layer => layer.group === group.id,
+                      )}
+                      locale={locale}
+                      activeLayers={activeLayers}
+                      onLayerInfo={onLayerInfo}
+                      onToggleLayer={onToggleLayer}
+                    />
+                  </SectionLayerGroup>
+                ))}
+              {layersConfig &&
+                activeCategory &&
+                activeCategory.id !== PROJECT_CATEGORY &&
+                !activeCategory.groups && (
+                <SectionLayerGroup>
+                  <GroupLayers
+                    group={activeCategory}
+                    layers={layersConfig.filter(
+                      layer => layer.category === activeCategory.id,
+                    )}
+                    locale={locale}
+                    activeLayers={activeLayers}
+                    onLayerInfo={onLayerInfo}
+                    onToggleLayer={onToggleLayer}
+                  />
+                </SectionLayerGroup>
+              )}
+              {projects &&
+                activeCategory &&
+                activeCategory.id === PROJECT_CATEGORY && (
+                <SectionLayerGroup>
+                  <GroupLayers
+                    group={activeCategory.id}
+                    layers={projects}
+                    projects
+                    locale={locale}
+                    activeLayers={activeLayers}
+                    onLayerInfo={onLayerInfo}
+                    onToggleLayer={onToggleLayer}
+                  />
+                </SectionLayerGroup>
+              )}
+            </PanelBody>
+          </div>
+        </Styled>
+      )}
+    </ResponsiveContext.Consumer>
   );
 }
 

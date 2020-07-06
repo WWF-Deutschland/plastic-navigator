@@ -13,4 +13,20 @@ export default defineMessages({
     id: `${scope}.showLayerPanel`,
     defaultMessage: 'Layers',
   },
+  showProjects: {
+    id: `${scope}.showProjects`,
+    defaultMessage: 'Show WWF-projects',
+  },
+  hideProjects: {
+    id: `${scope}.hideProjects`,
+    defaultMessage: 'Hide WWF-projects',
+  },
+  showProjectsShort: {
+    id: `${scope}.showProjectsShort`,
+    defaultMessage: 'Show projects',
+  },
+  hideProjectsSHort: {
+    id: `${scope}.hideProjectsShort`,
+    defaultMessage: 'Hide projects',
+  },
 });
