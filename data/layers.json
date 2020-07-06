@@ -599,10 +599,13 @@
     "render": {
       "type": "marker"
     },
-    "marker": {
+    "icon": {
       "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 39'><defs><style>.cls-1{opacity:0.25;}.cls-2{fill:#fff;}.cls-3{fill:none;stroke:#000;stroke-miterlimit:10;}</style></defs><circle id='Ellipse_196-2' data-name='Ellipse 196-2' class='cls-2' cx='20' cy='20' r='16'/><path class='cls-3' d='M13.7,9.8a10,10,0,0,1,11.93,4.82'/><polygon points='24.37 14.79 26.3 16.2 26.56 13.82 24.37 14.79'/><path class='cls-3' d='M26.3,30.2a10,10,0,0,1-11.93-4.82'/><polygon points='15.63 25.21 13.7 23.8 13.44 26.18 15.63 25.21'/><path class='cls-3' d='M30.2,13.7a10,10,0,0,1-4.82,11.93'/><polygon points='25.21 24.37 23.8 26.3 26.18 26.56 25.21 24.37'/><path class='cls-3' d='M9.8,26.3a10,10,0,0,1,4.82-11.93'/><polygon points='14.79 15.63 16.2 13.7 13.82 13.44 14.79 15.63'/><path class='cls-3' d='M31.67,22.76a10,10,0,0,1-11.84,5'/><polygon points='20.59 26.78 18.23 27.14 19.73 29.01 20.59 26.78'/><path class='cls-3' d='M8.33,17.24a10,10,0,0,1,11.84-5'/><polygon points='19.41 13.22 21.77 12.86 20.27 10.99 19.41 13.22'/><path class='cls-3' d='M22.76,8.33a10,10,0,0,1,5,11.84'/><polygon points='26.78 19.41 27.14 21.77 29.01 20.27 26.78 19.41'/><path class='cls-3' d='M17.24,31.67a10,10,0,0,1-5-11.84'/><polygon points='13.22 20.59 12.86 18.23 10.99 19.73 13.22 20.59'/></svg>",
       "flip": {
         "latitude": "south"
+      },
+      "options": {
+        "iconSize": "50"
       }
     }
   }
