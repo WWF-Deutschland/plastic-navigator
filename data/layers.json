@@ -622,14 +622,15 @@
       "type": "csv",
       "join": {
         "self": "country_code",
-        "related": "code"
+        "related": "code",
+        "as": "positions"
       },
       "extend": [
         {
           "file": "layers/policy/positions.csv",
           "type": "csv",
-          "as": "position",
           "join": {
+            "as": "position",
             "self": "id",
             "related": "position_id"
           }
@@ -637,8 +638,8 @@
         {
           "file": "layers/policy/sources.csv",
           "type": "csv",
-          "as": "source",
           "join": {
+            "as": "source",
             "self": "id",
             "related": "source_id"
           }
