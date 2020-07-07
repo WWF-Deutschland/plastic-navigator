@@ -8,7 +8,7 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "name": "N. Pacific" },
+      "properties": { "name_en": "N. Pacific", "name_de": "Nordpazifik" },
       "geometry": {
         "type": "Point",
         "coordinates": [-144.552320618230596, 29.222278301119779]
@@ -16,7 +16,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": "N. Atlantic" },
+      "properties": { "name_en": "N. Atlantic", "name_de": "Nordatlantik" },
       "geometry": {
         "type": "Point",
         "coordinates": [-48.632578389255059, 28.069169219141838]
@@ -24,7 +24,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": "S. Atlantic" },
+      "properties": { "name_en": "S. Atlantic", "name_de": "Südatlantik" },
       "geometry": {
         "type": "Point",
         "coordinates": [-7.899537168731215, -28.59713277980233]
@@ -32,7 +32,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": "S. Pacific" },
+      "properties": { "name_en": "S. Pacific", "name_de": "Südpazifik" },
       "geometry": {
         "type": "Point",
         "coordinates": [-101.191341254447138, -28.211873297431797]
@@ -40,7 +40,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "name": "Indian Ocean" },
+      "properties": { "name_en": "Indian Ocean", "name_de": "Indischer Ozean" },
       "geometry": {
         "type": "Point",
         "coordinates": [93.714071037306795, -31.627581858135585]
