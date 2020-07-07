@@ -628,6 +628,7 @@
         {
           "file": "layers/policy/positions.csv",
           "type": "csv",
+          "as": "position",
           "join": {
             "self": "id",
             "related": "position_id"
@@ -636,6 +637,7 @@
         {
           "file": "layers/policy/sources.csv",
           "type": "csv",
+          "as": "source",
           "join": {
             "self": "id",
             "related": "source_id"
