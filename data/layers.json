@@ -609,5 +609,71 @@
         "y": "40"
       }
     }
+  },
+  {
+    "id": "policy-commitments",
+    "category": "policy",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/country-points.json",
+    "properties": {
+      "featuresWithoutProperties": "false",
+      "file": "layers/policy/country-positions.csv",
+      "type": "csv",
+      "join": {
+        "self": "country_code",
+        "related": "code"
+      },
+      "extend": [
+        {
+          "file": "layers/policy/positions.csv",
+          "type": "csv",
+          "join": {
+            "self": "id",
+            "related": "position_id"
+          }
+        },
+        {
+          "file": "layers/policy/sources.csv",
+          "type": "csv",
+          "join": {
+            "self": "id",
+            "related": "source_id"
+          }
+        }
+      ]
+    },
+    "title": {
+      "en": "The 5 principal gyres",
+      "de": "Die 5 hauptsächlichen Meeresstrudel"
+    },
+    "about": {
+      "en": "Short text about principal gyres",
+      "de": "Short text about principal gyres"
+    },
+    "attribution": {
+      "author": {
+        "en": "Own research, various sources",
+        "de": ""
+      },
+      "year": "2020"
+    },
+    "data": {
+      "type": "location",
+      "feature-type": "Point"
+    },
+    "render": {
+      "type": "marker"
+    },
+    "icon": {
+      "datauri": "data:image/png;base64,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",
+      "flip": {
+        "latitude": "south"
+      },
+      "size": {
+        "x": "40",
+        "y": "40"
+      }
+    }
   }
 ]
