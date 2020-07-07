@@ -179,10 +179,10 @@ function* loadConfigSaga({ key }) {
             }
           }
           if (type === 'csv' && typeof response.text === 'function') {
-            const csv = yield response.text();
+            const text = yield response.text();
             // console.log(csv)
-            if (csv) {
-              const parsed = yield Papa.parse(csv, {
+            if (text) {
+              const parsed = yield Papa.parse(text, {
                 header: true,
                 skipEmptyLines: true,
               });

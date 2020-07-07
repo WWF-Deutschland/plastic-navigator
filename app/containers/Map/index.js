@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import L from 'leaflet';
 import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
+import { uniq } from 'lodash/array';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
 
@@ -208,6 +209,25 @@ const getIcon = (feature, latlng, config) => {
       (icon.size && icon.size.x) || 25,
       (icon.size && icon.size.y) || 50,
     ];
+    // check for property dependent icon
+    if (icon.property && typeof icon.datauri === 'object') {
+      let uri = '';
+      if (icon.multiple && icon.multiple === 'true') {
+        const ps = icon.property.split('.');
+        const propertyArray = feature.properties[ps[0]];
+        const values = uniq(propertyArray.map(p => p[ps[1]]));
+        uri =
+          values.length > 1 ? icon.datauri.multiple : icon.datauri[values[0]];
+      } else {
+        const p = feature.properties[config.property];
+        uri = icon.datauri[p] || icon.datauri.default;
+      }
+      return L.divIcon({
+        className: 'mpx-map-icon-uri',
+        html: `<img style="width:100%;" src="${uri}">`,
+        iconSize,
+      });
+    }
     // check for latitude flip
     if (icon.flip && icon.flip.latitude) {
       if (
@@ -217,7 +237,7 @@ const getIcon = (feature, latlng, config) => {
         return L.divIcon({
           className: 'mpx-map-icon-uri',
           html: `<img style="transform:scale(1, -1);width:100%;" src="${
-            config.icon.datauri
+            icon.datauri
           }">`,
           iconSize,
         });
@@ -226,7 +246,7 @@ const getIcon = (feature, latlng, config) => {
     // icon normal state
     return L.divIcon({
       className: 'mpx-map-icon-uri',
-      html: `<img style="width:100%;" src="${config.icon.datauri}">`,
+      html: `<img style="width:100%;" src="${icon.datauri}">`,
       iconSize,
     });
   }
