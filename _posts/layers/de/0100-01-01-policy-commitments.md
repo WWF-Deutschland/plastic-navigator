@@ -7,7 +7,7 @@ title: Policy commitments
 image_file_name:
 image_caption:
 fact_lead: >-
-  Lead on policy cmomitments.
+  Lead on policy commitments.
 text_references: text references
 ---
 
