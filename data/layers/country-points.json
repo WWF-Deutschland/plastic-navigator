@@ -1994,7 +1994,7 @@
     {
       "type": "Feature",
       "properties": { "code": "TUV", "name_en": "Tuvalu", "name_de": "Tuvalu" },
-      "geometry": { "type": "Point", "coordinates": [177.6493, -7.1095] }
+      "geometry": { "type": "Point", "coordinates": [179.2, -8.516667] }
     },
     {
       "type": "Feature",
