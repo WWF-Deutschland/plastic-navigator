@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import { FormattedMessage } from 'react-intl';
@@ -51,6 +51,17 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
   background: light-grey;
+`;
+
+const Tooltip = styled.div`
+  position: relative;
+  display: block;
+  background: red;
+  width: 200px;
+  height: 100px;
+  top: ${({ position }) => position.y}px;
+  left: ${({ position }) => position.x}px;
+  z-index: 3000;
 `;
 
 const getRange = (allFeatures, attribute) =>
@@ -209,6 +220,17 @@ const getIcon = (feature, latlng, config) => {
       (icon.size && icon.size.x) || 25,
       (icon.size && icon.size.y) || 50,
     ];
+    // off set from top left
+    const iconAnchor =
+      icon.align === 'center'
+        ? [iconSize[0] / 2, iconSize[1] / 2] // center
+        : [iconSize[0] / 2, iconSize[1]]; // bottom
+
+    const options = {
+      className: 'mpx-map-icon-uri',
+      iconSize,
+      iconAnchor,
+    };
     // check for property dependent icon
     if (icon.property && typeof icon.datauri === 'object') {
       let uri = '';
@@ -223,9 +245,8 @@ const getIcon = (feature, latlng, config) => {
         uri = icon.datauri[p] || icon.datauri.default;
       }
       return L.divIcon({
-        className: 'mpx-map-icon-uri',
+        ...options,
         html: `<img style="width:100%;" src="${uri}">`,
-        iconSize,
       });
     }
     // check for latitude flip
@@ -235,36 +256,39 @@ const getIcon = (feature, latlng, config) => {
         (icon.flip.latitude === 'north' && latlng.lat >= 0)
       ) {
         return L.divIcon({
-          className: 'mpx-map-icon-uri',
+          ...options,
           html: `<img style="transform:scale(1, -1);width:100%;" src="${
             icon.datauri
           }">`,
-          iconSize,
         });
       }
     }
     // icon normal state
     return L.divIcon({
-      className: 'mpx-map-icon-uri',
+      ...options,
       html: `<img style="width:100%;" src="${icon.datauri}">`,
-      iconSize,
     });
   }
   return L.icon();
 };
 
-const getPointLayer = ({ data, config }) => {
+const getPointLayer = ({ data, config, markerEvents }) => {
   const layer = L.featureGroup(null, { pane: 'vectorPane' });
   const options = {
     pane: 'vectorPane',
     ...config.style,
+  };
+  const events = {
+    mouseover: args => markerEvents.mouseover(args, config),
+    mouseout: args => markerEvents.mouseout(args, config),
+    click: args => markerEvents.click(args, config),
   };
   const jsonLayer = L.geoJSON(data, {
     pointToLayer: (feature, latlng) =>
       L.marker(latlng, {
         ...options,
         icon: getIcon(feature, latlng, config),
-      }),
+      }).on(events),
   });
   layer.addLayer(jsonLayer);
   const layerBounds = jsonLayer.getBounds();
@@ -278,7 +302,7 @@ const getPointLayer = ({ data, config }) => {
         L.marker([latlng.lat, latlng.lng - 360], {
           ...options,
           icon: getIcon(feature, latlng, config),
-        }),
+        }).on(events),
     });
     layer.addLayer(layerWest);
   }
@@ -292,18 +316,23 @@ const getPointLayer = ({ data, config }) => {
         L.marker([latlng.lat, latlng.lng + 360], {
           ...options,
           icon: getIcon(feature, latlng, config),
-        }),
+        }).on(events),
     });
     layer.addLayer(layerEast);
   }
   return layer;
 };
 
-const getCircleLayer = ({ data, config }) => {
+const getCircleLayer = ({ data, config, markerEvents }) => {
   const layer = L.featureGroup(null, { pane: 'vectorPane' });
   const options = {
     pane: 'vectorPane',
     ...config.style,
+  };
+  const events = {
+    mouseover: args => markerEvents.mouseover(args, config),
+    mouseout: args => markerEvents.mouseout(args, config),
+    click: args => markerEvents.click(args, config),
   };
   const range = getRange(data.features, config.render.attribute);
   const jsonLayer = L.geoJSON(data, {
@@ -311,7 +340,7 @@ const getCircleLayer = ({ data, config }) => {
       L.circleMarker(latlng, {
         ...options,
         radius: scaleCircle(feature, range, config.render),
-      }),
+      }).on(events),
   });
   layer.addLayer(jsonLayer);
   const layerBounds = jsonLayer.getBounds();
@@ -325,7 +354,7 @@ const getCircleLayer = ({ data, config }) => {
         L.circleMarker([latlng.lat, latlng.lng - 360], {
           ...options,
           radius: scaleCircle(feature, range, config.render),
-        }),
+        }).on(events),
     });
     layer.addLayer(layerWest);
   }
@@ -339,14 +368,14 @@ const getCircleLayer = ({ data, config }) => {
         L.circleMarker([latlng.lat, latlng.lng + 360], {
           ...options,
           radius: scaleCircle(feature, range, config.render),
-        }),
+        }).on(events),
     });
     layer.addLayer(layerEast);
   }
   return layer;
 };
 
-const getVectorLayer = ({ jsonLayer, config }) => {
+const getVectorLayer = ({ jsonLayer, config, markerEvents }) => {
   const { data } = jsonLayer;
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
@@ -355,17 +384,22 @@ const getVectorLayer = ({ jsonLayer, config }) => {
 
   // regular point marker
   if (config.render && config.render.type === 'marker') {
-    return getPointLayer({ data, config });
+    return getPointLayer({ data, config, markerEvents });
   }
   // scaled circle marker
   if (config.render && config.render.type === 'scaledCircle') {
-    return getCircleLayer({ data, config });
+    return getCircleLayer({ data, config, markerEvents });
   }
   return null;
 };
 
-const getProjectLayer = ({ jsonLayer, project }) => {
+const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const { data, config } = jsonLayer;
+  const events = {
+    mouseover: args => markerEvents.mouseover(args, config),
+    mouseout: args => markerEvents.mouseout(args, config),
+    click: args => markerEvents.click(args, config),
+  };
   const layer = L.featureGroup(null, { pane: 'vectorPane' });
   // prettier-ignore
   const icon =
@@ -374,6 +408,7 @@ const getProjectLayer = ({ jsonLayer, project }) => {
         className: 'mpx-map-icon-uri',
         html: `<img style="width:100%;" src="${PROJECT_ICONS.icons.default}">`,
         iconSize: PROJECT_ICONS.size || [25, 50],
+        iconAnchor: PROJECT_ICONS.anchor || [12.5, 50],
       })
       : L.icon();
   const options = {
@@ -383,7 +418,7 @@ const getProjectLayer = ({ jsonLayer, project }) => {
   };
   const jsonLlayer = L.geoJSON(data, {
     filter: feature => filterByProject(feature, project),
-    pointToLayer: (feature, latlng) => L.marker(latlng, options),
+    pointToLayer: (feature, latlng) => L.marker(latlng, options).on(events),
   });
   layer.addLayer(jsonLlayer);
   const layerBounds = jsonLlayer.getBounds();
@@ -395,7 +430,7 @@ const getProjectLayer = ({ jsonLayer, project }) => {
     const layerWest = L.geoJSON(data, {
       filter: feature => filterByProject(feature, project),
       pointToLayer: (feature, latlng) =>
-        L.marker([latlng.lat, latlng.lng - 360], options),
+        L.marker([latlng.lat, latlng.lng - 360], options).on(events),
     });
     layer.addLayer(layerWest);
   }
@@ -407,7 +442,7 @@ const getProjectLayer = ({ jsonLayer, project }) => {
     const layerEast = L.geoJSON(data, {
       filter: feature => filterByProject(feature, project),
       pointToLayer: (feature, latlng) =>
-        L.marker([latlng.lat, latlng.lng + 360], options),
+        L.marker([latlng.lat, latlng.lng + 360], options).on(events),
     });
     layer.addLayer(layerEast);
   }
@@ -440,11 +475,33 @@ export function Map({
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
+  const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
   const basemapLayerGroupRef = useRef(null);
   const rasterLayerGroupRef = useRef(null);
   const vectorLayerGroupRef = useRef(null);
+
+  const onMarkerOver = (args, config) => {
+    console.log('over', args, config);
+    setTooltip(args.containerPoint);
+  };
+  const onMarkerOut = (args, config) => {
+    console.log('out', args, config);
+  };
+  const onMarkerClick = (args, config) => {
+    console.log('click', args, config);
+    // setTooltip(args);
+  };
+
+  const markerEvents = {
+    mouseover: onMarkerOver,
+    mouseout: onMarkerOut,
+    click: onMarkerClick,
+  };
+
+  console.log(tooltip && tooltip.x);
+
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
@@ -532,6 +589,7 @@ export function Map({
               const layer = getProjectLayer({
                 jsonLayer: jsonLayers.projectLocations,
                 project,
+                markerEvents,
               });
               vectorLayerGroupRef.current.addLayer(layer);
               newMapLayers[id] = { layer, config };
@@ -564,6 +622,7 @@ export function Map({
                   const layer = getVectorLayer({
                     jsonLayer: jsonLayers[id],
                     config,
+                    markerEvents,
                   });
                   vectorLayerGroupRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
@@ -582,7 +641,9 @@ export function Map({
 
   return (
     <Styled>
-      <MapContainer id="ll-map" />
+      <MapContainer id="ll-map">
+        {tooltip && <Tooltip position={tooltip} />}
+      </MapContainer>
     </Styled>
   );
 }
