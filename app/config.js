@@ -76,6 +76,18 @@ export const PROJECT_LOCATIONS = {
   type: 'csv',
   source: 'data',
   file: 'layers/project_locations.csv',
+  id: 'projects',
+  tooltip: {
+    supTitle: {
+      en: 'Annual emission',
+      de: 'Jährlicher Eintrag',
+    },
+    title: {
+      property: 'i_mid',
+      type: 'number',
+      units: 'true',
+    },
+  },
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
@@ -94,3 +106,18 @@ export const MAPBOX = {
 export const URL_SEARCH_SEPARATOR = '|';
 
 export const PROJECT_CATEGORY = 'projects';
+
+export const MAP_OPTIONS = {
+  CENTER: [0, 180],
+  ZOOM: {
+    INIT: 2,
+    MIN: 2,
+    MAX: 7,
+  },
+  BOUNDS: {
+    N: 85,
+    W: -180,
+    S: -85,
+    E: 540,
+  },
+};
