@@ -10,8 +10,15 @@ import { getPropertyByLocale } from './utils';
 const Styled = styled.div``;
 
 const getContent = (feature, config, layer, locale) => {
-  if (config.tooltip.content.propertyByLocale) {
+  if (layer && config.tooltip.content.propertyFromLayer) {
     return getPropertyByLocale(layer, config.tooltip.content, locale);
+  }
+  if (config.tooltip.content.propertyByLocale) {
+    return getPropertyByLocale(
+      feature.properties,
+      config.tooltip.content,
+      locale,
+    );
   }
   if (config.tooltip.content.propertyFromLayer) {
     return getPropertyByLocale(

@@ -118,6 +118,7 @@ const Tooltip = ({
   const { icon, tooltip } = config;
   const { locale } = intl;
   const markerSize = (icon && icon.size) || { x: 25, y: 50 };
+  if (!icon) return null;
   const offset = {
     x: parseInt(markerSize.x, 10) / 2,
     y:
