@@ -49,7 +49,7 @@ export function ProjectLocationInfo({
       feature => feature.properties.location_id === id.replace('projloc-', ''),
     );
   // console.log(location)
-  if (!location) return null;
+  if (!location || !project) return null;
   const title =
     location.properties[`location_title_${locale}`] ||
     location.properties[`location_title_${DEFAULT_LOCALE}`];

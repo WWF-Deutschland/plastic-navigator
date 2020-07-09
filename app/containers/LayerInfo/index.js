@@ -18,7 +18,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { useInjectSaga } from 'utils/injectSaga';
 import { getAsideInfoWidth } from 'utils/responsive';
 
-import { PROJECT_LOCATIONS } from 'config';
+import { PROJECT_CONFIG } from 'config';
 import saga from 'containers/App/saga';
 import {
   selectContentByKey,
@@ -151,7 +151,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(loadContent('layers', id));
     },
     onLoadLocations: () => {
-      dispatch(loadLayer('projectLocations', PROJECT_LOCATIONS));
+      dispatch(loadLayer('projectLocations', PROJECT_CONFIG));
     },
   };
 }

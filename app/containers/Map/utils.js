@@ -6,7 +6,7 @@ import quasiEquals from 'utils/quasi-equals';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
 
-import { PROJECT_ICONS, MAP_OPTIONS } from 'config';
+import { PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 const getRange = (allFeatures, attribute) =>
   allFeatures.reduce(
@@ -345,51 +345,75 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
     click: args => markerEvents.click(args, config),
   };
   const layer = L.featureGroup(null, { pane: 'vectorPane' });
-  // prettier-ignore
-  const icon =
-    PROJECT_ICONS.icons && PROJECT_ICONS.icons.default
-      ? L.divIcon({
-        className: 'mpx-map-icon-uri',
-        html: `<img style="width:100%;" src="${PROJECT_ICONS.icons.default}">`,
-        iconSize: PROJECT_ICONS.size || [25, 50],
-        iconAnchor: PROJECT_ICONS.anchor || [12.5, 50],
-      })
-      : L.icon();
-  const options = {
-    pane: 'vectorPane',
-    icon,
-    project,
-    ...config.style,
-  };
-  const jsonLlayer = L.geoJSON(data, {
-    filter: feature => filterByProject(feature, project),
-    pointToLayer: (feature, latlng) => L.marker(latlng, options).on(events),
-  });
-  layer.addLayer(jsonLlayer);
-  const layerBounds = jsonLlayer.getBounds();
-  // duplicate layer to West if fit within bounds
-  if (
-    layerBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
-    layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
-  ) {
-    const layerWest = L.geoJSON(data, {
+  const { icon } = PROJECT_CONFIG;
+  if (icon && icon.datauri) {
+    const iconSize = [
+      (icon.size && icon.size.x) || 25,
+      (icon.size && icon.size.y) || 50,
+    ];
+    const iconAnchor =
+      icon.align === 'center'
+        ? [iconSize[0] / 2, iconSize[1] / 2] // center
+        : [iconSize[0] / 2, iconSize[1]]; // bottom
+    // prettier-ignore
+    const divIcon = L.divIcon({
+      className: 'mpx-map-icon-uri',
+      html: `<img style="width:100%;" src="${icon.datauri.default}">`,
+      iconSize,
+      iconAnchor,
+    })
+    const options = {
+      pane: 'vectorPane',
+      icon: divIcon,
+      layer: project,
+      ...config.style,
+    };
+    const jsonLlayer = L.geoJSON(data, {
       filter: feature => filterByProject(feature, project),
-      pointToLayer: (feature, latlng) =>
-        L.marker([latlng.lat, latlng.lng - 360], options).on(events),
+      pointToLayer: (feature, latlng) => L.marker(latlng, options).on(events),
     });
-    layer.addLayer(layerWest);
-  }
-  // // duplicate layer to East if fit within bounds
-  if (
-    layerBounds.getEast() < MAP_OPTIONS.BOUNDS.E &&
-    layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
-  ) {
-    const layerEast = L.geoJSON(data, {
-      filter: feature => filterByProject(feature, project),
-      pointToLayer: (feature, latlng) =>
-        L.marker([latlng.lat, latlng.lng + 360], options).on(events),
-    });
-    layer.addLayer(layerEast);
+    layer.addLayer(jsonLlayer);
+    const layerBounds = jsonLlayer.getBounds();
+    // duplicate layer to West if fit within bounds
+    if (
+      layerBounds.getWest() > MAP_OPTIONS.BOUNDS.W &&
+      layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
+    ) {
+      const layerWest = L.geoJSON(data, {
+        filter: feature => filterByProject(feature, project),
+        pointToLayer: (feature, latlng) =>
+          L.marker([latlng.lat, latlng.lng - 360], options).on(events),
+      });
+      layer.addLayer(layerWest);
+    }
+    // // duplicate layer to East if fit within bounds
+    if (
+      layerBounds.getEast() < MAP_OPTIONS.BOUNDS.E &&
+      layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
+    ) {
+      const layerEast = L.geoJSON(data, {
+        filter: feature => filterByProject(feature, project),
+        pointToLayer: (feature, latlng) =>
+          L.marker([latlng.lat, latlng.lng + 360], options).on(events),
+      });
+      layer.addLayer(layerEast);
+    }
   }
   return layer;
+};
+
+export const getPropertyByLocale = (properties, element, locale) => {
+  const props = element.propertyByLocale[locale].split('.');
+  if (
+    (element.multiple || element.multiple === 'true') &&
+    element.multiple !== 'false' &&
+    Array.isArray(properties[props[0]])
+  ) {
+    const multiProps = properties[props[0]];
+    const otherProps = props.slice(1);
+    return multiProps.map(mp =>
+      otherProps.reduce((memo, prop) => memo[prop], mp),
+    );
+  }
+  return props.reduce((memo, prop) => memo[prop], properties);
 };

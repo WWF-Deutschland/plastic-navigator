@@ -694,8 +694,8 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Country position",
-        "de": "Country position"
+        "en": "Country position(s)",
+        "de": "Country position(s)"
       },
       "title": {
         "propertyByLocale": {

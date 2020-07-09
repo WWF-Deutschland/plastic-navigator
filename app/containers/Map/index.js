@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
 
-import { MAPBOX, PROJECT_LOCATIONS, MAP_OPTIONS } from 'config';
+import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -23,6 +23,8 @@ import {
   selectActiveLayers,
   selectConfigByKey,
 } from 'containers/App/selectors';
+
+import { setLayerInfo } from 'containers/App/actions';
 
 import Tooltip from './Tooltip';
 
@@ -34,7 +36,7 @@ import { selectLayers, selectLayerConfig, selectMapLayers } from './selectors';
 import { loadLayer, setMapLayers } from './actions';
 
 const Styled = styled.div`
-  background: ${({ theme }) => theme.global.colors['light-1']};
+  background: ${({ theme }) => theme.global.colors.white};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -47,7 +49,6 @@ const MapContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  background: light-grey;
 `;
 
 export function Map({
@@ -58,6 +59,7 @@ export function Map({
   onLoadLayer,
   jsonLayers,
   projects,
+  onLayerInfo,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -96,7 +98,10 @@ export function Map({
 
   const mapEvents = {
     resize: () => setTooltip(null),
-    click: () => setTooltip(null),
+    click: () => {
+      console.log('click');
+      setTooltip(null);
+    },
     zoomstart: () => setTooltip(null),
     movestart: () => setTooltip(null),
     layeradd: () => setTooltip(null),
@@ -183,7 +188,7 @@ export function Map({
             projects.find(p => p.project_id === id.replace('project-', ''));
           if (project) {
             if (!jsonLayers.projectLocations) {
-              onLoadLayer('projectLocations', PROJECT_LOCATIONS);
+              onLoadLayer('projectLocations', PROJECT_CONFIG);
             } else {
               const { config } = jsonLayers.projectLocations;
               const layer = getProjectLayer({
@@ -241,21 +246,21 @@ export function Map({
   const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
   return (
     <Styled>
-      <MapContainer id="ll-map">
-        {tooltip && (
-          <Tooltip
-            position={tooltip.anchor}
-            direction={{
-              x: tooltip.anchor.x < mapSize.x / 2 ? 'right' : 'left',
-              y: tooltip.anchor.y < (mapSize.y * 3) / 4 ? 'bottom' : 'top',
-            }}
-            feature={tooltip.feature}
-            config={tooltip.config}
-            layerOptions={tooltip.options}
-            onClose={() => setTooltip(null)}
-          />
-        )}
-      </MapContainer>
+      <MapContainer id="ll-map" />
+      {tooltip && (
+        <Tooltip
+          position={tooltip.anchor}
+          direction={{
+            x: tooltip.anchor.x < mapSize.x / 2 ? 'right' : 'left',
+            y: tooltip.anchor.y < (mapSize.y * 3) / 4 ? 'bottom' : 'top',
+          }}
+          feature={tooltip.feature}
+          config={tooltip.config}
+          layerOptions={tooltip.options}
+          onClose={() => setTooltip(null)}
+          onLayerInfo={onLayerInfo}
+        />
+      )}
     </Styled>
   );
 }
@@ -268,7 +273,7 @@ Map.propTypes = {
   jsonLayers: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
-  // locale: PropTypes.string,
+  onLayerInfo: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -288,6 +293,7 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
+    onLayerInfo: id => dispatch(setLayerInfo(id)),
   };
 }
 
