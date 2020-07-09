@@ -704,11 +704,13 @@
         }
       },
       "content": {
-        "multiple": true,
+        "multiple": "true",
+        "icon": "true",
         "propertyByLocale": {
           "en": "positions.position.position_en",
           "de": "positions.position.position_en"
-        }
+        },
+        "more": "true"
       }
     },
     "icon": {
