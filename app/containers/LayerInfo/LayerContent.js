@@ -29,20 +29,14 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   font-size: 1.6em;
 `;
 
-export function LayerContent({
-  onLoadContent,
-  content,
-  config,
-  // layerCategory,
-  // layerGroup,
-  locale,
-}) {
+export function LayerContent({ onLoadContent, content, config, locale }) {
   useInjectSaga({ key: 'default', saga });
 
   useEffect(() => {
     // kick off loading of page content
     onLoadContent(config['content-id'] || config.id);
   }, [config]);
+
   return (
     <>
       <Title>{config.title[locale] || config.title[DEFAULT_LOCALE]}</Title>

@@ -12,8 +12,10 @@ import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Heading } from 'grommet';
+import { Previous } from 'grommet-icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
+import { POLICY_LAYER } from 'config';
 
 import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
@@ -54,7 +56,7 @@ export function FeatureContent({
     onLoadLayer(config.id, config);
   }, [config]);
   if (!featureId || !config || !layerData) return null;
-  if (!config.id === 'policy-commitments' || !config.tooltip) {
+  if (!config.id === POLICY_LAYER || !config.tooltip) {
     return <LayerContent layer={config} />;
   }
   const feature = layerData.data.features.find(
@@ -64,9 +66,18 @@ export function FeatureContent({
   const supTitle = config.title[locale] || config.title[DEFAULT_LOCALE];
   return (
     <Styled>
-      <SupTitle onClick={() => onSetLayerInfo(config.id)} label={supTitle} />
+      <div>
+        <Button
+          plain
+          onClick={() => onSetLayerInfo(config.id)}
+          icon={<Previous size="large" />}
+        />
+      </div>
+      <div>
+        <SupTitle onClick={() => onSetLayerInfo(config.id)} label={supTitle} />
+      </div>
       <Title>{getTitle(feature, config, locale)}</Title>
-      {config.id === 'policy-commitments' && (
+      {config.id === POLICY_LAYER && (
         <CountryPolicyCommitments feature={feature} config={config} />
       )}
     </Styled>

@@ -59,6 +59,7 @@ export const CONFIG = {
   },
 };
 
+export const POLICY_LAYER = 'policy-commitments';
 export const PROJECT_CATEGORY = 'projects';
 export const PROJECT_CONFIG = {
   type: 'csv',

@@ -42,6 +42,7 @@ const Styled = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
+  overflow: hidden;
 `;
 const MapContainer = styled.div`
   position: absolute;
@@ -50,6 +51,7 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
 `;
+const TIMEOUT = 3333;
 
 export function Map({
   layerConfig,
@@ -70,6 +72,17 @@ export function Map({
   const rasterLayerGroupRef = useRef(null);
   const vectorLayerGroupRef = useRef(null);
 
+  const timerTooltip = useRef(false);
+
+  // eslint-disable arrow-body-style
+  useEffect(
+    () => () => {
+      clearTimeout(timerTooltip.current);
+    },
+    [],
+  );
+  // eslint-enable arrow-body-style
+
   // console.log(tooltip)
   const onMarkerOver = (args, config) => {
     setTooltip({
@@ -78,6 +91,8 @@ export function Map({
       feature: args.target.feature,
       options: args.target.options,
     });
+    clearTimeout(timerTooltip.current);
+    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
   };
   // const onMarkerOut = (args, config) => {};
   const onMarkerOut = () => null;
@@ -88,6 +103,8 @@ export function Map({
       feature: args.target.feature,
       options: args.target.options,
     });
+    clearTimeout(timerTooltip.current);
+    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
   };
 
   const markerEvents = {
@@ -99,7 +116,6 @@ export function Map({
   const mapEvents = {
     resize: () => setTooltip(null),
     click: () => {
-      console.log('click');
       setTooltip(null);
     },
     zoomstart: () => setTooltip(null),

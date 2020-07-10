@@ -9,29 +9,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
-import { Button, Box, Heading } from 'grommet';
-import { Next } from 'grommet-icons';
+import { Heading } from 'grommet';
 import Markdown from 'react-remarkable';
 import anchorme from 'anchorme';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
 
-import {
-  selectSingleProjectConfig,
-  // selectSingleLayerCategory,
-  // selectSingleLayerGroup,
-  selectLocale,
-} from 'containers/App/selectors';
-import { setLayerInfo } from 'containers/App/actions';
+import { selectSingleProjectConfig } from 'containers/App/selectors';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 
 import commonMessages from 'messages';
 // import messages from './messages';
 import ProjectLocationContent from './ProjectLocationContent';
+import FeatureList from './FeatureList';
 
 const Styled = styled.div``;
 
@@ -39,29 +33,18 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   font-size: 1.6em;
 `;
 
-const Locations = styled(Box)``;
-
-const LocationButton = styled(p => (
-  <Button {...p} plain reverse fill="horizontal" alignSelf="start" />
-))`
-  border-top: 1px solid;
-`;
-
 export function ProjectContent({
   project,
-  // layerCategory,
-  // layerGroup,
-  locale,
+  intl,
   onLoadLocations,
   locations,
-  onSetLayerInfo,
   location,
 }) {
   useEffect(() => {
     onLoadLocations();
   }, []);
   if (!project) return null;
-
+  const { locale } = intl;
   const title =
     project[`project_title_${locale}`] ||
     project[`project_title_${DEFAULT_LOCALE}`];
@@ -110,25 +93,16 @@ export function ProjectContent({
             />
           </div>
           {projectLocations && projectLocations.length > 1 && (
-            <Locations>
-              <FormattedMessage {...commonMessages.locations} />
-              {projectLocations.map(l => (
-                <LocationButton
-                  key={l.location_id}
-                  onClick={() =>
-                    onSetLayerInfo(
-                      `${PROJECT_CONFIG.id}-${project.project_id}`,
-                      l.location_id,
-                    )
-                  }
-                  label={
-                    l[`location_title_${locale}`] ||
-                    l[`location_title_${DEFAULT_LOCALE}`]
-                  }
-                  icon={<Next />}
-                />
-              ))}
-            </Locations>
+            <FeatureList
+              title={intl.formatMessage(commonMessages.locations)}
+              layerId={`${PROJECT_CONFIG.id}-${project.project_id}`}
+              items={projectLocations.map(l => ({
+                id: l.location_id,
+                label:
+                  l[`location_title_${locale}`] ||
+                  l[`location_title_${DEFAULT_LOCALE}`],
+              }))}
+            />
           )}
         </>
       )}
@@ -137,27 +111,22 @@ export function ProjectContent({
 }
 
 ProjectContent.propTypes = {
-  onSetLayerInfo: PropTypes.func.isRequired,
   location: PropTypes.string,
   project: PropTypes.object,
   locations: PropTypes.object, // geojson
   onLoadLocations: PropTypes.func.isRequired,
   // layerCategory: PropTypes.object,
   // layerGroup: PropTypes.object,
-  locale: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   project: (state, { id }) => selectSingleProjectConfig(state, { key: id }),
-  locale: state => selectLocale(state),
   locations: state => selectLayerByKey(state, 'projectLocations'),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetLayerInfo: (id, location) => {
-      dispatch(setLayerInfo(id, location));
-    },
     onLoadLocations: () => {
       dispatch(loadLayer('projectLocations', PROJECT_CONFIG));
     },
@@ -169,4 +138,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(ProjectContent);
+export default compose(withConnect)(injectIntl(ProjectContent));

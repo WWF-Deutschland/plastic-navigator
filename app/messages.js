@@ -32,4 +32,8 @@ export default defineMessages({
     id: `${scope}.locations`,
     defaultMessage: 'Locations',
   },
+  countries: {
+    id: `${scope}.countries`,
+    defaultMessage: 'Countries',
+  },
 });

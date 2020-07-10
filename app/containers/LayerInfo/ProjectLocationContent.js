@@ -12,6 +12,7 @@ import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Heading } from 'grommet';
+import { Previous } from 'grommet-icons';
 // import { Previous } from 'grommet-icons';
 import Markdown from 'react-remarkable';
 import anchorme from 'anchorme';
@@ -45,15 +46,22 @@ export function ProjectLocationContent({
   const locationInfo =
     location.properties[`location_info_${locale}`] ||
     location.properties[`location_info_${DEFAULT_LOCALE}`];
-
+  const projectId = `${PROJECT_CONFIG.id}-${project.project_id}`;
   return (
     <Styled>
-      <SupTitle
-        onClick={() =>
-          onSetLayerInfo(`${PROJECT_CONFIG.id}-${project.project_id}`)
-        }
-        label={projectTitle}
-      />
+      <div>
+        <Button
+          plain
+          onClick={() => onSetLayerInfo(projectId)}
+          icon={<Previous size="large" />}
+        />
+      </div>
+      <div>
+        <SupTitle
+          onClick={() => onSetLayerInfo(projectId)}
+          label={projectTitle}
+        />
+      </div>
       <Title>{title}</Title>
       <div>
         <Markdown
