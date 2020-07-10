@@ -711,6 +711,9 @@
           "de": "positions.position.position_en"
         },
         "more": "true"
+      },
+      "info": {
+        "featureId": "code"
       }
     },
     "icon": {
