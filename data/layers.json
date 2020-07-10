@@ -511,8 +511,8 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Annual emission ",
-        "de": "Jährlicher Eintrag"
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
       },
       "title": {
         "property": "i_mid",
