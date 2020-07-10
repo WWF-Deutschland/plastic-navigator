@@ -13,4 +13,20 @@ export default defineMessages({
     id: `${scope}.titleReference`,
     defaultMessage: 'Reference',
   },
+  multiplePositions: {
+    id: `${scope}.multiplePositions`,
+    defaultMessage: 'Multiple Positions',
+  },
+  position: {
+    id: `${scope}.position`,
+    defaultMessage: 'Position',
+  },
+  source: {
+    id: `${scope}.source`,
+    defaultMessage: 'Source',
+  },
+  sourceLinkExternal: {
+    id: `${scope}.sourceLinkExternal`,
+    defaultMessage: 'Go to source',
+  },
 });

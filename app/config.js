@@ -59,6 +59,7 @@ export const CONFIG = {
   },
 };
 
+export const PROJECT_CATEGORY = 'projects';
 export const PROJECT_CONFIG = {
   type: 'csv',
   source: 'data',
@@ -92,8 +93,6 @@ export const PROJECT_CONFIG = {
       },
     },
     info: {
-      layerPrefix: 'project-',
-      featurePrefix: 'projloc-',
       layerId: 'project_id',
       featureId: 'location_id',
     },
@@ -114,8 +113,6 @@ export const MAPBOX = {
 };
 
 export const URL_SEARCH_SEPARATOR = '|';
-
-export const PROJECT_CATEGORY = 'projects';
 
 export const MAP_OPTIONS = {
   CENTER: [0, 180],

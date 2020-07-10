@@ -18,14 +18,10 @@ import anchorme from 'anchorme';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
-import {
-  selectSingleProjectConfig,
-  // selectSingleLayerCategory,
-  // selectSingleLayerGroup,
-  selectLocale,
-} from 'containers/App/selectors';
-import { setLayerInfo } from 'containers/App/actions';
+import { PROJECT_CONFIG } from 'config';
 
+import { selectLocale } from 'containers/App/selectors';
+import { setLayerInfo } from 'containers/App/actions';
 const Styled = styled.div``;
 
 const Title = styled(p => <Heading level={1} {...p} />)`
@@ -33,22 +29,12 @@ const Title = styled(p => <Heading level={1} {...p} />)`
 `;
 const SupTitle = styled(p => <Button {...p} plain />)``;
 
-export function ProjectLocationInfo({
-  id,
+export function ProjectLocationContent({
+  location,
   project,
-  // layerCategory,
-  // layerGroup,
   locale,
-  locations,
   onSetLayerInfo,
 }) {
-  const location =
-    locations &&
-    locations.data &&
-    locations.data.features.find(
-      feature => feature.properties.location_id === id.replace('projloc-', ''),
-    );
-  // console.log(location)
   if (!location || !project) return null;
   const title =
     location.properties[`location_title_${locale}`] ||
@@ -63,7 +49,9 @@ export function ProjectLocationInfo({
   return (
     <Styled>
       <SupTitle
-        onClick={() => onSetLayerInfo(`project-${project.project_id}`)}
+        onClick={() =>
+          onSetLayerInfo(`${PROJECT_CONFIG.id}-${project.project_id}`)
+        }
         label={projectTitle}
       />
       <Title>{title}</Title>
@@ -91,31 +79,14 @@ export function ProjectLocationInfo({
   );
 }
 
-ProjectLocationInfo.propTypes = {
+ProjectLocationContent.propTypes = {
   onSetLayerInfo: PropTypes.func.isRequired,
-  id: PropTypes.string,
   project: PropTypes.object,
-  locations: PropTypes.object, // geojson
-  // layerCategory: PropTypes.object,
-  // layerGroup: PropTypes.object,
+  location: PropTypes.object,
   locale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
-  project: (state, { id, locations }) => {
-    const loc =
-      locations &&
-      locations.data &&
-      locations.data.features.find(
-        l => l.properties.location_id === id.replace('projloc-', ''),
-      );
-    // prettier-ignore
-    return loc
-      ? selectSingleProjectConfig(state, {
-        key: loc.properties.project_id,
-      })
-      : null;
-  },
   locale: state => selectLocale(state),
 });
 
@@ -132,4 +103,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(ProjectLocationInfo);
+export default compose(withConnect)(ProjectLocationContent);

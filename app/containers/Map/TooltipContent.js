@@ -9,46 +9,39 @@ import { getPropertyByLocale } from './utils';
 
 const Styled = styled.div``;
 
-const getContent = (feature, config, layer, locale) => {
-  if (layer && config.tooltip.content.propertyFromLayer) {
-    return getPropertyByLocale(layer, config.tooltip.content, locale);
+const getContent = (feature, element, layer, locale) => {
+  if (layer && element.propertyFromLayer) {
+    return getPropertyByLocale(layer, element, locale);
   }
-  if (config.tooltip.content.propertyByLocale) {
-    return getPropertyByLocale(
-      feature.properties,
-      config.tooltip.content,
-      locale,
-    );
+  if (element.propertyByLocale) {
+    return getPropertyByLocale(feature.properties, element, locale);
   }
-  if (config.tooltip.content.propertyFromLayer) {
-    return getPropertyByLocale(
-      feature.properties,
-      config.tooltip.content,
-      locale,
-    );
-  }
-  return config.tooltip.content[locale];
+  return element[locale];
 };
 
 const TooltipContent = ({ config, feature, intl, layer }) => {
-  const { icon, tooltip } = config;
+  const { tooltip } = config;
   const { locale } = intl;
-  console.log(icon, tooltip, config, layer);
+  const contentList = asArray(
+    getContent(feature, tooltip.content, layer, locale),
+  ).map((content, key) => ({
+    key,
+    content,
+  }));
   return (
     <Styled>
-      {asArray(getContent(feature, config, layer, locale)).map(c => (
-        <p>{c}</p>
+      {contentList.map(c => (
+        <p key={c.key}>{c.content}</p>
       ))}
     </Styled>
   );
 };
 
 TooltipContent.propTypes = {
-  config: PropTypes.object,
-  feature: PropTypes.object,
-  layer: PropTypes.object,
+  config: PropTypes.object, // the layer configuration
+  feature: PropTypes.object, // the feature
+  layer: PropTypes.object, // optionally the features' layer information
   intl: intlShape.isRequired,
-  // onClose: PropTypes.func,
 };
 
 export default injectIntl(TooltipContent);

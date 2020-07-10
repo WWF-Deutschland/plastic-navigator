@@ -4,7 +4,7 @@
 import { createSelector } from 'reselect';
 import { DEFAULT_LOCALE, appLocales } from 'i18n';
 
-import { URL_SEARCH_SEPARATOR } from 'config';
+import { URL_SEARCH_SEPARATOR, PROJECT_CONFIG } from 'config';
 
 import { startsWith } from 'utils/string';
 
@@ -34,21 +34,17 @@ export const selectLayersSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('layers') ? search.get('layers') : ''),
 );
-export const selectProjectsSearch = createSelector(
-  selectRouterSearchParams,
-  search => (search.has('projects') ? search.get('projects') : ''),
-);
 export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('info') ? search.get('info') : ''),
 );
 export const selectChapterSearch = createSelector(
   selectRouterSearchParams,
-  search => search.has('ch') && parseInt(search.get('ch'), 10),
+  search => (search.has('ch') ? parseInt(search.get('ch'), 10) : null),
 );
 export const selectStorySearch = createSelector(
   selectRouterSearchParams,
-  search => search.has('st') && parseInt(search.get('st'), 10),
+  search => (search.has('st') ? parseInt(search.get('st'), 10) : null),
 );
 
 /**
@@ -184,7 +180,9 @@ export const selectSingleProjectConfig = createSelector(
   (state, { key }) => key,
   state => selectConfigByKey(state, { key: 'projects' }),
   (key, projects) => {
-    const pid = startsWith(key, 'project-') ? key.replace('project-', '') : key;
+    const pid = startsWith(key, `${PROJECT_CONFIG.id}-`)
+      ? key.replace(`${PROJECT_CONFIG.id}-`, '')
+      : key;
     return projects && projects.find(p => p.project_id === pid);
   },
 );
@@ -203,9 +201,4 @@ export const selectActiveLayers = createSelector(
   selectLayersSearch,
   layersSearch =>
     layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
-);
-export const selectActiveProjects = createSelector(
-  selectProjectsSearch,
-  projectsSearch =>
-    projectsSearch === '' ? [] : projectsSearch.split(URL_SEARCH_SEPARATOR),
 );

@@ -9,18 +9,28 @@ import TooltipContent from './TooltipContent';
 import { getPropertyByLocale } from './utils';
 
 const Root = styled.div`
-  position: relative;
+  position: absolute;
   top: ${({ position }) => position.y}px;
   left: ${({ position }) => position.x}px;
   z-index: 3000;
 `;
 
+const BlockMouse = styled.div`
+  position: absolute;
+  top: -40px;
+  left: ${({ dirLeft }) => (dirLeft ? '-60px' : '0px')};
+  width: 60px;
+  background: transparent];
+  height: 60px;
+  display: block;
+`;
+
 // prettier-ignore
 const Anchor = styled.div`
   position: absolute;
-  top: ${({ offset }) => offset.y}px;
-  left: ${({ dirLeft, offset, w }) =>
-    dirLeft ? -1 * (offset.x + w) : offset.x}px;
+  top: ${({ xy }) => xy.y}px;
+  left: ${({ dirLeft, xy, w }) =>
+    dirLeft ? -1 * (xy.x + w) : xy.x}px;
   &::after {
     content: '';
     width: 0;
@@ -113,7 +123,7 @@ const Tooltip = ({
   intl,
   layerOptions,
   onClose,
-  onLayerInfo,
+  onFeatureClick,
 }) => {
   const { icon, tooltip } = config;
   const { locale } = intl;
@@ -130,7 +140,8 @@ const Tooltip = ({
   // prettier-ignore
   return (
     <Root position={position}>
-      <Anchor dirLeft={direction.x === 'left'} offset={offset} w={WIDTH}>
+      <BlockMouse dirLeft={direction.x === 'left'} />
+      <Anchor dirLeft={direction.x === 'left'} xy={offset} w={WIDTH}>
         <Main
           dirLeft={direction.x === 'left'}
           w={WIDTH}
@@ -145,12 +156,16 @@ const Tooltip = ({
             {tooltip.content && (
               <TooltipContent feature={feature} config={config} layer={layer} />
             )}
-            {tooltip.info && layer && (
+            {tooltip.info && (
               <Button
                 label="About"
                 onClick={() => {
-                  // console.log(layer, feature)
-                  onLayerInfo(layer.id);
+                  onFeatureClick({
+                    feature: feature.properties[tooltip.info.featureId],
+                    layer: layer && tooltip.info.layerId
+                      ? `${config.id}-${layer[tooltip.info.layerId]}`
+                      : config.id,
+                  });
                 }}
               />
             )}
@@ -180,7 +195,7 @@ Tooltip.propTypes = {
   layerOptions: PropTypes.object,
   intl: intlShape.isRequired,
   onClose: PropTypes.func,
-  onLayerInfo: PropTypes.func,
+  onFeatureClick: PropTypes.func,
 };
 
 export default injectIntl(Tooltip);

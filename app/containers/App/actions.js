@@ -174,10 +174,11 @@ export function setUIState(component, state) {
     state,
   };
 }
-export function setLayerInfo(id) {
+export function setLayerInfo(id, feature) {
   return {
     type: SET_LAYER_INFO,
     id,
+    feature,
   };
 }
 export function toggleLayer(id) {

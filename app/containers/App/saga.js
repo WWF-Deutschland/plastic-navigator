@@ -340,15 +340,16 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ id }) {
+function* setLayerInfoSaga({ id, feature }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
   // only update if not already active
-  if (searchParams.get('info') !== id) {
+  const infoId = feature ? `${id}|${feature}` : id;
+  if (searchParams.get('info') !== infoId) {
     if (typeof id === 'undefined' || id === '') {
       searchParams.delete('info');
     } else {
-      searchParams.set('info', id);
+      searchParams.set('info', infoId);
     }
     // convert to string and append if necessary
     const newSearch = searchParams.toString();

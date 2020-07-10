@@ -59,7 +59,7 @@ export function Map({
   onLoadLayer,
   jsonLayers,
   projects,
-  onLayerInfo,
+  onFeatureClick,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -155,7 +155,9 @@ export function Map({
         if (layerIds.indexOf(id) < 0) {
           const project =
             projects &&
-            projects.find(p => p.project_id === id.replace('project-', ''));
+            projects.find(
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+            );
           if (project && mapLayers[id]) {
             const { layer } = mapLayers[id];
             vectorLayerGroupRef.current.removeLayer(layer);
@@ -185,7 +187,9 @@ export function Map({
           // check if this layer is a project
           const project =
             projects &&
-            projects.find(p => p.project_id === id.replace('project-', ''));
+            projects.find(
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+            );
           if (project) {
             if (!jsonLayers.projectLocations) {
               onLoadLayer('projectLocations', PROJECT_CONFIG);
@@ -258,7 +262,7 @@ export function Map({
           config={tooltip.config}
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
-          onLayerInfo={onLayerInfo}
+          onFeatureClick={onFeatureClick}
         />
       )}
     </Styled>
@@ -273,7 +277,7 @@ Map.propTypes = {
   jsonLayers: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
-  onLayerInfo: PropTypes.func,
+  onFeatureClick: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -293,7 +297,9 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onFeatureClick: ({ feature, layer }) => {
+      dispatch(setLayerInfo(layer, feature));
+    },
   };
 }
 

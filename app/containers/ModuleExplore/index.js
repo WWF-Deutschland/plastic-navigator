@@ -17,6 +17,8 @@ import { Layer as LayerIcon } from 'grommet-icons';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
 
+import { PROJECT_CONFIG } from 'config';
+
 import PanelExplore from 'containers/PanelExplore';
 import ModuleWrap from 'components/ModuleWrap';
 
@@ -56,9 +58,11 @@ const ProjectButton = ({ showAll, lids, pids, onClick }) => (
   <ShowButton
     onClick={() => {
       if (showAll) {
-        onClick(uniq([...lids, ...pids.map(pid => `project-${pid}`)]));
+        onClick(
+          uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}-${pid}`)]),
+        );
       } else {
-        onClick(lids.filter(id => !startsWith(id, 'project-')));
+        onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}-`)));
       }
     }}
     label={
@@ -85,13 +89,13 @@ export function ModuleExplore({ onSetLayers, layerIds, projects }) {
   const projectIds = projects ? projects.map(p => p.project_id) : [];
   const activeProjects = layerIds
     .filter(id => {
-      if (startsWith(id, 'project-')) {
-        const pid = id.replace('project-', '');
+      if (startsWith(id, `${PROJECT_CONFIG.id}-`)) {
+        const pid = id.replace(`${PROJECT_CONFIG.id}-`, '');
         return projectIds.indexOf(pid) > -1;
       }
       return false;
     })
-    .map(id => id.replace('project-', ''));
+    .map(id => id.replace(`${PROJECT_CONFIG.id}-`, ''));
   // const hasActiveProjects = activeProjects.length > 0;
   const hasAllProjectsActive =
     projects && activeProjects.length >= projects.length;

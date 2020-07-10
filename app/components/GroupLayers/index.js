@@ -13,6 +13,8 @@ import { Layer } from 'grommet-icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
+import { PROJECT_CONFIG } from 'config';
+
 import messages from './messages';
 
 const Styled = styled.div`
@@ -109,8 +111,10 @@ function GroupLayers({
       <ListBody>
         {layers &&
           layers.map(layer => {
-            const id = projects ? `project-${layer.project_id}` : layer.id;
-            const contentId = projects ? id : layer['content-id'] || layer.id;
+            const id = projects
+              ? `${PROJECT_CONFIG.id}-${layer.project_id}`
+              : layer.id;
+            const contentId = projects ? id : layer.id;
             const title = projects
               ? layer[`project_title_${locale}`] ||
                 layer[`project_title_${DEFAULT_LOCALE}`]
