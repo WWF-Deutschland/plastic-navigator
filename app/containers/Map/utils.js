@@ -223,9 +223,9 @@ const getPointLayer = ({ data, config, markerEvents }) => {
     ...config.style,
   };
   const events = {
-    mouseover: args => markerEvents.mouseover(args, config),
-    mouseout: args => markerEvents.mouseout(args, config),
-    click: args => markerEvents.click(args, config),
+    mouseover: e => markerEvents.mouseover(e, config),
+    mouseout: e => markerEvents.mouseout(e, config),
+    click: e => markerEvents.click(e, config),
   };
   const jsonLayer = L.geoJSON(data, {
     pointToLayer: (feature, latlng) =>
@@ -274,9 +274,9 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
     ...config.style,
   };
   const events = {
-    mouseover: args => markerEvents.mouseover(args, config),
-    mouseout: args => markerEvents.mouseout(args, config),
-    click: args => markerEvents.click(args, config),
+    mouseover: e => markerEvents.mouseover(e, config),
+    mouseout: e => markerEvents.mouseout(e, config),
+    click: e => markerEvents.click(e, config),
   };
   const range = getRange(data.features, config.render.attribute);
   const jsonLayer = L.geoJSON(data, {
@@ -340,9 +340,9 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents }) => {
 export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const { data, config } = jsonLayer;
   const events = {
-    mouseover: args => markerEvents.mouseover(args, config),
-    mouseout: args => markerEvents.mouseout(args, config),
-    click: args => markerEvents.click(args, config),
+    mouseover: e => markerEvents.mouseover(e, config),
+    mouseout: e => markerEvents.mouseout(e, config),
+    click: e => markerEvents.click(e, config),
   };
   const layer = L.featureGroup(null, { pane: 'vectorPane' });
   const { icon } = PROJECT_CONFIG;

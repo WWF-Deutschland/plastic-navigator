@@ -51,6 +51,7 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
 `;
+
 const TIMEOUT = 2222;
 
 export function Map({
@@ -74,38 +75,34 @@ export function Map({
 
   const timerTooltip = useRef(false);
 
-  // eslint-disable arrow-body-style
   useEffect(
     () => () => {
       clearTimeout(timerTooltip.current);
     },
     [],
   );
-  // eslint-enable arrow-body-style
+
+  const showMarker = (e, config) => {
+    L.DomEvent.stopPropagation(e);
+    const { target } = e;
+    // eslint-disable-next-line no-underscore-dangle
+    const ll = target._latlng;
+    setTooltip({
+      config,
+      anchor:
+        ll && mapRef ? mapRef.current.latLngToLayerPoint(ll) : e.containerPoint,
+      feature: target.feature,
+      options: target.options,
+    });
+    clearTimeout(timerTooltip.current);
+    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
+  };
 
   // console.log(tooltip)
-  const onMarkerOver = (args, config) => {
-    setTooltip({
-      config,
-      anchor: args.containerPoint,
-      feature: args.target.feature,
-      options: args.target.options,
-    });
-    clearTimeout(timerTooltip.current);
-    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
-  };
-  // const onMarkerOut = (args, config) => {};
+  const onMarkerOver = () => null;
+  // const onMarkerOver = showMarker;
   const onMarkerOut = () => null;
-  const onMarkerClick = (args, config) => {
-    setTooltip({
-      config,
-      anchor: args.containerPoint,
-      feature: args.target.feature,
-      options: args.target.options,
-    });
-    clearTimeout(timerTooltip.current);
-    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
-  };
+  const onMarkerClick = showMarker;
 
   const markerEvents = {
     mouseover: onMarkerOver,
@@ -264,6 +261,7 @@ export function Map({
     }
   }, [layerIds, layerConfig, jsonLayers, projects]);
   const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
+  console.log(tooltip);
   return (
     <Styled>
       <MapContainer id="ll-map" />
