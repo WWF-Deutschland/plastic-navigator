@@ -11,6 +11,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
 import { Next } from 'grommet-icons';
+import { deburr } from 'lodash/string';
 
 import { setLayerInfo } from 'containers/App/actions';
 
@@ -25,10 +26,13 @@ const FeatureButton = styled(p => (
 `;
 
 export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
+  const sorted = items.sort((a, b) =>
+    deburr(a.label) > deburr(b.label) ? 1 : -1,
+  );
   return (
     <FeatureListWrap>
       <ListTitle>{title}</ListTitle>
-      {items.map(item => (
+      {sorted.map(item => (
         <FeatureButton
           key={item.id}
           onClick={() => onSetLayerInfo(layerId, item.id)}

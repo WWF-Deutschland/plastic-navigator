@@ -34,7 +34,7 @@ export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
     }
   }, [config]);
   const { locale } = intl;
-  if (!config.id === POLICY_LAYER) return null;
+  if (!config.id === POLICY_LAYER || !layer) return null;
 
   return (
     <FeatureList
