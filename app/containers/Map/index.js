@@ -51,7 +51,7 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
 `;
-const TIMEOUT = 3333;
+const TIMEOUT = 2222;
 
 export function Map({
   layerConfig,

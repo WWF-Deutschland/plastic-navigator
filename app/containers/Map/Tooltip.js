@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { injectIntl, intlShape } from 'react-intl';
 import { Box, Button } from 'grommet';
 import { Close } from 'grommet-icons';
+
+import { roundNumber } from 'utils/numbers';
+
 import TooltipContent from './TooltipContent';
 
 import { getPropertyByLocale } from './utils';
@@ -78,7 +81,20 @@ const CloseWrap = styled.div`
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
 `;
 
-const getTitle = (feature, config, layer, locale) => {
+const getTitle = (feature, config, layer, intl) => {
+  const { locale } = intl;
+  if (config.tooltip.title.property) {
+    const value = feature.properties[config.tooltip.title.property];
+    if (config.tooltip.title.type === 'number') {
+      const rounded = roundNumber(value);
+      const unit =
+        config.tooltip.title.units &&
+        config.tooltip.title.units === 'true' &&
+        config.data['unit-short'][locale];
+      return `${intl.formatNumber(rounded)} ${unit}`;
+    }
+    return value;
+  }
   if (config.tooltip.title.propertyByLocale) {
     return getPropertyByLocale(
       feature.properties,
@@ -113,6 +129,20 @@ const getSupTitle = (feature, config, layer, locale) => {
   return config.tooltip.supTitle[locale];
 };
 
+const getMarkerSize = config => {
+  if (config.render && config.render.type === 'scaledCircle') {
+    return { x: 0, y: 0 };
+  }
+  return (config.icon && config.icon.size) || { x: 25, y: 50 };
+};
+const getOffset = (config, feature, markerSize) => ({
+  x: parseInt(markerSize.x, 10) / 2,
+  y:
+    config.icon && config.icon.align && config.icon.align === 'center'
+      ? 0
+      : (-1 * parseInt(markerSize.y, 10)) / 2,
+});
+
 const WIDTH = 250;
 
 const Tooltip = ({
@@ -125,18 +155,13 @@ const Tooltip = ({
   onClose,
   onFeatureClick,
 }) => {
-  const { icon, tooltip } = config;
+  const { tooltip } = config;
   const { locale } = intl;
-  const markerSize = (icon && icon.size) || { x: 25, y: 50 };
-  if (!icon) return null;
-  const offset = {
-    x: parseInt(markerSize.x, 10) / 2,
-    y:
-      icon.align && icon.align === 'center'
-        ? 0
-        : (-1 * parseInt(markerSize.y, 10)) / 2,
-  };
+  const markerSize = getMarkerSize(config, feature, layerOptions);
+  const offset = getOffset(config, feature, markerSize);
   const layer = layerOptions ? layerOptions.layer : null;
+
+  // console.log(config, feature)
   // prettier-ignore
   return (
     <Root position={position}>
@@ -151,7 +176,7 @@ const Tooltip = ({
               <SupTitle>{getSupTitle(feature, config, layer, locale)}</SupTitle>
             )}
             {tooltip.title && (
-              <Title>{getTitle(feature, config, layer, locale)}</Title>
+              <Title>{getTitle(feature, config, layer, intl)}</Title>
             )}
             {tooltip.content && (
               <TooltipContent feature={feature} config={config} layer={layer} />
