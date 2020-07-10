@@ -83,10 +83,10 @@ export function ProjectContent({
     );
   return (
     <Styled>
-      {theLocation && (
+      {theLocation && projectLocations.length > 1 && (
         <ProjectLocationContent location={theLocation} project={project} />
       )}
-      {!theLocation && (
+      {(!theLocation || projectLocations.length <= 1) && (
         <>
           <Title>{title}</Title>
           <div>
