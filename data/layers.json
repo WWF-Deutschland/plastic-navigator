@@ -1,6 +1,7 @@
 [
   {
     "id": "basemap",
+    "z-index": "0",
     "source": "mapbox",
     "type": "vector-tiles",
     "style-id": "ckchlfow9239h1il784elz4y2",
@@ -19,6 +20,7 @@
   {
     "id": "surface-concentration",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -68,6 +70,7 @@
   {
     "id": "surface-concentration-orange",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -117,6 +120,7 @@
   {
     "id": "surface-concentration-red",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -166,6 +170,7 @@
   {
     "id": "surface-concentration-yellow",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -215,6 +220,7 @@
   {
     "id": "surface-concentration-yellow-dark",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -264,6 +270,7 @@
   {
     "id": "surface-concentration-yellow-red",
     "content-id": "surface-concentration",
+    "z-index": "-1",
     "category": "plastic",
     "group": "destination",
     "source": "mapbox",
@@ -313,6 +320,7 @@
   {
     "id": "mismanaged-waste",
     "content-id": "mismanaged-waste",
+    "z-index": "10",
     "category": "plastic",
     "group": "source",
     "source": "mapbox",
