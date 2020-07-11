@@ -9,6 +9,7 @@ import {
   LAYER_LOAD_SUCCESS,
   LAYER_LOAD_ERROR,
   SET_MAP_LAYERS,
+  SET_HIGHLIGHT_FEATURE,
 } from './constants';
 
 export const initialState = {
@@ -16,6 +17,7 @@ export const initialState = {
   layersRequested: {},
   layersReady: {},
   mapLayers: {},
+  featureHighlight: '',
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -24,6 +26,9 @@ const mapReducer = (state = initialState, action) =>
     switch (action.type) {
       case SET_MAP_LAYERS:
         draft.mapLayers = action.layers;
+        break;
+      case SET_HIGHLIGHT_FEATURE:
+        draft.featureHighlight = action.feature;
         break;
       case LAYER_REQUESTED:
         draft.layersRequested[action.key] = action.time;

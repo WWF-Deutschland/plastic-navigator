@@ -54,3 +54,7 @@ export const selectMapLayers = createSelector(
   selectDomain,
   domain => domain.mapLayers,
 );
+export const selectHighlightFeature = createSelector(
+  selectDomain,
+  domain => domain.featureHighlight,
+);

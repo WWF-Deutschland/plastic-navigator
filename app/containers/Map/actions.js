@@ -11,8 +11,15 @@ import {
   LAYER_LOAD_ERROR,
   LAYER_READY,
   SET_MAP_LAYERS,
+  SET_HIGHLIGHT_FEATURE,
 } from './constants';
 
+export function setHighlightFeature(feature) {
+  return {
+    type: SET_HIGHLIGHT_FEATURE,
+    feature,
+  };
+}
 export function setMapLayers(layers) {
   return {
     type: SET_MAP_LAYERS,
