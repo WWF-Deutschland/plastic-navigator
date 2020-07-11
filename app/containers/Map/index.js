@@ -50,6 +50,7 @@ const MapContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
+  background: white;
 `;
 
 const TIMEOUT = 2222;
@@ -69,9 +70,9 @@ export function Map({
   const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
-  const basemapLayerGroupRef = useRef(null);
-  const rasterLayerGroupRef = useRef(null);
-  const vectorLayerGroupRef = useRef(null);
+  // const basemapLayerGroupRef = useRef(null);
+  // const mapRef = useRef(null);
+  // const vectorLayerGroupRef = useRef(null);
 
   const timerTooltip = useRef(false);
 
@@ -86,11 +87,10 @@ export function Map({
     L.DomEvent.stopPropagation(e);
     const { target } = e;
     // eslint-disable-next-line no-underscore-dangle
-    const ll = target._latlng;
+    // const ll = target._latlng;
     setTooltip({
       config,
-      anchor:
-        ll && mapRef ? mapRef.current.latLngToLayerPoint(ll) : e.containerPoint,
+      anchor: e.containerPoint,
       feature: target.feature,
       options: target.options,
     });
@@ -100,7 +100,6 @@ export function Map({
 
   // console.log(tooltip)
   const onMarkerOver = () => null;
-  // const onMarkerOver = showMarker;
   const onMarkerOut = () => null;
   const onMarkerClick = showMarker;
 
@@ -132,30 +131,33 @@ export function Map({
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
       ],
     }).on(mapEvents);
-    mapRef.current.createPane('rasterPane');
-    mapRef.current.getPane('rasterPane').style.zIndex = 200;
-    mapRef.current.getPane('rasterPane').style.pointerEvents = 'none';
-    mapRef.current.createPane('vectorPane');
-    mapRef.current.getPane('vectorPane').style.zIndex = 300;
-    basemapLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
-    rasterLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
-    vectorLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
+    // mapRef.current.createPane('rasterPane');
+    // mapRef.current.getPane('rasterPane').style.zIndex = 200;
+    mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
+    // mapRef.current.createPane('vectorPane');
+    // mapRef.current.getPane('vectorPane').style.zIndex = 300;
+    // basemapLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
+    // mapRef.current = L.layerGroup().addTo(mapRef.current);
+    // vectorLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
   }, []);
 
   // add basemap
   useEffect(() => {
     if (layerConfig) {
-      const basemapConfig =
-        layerConfig && layerConfig.find(c => c.id === 'basemap');
-      if (basemapConfig.type === 'vector-tiles') {
-        basemapLayerGroupRef.current.addLayer(
-          L.tileLayer(MAPBOX.STYLE_URL_TEMPLATE, {
-            style_id: basemapConfig['style-id'],
-            username: MAPBOX.USER,
-            accessToken: MAPBOX.TOKEN,
-          }),
-        );
-      }
+      const basemapConfigs =
+        layerConfig && layerConfig.filter(c => c.id === 'basemap');
+      basemapConfigs.forEach(config => {
+        if (config.type === 'vector-tiles') {
+          mapRef.current.addLayer(
+            L.tileLayer(MAPBOX.STYLE_URL_TEMPLATE, {
+              style_id: config['style-id'],
+              username: MAPBOX.USER,
+              accessToken: MAPBOX.TOKEN,
+              zIndex: config['z-index'] || 1,
+            }),
+          );
+        }
+      });
     }
   }, [layerConfig]);
 
@@ -173,16 +175,16 @@ export function Map({
             );
           if (project && mapLayers[id]) {
             const { layer } = mapLayers[id];
-            vectorLayerGroupRef.current.removeLayer(layer);
+            mapRef.current.removeLayer(layer);
           } else {
             const config = layerConfig.find(c => c.id === id);
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
               if (config.type === 'raster-tiles') {
-                rasterLayerGroupRef.current.removeLayer(layer);
+                mapRef.current.removeLayer(layer);
               }
               if (config.type === 'geojson') {
-                vectorLayerGroupRef.current.removeLayer(layer);
+                mapRef.current.removeLayer(layer);
               }
             }
           }
@@ -194,8 +196,7 @@ export function Map({
         // otherwise they will not be adeded when hot reloading
         const llayer = mapLayers[id] && mapLayers[id].layer;
         const hasLayer =
-          rasterLayerGroupRef.current.hasLayer(llayer) ||
-          vectorLayerGroupRef.current.hasLayer(llayer);
+          mapRef.current.hasLayer(llayer) || mapRef.current.hasLayer(llayer);
         if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
           // check if this layer is a project
           const project =
@@ -213,7 +214,7 @@ export function Map({
                 project,
                 markerEvents,
               });
-              vectorLayerGroupRef.current.addLayer(layer);
+              mapRef.current.addLayer(layer);
               newMapLayers[id] = { layer, config };
             }
           } else {
@@ -224,13 +225,13 @@ export function Map({
                 config.type === 'raster-tiles' &&
                 config.source === 'mapbox'
               ) {
-                if (rasterLayerGroupRef) {
+                if (mapRef) {
                   const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
                     id: config.tileset,
                     accessToken: MAPBOX.TOKEN,
-                    pane: 'rasterPane',
+                    zIndex: config['z-index'] || 1,
                   });
-                  rasterLayerGroupRef.current.addLayer(layer);
+                  mapRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
                 }
               }
@@ -240,13 +241,13 @@ export function Map({
                 if (!jsonLayers[id]) {
                   onLoadLayer(id, config);
                 }
-                if (jsonLayers[id] && vectorLayerGroupRef) {
+                if (jsonLayers[id] && mapRef) {
                   const layer = getVectorLayer({
                     jsonLayer: jsonLayers[id],
                     config,
                     markerEvents,
                   });
-                  vectorLayerGroupRef.current.addLayer(layer);
+                  mapRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
                 }
               }
@@ -261,7 +262,6 @@ export function Map({
     }
   }, [layerIds, layerConfig, jsonLayers, projects]);
   const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
-  console.log(tooltip);
   return (
     <Styled>
       <MapContainer id="ll-map" />

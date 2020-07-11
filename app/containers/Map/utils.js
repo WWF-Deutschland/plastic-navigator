@@ -81,9 +81,8 @@ const filterByProject = (feature, project) =>
   quasiEquals(feature.properties.project_id, project.project_id);
 
 const getPolylineLayer = ({ data, config }) => {
-  const layer = L.featureGroup(null, { pane: 'vectorPane' });
+  const layer = L.featureGroup(null);
   const options = {
-    pane: 'vectorPane',
     ...config.style,
   };
   data.features.forEach(feature => {
@@ -217,10 +216,10 @@ const getIcon = (feature, latlng, config) => {
 };
 
 const getPointLayer = ({ data, config, markerEvents }) => {
-  const layer = L.featureGroup(null, { pane: 'vectorPane' });
+  const layer = L.featureGroup(null);
   const options = {
-    pane: 'vectorPane',
     ...config.style,
+    zIndex: config['z-index'] || 1,
   };
   const events = {
     mouseover: e => markerEvents.mouseover(e, config),
@@ -268,10 +267,11 @@ const getPointLayer = ({ data, config, markerEvents }) => {
 };
 
 const getCircleLayer = ({ data, config, markerEvents }) => {
-  const layer = L.featureGroup(null, { pane: 'vectorPane' });
+  const layer = L.featureGroup(null, { pane: 'overlayPane' });
   const options = {
-    pane: 'vectorPane',
+    pane: 'overlayPane',
     ...config.style,
+    zIndex: config['z-index'] || 1,
   };
   const events = {
     mouseover: e => markerEvents.mouseover(e, config),
@@ -344,7 +344,7 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
     mouseout: e => markerEvents.mouseout(e, config),
     click: e => markerEvents.click(e, config),
   };
-  const layer = L.featureGroup(null, { pane: 'vectorPane' });
+  const layer = L.featureGroup(null);
   const { icon } = PROJECT_CONFIG;
   if (icon && icon.datauri) {
     const iconSize = [
@@ -363,7 +363,6 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
       iconAnchor,
     })
     const options = {
-      pane: 'vectorPane',
       icon: divIcon,
       layer: project,
       ...config.style,
