@@ -47,7 +47,7 @@ import GroupLayers from 'components/GroupLayers';
 import messages from './messages';
 // import commonMessages from 'messages';
 
-const Styled = styled(props => <Box {...props} />)`
+const Styled = styled(props => <Box {...props} elevation="medium" />)`
   position: absolute;
   right: 0;
   top: 0;

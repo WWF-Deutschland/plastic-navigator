@@ -28,7 +28,9 @@ import FeatureContent from './FeatureContent';
 
 const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
 
-const Styled = styled(props => <Box {...props} background="white" />)`
+const Styled = styled(props => (
+  <Box {...props} background="white" elevation="medium" />
+))`
   position: fixed;
   right: 0;
   top: 0;
