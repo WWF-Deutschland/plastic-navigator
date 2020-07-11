@@ -133,7 +133,10 @@ const getMarkerSize = config => {
   if (config.render && config.render.type === 'scaledCircle') {
     return { x: 0, y: 0 };
   }
-  return (config.icon && config.icon.size) || { x: 25, y: 50 };
+  if (config.icon && config.icon.size) {
+    return config.icon.size.default || config.icon.size;
+  }
+  return { x: 25, y: 50 };
 };
 const getOffset = (config, feature, markerSize) => ({
   x: parseInt(markerSize.x, 10) / 2,
@@ -181,14 +184,14 @@ const Tooltip = ({
             {tooltip.content && (
               <TooltipContent feature={feature} config={config} layer={layer} />
             )}
-            {tooltip.info && (
+            {(tooltip.more || tooltip.more === 'true') && tooltip.more !== 'false' && (
               <Button
                 label="About"
                 onClick={() => {
                   onFeatureClick({
-                    feature: feature.properties[tooltip.info.featureId],
-                    layer: layer && tooltip.info.layerId
-                      ? `${config.id}-${layer[tooltip.info.layerId]}`
+                    feature: feature.properties.f_id,
+                    layer: layer && config.data['layer-id']
+                      ? `${config.id}-${layer[config.data['layer-id']]}`
                       : config.id,
                   });
                 }}

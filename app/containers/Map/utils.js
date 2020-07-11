@@ -156,12 +156,12 @@ const getPolylineLayer = ({ data, config }) => {
   return layer;
 };
 
-const getIcon = (feature, latlng, config) => {
-  const { icon } = config;
+export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
   if (icon && icon.datauri) {
+    const sizeForState = icon.size[state] || icon.size.default || icon.size;
     const iconSize = [
-      (icon.size && icon.size.x) || 25,
-      (icon.size && icon.size.y) || 50,
+      (sizeForState && sizeForState.x) || 25,
+      (sizeForState && sizeForState.y) || 50,
     ];
     // off set from top left
     const iconAnchor =
@@ -175,17 +175,19 @@ const getIcon = (feature, latlng, config) => {
       iconAnchor,
     };
     // check for property dependent icon
-    if (icon.property && typeof icon.datauri === 'object') {
+    const iconForState =
+      icon.datauri[state] || icon.datauri.default || icon.datauri;
+    if (feature && icon.property && typeof icon.datauri === 'object') {
       let uri = '';
       if (icon.multiple && icon.multiple === 'true') {
         const ps = icon.property.split('.');
         const propertyArray = feature.properties[ps[0]];
         const values = uniq(propertyArray.map(p => p[ps[1]]));
         uri =
-          values.length > 1 ? icon.datauri.multiple : icon.datauri[values[0]];
+          values.length > 1 ? iconForState.multiple : iconForState[values[0]];
       } else {
-        const p = feature.properties[config.property];
-        uri = icon.datauri[p] || icon.datauri.default;
+        const p = feature.properties[icon.property];
+        uri = iconForState[p] || iconForState.default;
       }
       return L.divIcon({
         ...options,
@@ -193,23 +195,21 @@ const getIcon = (feature, latlng, config) => {
       });
     }
     // check for latitude flip
-    if (icon.flip && icon.flip.latitude) {
+    if (latlng && icon.flip && icon.flip.latitude) {
       if (
         (icon.flip.latitude === 'south' && latlng.lat < 0) ||
         (icon.flip.latitude === 'north' && latlng.lat >= 0)
       ) {
         return L.divIcon({
           ...options,
-          html: `<img style="transform:scale(1, -1);width:100%;" src="${
-            icon.datauri
-          }">`,
+          html: `<img style="transform:scale(1, -1);width:100%;" src="${iconForState}">`,
         });
       }
     }
     // icon normal state
     return L.divIcon({
       ...options,
-      html: `<img style="width:100%;" src="${icon.datauri}">`,
+      html: `<img style="width:100%;" src="${iconForState}">`,
     });
   }
   return L.icon();
@@ -230,7 +230,7 @@ const getPointLayer = ({ data, config, markerEvents }) => {
     pointToLayer: (feature, latlng) =>
       L.marker(latlng, {
         ...options,
-        icon: getIcon(feature, latlng, config),
+        icon: getIcon(config.icon, { feature, latlng }),
       }).on(events),
   });
   layer.addLayer(jsonLayer);
@@ -244,7 +244,7 @@ const getPointLayer = ({ data, config, markerEvents }) => {
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng - 360], {
           ...options,
-          icon: getIcon(feature, latlng, config),
+          icon: getIcon(config.icon, { feature, latlng }),
         }).on(events),
     });
     layer.addLayer(layerWest);
@@ -258,7 +258,7 @@ const getPointLayer = ({ data, config, markerEvents }) => {
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng + 360], {
           ...options,
-          icon: getIcon(feature, latlng, config),
+          icon: getIcon(config.icon, { feature, latlng }),
         }).on(events),
     });
     layer.addLayer(layerEast);
@@ -347,21 +347,7 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const layer = L.featureGroup(null);
   const { icon } = PROJECT_CONFIG;
   if (icon && icon.datauri) {
-    const iconSize = [
-      (icon.size && icon.size.x) || 25,
-      (icon.size && icon.size.y) || 50,
-    ];
-    const iconAnchor =
-      icon.align === 'center'
-        ? [iconSize[0] / 2, iconSize[1] / 2] // center
-        : [iconSize[0] / 2, iconSize[1]]; // bottom
-    // prettier-ignore
-    const divIcon = L.divIcon({
-      className: 'mpx-map-icon-uri',
-      html: `<img style="width:100%;" src="${icon.datauri.default}">`,
-      iconSize,
-      iconAnchor,
-    })
+    const divIcon = getIcon(icon);
     const options = {
       icon: divIcon,
       layer: project,
@@ -415,4 +401,20 @@ export const getPropertyByLocale = (properties, element, locale) => {
     );
   }
   return props.reduce((memo, prop) => memo[prop], properties);
+};
+
+export const padBounds = (latlngBounds, padding, map) => {
+  const { n, e, s, w } = padding;
+  const ne = latlngBounds.getNorthEast();
+  const sw = latlngBounds.getSouthWest();
+  const nePoint = map.project(ne);
+  const swPoint = map.project(sw);
+  return L.latLngBounds(
+    map.unproject(L.point(nePoint.x - e, nePoint.y + n)),
+    map.unproject(L.point(swPoint.x + w, swPoint.y - s)),
+  );
+};
+export const getMapPaddedBounds = (map, padding) => {
+  const bounds = map.getBounds();
+  return padBounds(bounds, padding, map);
 };

@@ -41,7 +41,7 @@ export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
       title={intl.formatMessage(coreMessages.countries)}
       layerId={POLICY_LAYER}
       items={layer.data.features.map(f => ({
-        id: f.properties.code,
+        id: f.properties.f_id,
         label:
           f.properties[`name_${locale}`] ||
           f.properties[`name_${DEFAULT_LOCALE}`],

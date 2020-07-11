@@ -37,7 +37,6 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
     if (aDate > bDate) return -1;
     return 1;
   });
-  console.log(config);
   return (
     <Styled>
       {positions.length > 1 && (
@@ -45,7 +44,6 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
       )}
       {sorted.map(position => {
         const icon = config.icon.datauri[position.position_id];
-        console.log(icon);
         return (
           <div key={`${position.position_id}${position.source_id}`}>
             <hr />

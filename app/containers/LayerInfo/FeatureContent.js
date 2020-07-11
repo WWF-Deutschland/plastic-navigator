@@ -17,6 +17,8 @@ import { Previous } from 'grommet-icons';
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYER } from 'config';
 
+import { findFeature } from 'utils/layers';
+
 import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -59,9 +61,7 @@ export function FeatureContent({
   if (!config.id === POLICY_LAYER || !config.tooltip) {
     return <LayerContent layer={config} />;
   }
-  const feature = layerData.data.features.find(
-    f => f.properties[config.tooltip.info.featureId] === featureId,
-  );
+  const feature = findFeature(layerData.data.features, featureId);
   if (!feature) return <LayerContent config={config} />;
   const supTitle = config.title[locale] || config.title[DEFAULT_LOCALE];
   return (

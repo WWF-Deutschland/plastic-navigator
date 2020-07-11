@@ -54,6 +54,21 @@ function* loadDataErrorHandler(err, { key }) {
   yield put(setLayerLoadError(err, key));
 }
 
+function setFeatureIds(json) {
+  if (json.features) {
+    return {
+      ...json,
+      features: json.features.map((f, index) => ({
+        ...f,
+        properties: {
+          ...f.properties,
+          f_id: `f${index}`,
+        },
+      })),
+    };
+  }
+  return json;
+}
 function setProperties(json, config, parsed) {
   let properties = parsed[0].data;
   if (config.extend) {
@@ -127,6 +142,7 @@ export function* loadDataSaga({ key, config }) {
                   Object.values(json.objects)[0],
                 );
               }
+              json = setFeatureIds(json);
               if (
                 properties &&
                 properties.file &&
@@ -180,7 +196,8 @@ export function* loadDataSaga({ key, config }) {
                   },
                 );
               });
-              const json = yield promise;
+              let json = yield promise;
+              json = setFeatureIds(json);
               yield put(setLayerLoadSuccess(key, config, json, Date.now()));
             }
           }

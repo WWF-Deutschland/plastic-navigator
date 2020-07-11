@@ -62,7 +62,7 @@ export function ProjectContent({
     locations &&
     locations.data &&
     locations.data.features.find(
-      feature => feature.properties.location_id === location,
+      feature => feature.properties.f_id === location,
     );
   return (
     <Styled>
@@ -95,9 +95,11 @@ export function ProjectContent({
           {projectLocations && projectLocations.length > 1 && (
             <FeatureList
               title={intl.formatMessage(commonMessages.locations)}
-              layerId={`${PROJECT_CONFIG.id}-${project.project_id}`}
+              layerId={`${PROJECT_CONFIG.id}-${
+                project[PROJECT_CONFIG.data['layer-id']]
+              }`}
               items={projectLocations.map(l => ({
-                id: l.location_id,
+                id: l.f_id,
                 label:
                   l[`location_title_${locale}`] ||
                   l[`location_title_${DEFAULT_LOCALE}`],

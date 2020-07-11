@@ -17,7 +17,7 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import appTheme from 'theme';
-import { Grommet, Button } from 'grommet';
+import { Grommet, Button, ResponsiveContext } from 'grommet';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -121,7 +121,9 @@ function App({
         </Helmet>
         <Header route={route} />
         <Content>
-          <Map />
+          <ResponsiveContext.Consumer>
+            {size => <Map size={size} />}
+          </ResponsiveContext.Consumer>
           <Switch>
             <Route
               path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}

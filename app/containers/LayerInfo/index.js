@@ -17,6 +17,7 @@ import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 
 import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
+import { getLayerFeatureIds, getLayerId } from 'utils/layers';
 
 import { selectSingleLayerConfig } from 'containers/App/selectors';
 
@@ -46,10 +47,6 @@ const Styled = styled(props => (
     left: auto;
   }
 `;
-
-const getLayerFeatureIds = id => id.split('|');
-
-const getLayerId = id => getLayerFeatureIds(id)[0];
 
 export function LayerInfo({ id, onClose, config }) {
   const [layerId, featureId] = getLayerFeatureIds(id);

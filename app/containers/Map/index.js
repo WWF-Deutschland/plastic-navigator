@@ -17,18 +17,26 @@ import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import { getLayerFeatureIds } from 'utils/layers';
+import { getAsideInfoWidth } from 'utils/responsive';
 // import commonMessages from 'messages';
 //
 import {
   selectActiveLayers,
   selectConfigByKey,
+  selectInfoSearch,
 } from 'containers/App/selectors';
 
 import { setLayerInfo } from 'containers/App/actions';
 
 import Tooltip from './Tooltip';
 
-import { getProjectLayer, getVectorLayer } from './utils';
+import {
+  getProjectLayer,
+  getVectorLayer,
+  getIcon,
+  getMapPaddedBounds,
+} from './utils';
 
 import reducer from './reducer';
 import saga from './saga';
@@ -64,30 +72,19 @@ export function Map({
   jsonLayers,
   projects,
   onFeatureClick,
+  info,
+  size,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
   const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
-  // const basemapLayerGroupRef = useRef(null);
-  // const mapRef = useRef(null);
-  // const vectorLayerGroupRef = useRef(null);
-
   const timerTooltip = useRef(false);
-
-  useEffect(
-    () => () => {
-      clearTimeout(timerTooltip.current);
-    },
-    [],
-  );
-
+  const [layerId, featureId] = getLayerFeatureIds(info);
   const showMarker = (e, config) => {
     L.DomEvent.stopPropagation(e);
     const { target } = e;
-    // eslint-disable-next-line no-underscore-dangle
-    // const ll = target._latlng;
     setTooltip({
       config,
       anchor: e.containerPoint,
@@ -119,6 +116,13 @@ export function Map({
     layeradd: () => setTooltip(null),
     layerremove: () => setTooltip(null),
   };
+
+  useEffect(
+    () => () => {
+      clearTimeout(timerTooltip.current);
+    },
+    [],
+  );
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
@@ -131,14 +135,7 @@ export function Map({
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
       ],
     }).on(mapEvents);
-    // mapRef.current.createPane('rasterPane');
-    // mapRef.current.getPane('rasterPane').style.zIndex = 200;
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
-    // mapRef.current.createPane('vectorPane');
-    // mapRef.current.getPane('vectorPane').style.zIndex = 300;
-    // basemapLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
-    // mapRef.current = L.layerGroup().addTo(mapRef.current);
-    // vectorLayerGroupRef.current = L.layerGroup().addTo(mapRef.current);
   }, []);
 
   // add basemap
@@ -261,6 +258,66 @@ export function Map({
       onSetMapLayers(newMapLayers);
     }
   }, [layerIds, layerConfig, jsonLayers, projects]);
+
+  useEffect(() => {
+    if (mapLayers && layerConfig) {
+      Object.keys(mapLayers).forEach(key => {
+        const mapLayer = mapLayers[key];
+        if (mapLayer) {
+          const { config, layer } = mapLayer;
+          // console.log(config, layer, featureId)
+          if (config.icon) {
+            // multiple layers for wrapping dateline
+            let firstCopy = true;
+            layer.eachLayer(copy => {
+              const layerCount = copy.getLayers().length;
+              copy.eachLayer(marker => {
+                let icon;
+                if (key === layerId) {
+                  const active =
+                    layerCount === 1 ||
+                    marker.feature.properties.f_id === featureId;
+                  icon = getIcon(config.icon, {
+                    feature: marker.feature,
+                    state: active ? 'active' : 'semi-active',
+                  });
+                  if (active) {
+                    if (firstCopy) {
+                      const latlng = marker.getLatLng();
+                      const aside = getAsideInfoWidth(size);
+                      const bounds = getMapPaddedBounds(mapRef.current, {
+                        n: 50,
+                        e: Math.max(50, aside + 50),
+                        s: 50,
+                        w: 50,
+                      });
+                      if (!bounds.contains(latlng)) {
+                        const point = mapRef.current.project(latlng);
+                        const latLngAside = mapRef.current.unproject(
+                          L.point(point.x + aside / 2, point.y),
+                        );
+                        mapRef.current.panTo(latLngAside);
+                      }
+                    }
+                    marker.setZIndexOffset(1000);
+                  }
+                } else {
+                  marker.setZIndexOffset(0);
+                  icon = getIcon(config.icon, {
+                    feature: marker.feature,
+                    state: 'default',
+                  });
+                }
+                marker.setIcon(icon);
+              });
+              firstCopy = false;
+            });
+          }
+        }
+      });
+    }
+  }, [info, layerConfig, projects, mapLayers, size]);
+
   const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
   return (
     <Styled>
@@ -292,6 +349,8 @@ Map.propTypes = {
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
   onFeatureClick: PropTypes.func,
+  info: PropTypes.string,
+  size: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -301,6 +360,7 @@ const mapStateToProps = createStructuredSelector({
   mapLayers: state => selectMapLayers(state),
   jsonLayers: state => selectLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
+  info: state => selectInfoSearch(state),
 });
 
 function mapDispatchToProps(dispatch) {
