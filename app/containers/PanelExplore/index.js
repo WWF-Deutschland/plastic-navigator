@@ -176,8 +176,9 @@ export function PanelExplore({
                     )}
                     <GroupLayers
                       group={group}
-                      layers={layersConfig.filter(
-                        layer => layer.group === group.id,
+                      layers={layersConfig.filter(layer =>
+                        layer.category === activeCategory.id &&
+                        layer.group === group.id
                       )}
                       locale={locale}
                       activeLayers={activeLayers}
