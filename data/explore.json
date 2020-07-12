@@ -27,6 +27,17 @@
           "en": "Optional description",
           "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
+      },
+      {
+        "id": "hydro",
+        "title": {
+          "en": "How does the plastic debris travel?",
+          "de": "Meeresströmungen"
+        },
+        "description": {
+          "en": "Optional description",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
+        }
       }
     ]
   },
@@ -45,17 +56,32 @@
     }
   },
   {
-    "id": "other",
+    "id": "colours",
     "title": {
-      "en": "Other",
-      "de": "Weitere"
+      "en": "Colour options",
+      "de": "Farboptionen"
     },
     "groups": [
       {
-        "id": "hydro",
+        "id": "destination",
         "title": {
-          "en": "Ocean currents & circulation",
-          "de": "Meeresströmungen"
+          "en": "Where does plastic waste accumulate in the oceans?",
+          "de": "Wo endet der Plastikmüll in den Ozeanan?"
+        },
+        "description": {
+          "en": "Optional description",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
+        }
+      },
+      {
+        "id": "source",
+        "title": {
+          "en": "Where does plastic waste come from?",
+          "de": "Wo kommt der Plastikmüll her?"
+        },
+        "description": {
+          "en": "Optional description",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       }
     ]
