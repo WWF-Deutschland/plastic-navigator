@@ -30,6 +30,7 @@ import {
 import { setLayerInfo } from 'containers/App/actions';
 
 import Tooltip from './Tooltip';
+import Key from './Key';
 
 import {
   getProjectLayer,
@@ -67,8 +68,8 @@ const MapContainer = styled.div`
 `;
 
 export function Map({
-  layerConfig,
-  layerIds,
+  layersConfig,
+  activeLayerIds,
   mapLayers,
   onSetMapLayers,
   onLoadLayer,
@@ -79,6 +80,7 @@ export function Map({
   size,
   onFeatureHighlight,
   highlightFeature,
+  hasKey,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -163,9 +165,9 @@ export function Map({
 
   // add basemap
   useEffect(() => {
-    if (layerConfig) {
+    if (layersConfig) {
       const basemapConfigs =
-        layerConfig && layerConfig.filter(c => c.id === 'basemap');
+        layersConfig && layersConfig.filter(c => c.id === 'basemap');
       basemapConfigs.forEach(config => {
         if (config.type === 'vector-tiles') {
           mapRef.current.addLayer(
@@ -179,15 +181,15 @@ export function Map({
         }
       });
     }
-  }, [layerConfig]);
+  }, [layersConfig]);
 
   // update layers
   useEffect(() => {
-    if (layerIds && layerConfig) {
+    if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
       // remove layers no longer active
       Object.keys(mapLayers).forEach(id => {
-        if (layerIds.indexOf(id) < 0) {
+        if (activeLayerIds.indexOf(id) < 0) {
           const project =
             projects &&
             projects.find(
@@ -197,7 +199,7 @@ export function Map({
             const { layer } = mapLayers[id];
             mapRef.current.removeLayer(layer);
           } else {
-            const config = layerConfig.find(c => c.id === id);
+            const config = layersConfig.find(c => c.id === id);
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
               if (config.type === 'raster-tiles') {
@@ -211,7 +213,7 @@ export function Map({
         }
       });
       // add layers not already present
-      layerIds.forEach(id => {
+      activeLayerIds.forEach(id => {
         // also check if map does not have layer,
         // otherwise they will not be adeded when hot reloading
         const llayer = mapLayers[id] && mapLayers[id].layer;
@@ -238,7 +240,7 @@ export function Map({
               newMapLayers[id] = { layer, config };
             }
           } else {
-            const config = layerConfig.find(c => c.id === id);
+            const config = layersConfig.find(c => c.id === id);
             if (config) {
               // raster layer
               if (
@@ -280,11 +282,11 @@ export function Map({
       // remember new layers
       onSetMapLayers(newMapLayers);
     }
-  }, [layerIds, layerConfig, jsonLayers, projects]);
+  }, [activeLayerIds, layersConfig, jsonLayers, projects]);
 
   // update icon states
   useEffect(() => {
-    if (mapLayers && layerConfig) {
+    if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
         const mapLayer = mapLayers[key];
         if (mapLayer) {
@@ -351,7 +353,7 @@ export function Map({
     }
   }, [
     info,
-    layerConfig,
+    layersConfig,
     projects,
     mapLayers,
     size,
@@ -361,7 +363,7 @@ export function Map({
 
   // move active marker into view
   useEffect(() => {
-    if (mapLayers && layerConfig) {
+    if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
         const mapLayer = mapLayers[key];
         if (mapLayer) {
@@ -401,7 +403,7 @@ export function Map({
         }
       });
     }
-  }, [info, layerConfig, projects, mapLayers, size]);
+  }, [info, layersConfig, projects, mapLayers, size]);
 
   const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
   return (
@@ -421,14 +423,22 @@ export function Map({
           onFeatureClick={onFeatureClick}
         />
       )}
+      {activeLayerIds && activeLayerIds.length > 0 && hasKey && (
+        <Key
+          activeLayerIds={activeLayerIds.slice().reverse()}
+          layersConfig={layersConfig}
+          projects={projects}
+          onLayerInfo={onFeatureClick}
+        />
+      )}
     </Styled>
   );
 }
 
 Map.propTypes = {
-  layerConfig: PropTypes.array,
+  layersConfig: PropTypes.array,
   projects: PropTypes.array,
-  layerIds: PropTypes.array,
+  activeLayerIds: PropTypes.array,
   mapLayers: PropTypes.object,
   jsonLayers: PropTypes.object,
   onSetMapLayers: PropTypes.func,
@@ -438,12 +448,13 @@ Map.propTypes = {
   highlightFeature: PropTypes.string,
   info: PropTypes.string,
   size: PropTypes.string.isRequired,
+  hasKey: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   layers: state => selectLayers(state),
-  layerConfig: state => selectLayerConfig(state),
-  layerIds: state => selectActiveLayers(state),
+  layersConfig: state => selectLayerConfig(state),
+  activeLayerIds: state => selectActiveLayers(state),
   mapLayers: state => selectMapLayers(state),
   jsonLayers: state => selectLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),

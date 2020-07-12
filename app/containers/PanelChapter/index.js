@@ -17,7 +17,6 @@ import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import {
-  selectLayersConfig,
   selectExploreConfig,
   selectLocale,
   selectUIStateByKey,
@@ -50,6 +49,7 @@ const ToggleWrap = styled(p => (
     align="center"
     pad="small"
     background="black"
+    elevation="small"
     flex={{ shrink: 0 }}
   />
 ))`
@@ -67,7 +67,13 @@ const ContentWrap = styled(p => (
   position: relative;
 `;
 const Content = styled(p => (
-  <Box {...p} background="black" pad="small" fill="horizontal" />
+  <Box
+    {...p}
+    background="black"
+    pad="small"
+    fill="horizontal"
+    elevation="small"
+  />
 ))`
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
@@ -277,7 +283,6 @@ PanelChapter.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  layersConfig: state => selectLayersConfig(state),
   exploreConfig: state => selectExploreConfig(state),
   locale: state => selectLocale(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),

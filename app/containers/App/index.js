@@ -124,7 +124,7 @@ function App({
         <Header route={route} />
         <Content>
           <ResponsiveContext.Consumer>
-            {size => <Map size={size} />}
+            {size => <Map size={size} hasKey={route === ROUTES.EXPLORE} />}
           </ResponsiveContext.Consumer>
           <Switch>
             <Route
