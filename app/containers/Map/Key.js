@@ -48,7 +48,7 @@ const ToggleWrap = styled(p => (
   width: 40px;
   overflow: hidden;
 `;
-const ButtonToggle = styled(p => <Button {...p} plain fill />)`
+const ButtonToggle = styled(p => <Button {...p} plain fill="horizontal" />)`
   height: 40px;
 `;
 const ButtonTab = styled(p => <Button {...p} plain />)`
