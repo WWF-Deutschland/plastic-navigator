@@ -27,8 +27,8 @@
     "type": "raster-tiles",
     "tileset": "tmfrnz.4z3hh6gr",
     "title": {
-      "en": "Floating plastic concentration (purple)",
-      "de": "Konzentration von treibendem Plastik (lila)"
+      "en": "Floating plastic concentration",
+      "de": "Konzentration von treibendem Plastik"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -75,8 +75,8 @@
     "type": "raster-tiles",
     "tileset": "tmfrnz.3ff3k3h0",
     "title": {
-      "en": "Mismanaged plastic waste (orange)",
-      "de": "Schlechte Handhabung von Plastikmüll (orange)"
+      "en": "Mismanaged plastic waste",
+      "de": "Schlechte Handhabung von Plastikmüll"
     },
     "about": {
       "en": "Short text about mismanaged plastic waste",
