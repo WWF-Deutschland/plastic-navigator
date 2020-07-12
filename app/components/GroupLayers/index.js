@@ -68,6 +68,9 @@ const Label = styled.span`
 `;
 
 const InfoButton = styled(p => <Button {...p} plain />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};

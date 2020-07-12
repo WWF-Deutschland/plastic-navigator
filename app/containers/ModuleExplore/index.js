@@ -41,6 +41,9 @@ const Buttons = styled(props => <Box {...props} direction="row" />)`
 `;
 
 const ShowButton = styled(p => <Button plain reverse {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;

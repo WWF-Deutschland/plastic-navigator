@@ -31,9 +31,16 @@ import CountryPolicyCommitments from './CountryPolicyCommitments';
 
 const Styled = styled.div``;
 const Title = styled(p => <Heading level={1} {...p} />)`
-  font-size: 1.6em;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 1.8em;
+  letter-spacing: 0.05em;
 `;
-const SupTitle = styled(p => <Button {...p} plain />)``;
+const SupTitle = styled(p => <Button {...p} plain />)`
+  text-transform: uppercase;
+  font-weight: bold;
+`;
 
 const getTitle = (feature, config, locale) => {
   if (config.tooltip.title.propertyByLocale) {

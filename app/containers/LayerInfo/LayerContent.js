@@ -26,7 +26,11 @@ import LayerReference from './LayerReference';
 // import messages from './messages';
 
 const Title = styled(p => <Heading level={1} {...p} />)`
-  font-size: 1.6em;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 1.8em;
+  letter-spacing: 0.05em;
 `;
 
 export function LayerContent({ onLoadContent, content, config, locale }) {

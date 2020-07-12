@@ -65,10 +65,18 @@ const Main = styled.div`
 `;
 
 const Title = styled.div`
-  font-weight: bold;
-  font-size: 1.3em;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  font-size: 1.8em;
+  margin-bottom: 20px;
 `;
-const SupTitle = styled.div``;
+const SupTitle = styled.div`
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8em;
+`;
 
 const CloseWrap = styled.div`
   position: absolute;

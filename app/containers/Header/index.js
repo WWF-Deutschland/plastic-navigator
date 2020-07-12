@@ -41,6 +41,8 @@ const NavPrimary = styled(props => (
 
 // prettier-ignore
 const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
+  font-family: 'wwfregular';
+  letter-spacing: 0.05em;
   padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
   color: ${({ theme }) => theme.global.colors.white};
   opacity: 1;
@@ -60,6 +62,8 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
 `;
 // prettier-ignore
 const Secondary = styled(props => <Button {...props} plain />)`
+  font-family: 'wwfregular';
+  letter-spacing: 0.05em;
   padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
   color: ${({ theme }) => theme.global.colors.white};
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};

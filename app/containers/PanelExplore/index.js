@@ -62,13 +62,20 @@ const PanelBody = styled(p => <Box {...p} pad="small" />)``;
 const TitleWrap = styled(p => (
   <Box {...p} pad={{ horizontal: 'small', bottom: 'small' }} />
 ))``;
-const Title = styled(Text)``;
+const Title = styled(Text)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
 const Tabs = styled(p => <Box {...p} direction="row" gap="hair" />)`
   padding: 1px;
 `;
 const TabLink = styled(p => <Button plain {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: 0.05em;
   padding: 0 ${({ theme }) => theme.global.edgeSize.small};
-  font-weight: 600;
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'white' : 'light-4']};
   opacity: 1;
@@ -80,6 +87,10 @@ const TabLinkAnchor = styled(Text)``;
 
 const SectionLayerGroup = styled(Box)``;
 const TitleGroup = styled(p => <Heading {...p} level={4} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  letter-spacing: 0.05em;
   margin-bottom: 0;
 `;
 const DescriptionGroup = styled(Paragraph)`

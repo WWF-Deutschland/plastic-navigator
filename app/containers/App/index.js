@@ -78,13 +78,15 @@ const Content = styled.div`
 `;
 
 const Brand = styled(props => <Button {...props} plain />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   position: absolute;
   z-index: 3000;
   top: 20px;
   left: 0;
   max-width: 140px;
   padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
-  font-weight: 600;
   color: ${({ route, theme }) =>
     theme.global.colors[route !== ROUTES.INTRO ? 'white' : 'black']};
   background: ${({ route, theme }) =>
