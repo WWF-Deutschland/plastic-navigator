@@ -1,4 +1,4 @@
-id,position_en,position_de
-0,No official statement or public commitment,
-1,Official statements calling for a global agreement to stop plastic pollution,
-2,Public commitments to explore the option of a new global agreement to stop plastic pollution,
+id,position_en,position_de,position_short_en,position_short_de
+0,No official statement or public commitment,,No statement or commitment,
+1,Official statements calling for a global agreement to stop plastic pollution,,Official statements calling for agreement,
+2,Public commitments to explore the option of a new global agreement to stop plastic pollution,,Public commitments to explore option of agreement,
