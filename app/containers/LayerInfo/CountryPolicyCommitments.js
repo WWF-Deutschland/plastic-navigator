@@ -37,13 +37,22 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
     if (aDate > bDate) return -1;
     return 1;
   });
+  const iconuri =
+    config.icon &&
+    config.icon.datauri &&
+    (config.icon.datauri.default || config.icon.datauri);
+  const iconsize = { x: 50, y: 50 };
+  // const iconsize =
+  //   config.icon &&
+  //   config.icon.size &&
+  //   (config.icon.size.default || config.icon.size);
   return (
     <Styled>
       {positions.length > 1 && (
         <FormattedMessage {...messages.multiplePositions} />
       )}
       {sorted.map(position => {
-        const icon = config.icon.datauri[position.position_id];
+        const icon = iconuri[position.position_id];
         return (
           <div key={`${position.position_id}${position.source_id}`}>
             <hr />
@@ -51,7 +60,7 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
               <div>
                 <FormattedMessage {...messages.position} />
                 {icon && (
-                  <IconImgWrap size={config.icon.size}>
+                  <IconImgWrap size={iconsize}>
                     <IconImg src={icon} />
                   </IconImgWrap>
                 )}

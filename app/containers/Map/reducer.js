@@ -28,7 +28,17 @@ const mapReducer = (state = initialState, action) =>
         draft.mapLayers = action.layers;
         break;
       case SET_HIGHLIGHT_FEATURE:
-        draft.featureHighlight = action.feature;
+        if (action.copy) {
+          draft.featureHighlight =
+            action.layer && action.feature
+              ? `${action.layer}|${action.feature}|${action.copy}`
+              : '';
+        } else {
+          draft.featureHighlight =
+            action.layer && action.feature
+              ? `${action.layer}|${action.feature}`
+              : '';
+        }
         break;
       case LAYER_REQUESTED:
         draft.layersRequested[action.key] = action.time;

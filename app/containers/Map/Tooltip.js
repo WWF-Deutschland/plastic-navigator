@@ -18,15 +18,15 @@ const Root = styled.div`
   z-index: 3000;
 `;
 
-const BlockMouse = styled.div`
-  position: absolute;
-  top: -40px;
-  left: ${({ dirLeft }) => (dirLeft ? '-60px' : '0px')};
-  width: 60px;
-  background: transparent];
-  height: 60px;
-  display: block;
-`;
+// const BlockMouse = styled.div`
+//   position: absolute;
+//   top: -40px;
+//   left: ${({ dirLeft }) => (dirLeft ? '-60px' : '0px')};
+//   width: 60px;
+//   background: transparent];
+//   height: 60px;
+//   display: block;
+// `;
 
 // prettier-ignore
 const Anchor = styled.div`
@@ -168,7 +168,6 @@ const Tooltip = ({
   // prettier-ignore
   return (
     <Root position={position}>
-      <BlockMouse dirLeft={direction.x === 'left'} />
       <Anchor dirLeft={direction.x === 'left'} xy={offset} w={WIDTH}>
         <Main
           dirLeft={direction.x === 'left'}
@@ -190,6 +189,7 @@ const Tooltip = ({
                 onClick={() => {
                   onFeatureClick({
                     feature: feature.properties.f_id,
+                    copy: layerOptions ? layerOptions.copy : null,
                     layer: layer && config.data['layer-id']
                       ? `${config.id}-${layer[config.data['layer-id']]}`
                       : config.id,

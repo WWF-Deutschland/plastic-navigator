@@ -40,8 +40,13 @@ import {
 
 import reducer from './reducer';
 import saga from './saga';
-import { selectLayers, selectLayerConfig, selectMapLayers } from './selectors';
-import { loadLayer, setMapLayers } from './actions';
+import {
+  selectLayers,
+  selectLayerConfig,
+  selectMapLayers,
+  selectHighlightFeature,
+} from './selectors';
+import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
 
 const Styled = styled.div`
   background: ${({ theme }) => theme.global.colors.white};
@@ -61,8 +66,6 @@ const MapContainer = styled.div`
   background: white;
 `;
 
-const TIMEOUT = 2222;
-
 export function Map({
   layerConfig,
   layerIds,
@@ -74,30 +77,56 @@ export function Map({
   onFeatureClick,
   info,
   size,
+  onFeatureHighlight,
+  highlightFeature,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
   const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
-  const timerTooltip = useRef(false);
-  const [layerId, featureId] = getLayerFeatureIds(info);
+  const [layerId, featureId, copy] = getLayerFeatureIds(info);
+  const [
+    layerHighlightId,
+    featureHighlightId,
+    copyHighlight,
+  ] = getLayerFeatureIds(highlightFeature);
+
   const showMarker = (e, config) => {
     L.DomEvent.stopPropagation(e);
     const { target } = e;
+    const eLayerId = target.options.layerId || config.id;
+    const eFeatureId = target.feature.properties.f_id;
+    // if (
+    //   tooltip &&
+    //   tooltip.layerId === eLayerId &&
+    //   tooltip.featureId === eFeatureId
+    // ) {
+    //   setTooltip(null);
+    // } else {
     setTooltip({
       config,
       anchor: e.containerPoint,
+      layerId: eLayerId,
+      featureId: eFeatureId,
       feature: target.feature,
       options: target.options,
     });
-    clearTimeout(timerTooltip.current);
-    timerTooltip.current = setTimeout(() => setTooltip(null), TIMEOUT);
+    // }
   };
 
   // console.log(tooltip)
-  const onMarkerOver = () => null;
-  const onMarkerOut = () => null;
+  const onMarkerOver = (e, config) => {
+    if (e && config) {
+      // console.log(e.target)
+      onFeatureHighlight({
+        feature: e.target.feature.properties.f_id,
+        layer: e.target.options.layerId || config.id,
+        copy: e.target.options.copy,
+      });
+    }
+  };
+  const onMarkerOut = () => onFeatureHighlight(null);
   const onMarkerClick = showMarker;
 
   const markerEvents = {
@@ -117,12 +146,6 @@ export function Map({
     layerremove: () => setTooltip(null),
   };
 
-  useEffect(
-    () => () => {
-      clearTimeout(timerTooltip.current);
-    },
-    [],
-  );
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
@@ -259,6 +282,7 @@ export function Map({
     }
   }, [layerIds, layerConfig, jsonLayers, projects]);
 
+  // update icon states
   useEffect(() => {
     if (mapLayers && layerConfig) {
       Object.keys(mapLayers).forEach(key => {
@@ -268,49 +292,110 @@ export function Map({
           // console.log(config, layer, featureId)
           if (config.icon) {
             // multiple layers for wrapping dateline
-            let firstCopy = true;
-            layer.eachLayer(copy => {
-              const layerCount = copy.getLayers().length;
-              copy.eachLayer(marker => {
+            layer.eachLayer(lcopy => {
+              const layerCount = lcopy.getLayers().length;
+              lcopy.eachLayer(marker => {
                 let icon;
-                if (key === layerId) {
-                  const active =
-                    layerCount === 1 ||
-                    marker.feature.properties.f_id === featureId;
-                  icon = getIcon(config.icon, {
-                    feature: marker.feature,
-                    state: active ? 'active' : 'semi-active',
-                  });
-                  if (active) {
-                    if (firstCopy) {
-                      const latlng = marker.getLatLng();
-                      const aside = getAsideInfoWidth(size);
-                      const bounds = getMapPaddedBounds(mapRef.current, {
-                        n: 50,
-                        e: Math.max(50, aside + 50),
-                        s: 50,
-                        w: 50,
-                      });
-                      if (!bounds.contains(latlng)) {
-                        const point = mapRef.current.project(latlng);
-                        const latLngAside = mapRef.current.unproject(
-                          L.point(point.x + aside / 2, point.y),
-                        );
-                        mapRef.current.panTo(latLngAside);
-                      }
-                    }
-                    marker.setZIndexOffset(1000);
+                const fid = marker.feature.properties.f_id;
+                const mcopy = marker.options.copy;
+                const layerActive = key === layerId;
+                const tooltipOpen =
+                  tooltip &&
+                  key === tooltip.layerId &&
+                  fid === tooltip.featureId &&
+                  ((!mcopy && !tooltip.options.copy) ||
+                    mcopy === tooltip.options.copy);
+                const active =
+                  tooltipOpen ||
+                  (layerActive && (layerCount === 1 || fid === featureId));
+                const highlight =
+                  !active &&
+                  key === layerHighlightId &&
+                  fid === featureHighlightId &&
+                  ((!mcopy && !copyHighlight) || mcopy === copyHighlight);
+                if (active || layerActive || highlight) {
+                  if (highlight) {
+                    icon = getIcon(config.icon, {
+                      feature: marker.feature,
+                      latlng: marker.getLatLng(),
+                      state: 'hover',
+                    });
+                  } else if (active) {
+                    icon = getIcon(config.icon, {
+                      feature: marker.feature,
+                      latlng: marker.getLatLng(),
+                      state: 'active',
+                    });
+                  } else if (layerActive) {
+                    icon = getIcon(config.icon, {
+                      feature: marker.feature,
+                      latlng: marker.getLatLng(),
+                      state: 'semi-active',
+                    });
                   }
+                  // if (active) marker.setZIndexOffset(1000);
                 } else {
                   marker.setZIndexOffset(0);
                   icon = getIcon(config.icon, {
                     feature: marker.feature,
+                    latlng: marker.getLatLng(),
                     state: 'default',
                   });
                 }
                 marker.setIcon(icon);
               });
-              firstCopy = false;
+            });
+          }
+        }
+      });
+    }
+  }, [
+    info,
+    layerConfig,
+    projects,
+    mapLayers,
+    size,
+    featureHighlightId,
+    tooltip,
+  ]);
+
+  // move active marker into view
+  useEffect(() => {
+    if (mapLayers && layerConfig) {
+      Object.keys(mapLayers).forEach(key => {
+        const mapLayer = mapLayers[key];
+        if (mapLayer) {
+          const { config, layer } = mapLayer;
+          // console.log(config, layer, featureId)
+          if (config.icon) {
+            // multiple layers for wrapping dateline
+            layer.eachLayer(lcopy => {
+              const layerCount = lcopy.getLayers().length;
+              lcopy.eachLayer(marker => {
+                const fid = marker.feature.properties.f_id;
+                const mcopy = marker.options.copy;
+                const active =
+                  key === layerId &&
+                  (layerCount === 1 || fid === featureId) &&
+                  ((!mcopy && !copy) || mcopy === copy);
+                if (active) {
+                  const latlng = marker.getLatLng();
+                  const aside = getAsideInfoWidth(size);
+                  const bounds = getMapPaddedBounds(mapRef.current, {
+                    n: 50,
+                    e: Math.max(50, aside + 50),
+                    s: 50,
+                    w: 50,
+                  });
+                  if (!bounds.contains(latlng)) {
+                    const point = mapRef.current.project(latlng);
+                    const latLngAside = mapRef.current.unproject(
+                      L.point(point.x + aside / 2, point.y),
+                    );
+                    mapRef.current.panTo(latLngAside);
+                  }
+                }
+              });
             });
           }
         }
@@ -349,6 +434,8 @@ Map.propTypes = {
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
   onFeatureClick: PropTypes.func,
+  onFeatureHighlight: PropTypes.func,
+  highlightFeature: PropTypes.string,
   info: PropTypes.string,
   size: PropTypes.string.isRequired,
 };
@@ -361,6 +448,7 @@ const mapStateToProps = createStructuredSelector({
   jsonLayers: state => selectLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
   info: state => selectInfoSearch(state),
+  highlightFeature: state => selectHighlightFeature(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -371,8 +459,14 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onFeatureClick: ({ feature, layer }) => {
-      dispatch(setLayerInfo(layer, feature));
+    onFeatureClick: ({ feature, layer, copy }) => {
+      dispatch(setLayerInfo(layer, feature, copy));
+    },
+    onFeatureHighlight: args => {
+      const layer = args ? args.layer : null;
+      const feature = args ? args.feature : null;
+      const copy = args ? args.copy : null;
+      dispatch(setHighlightFeature(layer, feature, copy));
     },
   };
 }

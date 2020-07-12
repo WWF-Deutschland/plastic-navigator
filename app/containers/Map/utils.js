@@ -121,7 +121,10 @@ const getPolylineLayer = ({ data, config }) => {
             config.render.bezier === 'true',
             config.render.decorate === 'arrow',
           ),
-          options,
+          {
+            ...options,
+            copy: 'east',
+          },
         );
         if (config.render.decorate === 'arrow') {
           layer.addLayer(decorateLine(lineWest, 'arrow', options));
@@ -142,7 +145,10 @@ const getPolylineLayer = ({ data, config }) => {
             config.render.bezier === 'true',
             config.render.decorate === 'arrow',
           ),
-          options,
+          {
+            ...options,
+            copy: 'east',
+          },
         );
         if (config.render.decorate === 'arrow') {
           layer.addLayer(decorateLine(lineEast, 'arrow', options));
@@ -176,7 +182,12 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
     };
     // check for property dependent icon
     const iconForState =
-      icon.datauri[state] || icon.datauri.default || icon.datauri;
+      state === 'hover'
+        ? icon.datauri.hover ||
+          icon.datauri['semi-active'] ||
+          icon.datauri.default ||
+          icon.datauri
+        : icon.datauri[state] || icon.datauri.default || icon.datauri;
     if (feature && icon.property && typeof icon.datauri === 'object') {
       let uri = '';
       if (icon.multiple && icon.multiple === 'true') {
@@ -241,9 +252,11 @@ const getPointLayer = ({ data, config, markerEvents }) => {
     layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
   ) {
     const layerWest = L.geoJSON(data, {
+      copy: 'west',
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng - 360], {
           ...options,
+          copy: 'west',
           icon: getIcon(config.icon, { feature, latlng }),
         }).on(events),
     });
@@ -255,9 +268,11 @@ const getPointLayer = ({ data, config, markerEvents }) => {
     layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
   ) {
     const layerEast = L.geoJSON(data, {
+      copy: 'east',
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng + 360], {
           ...options,
+          copy: 'east',
           icon: getIcon(config.icon, { feature, latlng }),
         }).on(events),
     });
@@ -294,9 +309,11 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
     layerBounds.getWest() - 360 > MAP_OPTIONS.BOUNDS.W
   ) {
     const layerWest = L.geoJSON(data, {
+      copy: 'west',
       pointToLayer: (feature, latlng) =>
         L.circleMarker([latlng.lat, latlng.lng - 360], {
           ...options,
+          copy: 'west',
           radius: scaleCircle(feature, range, config.render),
         }).on(events),
     });
@@ -308,9 +325,11 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
     layerBounds.getEast() + 360 < MAP_OPTIONS.BOUNDS.E
   ) {
     const layerEast = L.geoJSON(data, {
+      copy: 'east',
       pointToLayer: (feature, latlng) =>
         L.circleMarker([latlng.lat, latlng.lng + 360], {
           ...options,
+          copy: 'east',
           radius: scaleCircle(feature, range, config.render),
         }).on(events),
     });
@@ -351,6 +370,9 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
     const options = {
       icon: divIcon,
       layer: project,
+      layerId: `${PROJECT_CONFIG.id}-${
+        project[PROJECT_CONFIG.data['layer-id']]
+      }`,
       ...config.style,
     };
     const jsonLlayer = L.geoJSON(data, {
@@ -367,7 +389,11 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
       const layerWest = L.geoJSON(data, {
         filter: feature => filterByProject(feature, project),
         pointToLayer: (feature, latlng) =>
-          L.marker([latlng.lat, latlng.lng - 360], options).on(events),
+          L.marker([latlng.lat, latlng.lng - 360], {
+            ...options,
+            copy: 'west',
+          }).on(events),
+        copy: 'west',
       });
       layer.addLayer(layerWest);
     }
@@ -379,7 +405,11 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
       const layerEast = L.geoJSON(data, {
         filter: feature => filterByProject(feature, project),
         pointToLayer: (feature, latlng) =>
-          L.marker([latlng.lat, latlng.lng + 360], options).on(events),
+          L.marker([latlng.lat, latlng.lng + 360], {
+            ...options,
+            copy: 'east',
+          }).on(events),
+        copy: 'east',
       });
       layer.addLayer(layerEast);
     }

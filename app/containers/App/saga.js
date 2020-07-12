@@ -340,13 +340,19 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ id, feature }) {
+function* setLayerInfoSaga({ layer, feature, copy }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
   // only update if not already active
-  const infoId = feature ? `${id}|${feature}` : id;
+  let infoId = layer;
+  if (feature) {
+    infoId = `${layer}|${feature}`;
+    if (copy) {
+      infoId = `${layer}|${feature}|${copy}`;
+    }
+  }
   if (searchParams.get('info') !== infoId) {
-    if (typeof id === 'undefined' || id === '') {
+    if (typeof layer === 'undefined' || layer === '') {
       searchParams.delete('info');
     } else {
       searchParams.set('info', infoId);
