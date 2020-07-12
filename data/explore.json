@@ -46,7 +46,20 @@
     "title": {
       "en": "Policy",
       "de": "Politik"
-    }
+    },
+    "groups": [
+      {
+        "id": "policy",
+        "title": {
+          "en": "What are the countries commitments?",
+          "de": "Wo endet der Plastikmüll in den Ozeanan?"
+        },
+        "description": {
+          "en": "Learn about the countries political commitments to reduce the amount of plastic entering our oceans",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
+        }
+      }
+    ]
   },
   {
     "id": "projects",

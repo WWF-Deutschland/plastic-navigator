@@ -287,6 +287,7 @@
   {
     "id": "policy-commitments",
     "category": "policy",
+    "group": "policy",
     "source": "data",
     "type": "geojson",
     "file": "layers/country-points.json",
