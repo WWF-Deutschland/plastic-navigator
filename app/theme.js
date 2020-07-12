@@ -77,12 +77,7 @@ export const colors = {
     light: '#dddddd', // on light background
   },
   // other custom colours (also understood by grommet conmponents)
-  // realms: {
-  //   T: '',
-  //   M: '',
-  //   F: '',
-  //   S: '',
-  // },
+  map: '#fdfdfd',
 };
 
 // grommet text

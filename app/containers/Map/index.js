@@ -63,7 +63,7 @@ const MapContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  background: white;
+  background: ${({ theme }) => theme.global.colors.map};
 `;
 
 export function Map({

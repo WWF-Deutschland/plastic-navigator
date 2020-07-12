@@ -124,7 +124,7 @@ export const MAPBOX = {
 export const URL_SEARCH_SEPARATOR = '|';
 
 export const MAP_OPTIONS = {
-  CENTER: [0, 180],
+  CENTER: [20, 180],
   ZOOM: {
     INIT: 2,
     MIN: 2,
