@@ -42,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
 
   p,
   label {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height: 1.5em;
   }
 
