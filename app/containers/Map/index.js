@@ -30,7 +30,7 @@ import {
 import { setLayerInfo } from 'containers/App/actions';
 
 import Tooltip from './Tooltip';
-import Key from './Key';
+import KeyPanel from './KeyPanel';
 
 import {
   getProjectLayer,
@@ -424,7 +424,7 @@ export function Map({
         />
       )}
       {activeLayerIds && activeLayerIds.length > 0 && hasKey && (
-        <Key
+        <KeyPanel
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
           projects={projects}

@@ -16,6 +16,8 @@ import { PROJECT_CONFIG } from 'config';
 
 import { startsWith } from 'utils/string';
 
+import KeyGradient from 'components/KeyGradient';
+
 // import commonMessages from 'messages';
 import messages from './messages';
 
@@ -70,6 +72,7 @@ const KeyLI = styled.li`
 const ButtonKey = styled(p => <Button {...p} plain fill />)``;
 const KeySquare = styled(p => <Box {...p} fill />)`
   background: purple;
+  position: relative;
 `;
 
 const ButtonInfo = styled(p => <Button {...p} plain fill />)``;
@@ -106,11 +109,17 @@ const Title = styled(Text)`
   font-weight: bold;
 `;
 
+const GradientWrap = styled(p => <Box {...p} fill="horizontal" />)`
+  display: block;
+  height: 20px;
+  position: relative;
+`;
+
 const DEFAULT_UI_STATE = {
   open: true,
 };
 
-export function Key({
+export function KeyPanel({
   onLayerInfo,
   layersConfig,
   projects,
@@ -142,10 +151,8 @@ export function Key({
   }, [activeLayerIds, activeLength]);
 
   const { locale } = intl;
-  const config =
-    active &&
-    layersConfig &&
-    [...layersConfig, PROJECT_CONFIG].find(l => l.id === active);
+  const allConfig = layersConfig && [...layersConfig, PROJECT_CONFIG];
+  const config = active && allConfig && allConfig.find(l => l.id === active);
   const isActiveProject = active === PROJECT_CONFIG.id;
 
   let hasAlreadyProject = false;
@@ -168,18 +175,29 @@ export function Key({
         />
         {cleanActiveLayerIds.length > 0 && (
           <KeyUL>
-            {cleanActiveLayerIds.map(id => (
-              <KeyLI activeLayer={id === active}>
-                <ButtonKey
-                  onClick={() => {
-                    setOpen(!open || id !== active);
-                    setActive(id);
-                  }}
-                >
-                  <KeySquare />
-                </ButtonKey>
-              </KeyLI>
-            ))}
+            {cleanActiveLayerIds.map(id => {
+              const conf = allConfig && allConfig.find(l => l.id === id);
+              return (
+                <KeyLI activeLayer={id === active}>
+                  <ButtonKey
+                    onClick={() => {
+                      setOpen(!open || id !== active);
+                      setActive(id);
+                    }}
+                  >
+                    <KeySquare>
+                      {conf && conf.key && conf.key.stops && (
+                        <KeyGradient
+                          id={id}
+                          stops={conf.key.stops}
+                          log={conf.key.scale === 'log'}
+                        />
+                      )}
+                    </KeySquare>
+                  </ButtonKey>
+                </KeyLI>
+              );
+            })}
           </KeyUL>
         )}
       </ToggleWrap>
@@ -219,9 +237,17 @@ export function Key({
                         icon={<CircleInformation />}
                       />
                     )}
+                    {config.key && config.key.stops && (
+                      <GradientWrap>
+                        <KeyGradient
+                          id={active}
+                          stops={config.key.stops}
+                          log={config.key.scale === 'log'}
+                        />
+                      </GradientWrap>
+                    )}
                   </Box>
                 )}
-                Key
               </Tab>
             )}
             {tab === 1 && (
@@ -261,7 +287,7 @@ export function Key({
   );
 }
 
-Key.propTypes = {
+KeyPanel.propTypes = {
   onLayerInfo: PropTypes.func,
   layersConfig: PropTypes.array,
   activeLayerIds: PropTypes.array,
@@ -269,5 +295,5 @@ Key.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(React.memo(Key));
+export default injectIntl(React.memo(KeyPanel));
 // export default Key;
