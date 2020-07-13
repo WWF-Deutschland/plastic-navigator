@@ -883,27 +883,27 @@
       "stops": [
         {
           "value": 1,
-          "color": "#f6f1f8"
+          "color": "#fbf8ce"
         },
         {
           "value": 10,
-          "color": "#e1d5e5"
+          "color": "#feec81"
         },
         {
           "value": 100,
-          "color": "#cabad2"
+          "color": "#fdd447"
         },
         {
           "value": 1000,
-          "color": "#987da5"
+          "color": "#f59a1b"
         },
         {
           "value": 10000,
-          "color": "#643f74"
+          "color": "#cc4e00"
         },
         {
           "value": 100000,
-          "color": "#402d49"
+          "color": "#993800"
         }
       ]
     }
