@@ -87,6 +87,7 @@
   {
     "id": "mismanaged-waste",
     "category": "plastic",
+    "z-index": "10",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -911,6 +912,7 @@
   {
     "id": "mismanaged-waste-purple-dark",
     "content-id": "mismanaged-waste",
+    "z-index": "10",
     "category": "colours",
     "group": "source",
     "source": "mapbox",
@@ -981,6 +983,7 @@
   {
     "id": "mismanaged-waste-orange",
     "content-id": "mismanaged-waste",
+    "z-index": "10",
     "category": "colours",
     "group": "source",
     "source": "mapbox",
