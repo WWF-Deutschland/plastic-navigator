@@ -50,19 +50,36 @@
       "unit-short": {
         "en": "g/km<sup>2</sup>",
         "de": "g/km<sup>2</sup>"
-      },
-      "scale": "log",
-      "values": "continuous"
+      }
     },
     "key": {
-      "values": [
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
         {
-          "value": 0,
-          "color": "#fff"
+          "value": 1,
+          "color": "#f6f1f8"
+        },
+        {
+          "value": 10,
+          "color": "#e1d5e5"
+        },
+        {
+          "value": 100,
+          "color": "#cabad2"
+        },
+        {
+          "value": 1000,
+          "color": "#987da5"
         },
         {
           "value": 10000,
-          "color": "red"
+          "color": "#643f74"
+        },
+        {
+          "value": 100000,
+          "color": "#402d49"
         }
       ]
     }
@@ -102,19 +119,36 @@
       "unit-additional": {
         "en": "30 by 30 arc seconds",
         "de": "30 mal 30 Winkelsekunden"
-      },
-      "scale": "log",
-      "values": "continuous"
+      }
     },
     "key": {
-      "values": [
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
         {
-          "value": 0,
-          "color": "#fff"
+          "value": 1,
+          "color": "#fcecdd"
+        },
+        {
+          "value": 10,
+          "color": "#ffd5b0"
+        },
+        {
+          "value": 100,
+          "color": "#fbaf68"
         },
         {
           "value": 1000,
-          "color": "blue"
+          "color": "#f07d00"
+        },
+        {
+          "value": 10000,
+          "color": "#b64309"
+        },
+        {
+          "value": 100000,
+          "color": "#531510"
         }
       ]
     }
