@@ -16,8 +16,8 @@ import { PROJECT_CONFIG } from 'config';
 
 import { startsWith } from 'utils/string';
 
-import KeyGradient from 'components/KeyGradient';
 import KeyIcon from 'components/KeyIcon';
+import KeyFull from 'components/KeyFull';
 
 // import commonMessages from 'messages';
 import messages from './messages';
@@ -110,12 +110,6 @@ const Content = styled(p => (
 const Title = styled(Text)`
   margin: 0;
   font-weight: bold;
-`;
-
-const GradientWrap = styled(p => <Box {...p} fill="horizontal" />)`
-  display: block;
-  height: 20px;
-  position: relative;
 `;
 
 const DEFAULT_UI_STATE = {
@@ -234,15 +228,7 @@ export function KeyPanel({
                         icon={<CircleInformation />}
                       />
                     )}
-                    {config.key && config.key.stops && (
-                      <GradientWrap>
-                        <KeyGradient
-                          id={active}
-                          stops={config.key.stops}
-                          log={config.key.scale === 'log'}
-                        />
-                      </GradientWrap>
-                    )}
+                    <KeyFull config={config} />
                   </Box>
                 )}
               </Tab>

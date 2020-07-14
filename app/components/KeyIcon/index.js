@@ -4,36 +4,12 @@ import styled from 'styled-components';
 import { Box } from 'grommet';
 
 import KeyGradient from 'components/KeyGradient';
+import KeyCircle from 'components/KeyCircle';
 
 const Styled = styled(p => <Box {...p} fill />)`
   position: relative;
 `;
 
-const KeyCircleInner = styled.div`
-  background: ${({ circleStyle }) => circleStyle.fillColor || 'black'};
-  opacity: ${({ circleStyle }) => circleStyle.fillOpacity || 0.5};
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-`;
-const KeyCircle = styled.div`
-  border-radius: 999999px;
-  border-width: ${({ circleStyle }) => circleStyle.weight || 1}px;
-  border-color: ${({ circleStyle }) => circleStyle.color || 'black'};
-  border-style: ${({ circleStyle }) => circleStyle.line || 'solid'};
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-`;
 const KeyIconURI = styled.img`
   margin: 0 auto;
   width: ${({ markerSize }) => (markerSize && markerSize.width) || '100%'};
@@ -88,11 +64,7 @@ export function KeyIcon({ config, id }) {
           log={config.key.scale === 'log'}
         />
       )}
-      {isCircle && (
-        <KeyCircle circleStyle={config.style}>
-          <KeyCircleInner circleStyle={config.style} />
-        </KeyCircle>
-      )}
+      {isCircle && <KeyCircle circleStyle={config.style} />}
       {isIconURI && (
         <KeyIconURI src={config.key.icon.datauri} markerSize={markerSize} />
       )}

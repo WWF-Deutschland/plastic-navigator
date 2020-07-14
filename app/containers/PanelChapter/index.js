@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Heading, Box, Button, ResponsiveContext, Text } from 'grommet';
+import { Box, Button, ResponsiveContext, Text } from 'grommet';
 import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -22,6 +22,8 @@ import {
   selectUIStateByKey,
 } from 'containers/App/selectors';
 import { setUIState, setLayerInfo, setLayers } from 'containers/App/actions';
+
+import KeyFull from 'components/KeyFull';
 
 // import commonMessages from 'messages';
 import messages from './messages';
@@ -82,8 +84,11 @@ const Content = styled(p => (
 
 //
 // const TitleWrap = styled(Box)``;
-const Title = styled(p => <Heading {...p} level={3} />)`
+const Title = styled(Text)`
+  font-size: 22px;
+  line-height: 28px;
   margin-top: 0;
+  margin-bottom: 16px;
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-weight: normal;
@@ -109,9 +114,12 @@ const Description = styled(Text)``;
 const LayersFocusWrap = styled(p => <Box {...p} direction="row" />)``;
 const LayerFocus = styled(p => <Box {...p} fill="horizontal" />)``;
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" />
+  <Box {...p} direction="row" align="center" margin={{ bottom: 'small' }} />
 ))``;
-const LayerTitle = styled(Text)``;
+const LayerTitle = styled(Text)`
+  font-size: 15px;
+  font-weight: bold;
+`;
 const LayerButtonInfo = styled(p => <Button {...p} />)`
   margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
 `;
@@ -136,7 +144,7 @@ export function PanelChapter({
   uiState,
   onSetOpen,
   onLayerInfo,
-  layers,
+  layersConfig,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -149,11 +157,13 @@ export function PanelChapter({
     }
   }, [chapter]);
 
-  const layersFocus =
+  const configsFocus =
     chapter &&
     chapter.layersFocus &&
-    layers &&
-    layers.filter(l => chapter.layersFocus.slice(0, 2).indexOf(l.id) > -1);
+    layersConfig &&
+    layersConfig.filter(
+      l => chapter.layersFocus.slice(0, 2).indexOf(l.id) > -1,
+    );
   return (
     <ResponsiveContext.Consumer>
       {size => (
@@ -173,32 +183,32 @@ export function PanelChapter({
                       {chapter.title[locale] || chapter.title[DEFAULT_LOCALE]}
                     </Title>
                   )}
-                  {layersFocus && layersFocus.length > 0 && (
+                  {configsFocus && configsFocus.length > 0 && (
                     <LayersFocusWrap>
-                      {layersFocus.map(layer => (
-                        <LayerFocus key={layer.id}>
+                      {configsFocus.map(config => (
+                        <LayerFocus key={config.id}>
                           <LayerTitleWrap
-                            fill={layersFocus.length === 1 && 'horizontal'}
+                            fill={configsFocus.length === 1 && 'horizontal'}
                           >
                             {locale && (
                               <LayerTitle>
-                                {layer['title-short'] &&
-                                  (layer['title-short'][locale] ||
-                                    layer['title-short'][DEFAULT_LOCALE])}
-                                {!layer['title-short'] &&
-                                  (layer.title[locale] ||
-                                    layer.title[DEFAULT_LOCALE])}
+                                {config['title-short'] &&
+                                  (config['title-short'][locale] ||
+                                    config['title-short'][DEFAULT_LOCALE])}
+                                {!config['title-short'] &&
+                                  (config.title[locale] ||
+                                    config.title[DEFAULT_LOCALE])}
                               </LayerTitle>
                             )}
                             <LayerButtonInfo
                               onClick={() =>
-                                onLayerInfo(layer['content-id'] || layer.id)
+                                onLayerInfo(config['content-id'] || config.id)
                               }
                               icon={<CircleInformation />}
-                              stretch={layersFocus.length === 1}
+                              stretch={configsFocus.length === 1}
                             />
                           </LayerTitleWrap>
-                          TODO: KEY
+                          <KeyFull config={config} simple dark />
                         </LayerFocus>
                       ))}
                     </LayersFocusWrap>
@@ -274,7 +284,7 @@ PanelChapter.propTypes = {
   onPrevious: PropTypes.func,
   onSetOpen: PropTypes.func,
   onLayerInfo: PropTypes.func,
-  layers: PropTypes.array,
+  layersConfig: PropTypes.array,
   locale: PropTypes.string,
   chapter: PropTypes.object,
   isFirst: PropTypes.bool,

@@ -124,7 +124,7 @@ function GroupLayers({
             const id = projects
               ? `${PROJECT_CONFIG.id}-${config.project_id}`
               : config.id;
-            const contentId = projects ? id : config.id;
+            const contentId = projects ? id : config['content-id'] || config.id;
             const title = projects
               ? config[`project_title_${locale}`] ||
                 config[`project_title_${DEFAULT_LOCALE}`]

@@ -75,7 +75,7 @@ export function ModuleStories({
             chapter={chapterConfig}
             isFirst={chapter === 0}
             isLast={chapter === storyConfig.chapters.length - 1}
-            layers={layersConfig.filter(
+            layersConfig={layersConfig.filter(
               layer =>
                 chapterConfig &&
                 chapterConfig.layers &&
