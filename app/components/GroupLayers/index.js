@@ -15,6 +15,8 @@ import { DEFAULT_LOCALE } from 'i18n';
 
 import { PROJECT_CONFIG } from 'config';
 
+import KeyIcon from 'components/KeyIcon';
+
 import messages from './messages';
 
 const Styled = styled.div`
@@ -81,8 +83,15 @@ const StyledCheckBox = styled(CheckBox)`
   margin-right: 6px;
 `;
 
+const KeyWrap = styled.div`
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+`;
+
 function GroupLayers({
-  layers,
+  layersConfig,
   activeLayers,
   onToggleLayer,
   onLayerInfo,
@@ -112,16 +121,16 @@ function GroupLayers({
         </ListHeaderRow>
       </ListHeader>
       <ListBody>
-        {layers &&
-          layers.map(layer => {
+        {layersConfig &&
+          layersConfig.map(config => {
             const id = projects
-              ? `${PROJECT_CONFIG.id}-${layer.project_id}`
-              : layer.id;
-            const contentId = projects ? id : layer.id;
+              ? `${PROJECT_CONFIG.id}-${config.project_id}`
+              : config.id;
+            const contentId = projects ? id : config.id;
             const title = projects
-              ? layer[`project_title_${locale}`] ||
-                layer[`project_title_${DEFAULT_LOCALE}`]
-              : layer.title[locale] || layer.title[DEFAULT_LOCALE];
+              ? config[`project_title_${locale}`] ||
+                config[`project_title_${DEFAULT_LOCALE}`]
+              : config.title[locale] || config.title[DEFAULT_LOCALE];
             return (
               <ListBodyRow key={id}>
                 <ListBodyCell>
@@ -131,7 +140,13 @@ function GroupLayers({
                     label={<Label>{title}</Label>}
                   />
                 </ListBodyCell>
-                {!projects && <ListBodyCellCenter>[Key]</ListBodyCellCenter>}
+                {!projects && (
+                  <ListBodyCellCenter>
+                    <KeyWrap>
+                      <KeyIcon config={config} />
+                    </KeyWrap>
+                  </ListBodyCellCenter>
+                )}
                 <ListBodyCellCenter>
                   <InfoButton
                     onClick={() => onLayerInfo(contentId)}
@@ -148,7 +163,7 @@ function GroupLayers({
 
 GroupLayers.propTypes = {
   // group: PropTypes.object,
-  layers: PropTypes.array,
+  layersConfig: PropTypes.array,
   projects: PropTypes.bool,
   activeLayers: PropTypes.array,
   onToggleLayer: PropTypes.func,

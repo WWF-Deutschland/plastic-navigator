@@ -187,7 +187,7 @@ export function PanelExplore({
                     )}
                     <GroupLayers
                       group={group}
-                      layers={layersConfig.filter(layer =>
+                      layersConfig={layersConfig.filter(layer =>
                         layer.category === activeCategory.id &&
                         layer.group === group.id
                       )}
@@ -205,7 +205,7 @@ export function PanelExplore({
                 <SectionLayerGroup>
                   <GroupLayers
                     group={activeCategory}
-                    layers={layersConfig.filter(
+                    layersConfig={layersConfig.filter(
                       layer => layer.category === activeCategory.id,
                     )}
                     locale={locale}
@@ -221,7 +221,7 @@ export function PanelExplore({
                 <SectionLayerGroup>
                   <GroupLayers
                     group={activeCategory.id}
-                    layers={projects}
+                    layersConfig={projects}
                     projects
                     locale={locale}
                     activeLayers={activeLayers}

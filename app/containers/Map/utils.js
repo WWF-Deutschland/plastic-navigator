@@ -194,8 +194,18 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
         const ps = icon.property.split('.');
         const propertyArray = feature.properties[ps[0]];
         const values = uniq(propertyArray.map(p => p[ps[1]]));
-        uri =
-          values.length > 1 ? iconForState.multiple : iconForState[values[0]];
+        if (icon.multiplePriority) {
+          uri = icon.multiplePriority.reduce((memo, value) => {
+            if (memo) return memo;
+            if (values.indexOf(value) > -1) {
+              return iconForState[value];
+            }
+            return null;
+          }, null);
+        } else {
+          uri =
+            values.length > 1 ? iconForState.multiple : iconForState[values[0]];
+        }
       } else {
         const p = feature.properties[icon.property];
         uri = iconForState[p] || iconForState.default;

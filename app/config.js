@@ -69,6 +69,9 @@ export const PROJECT_CONFIG = {
   data: {
     'layer-id': 'project_id',
   },
+  render: {
+    type: 'marker',
+  },
   icon: {
     size: { x: '34', y: '47' },
     align: 'bottom',

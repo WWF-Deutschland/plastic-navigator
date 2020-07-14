@@ -17,6 +17,7 @@ import { PROJECT_CONFIG } from 'config';
 import { startsWith } from 'utils/string';
 
 import KeyGradient from 'components/KeyGradient';
+import KeyIcon from 'components/KeyIcon';
 
 // import commonMessages from 'messages';
 import messages from './messages';
@@ -50,8 +51,14 @@ const ToggleWrap = styled(p => (
   width: 40px;
   overflow: hidden;
 `;
+const ButtonToggleWrap = styled.div`
+  height: 40px;
+  width: 40px;
+`;
 const ButtonToggle = styled(p => <Button {...p} plain fill="horizontal" />)`
   height: 40px;
+  width: 40px;
+  text-align: center;
 `;
 const ButtonTab = styled(p => <Button {...p} plain />)`
   text-decoration: ${({ activeTab }) => (activeTab ? 'underline' : 'none')};
@@ -70,10 +77,6 @@ const KeyLI = styled.li`
   padding: 5px;
 `;
 const ButtonKey = styled(p => <Button {...p} plain fill />)``;
-const KeySquare = styled(p => <Box {...p} fill />)`
-  background: purple;
-  position: relative;
-`;
 
 const ButtonInfo = styled(p => <Button {...p} plain fill />)``;
 
@@ -169,10 +172,12 @@ export function KeyPanel({
   return (
     <Styled>
       <ToggleWrap>
-        <ButtonToggle
-          icon={open ? <MenuOpen /> : <Menu />}
-          onClick={() => setOpen(!open)}
-        />
+        <ButtonToggleWrap>
+          <ButtonToggle
+            icon={open ? <MenuOpen /> : <Menu />}
+            onClick={() => setOpen(!open)}
+          />
+        </ButtonToggleWrap>
         {cleanActiveLayerIds.length > 0 && (
           <KeyUL>
             {cleanActiveLayerIds.map(id => {
@@ -185,15 +190,7 @@ export function KeyPanel({
                       setActive(id);
                     }}
                   >
-                    <KeySquare>
-                      {conf && conf.key && conf.key.stops && (
-                        <KeyGradient
-                          id={id}
-                          stops={conf.key.stops}
-                          log={conf.key.scale === 'log'}
-                        />
-                      )}
-                    </KeySquare>
+                    {conf && <KeyIcon config={conf} />}
                   </ButtonKey>
                 </KeyLI>
               );
