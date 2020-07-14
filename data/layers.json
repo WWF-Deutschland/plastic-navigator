@@ -165,6 +165,10 @@
       "en": "River plastic emissions (top 1000)",
       "de": "Plastikeinträge der Top 1000 Flüsse"
     },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
     "about": {
       "en": "1000 rivers estimated to emit most plastic into our oceans",
       "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
