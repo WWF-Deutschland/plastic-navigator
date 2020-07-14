@@ -183,7 +183,7 @@ export function KeyPanel({
             {cleanActiveLayerIds.map(id => {
               const conf = allConfig && allConfig.find(l => l.id === id);
               return (
-                <KeyLI activeLayer={id === active}>
+                <KeyLI activeLayer={open && id === active}>
                   <ButtonKey
                     onClick={() => {
                       setOpen(!open || id !== active);
