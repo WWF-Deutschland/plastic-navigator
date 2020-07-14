@@ -408,6 +408,9 @@
       },
       "more": "true"
     },
+    "key": {
+      "iconValue": "2"
+    },
     "icon": {
       "multiple": "true",
       "property": "positions.position_id",
