@@ -66,7 +66,20 @@
     "title": {
       "en": "WWF projects",
       "de": "WWF Projekte"
-    }
+    },
+    "groups": [
+      {
+        "id": "projects",
+        "title": {
+          "en": "Which WWF projects target plastic pollution?",
+          "de": ""
+        },
+        "description": {
+          "en": "Learn about projects targeting plastic pollution oaround the world",
+          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
+        }
+      }
+    ]
   },
   {
     "id": "colours",
