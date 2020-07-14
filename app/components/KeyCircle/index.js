@@ -13,24 +13,23 @@ const StyledInner = styled.div`
   bottom: 0;
   right: 0;
 `;
+
+const getDiameterPx = radius => `${radius * 2}px`;
 const Styled = styled.div`
+  background: white;
   border-radius: 999999px;
   border-width: ${({ circleStyle }) => circleStyle.weight || 1}px;
   border-color: ${({ circleStyle }) => circleStyle.color || 'black'};
   border-style: ${({ circleStyle }) => circleStyle.line || 'solid'};
   overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  width: ${({ radius }) => (radius ? getDiameterPx(radius) : '100%')};
+  height: ${({ radius }) => (radius ? getDiameterPx(radius) : '100%')};
+  position: relative;
 `;
 
-export function KeyCircle({ circleStyle }) {
+export function KeyCircle({ circleStyle, radius }) {
   return (
-    <Styled circleStyle={circleStyle}>
+    <Styled circleStyle={circleStyle} radius={radius}>
       <StyledInner circleStyle={circleStyle} />
     </Styled>
   );
@@ -38,6 +37,7 @@ export function KeyCircle({ circleStyle }) {
 
 KeyCircle.propTypes = {
   circleStyle: PropTypes.object,
+  radius: PropTypes.number,
 };
 
 export default KeyCircle;

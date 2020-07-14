@@ -8,7 +8,7 @@ import quasiEquals from 'utils/quasi-equals';
 
 import { PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
-const getRange = (allFeatures, attribute) =>
+export const getRange = (allFeatures, attribute) =>
   allFeatures.reduce(
     (range, f) => {
       const val = f.properties && parseFloat(f.properties[attribute]);
@@ -23,14 +23,23 @@ const getRange = (allFeatures, attribute) =>
     },
   );
 
-const scaleCircle = (feature, range, config) => {
-  const val =
-    feature.properties && parseFloat(feature.properties[config.attribute]);
+const getFloatProperty = (feature, config) =>
+  feature.properties && parseFloat(feature.properties[config.attribute]);
+
+export const scaleCircle = (val, range, config) => {
   const scale = scalePow()
     .exponent(config.exp || 0.5)
     .domain([0, range.max])
     .range([0, config.max]);
   return Math.max(config.min, scale(val));
+};
+
+export const valueOfCircle = (radius, range, config) => {
+  const scale = scalePow()
+    .exponent(1 / config.exp || 2)
+    .domain([0, config.max])
+    .range([0, range.max]);
+  return scale(radius);
 };
 
 const coordinatesToLatLon = (coordinates, offsetLon = 0, bezier, reverse) => {
@@ -308,7 +317,11 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
     pointToLayer: (feature, latlng) =>
       L.circleMarker(latlng, {
         ...options,
-        radius: scaleCircle(feature, range, config.render),
+        radius: scaleCircle(
+          getFloatProperty(feature, config.render),
+          range,
+          config.render,
+        ),
       }).on(events),
   });
   layer.addLayer(jsonLayer);
@@ -324,7 +337,11 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
         L.circleMarker([latlng.lat, latlng.lng - 360], {
           ...options,
           copy: 'west',
-          radius: scaleCircle(feature, range, config.render),
+          radius: scaleCircle(
+            getFloatProperty(feature, config.render),
+            range,
+            config.render,
+          ),
         }).on(events),
     });
     layer.addLayer(layerWest);
@@ -340,7 +357,11 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
         L.circleMarker([latlng.lat, latlng.lng + 360], {
           ...options,
           copy: 'east',
-          radius: scaleCircle(feature, range, config.render),
+          radius: scaleCircle(
+            getFloatProperty(feature, config.render),
+            range,
+            config.render,
+          ),
         }).on(events),
     });
     layer.addLayer(layerEast);

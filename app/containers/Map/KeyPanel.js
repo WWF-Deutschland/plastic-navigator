@@ -19,6 +19,8 @@ import { startsWith } from 'utils/string';
 import KeyIcon from 'components/KeyIcon';
 import KeyFull from 'components/KeyFull';
 
+import { getRange } from 'containers/Map/utils';
+
 // import commonMessages from 'messages';
 import messages from './messages';
 
@@ -122,6 +124,7 @@ export function KeyPanel({
   projects,
   activeLayerIds,
   intl,
+  jsonLayers,
 }) {
   const [active, setActive] = useState(null);
   const [tab, setTab] = useState(0);
@@ -163,6 +166,13 @@ export function KeyPanel({
       return pass ? [...memo, cleanId] : memo;
     }, []);
 
+  const jsonLayerActive =
+    config &&
+    config.type === 'geojson' &&
+    config.source === 'data' &&
+    jsonLayers[config.id];
+
+  // prettier-ignore
   return (
     <Styled>
       <ToggleWrap>
@@ -228,7 +238,17 @@ export function KeyPanel({
                         icon={<CircleInformation />}
                       />
                     )}
-                    <KeyFull config={config} />
+                    <KeyFull
+                      config={config}
+                      range={
+                        (jsonLayerActive && jsonLayerActive.data)
+                          ? getRange(
+                            jsonLayerActive.data.features,
+                            config.render.attribute,
+                          )
+                          : null
+                      }
+                    />
                   </Box>
                 )}
               </Tab>
@@ -275,6 +295,7 @@ KeyPanel.propTypes = {
   layersConfig: PropTypes.array,
   activeLayerIds: PropTypes.array,
   projects: PropTypes.array,
+  jsonLayers: PropTypes.array,
   intl: intlShape.isRequired,
 };
 

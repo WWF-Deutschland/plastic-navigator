@@ -429,6 +429,7 @@ export function Map({
           layersConfig={layersConfig}
           projects={projects}
           onLayerInfo={onFeatureClick}
+          jsonLayers={jsonLayers}
         />
       )}
     </Styled>
