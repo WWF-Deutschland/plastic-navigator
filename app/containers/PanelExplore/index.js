@@ -172,7 +172,6 @@ export function PanelExplore({
             <PanelBody>
               {layersConfig &&
                 activeCategory &&
-                activeCategory.id !== PROJECT_CATEGORY &&
                 activeCategory.groups &&
                 activeCategory.groups.map(group => (
                   <SectionLayerGroup key={group.id}>
@@ -185,17 +184,32 @@ export function PanelExplore({
                           group.description[DEFAULT_LOCALE]}
                       </DescriptionGroup>
                     )}
-                    <GroupLayers
-                      group={group}
-                      layersConfig={layersConfig.filter(layer =>
-                        layer.category === activeCategory.id &&
-                        layer.group === group.id
-                      )}
-                      locale={locale}
-                      activeLayers={activeLayers}
-                      onLayerInfo={onLayerInfo}
-                      onToggleLayer={onToggleLayer}
-                    />
+                    { activeCategory.id !== PROJECT_CATEGORY && (
+                      <GroupLayers
+                        group={group}
+                        layersConfig={layersConfig.filter(layer =>
+                          layer.category === activeCategory.id &&
+                          layer.group === group.id
+                        )}
+                        locale={locale}
+                        activeLayers={activeLayers}
+                        onLayerInfo={onLayerInfo}
+                        onToggleLayer={onToggleLayer}
+                      />
+                    )}
+                    {projects &&
+                      activeCategory &&
+                      activeCategory.id === PROJECT_CATEGORY && (
+                      <GroupLayers
+                        group={activeCategory.id}
+                        layersConfig={projects}
+                        projects
+                        locale={locale}
+                        activeLayers={activeLayers}
+                        onLayerInfo={onLayerInfo}
+                        onToggleLayer={onToggleLayer}
+                      />
+                    )}
                   </SectionLayerGroup>
                 ))}
               {layersConfig &&
@@ -217,7 +231,8 @@ export function PanelExplore({
               )}
               {projects &&
                 activeCategory &&
-                activeCategory.id === PROJECT_CATEGORY && (
+                activeCategory.id === PROJECT_CATEGORY &&
+                !activeCategory.groups && (
                 <SectionLayerGroup>
                   <GroupLayers
                     group={activeCategory.id}

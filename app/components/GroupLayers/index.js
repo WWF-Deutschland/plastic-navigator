@@ -110,11 +110,9 @@ function GroupLayers({
               />
             </Box>
           </ListHeaderCell>
-          {!projects && (
-            <ListHeaderKey>
-              <FormattedMessage {...messages.columnKey} />
-            </ListHeaderKey>
-          )}
+          <ListHeaderKey>
+            <FormattedMessage {...messages.columnKey} />
+          </ListHeaderKey>
           <ListHeaderInfo>
             <FormattedMessage {...messages.columnInfo} />
           </ListHeaderInfo>
@@ -140,13 +138,11 @@ function GroupLayers({
                     label={<Label>{title}</Label>}
                   />
                 </ListBodyCell>
-                {!projects && (
-                  <ListBodyCellCenter>
-                    <KeyWrap>
-                      <KeyIcon config={config} />
-                    </KeyWrap>
-                  </ListBodyCellCenter>
-                )}
+                <ListBodyCellCenter>
+                  <KeyWrap>
+                    <KeyIcon config={projects ? PROJECT_CONFIG : config} />
+                  </KeyWrap>
+                </ListBodyCellCenter>
                 <ListBodyCellCenter>
                   <InfoButton
                     onClick={() => onLayerInfo(contentId)}

@@ -62,10 +62,10 @@ export const CONFIG = {
 export const POLICY_LAYER = 'policy-commitments';
 export const PROJECT_CATEGORY = 'projects';
 export const PROJECT_CONFIG = {
+  id: 'projects',
   type: 'csv',
   source: 'data',
   file: 'layers/project_locations.csv',
-  id: 'projects',
   data: {
     'layer-id': 'project_id',
   },
