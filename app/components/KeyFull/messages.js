@@ -29,4 +29,8 @@ export default defineMessages({
     id: `${scope}.and-less`,
     defaultMessage: 'and less',
   },
+  'in-unit': {
+    id: `${scope}.in-unit`,
+    defaultMessage: 'in',
+  },
 });

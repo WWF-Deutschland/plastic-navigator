@@ -221,23 +221,35 @@ export function KeyPanel({
               <Tab>
                 {config && locale && (
                   <Box>
-                    <Title>
-                      {isActiveProject ? (
-                        <FormattedMessage {...messages.keyProjectsTitle} />
-                      ) : (
-                        config.title[locale] || config.title[DEFAULT_LOCALE]
+                    <Box
+                      direction="row"
+                      fill="horizontal"
+                      justify="stretch"
+                      align="center"
+                      gap="small"
+                    >
+                      <Box>
+                        <Title>
+                          {isActiveProject ? (
+                            <FormattedMessage {...messages.keyProjectsTitle} />
+                          ) : (
+                            config.title[locale] || config.title[DEFAULT_LOCALE]
+                          )}
+                        </Title>
+                      </Box>
+                      {!isActiveProject && (
+                        <Box>
+                          <ButtonInfo
+                            onClick={() =>
+                              onLayerInfo({
+                                layer: config['content-id'] || config.id,
+                              })
+                            }
+                            icon={<CircleInformation />}
+                          />
+                        </Box>
                       )}
-                    </Title>
-                    {!isActiveProject && (
-                      <ButtonInfo
-                        onClick={() =>
-                          onLayerInfo({
-                            layer: config['content-id'] || config.id,
-                          })
-                        }
-                        icon={<CircleInformation />}
-                      />
-                    )}
+                    </Box>
                     <KeyFull
                       config={config}
                       range={

@@ -22,6 +22,7 @@ const GradientWrap = styled(Box)`
 const GradientLabels = styled.div`
   position: relative;
   color: ${({ dark }) => (dark ? 'white' : 'black')};
+  height: ${({ exceeds }) => (exceeds ? 40 : 20)}px;
 `;
 
 const KeyLabelWrap = styled(p => <Box {...p} align="center" />)`
@@ -92,7 +93,7 @@ export function Gradient({ config, id, simple, intl, dark }) {
         </GradientLabels>
       )}
       {!simple && (
-        <GradientLabels dark={dark}>
+        <GradientLabels dark={dark} exceeds={key.exceed}>
           {stops.map((stop, index) => (
             <KeyLabelWrap offsetLeft={`${stop.left}%`}>
               <KeyLabel>{formatNumber(stop.value, true, intl)}</KeyLabel>
