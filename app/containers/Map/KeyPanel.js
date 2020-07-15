@@ -187,7 +187,7 @@ export function KeyPanel({
             {cleanActiveLayerIds.map(id => {
               const conf = allConfig && allConfig.find(l => l.id === id);
               return (
-                <KeyLI activeLayer={open && id === active}>
+                <KeyLI activeLayer={open && id === active} key={id}>
                   <ButtonKey
                     onClick={() => {
                       setOpen(!open || id !== active);
@@ -295,7 +295,7 @@ KeyPanel.propTypes = {
   layersConfig: PropTypes.array,
   activeLayerIds: PropTypes.array,
   projects: PropTypes.array,
-  jsonLayers: PropTypes.array,
+  jsonLayers: PropTypes.object,
   intl: intlShape.isRequired,
 };
 

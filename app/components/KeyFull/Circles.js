@@ -63,6 +63,8 @@ export function Circles({ config, simple, intl, range }) {
         <KeyLabel>
           {simple && <FormattedMessage {...messages.less} />}
           {!simple &&
+            range &&
+            render &&
             `< ${intl.formatNumber(
               Math.floor(valueOfCircle(render.min, range, render)),
             )}`}
