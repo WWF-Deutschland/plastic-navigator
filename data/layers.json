@@ -118,8 +118,8 @@
         "de": "kg/Jahr/Zelle"
       },
       "unit-additional": {
-        "en": "30 by 30 arc seconds",
-        "de": "30 mal 30 Winkelsekunden"
+        "en": "30 by 30 arc second grid (~ 0.85km<sup>2</sup>)",
+        "de": "30 mal 30 Winkelsekunden (~ 0.85km<sup>2</sup>)"
       }
     },
     "key": {
@@ -218,7 +218,7 @@
     "key": {
       "title": {
         "en": "Annual emissions (by weight)",
-        "de": "Jährliche Einträge (nach Gewicht)"
+        "de": "Jährlicher Eintrag (nach Gewicht)"
       },
       "values": [100000]
     }
