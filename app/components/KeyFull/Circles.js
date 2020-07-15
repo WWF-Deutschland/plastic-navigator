@@ -46,33 +46,6 @@ export function Circles({ config, simple, intl, range }) {
       <CircleLabel basis={simple || !range ? '1/2' : '1/3'}>
         <WrapCircle>
           <KeyCircle
-            relative
-            circleStyle={config.style}
-            radius={parseFloat(config.render.max)}
-          />
-        </WrapCircle>
-        <KeyLabel>
-          {simple && <FormattedMessage {...messages.more} />}
-          {!simple && range && formatNumber(range.max, true, intl)}
-        </KeyLabel>
-      </CircleLabel>
-      {!simple &&
-        range &&
-        key.values &&
-        key.values.map(val => (
-          <CircleLabel key={val} basis="1/3">
-            <WrapCircle>
-              <KeyCircle
-                circleStyle={config.style}
-                radius={scaleCircle(val, range, config.render)}
-              />
-            </WrapCircle>
-            <KeyLabel>{formatNumber(val, true, intl)}</KeyLabel>
-          </CircleLabel>
-        ))}
-      <CircleLabel basis={simple || !range ? '1/2' : '1/3'}>
-        <WrapCircle>
-          <KeyCircle
             circleStyle={config.style}
             radius={parseFloat(render.min)}
           />
@@ -102,6 +75,33 @@ export function Circles({ config, simple, intl, range }) {
             )}
           </Box>
         )}
+      </CircleLabel>
+      {!simple &&
+        range &&
+        key.values &&
+        key.values.map(val => (
+          <CircleLabel key={val} basis="1/3">
+            <WrapCircle>
+              <KeyCircle
+                circleStyle={config.style}
+                radius={scaleCircle(val, range, config.render)}
+              />
+            </WrapCircle>
+            <KeyLabel>{formatNumber(val, true, intl)}</KeyLabel>
+          </CircleLabel>
+        ))}
+      <CircleLabel basis={simple || !range ? '1/2' : '1/3'}>
+        <WrapCircle>
+          <KeyCircle
+            relative
+            circleStyle={config.style}
+            radius={parseFloat(config.render.max)}
+          />
+        </WrapCircle>
+        <KeyLabel>
+          {simple && <FormattedMessage {...messages.more} />}
+          {!simple && range && formatNumber(range.max, true, intl)}
+        </KeyLabel>
       </CircleLabel>
     </Styled>
   );

@@ -8,6 +8,7 @@ import DEFAULT_LOCALE from 'i18n';
 
 import Gradient from './Gradient';
 import Circles from './Circles';
+import Icon from './Icon';
 
 import messages from './messages';
 
@@ -18,15 +19,18 @@ const Styled = styled(p => <Box {...p} fill />)`
 const Title = styled(Text)``;
 
 export function KeyFull({ config, id, simple, intl, dark, range }) {
-  const { key, render, style, data } = config;
+  const { key, render, style, data, icon } = config;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
+  const isIcon =
+    (key && key.icon && !!key.icon.datauri) ||
+    (render && render.type === 'marker' && !!icon.datauri);
   /* eslint-disable react/no-danger */
   return (
     <Styled>
       <div>
-        {key && key.title && (
+        {key && key.title && !isIcon && (
           <Title>
             {`${key.title[locale] || key.title[DEFAULT_LOCALE]} `}
             {simple &&
@@ -47,6 +51,7 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
           </Text>
         )}
       </div>
+      {isIcon && <Icon id={id} config={config} simple={simple} dark={dark} />}
       {isGradient && (
         <Gradient id={id} config={config} simple={simple} dark={dark} />
       )}

@@ -224,7 +224,7 @@ export function KeyPanel({
                     <Box
                       direction="row"
                       fill="horizontal"
-                      justify="stretch"
+                      justify="between"
                       align="center"
                       gap="small"
                     >
@@ -269,21 +269,35 @@ export function KeyPanel({
               <Tab>
                 {config && locale && (
                   <Box>
-                    <Title>
-                      {isActiveProject ? (
-                        <FormattedMessage {...messages.keyProjectsTitle} />
-                      ) : (
-                        config.title[locale] || config.title[DEFAULT_LOCALE]
+                    <Box
+                      direction="row"
+                      fill="horizontal"
+                      justify="between"
+                      align="center"
+                      gap="small"
+                    >
+                      <Box>
+                        <Title>
+                          {isActiveProject ? (
+                            <FormattedMessage {...messages.keyProjectsTitle} />
+                          ) : (
+                            config.title[locale] || config.title[DEFAULT_LOCALE]
+                          )}
+                        </Title>
+                      </Box>
+                      {!isActiveProject && (
+                        <Box>
+                          <ButtonInfo
+                            onClick={() =>
+                              onLayerInfo({
+                                layer: config['content-id'] || config.id,
+                              })
+                            }
+                            icon={<CircleInformation />}
+                          />
+                        </Box>
                       )}
-                    </Title>
-                    {!isActiveProject && (
-                      <ButtonInfo
-                        onClick={() =>
-                          onLayerInfo(config['content-id'] || config.id)
-                        }
-                        icon={<CircleInformation />}
-                      />
-                    )}
+                    </Box>
                     <Text>
                       {isActiveProject ? (
                         <FormattedMessage {...messages.keyProjectsAbout} />
