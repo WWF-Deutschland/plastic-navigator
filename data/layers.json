@@ -436,6 +436,10 @@
       "iconValue": {
         "simple": "2",
         "full": ["1", "2"]
+      },
+      "propertyByLocale": {
+        "en": "positions.position.position_short_en",
+        "de": "positions.position.position_short_en"
       }
     },
     "icon": {
