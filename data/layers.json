@@ -269,6 +269,14 @@
       "icon": {
         "needsBackgroundOnDark": "true",
         "datauri": "data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22M21.883%2012l-7.527%206.235.644.765%209-7.521-9-7.479-.645.764%207.529%206.236h-21.884v1h21.883z%22%2F%3E%3C%2Fsvg%3E"
+      },
+      "title": {
+        "en": "Major current",
+        "de": "Vorherrschende Strömung"
+      },
+      "title-short": {
+        "en": "Major current",
+        "de": "Vorherrsch. Strömung"
       }
     }
   },
@@ -315,6 +323,16 @@
           "en": "name_en",
           "de": "name_de"
         }
+      }
+    },
+    "key": {
+      "title": {
+        "en": "Approximate center of gyre",
+        "de": "Ungefähres Zentrum des Strudels"
+      },
+      "title-short": {
+        "en": "Gyre",
+        "de": "Strudel"
       }
     },
     "icon": {
