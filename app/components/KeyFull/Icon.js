@@ -7,7 +7,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { DEFAULT_LOCALE } from 'i18n';
 
 const Styled = styled(p => (
-  <Box fill {...p} direction="row" align="center" gap="small" />
+  <Box fill {...p} direction="row" align="center" gap="xxsmall" />
 ))`
   position: relative;
 `;
@@ -17,6 +17,8 @@ const IconWrap = styled(p => <Box {...p} />)`
   width: 40px;
   display: block;
   padding: 5px;
+  background: ${({ addBackground }) =>
+    addBackground ? 'white' : 'transparent'};
 `;
 
 const KeyLabel = styled(p => <Text size="small" {...p} />)`
@@ -39,7 +41,7 @@ const getMarkerSize = configIcon => {
   return { height: '100%', width: `${(sizeXY.x / sizeXY.y) * 100}%` };
 };
 
-export function Icon({ config, simple, intl }) {
+export function Icon({ config, simple, intl, dark }) {
   const { key, render, icon } = config;
   const { locale } = intl;
   const isIconMarker = render && render.type === 'marker' && !!icon.datauri;
@@ -63,10 +65,16 @@ export function Icon({ config, simple, intl }) {
   } else {
     uri = key && key.icon && key.icon.datauri;
   }
-
   return (
     <Styled>
-      <IconWrap>
+      <IconWrap
+        addBackground={
+          dark &&
+          key.icon &&
+          key.icon.needsBackgroundOnDark &&
+          key.icon.needsBackgroundOnDark === 'true'
+        }
+      >
         <KeyIconURI src={uri} markerSize={markerSize} />
       </IconWrap>
       <KeyLabel>
@@ -88,7 +96,7 @@ Icon.propTypes = {
   config: PropTypes.object,
   // id: PropTypes.string,
   simple: PropTypes.bool,
-  // dark: PropTypes.bool,
+  dark: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

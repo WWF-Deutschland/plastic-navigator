@@ -111,7 +111,9 @@ const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
 
 const Description = styled(Text)``;
 
-const LayersFocusWrap = styled(p => <Box {...p} direction="row" />)``;
+const LayersFocusWrap = styled(p => (
+  <Box {...p} direction="row" gap="small" />
+))``;
 const LayerFocus = styled(p => <Box {...p} fill="horizontal" />)``;
 const LayerTitleWrap = styled(p => (
   <Box {...p} direction="row" align="center" margin={{ bottom: 'small' }} />
