@@ -433,7 +433,10 @@
       "more": "true"
     },
     "key": {
-      "iconValue": "2"
+      "iconValue": {
+        "simple": "2",
+        "full": ["1", "2"]
+      }
     },
     "icon": {
       "multiple": "true",
