@@ -21,4 +21,12 @@ export default defineMessages({
     id: `${scope}.by-weight`,
     defaultMessage: '(by weight)',
   },
+  'and-more': {
+    id: `${scope}.and-more`,
+    defaultMessage: 'and more',
+  },
+  'and-less': {
+    id: `${scope}.and-less`,
+    defaultMessage: 'and less',
+  },
 });
