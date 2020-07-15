@@ -44,10 +44,13 @@ export function KeyIcon({ config, id }) {
     const defaultIcon = config.icon.datauri.default;
     if (defaultIcon) {
       if (config.icon.multiple === 'true') {
-        marker =
-          config.key && config.key.iconValue
-            ? defaultIcon[config.key.iconValue]
-            : Object.values(defaultIcon)[0];
+        let value;
+        if (config.key && config.key.iconValue && config.key.iconValue.simple) {
+          value = config.key.iconValue.simple;
+        } else if (config.key && config.key.iconValue) {
+          value = config.key.iconValue;
+        }
+        marker = value ? defaultIcon[value] : Object.values(defaultIcon)[0];
       } else {
         marker = defaultIcon;
       }

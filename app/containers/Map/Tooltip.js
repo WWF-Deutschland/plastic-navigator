@@ -69,7 +69,8 @@ const Title = styled.div`
   text-transform: uppercase;
   font-weight: normal;
   letter-spacing: 0.05em;
-  font-size: 1.8em;
+  font-size: 1.4em;
+  line-height: 1.1em;
   margin-bottom: 20px;
 `;
 const SupTitle = styled.div`
@@ -194,6 +195,8 @@ const Tooltip = ({
             {(tooltip.more || tooltip.more === 'true') && tooltip.more !== 'false' && (
               <Button
                 label="About"
+                plain
+                style={{ textDecoration: 'underline' }}
                 onClick={() => {
                   onFeatureClick({
                     feature: feature.properties.f_id,

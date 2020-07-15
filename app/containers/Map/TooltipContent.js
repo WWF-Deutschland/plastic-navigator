@@ -13,7 +13,7 @@ const getContent = (feature, element, layer, locale) => {
   if (layer && element.propertyFromLayer) {
     return getPropertyByLocale(layer, element, locale);
   }
-  if (element.propertyByLocale) {
+  if (feature.properties && element.propertyByLocale) {
     return getPropertyByLocale(feature.properties, element, locale);
   }
   return element[locale];

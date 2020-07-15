@@ -5,7 +5,9 @@ import { Box, Text } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
 import DEFAULT_LOCALE from 'i18n';
+import { PROJECT_CONFIG } from 'config';
 
+import coreMessages from 'messages';
 import Gradient from './Gradient';
 import Circles from './Circles';
 import Icon from './Icon';
@@ -20,6 +22,7 @@ const Title = styled(Text)``;
 
 export function KeyFull({ config, id, simple, intl, dark, range }) {
   const { key, render, style, data, icon } = config;
+  const myId = id || config.id;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
@@ -51,13 +54,25 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
           </Text>
         )}
       </div>
-      {isIcon && <Icon id={id} config={config} simple={simple} dark={dark} />}
+      {isIcon && (
+        <Icon
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          title={
+            myId === PROJECT_CONFIG.id
+              ? intl.formatMessage(coreMessages.projectLocation)
+              : null
+          }
+        />
+      )}
       {isGradient && (
-        <Gradient id={id} config={config} simple={simple} dark={dark} />
+        <Gradient id={myId} config={config} simple={simple} dark={dark} />
       )}
       {isCircle && (
         <Circles
-          id={id}
+          id={myId}
           config={config}
           simple={simple}
           dark={dark}

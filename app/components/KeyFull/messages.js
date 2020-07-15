@@ -33,4 +33,8 @@ export default defineMessages({
     id: `${scope}.in-unit`,
     defaultMessage: 'in',
   },
+  clickMarkerHint: {
+    id: `${scope}.clickMarkerHint`,
+    defaultMessage: 'Click marker for details',
+  },
 });
