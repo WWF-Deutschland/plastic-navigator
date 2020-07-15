@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'WWF Projects',
   },
   keyProjectsAbout: {
-    id: `${scope}.keyProjectsTitle`,
+    id: `${scope}.keyProjectsAbout`,
     defaultMessage: 'About the WWF Projects',
   },
 });
