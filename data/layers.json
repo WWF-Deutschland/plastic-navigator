@@ -437,9 +437,21 @@
         "simple": "2",
         "full": ["1", "2"]
       },
-      "propertyByLocale": {
-        "en": "positions.position.position_short_en",
-        "de": "positions.position.position_short_en"
+      "iconTitle": {
+        "simple": {
+          "en": "positions.position.position_short_en",
+          "de": "positions.position.position_short_en"
+        },
+        "full": {
+          "1": {
+            "en": "Official statements calling for agreement",
+            "de": "positions.position.position_short_en"
+          },
+          "2": {
+            "en": "Public commitments to explore option of agreement",
+            "de": "positions.position.position_short_en"
+          }
+        }
       }
     },
     "icon": {
