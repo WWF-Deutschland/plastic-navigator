@@ -17,7 +17,7 @@ import { navigate } from 'containers/App/actions';
 // className="rle-html"
 // dangerouslySetInnerHTML={{ __html: setLinkTarget(innerhtml) }}
 // />
-const HTMLWrapper = ({ innerhtml, onNavigate }) => (
+const HTMLWrapper = ({ innerhtml, onNavigate, inject }) => (
   <div className="app-html">
     {ReactHtmlParser(innerhtml, {
       transform: (node, index) => {
@@ -42,6 +42,10 @@ const HTMLWrapper = ({ innerhtml, onNavigate }) => (
             </a>
           );
         }
+        if (inject && inject.length > 0 && node.type === 'text') {
+          const inj = inject.find(({ tag }) => tag === node.data);
+          return inj ? inj.el : undefined;
+        }
         return undefined;
       },
     })}
@@ -52,6 +56,7 @@ HTMLWrapper.propTypes = {
   /* the inner HTML text */
   innerhtml: PropTypes.string.isRequired,
   onNavigate: PropTypes.func,
+  inject: PropTypes.array,
 };
 
 function mapDispatchToProps(dispatch) {

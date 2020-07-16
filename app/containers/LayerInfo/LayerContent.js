@@ -21,6 +21,7 @@ import { selectContentByKey, selectLocale } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
 
 import HTMLWrapper from 'components/HTMLWrapper';
+import KeyFull from 'components/KeyFull';
 
 import LayerReference from './LayerReference';
 // import messages from './messages';
@@ -44,7 +45,17 @@ export function LayerContent({ onLoadContent, content, config, locale }) {
   return (
     <>
       <Title>{config.title[locale] || config.title[DEFAULT_LOCALE]}</Title>
-      {content && <HTMLWrapper innerhtml={content} />}
+      {content && (
+        <HTMLWrapper
+          innerhtml={content}
+          inject={[
+            {
+              tag: '[KEY]',
+              el: <KeyFull config={config} />,
+            },
+          ]}
+        />
+      )}
       <LayerReference attribution={config.attribution} />
     </>
   );
