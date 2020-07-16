@@ -15,12 +15,12 @@ const Hint = styled(p => <Text size="small" {...p} />)`
 `;
 
 const IconLabelWrap = styled(p => (
-  <Box fill {...p} direction="row" align="center" gap="xxsmall" />
+  <Box fill="horizontal" direction="row" align="center" gap="xxsmall" {...p} />
 ))`
   position: relative;
 `;
 
-const IconWrap = styled(p => <Box {...p} />)`
+const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
   height: 40px;
   width: 40px;
   display: block;
@@ -28,10 +28,9 @@ const IconWrap = styled(p => <Box {...p} />)`
   background: ${({ addBackground }) =>
     addBackground ? 'white' : 'transparent'};
 `;
+const LabelWrap = styled(p => <Box {...p} />)``;
 
-const KeyLabel = styled(p => <Text size="small" {...p} />)`
-  white-space: nowrap;
-`;
+const KeyLabel = styled(p => <Text size="small" {...p} />)``;
 
 const KeyIconURI = styled.img`
   margin: 0 auto;
@@ -134,7 +133,6 @@ export function Icon({ config, simple, intl, dark, title }) {
     key.icon.needsBackgroundOnDark &&
     key.icon.needsBackgroundOnDark === 'true';
 
-  console.log(marker, config, asArray(marker));
   return (
     <Box>
       {asArray(marker).map(mrk => (
@@ -142,7 +140,9 @@ export function Icon({ config, simple, intl, dark, title }) {
           <IconWrap addBackground={addBackground} flex={{ shrink: 0 }}>
             <KeyIconURI src={mrk.uri} markerSize={markerSize} />
           </IconWrap>
-          <KeyLabel>{mrk.title}</KeyLabel>
+          <LabelWrap>
+            <KeyLabel>{mrk.title}</KeyLabel>
+          </LabelWrap>
         </IconLabelWrap>
       ))}
       {!simple && isIconMarker && (
