@@ -75,7 +75,10 @@ export function navigatePage(id, args) {
 
 // proxy action: navigate home, optionally resetting all search params
 export function navigateHome(reset = true) {
-  return navigate(ROUTES.INTRO, reset ? { deleteSearchParams: true } : {});
+  return navigate(
+    ROUTES.INTRO,
+    reset ? { deleteSearchParams: true, deleteUIState: true } : {},
+  );
 }
 
 export function loadContent(contentType, key) {

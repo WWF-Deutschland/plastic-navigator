@@ -15,13 +15,19 @@ import { Box, Button, ResponsiveContext, Text } from 'grommet';
 import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
+import { MODULES } from 'config';
 
 import {
   selectExploreConfig,
   selectLocale,
   selectUIStateByKey,
 } from 'containers/App/selectors';
-import { setUIState, setLayerInfo, setLayers } from 'containers/App/actions';
+import {
+  navigate,
+  setUIState,
+  setLayerInfo,
+  setLayers,
+} from 'containers/App/actions';
 
 import KeyFull from 'components/KeyFull';
 
@@ -147,6 +153,7 @@ export function PanelChapter({
   onSetOpen,
   onLayerInfo,
   layersConfig,
+  navModule,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -250,27 +257,37 @@ export function PanelChapter({
                     }}
                   />
                 )}
-                <ButtonNext
-                  icon={<Next color="white" />}
-                  label={<FormattedMessage {...messages.next} />}
-                  onClick={() => {
-                    if (size === 'small') {
-                      if (step < STEPS - 1) {
-                        setStep(step + 1);
-                      }
-                      if (step === STEPS - 1) {
-                        if (!isLast) {
-                          setStep(0);
+                {!isLast && (
+                  <ButtonNext
+                    icon={<Next color="white" />}
+                    label={<FormattedMessage {...messages.next} />}
+                    onClick={() => {
+                      if (size === 'small') {
+                        if (step < STEPS - 1) {
+                          setStep(step + 1);
                         }
+                        if (step === STEPS - 1) {
+                          if (!isLast) {
+                            setStep(0);
+                          }
+                          onLayerInfo();
+                          onNext();
+                        }
+                      } else {
                         onLayerInfo();
                         onNext();
                       }
-                    } else {
-                      onLayerInfo();
-                      onNext();
-                    }
-                  }}
-                />
+                    }}
+                  />
+                )}
+                {isLast && (
+                  <ButtonNext
+                    label={<FormattedMessage {...messages.exploreAll} />}
+                    onClick={() => {
+                      navModule('explore');
+                    }}
+                  />
+                )}
               </ButtonWrap>
             </ContentWrap>
           )}
@@ -292,6 +309,7 @@ PanelChapter.propTypes = {
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
   uiState: PropTypes.object,
+  navModule: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -311,6 +329,7 @@ function mapDispatchToProps(dispatch) {
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onSetLayers: layers => dispatch(setLayers(layers)),
+    navModule: id => MODULES[id] && dispatch(navigate(MODULES[id].path)),
   };
 }
 

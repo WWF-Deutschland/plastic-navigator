@@ -203,8 +203,7 @@ const mapStateToProps = createStructuredSelector({
 
 export function mapDispatchToProps(dispatch) {
   return {
-    nav: path =>
-      dispatch(navigate(path, { deleteSearchParams: ['info', 'layers'] })),
+    nav: path => dispatch(navigate(path, { deleteSearchParams: ['info'] })),
     navPage: id => dispatch(navigatePage(id)),
   };
 }

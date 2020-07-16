@@ -98,7 +98,11 @@ const appReducer = (state = initialState, action) =>
         draft.configRequested[action.key] = action.time;
         break;
       case SET_UI_STATE:
-        draft.uiState[action.component] = action.state;
+        if (action.component && action.state) {
+          draft.uiState[action.component] = action.state;
+        } else {
+          draft.uiState = {};
+        }
         break;
     }
   });

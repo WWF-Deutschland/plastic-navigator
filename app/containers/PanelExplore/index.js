@@ -141,8 +141,10 @@ export function PanelExplore({
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
   useEffect(() => {
-    if (layersMemo && (!activeLayers || activeLayers.length === 0)) {
+    if (layersMemo) {
       onSetLayers(layersMemo);
+    } else {
+      onSetLayers();
     }
   }, []);
   useEffect(() => {

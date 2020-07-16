@@ -42,6 +42,7 @@ import {
   setConfigRequested,
   setConfigLoadError,
   setConfigLoadSuccess,
+  setUIState,
 } from './actions';
 
 /**
@@ -215,6 +216,7 @@ function* navigateSaga({ location, args }) {
       needsLocale: true,
       replaceSearch: false, // if location search should fully replace previous
       deleteSearchParams: null, //  a list of specific search params to remove
+      deleteUIState: false, //  a list of specific search params to remove
     },
     args || {},
   );
@@ -323,6 +325,9 @@ function* navigateSaga({ location, args }) {
   if (search !== currentLocation.search || path !== currentLocation.pathname) {
     yield put(push(`${path}${search}`));
   }
+  if (myArgs.deleteUIState) {
+    yield put(setUIState());
+  }
 }
 
 function* changeLocaleSaga({ locale }) {
@@ -401,7 +406,7 @@ function* setLayersSaga({ layers }) {
   const searchParams = new URLSearchParams(currentLocation.search);
   searchParams.delete('layers');
 
-  if (layers.length > 0) {
+  if (layers && layers.length > 0) {
     searchParams.set('layers', layers.join(URL_SEARCH_SEPARATOR));
   }
   const newSearch = searchParams.toString();
