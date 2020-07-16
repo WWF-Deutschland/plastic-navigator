@@ -54,11 +54,29 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
   bottom: 0;
   width: ${({ panelWidth }) => panelWidth || 400}px;
   pointer-events: all;
-  overflow-y: auto;
 `;
 
-const PanelHeader = styled(p => <Box background="black" {...p} />)``;
-const PanelBody = styled(p => <Box {...p} pad="small" />)``;
+const PanelHeader = styled(p => (
+  <Box background="black" justify="between" {...p} />
+))`
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 120px;
+`;
+const PanelBody = styled(p => (
+  <Box {...p} pad="small" margin={{ bottom: 'small' }} />
+))`
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 120px;
+  width: 100%;
+  bottom: 0;
+  overflow-y: scroll;
+`;
 const TitleWrap = styled(p => (
   <Box {...p} pad={{ horizontal: 'small', bottom: 'small' }} />
 ))``;
@@ -85,7 +103,7 @@ const TabLink = styled(p => <Button plain {...p} />)`
 `;
 const TabLinkAnchor = styled(Text)``;
 
-const SectionLayerGroup = styled(Box)``;
+const SectionLayerGroup = styled(p => <Box flex={{ shrink: 0 }} {...p} />)``;
 const TitleGroup = styled(p => <Heading {...p} level={4} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
