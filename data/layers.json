@@ -193,7 +193,7 @@
     },
     "render": {
       "type": "scaledCircle",
-      "min": "3",
+      "min": "5",
       "max": "15",
       "attribute": "i_mid",
       "exponent": "0.5"
