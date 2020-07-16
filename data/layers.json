@@ -344,6 +344,16 @@
       "flip": {
         "latitude": "north"
       },
+      "animate": {
+        "rotate": {
+          "right": {
+            "latitude": "north"
+          },
+          "left": {
+            "latitude": "south"
+          }
+        }
+      },
       "size": {
         "x": "36",
         "y": "36"
