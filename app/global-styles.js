@@ -1,7 +1,26 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, keyframes } from 'styled-components';
 import WWFFontWoff from './fonts/wwf-webfont.woff';
 import WWFFontTTF from './fonts/wwf-webfont.ttf';
 import WWFFontEOT from './fonts/wwf-webfont.eot';
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+const rotateLeft = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+`;
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://unpkg.com/leaflet@1.3.3/dist/leaflet.css');
@@ -77,6 +96,13 @@ const GlobalStyle = createGlobalStyle`
 
   .leaflet-top .leaflet-control-zoom {
     margin-top: 80px;
+  }
+
+  .mpx-spin-right {
+    animation: ${rotate} 4s linear infinite;
+  }
+  .mpx-spin-left {
+    animation: ${rotateLeft} 4s linear infinite;
   }
 `;
 

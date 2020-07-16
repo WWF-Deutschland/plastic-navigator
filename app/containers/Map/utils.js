@@ -189,6 +189,9 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       iconSize,
       iconAnchor,
     };
+
+    let myClass = '';
+
     // check for property dependent icon
     const iconForState =
       state === 'hover'
@@ -221,8 +224,30 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       }
       return L.divIcon({
         ...options,
-        html: `<img style="width:100%;" src="${uri}">`,
+        html: `<img style="width:100%" class="${myClass}" src="${uri}">`,
       });
+    }
+    if (icon.animate) {
+      if (icon.animate.rotate) {
+        if (icon.animate.rotate.right) {
+          if (latlng && icon.animate.rotate.right.latitude) {
+            if (
+              (icon.animate.rotate.right.latitude === 'north' &&
+                latlng.lat >= 0) ||
+              (icon.animate.rotate.right.latitude === 'south' && latlng.lat < 0)
+            ) {
+              myClass = `${myClass} mpx-spin-right`;
+            }
+            if (
+              (icon.animate.rotate.left.latitude === 'north' &&
+                latlng.lat >= 0) ||
+              (icon.animate.rotate.left.latitude === 'south' && latlng.lat < 0)
+            ) {
+              myClass = `${myClass} mpx-spin-left`;
+            }
+          }
+        }
+      }
     }
     // check for latitude flip
     if (latlng && icon.flip && icon.flip.latitude) {
@@ -232,14 +257,14 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       ) {
         return L.divIcon({
           ...options,
-          html: `<img style="transform:scale(1, -1);width:100%;" src="${iconForState}">`,
+          html: `<img style="transform:scale(1, -1);width:100%;" class="${myClass}" src="${iconForState}">`,
         });
       }
     }
     // icon normal state
     return L.divIcon({
       ...options,
-      html: `<img style="width:100%;" src="${iconForState}">`,
+      html: `<img style="width:100%;" class="${myClass}" src="${iconForState}">`,
     });
   }
   return L.icon();
