@@ -1113,7 +1113,7 @@
   {
     "id": "river-emissions-100",
     "content-id": "river-emissions",
-    "category": "plastic",
+    "category": "alt",
     "group": "source",
     "source": "data",
     "type": "geojson",
@@ -1183,7 +1183,7 @@
   {
     "id": "river-emissions-200",
     "content-id": "river-emissions",
-    "category": "plastic",
+    "category": "alt",
     "group": "source",
     "source": "data",
     "type": "geojson",
@@ -1253,7 +1253,7 @@
   {
     "id": "river-emissions-500",
     "content-id": "river-emissions",
-    "category": "plastic",
+    "category": "alt",
     "group": "source",
     "source": "data",
     "type": "geojson",
@@ -1323,7 +1323,7 @@
   {
     "id": "river-emissions-1000",
     "content-id": "river-emissions",
-    "category": "plastic",
+    "category": "alt",
     "group": "source",
     "source": "data",
     "type": "geojson",
