@@ -499,7 +499,7 @@
     "id": "surface-concentration-purple",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -566,7 +566,7 @@
     "id": "surface-concentration-orange",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -633,7 +633,7 @@
     "id": "surface-concentration-red",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -700,7 +700,7 @@
     "id": "surface-concentration-yellow",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -767,7 +767,7 @@
     "id": "surface-concentration-yellow-dark",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -834,7 +834,7 @@
     "id": "surface-concentration-yellow-red",
     "content-id": "surface-concentration",
     "z-index": "-1",
-    "category": "colours",
+    "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -901,7 +901,7 @@
     "id": "mismanaged-waste-yellow",
     "content-id": "mismanaged-waste",
     "z-index": "10",
-    "category": "colours",
+    "category": "alt",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -972,7 +972,7 @@
     "id": "mismanaged-waste-purple-dark",
     "content-id": "mismanaged-waste",
     "z-index": "10",
-    "category": "colours",
+    "category": "alt",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -1043,7 +1043,7 @@
     "id": "mismanaged-waste-orange",
     "content-id": "mismanaged-waste",
     "z-index": "10",
-    "category": "colours",
+    "category": "alt",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
@@ -1108,6 +1108,286 @@
           "color": "#531510"
         }
       ]
+    }
+  },
+  {
+    "id": "river-emissions-100",
+    "content-id": "river-emissions",
+    "category": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-100.json",
+    "title": {
+      "en": "River plastic emissions (top 100)",
+      "de": "Plastikeinträge der Top 100 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "4",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-200",
+    "content-id": "river-emissions",
+    "category": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-200.json",
+    "title": {
+      "en": "River plastic emissions (top 200)",
+      "de": "Plastikeinträge der Top 200 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "4",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-500",
+    "content-id": "river-emissions",
+    "category": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-500.json",
+    "title": {
+      "en": "River plastic emissions (top 500)",
+      "de": "Plastikeinträge der Top 500 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "4",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-1000",
+    "content-id": "river-emissions",
+    "category": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-top.json",
+    "title": {
+      "en": "River plastic emissions (top 1000)",
+      "de": "Plastikeinträge der Top 1000 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "1",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
     }
   }
 ]
