@@ -7,7 +7,7 @@ title: Floating plastic concentration
 image_file_name: surface-concentration.png
 image_caption: image credits and caption
 fact_lead: >-
-  Floating plastics are a significant threat to our marine environment as they are ingested by many species and also absorb toxic pollutants that accumulate in the global food chains.
+  Floating plastics are a significant threat to our marine environment. Many marine species, including seabirds, fish and marine mammals can become entangled in or ingest plastic debris and absorbed toxic pollutants that accumulate in the global food chains.
 ---
 
 Once entering the oceans, floating plastics and other debris are moved by the influence of wind and currents and are slowly broken down into smaller and smaller pieces by their exposure to waves and sunlight. Many of the plastic items remain floating at the surface, however plastic has also been documented throughout the water column, with a significant portion sinking to the bottom of the sea, including in the Mariana Trench at 11,000 meters below sea level.
