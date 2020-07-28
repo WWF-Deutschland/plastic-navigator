@@ -18,11 +18,3 @@ Policy positions
 Section explaining how to read the data
 
 [KEY]
-
-### Please beware
-
-Section about data caveats
-
-## About the study
-
-Section about the study

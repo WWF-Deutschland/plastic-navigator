@@ -7,27 +7,24 @@ title: Floating plastic concentration
 image_file_name: surface-concentration.png
 image_caption: image credits and caption
 fact_lead: >-
-  Floating plastics are a significant threat to our marine environment as they
-  are ingested by many species and also absorb toxic pollutants that accumulate
-  in the global food chains.
-text_references: text references
+  Floating plastics are a significant threat to our marine environment as they are ingested by many species and also absorb toxic pollutants that accumulate in the global food chains.
 ---
 
-Once entering the oceans, floating plastics and other debris are moved by the influence of wind and ocean currents and over the years break down into smaller and smaller pieces.
+Once entering the oceans, floating plastics and other debris are moved by the influence of wind and currents and are slowly broken down into smaller and smaller pieces by their exposure to waves and sunlight. Many of the plastic items remain floating at the surface, however plastic has also been documented throughout the water column, with a significant portion sinking to the bottom of the sea, including in the Mariana Trench at 11,000 meters below sea level.
 
-With the predominant winds and currents forming large rotating systems called gyres, the floating trash is transported along and slowly pushed to their centers where their migration slows down significantly due to the prevailing light winds and currents, resulting in large areas of high plastic concentration. While the most prominent accumulation zone is located in the North Pacific Ocean (commonly referred to as the 'Great Pacific Garbage Patch'), the other principal gyres are present in the South Pacific, the North and South Atlantic, as well as the Indian oceans.
-
-In addition, other areas of high concentration can be observed close to river mouths and in poorly connected marginal seas like the Mediterranean Sea.
+Here we only show plastic pollution estimated to be floating on the surface. While some debris ends up stranded on coastlines, much of it is being transported and slowly pushed towards the centers of large rotating systems called gyres. Featuring lighter winds and currents, the movements of the floating trash are slowed down resulting in large areas of high plastic concentration. In addition, other areas of high concentration can be observed close to river mouths and in poorly connected marginal seas like the Mediterranean Sea.
 
 ### How to read the data
 
-The visualisation shows the estimated concentration of floating plastic waste by weight and per km<sup>2</sup>. Darker areas indicate areas of higher plastic concentration, lighter areas mean lower concentration.
+The visualisation shows the estimated concentration of floating plastic waste by weight and per km<sup>2</sup>. Darker colours indicate areas of higher plastic concentration, lighter areas mean lower concentration.
 
 [KEY]
 
-### Please note
+### Please beware
 
-* The accumulated trash does not form patches (or even solid islands) as it is often portrayed in popular media, but instead the often tiny particles, mostly measuring 1 mm and less, are better to be understood as a plastic smog that is omnipresent and thicker in the centre of the gyres.
+* Study estimates are conservative, thus are best considered to be minimum estimates
+* The accumulated trash does not form patches (or even solid islands) as it is often portrayed in popular media. Instead the often tiny particles, mostly measuring 1 mm and less, are better to be understood as a plastic smog that is omnipresent and thicker in the centre of the gyres.
+
 
 ### About the study
 
