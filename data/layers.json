@@ -1321,7 +1321,7 @@
     }
   },
   {
-    "id": "river-emissions-1000",
+    "id": "river-emissions-1000-min-1",
     "content-id": "river-emissions",
     "category": "alt",
     "group": "source",
@@ -1329,7 +1329,7 @@
     "type": "geojson",
     "file": "layers/river-emissions-top.json",
     "title": {
-      "en": "River plastic emissions (top 1000)",
+      "en": "River plastic emissions (min 1, top 1000)",
       "de": "Plastikeinträge der Top 1000 Flüsse"
     },
     "title-short": {
@@ -1361,6 +1361,216 @@
     "render": {
       "type": "scaledCircle",
       "min": "1",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-1000-min-1-5",
+    "content-id": "river-emissions",
+    "category": "alt",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-top.json",
+    "title": {
+      "en": "River plastic emissions (min 1.5, top 1000)",
+      "de": "Plastikeinträge der Top 1000 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "1.5",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-1000-min-2",
+    "content-id": "river-emissions",
+    "category": "alt",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-top.json",
+    "title": {
+      "en": "River plastic emissions (min 2, top 1000)",
+      "de": "Plastikeinträge der Top 1000 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "2",
+      "max": "20",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Annual estimated emission",
+        "de": "Geschätzter jährlicher Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "black",
+      "weight": "0.5",
+      "fillColor": "black",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000]
+    }
+  },
+  {
+    "id": "river-emissions-1000-min-2-5",
+    "content-id": "river-emissions",
+    "category": "alt",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-top.json",
+    "title": {
+      "en": "River plastic emissions (min 2.5, top 1000)",
+      "de": "Plastikeinträge der Top 1000 Flüsse"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "200 rivers estimated to emit most plastic into our oceans",
+      "de": "Die 200 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "2.5",
       "max": "20",
       "attribute": "i_mid",
       "exponent": "0.5"
