@@ -1503,17 +1503,17 @@
       }
     },
   {
-    "id": "mismanaged-waste-yellow",
+    "id": "mismanaged-waste-yellow-green",
     "content-id": "mismanaged-waste",
     "z-index": "10",
     "category": "alt",
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.c6fo1o6s",
+    "tileset": "tmfrnz.6ymvxy8v",
     "title": {
-      "en": "Mismanaged plastic waste (yellow)",
-      "de": "Schlechte Handhabung von Plastikmüll (gelb)"
+      "en": "Mismanaged plastic waste (yellow green)",
+      "de": "Schlechte Handhabung von Plastikmüll (gelb gruen)"
     },
     "about": {
       "en": "Short text about mismanaged plastic waste",
@@ -1548,27 +1548,27 @@
       "stops": [
         {
           "value": 1,
-          "color": "#fbf8ce"
+          "color": "#f8f4e0"
         },
         {
           "value": 10,
-          "color": "#feec81"
+          "color": "#f8f0c6"
         },
         {
           "value": 100,
-          "color": "#fdd447"
+          "color": "#f4ea9e"
         },
         {
           "value": 1000,
-          "color": "#f59a1b"
+          "color": "#d8cb65"
         },
         {
           "value": 10000,
-          "color": "#cc4e00"
+          "color": "#aa9e1b"
         },
         {
           "value": 100000,
-          "color": "#993800"
+          "color": "#807502"
         }
       ]
     }
