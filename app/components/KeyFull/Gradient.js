@@ -68,7 +68,7 @@ export function Gradient({ config, id, simple, intl, dark }) {
         {!simple &&
           stops.map((stop, index) => {
             if (index > 0 && index < stops.length - 1) {
-              return <Mark offsetLeft={`${stop.left}%`} />;
+              return <Mark key={stop.value} offsetLeft={`${stop.left}%`} />;
             }
             return null;
           })}
@@ -95,7 +95,7 @@ export function Gradient({ config, id, simple, intl, dark }) {
       {!simple && (
         <GradientLabels dark={dark} exceeds={key.exceed}>
           {stops.map((stop, index) => (
-            <KeyLabelWrap offsetLeft={`${stop.left}%`}>
+            <KeyLabelWrap key={stop.value} offsetLeft={`${stop.left}%`}>
               <KeyLabel>{formatNumber(stop.value, true, intl)}</KeyLabel>
               {index === stops.length - 1 && key.exceed && (
                 <KeyLabel size="xsmall">

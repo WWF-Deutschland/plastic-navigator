@@ -5,6 +5,7 @@ import { uniq } from 'lodash/array';
 import quasiEquals from 'utils/quasi-equals';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
+import 'leaflet.vectorgrid';
 
 import { PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
@@ -168,6 +169,87 @@ const getPolylineLayer = ({ data, config }) => {
       }
     }
   });
+  return layer;
+};
+const getVectorGridStyle = (properties, config) => {
+  // console.log(properties, config)
+  // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
+  let featureStyle = {};
+  if (
+    properties &&
+    config.featureStyle &&
+    config.featureStyle.property &&
+    typeof config.featureStyle.style === 'object'
+  ) {
+    if (
+      config.featureStyle.multiple &&
+      config.featureStyle.multiple === 'true'
+    ) {
+      const ps = config.featureStyle.property.split('.');
+      const propertyArray = properties[ps[0]];
+      const values = uniq(propertyArray.map(p => p[ps[1]]));
+      if (config.featureStyle.multiplePriority) {
+        featureStyle = Object.keys(config.featureStyle.style).reduce(
+          (styleMemo, attr) => {
+            const attrObject = config.featureStyle.style[attr];
+            const attrValue = config.featureStyle.multiplePriority.reduce(
+              (memo, value) => {
+                if (memo) return memo;
+                if (values.indexOf(value) > -1) {
+                  return attrObject[value];
+                }
+                return null;
+              },
+              null,
+            );
+            return {
+              ...styleMemo,
+              [attr]: attrValue,
+            };
+          },
+          {},
+        );
+      }
+    }
+  }
+  // console.log(featureStyle)
+  // // if (value) {
+  //   const color =
+  //     GROUP_LAYER_PROPERTIES.OCCURRENCE[value] &&
+  //     GROUP_LAYER_PROPERTIES.OCCURRENCE[value].color;
+  //   if (color)
+  //     // prettier-ignore
+  //     return type === 'line'
+  //       ? { ...featureStyle, opacity, color }
+  //       : {
+  //         ...featureStyle,
+  //         opacity,
+  //         fillColor: color,
+  //         color,
+  //       };
+  // }
+  return {
+    stroke: true,
+    color: 'white',
+    weight: 0.5,
+    fill: true,
+    fillOpacity: 0.3,
+    ...featureStyle,
+  };
+};
+const getPolygonLayer = ({ data, config }) => {
+  const layer = L.featureGroup(null, { pane: 'overlayPane' });
+  // const options = {
+  //
+  // };
+  const vectorGrid = L.vectorGrid.slicer(data, {
+    zIndex: config['z-index'] || 1,
+    rendererFactory: L.svg.tile,
+    vectorTileLayerStyles: {
+      sliced: properties => getVectorGridStyle(properties, config),
+    },
+  });
+  layer.addLayer(vectorGrid);
   return layer;
 };
 
@@ -374,6 +456,10 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents }) => {
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
     return getPolylineLayer({ data, config });
+  }
+  // polygon
+  if (config.render && config.render.type === 'area' && data.features) {
+    return getPolygonLayer({ data, config });
   }
 
   // regular point marker

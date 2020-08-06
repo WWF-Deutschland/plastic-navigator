@@ -258,7 +258,10 @@ export function Map({
                 }
               }
               // geojson layer
-              if (config.type === 'geojson' && config.source === 'data') {
+              if (
+                (config.type === 'geojson' || config.type === 'topojson') &&
+                config.source === 'data'
+              ) {
                 // kick of loading of vector data for group if not present
                 if (!jsonLayers[id]) {
                   onLoadLayer(id, config);
@@ -291,8 +294,7 @@ export function Map({
         const mapLayer = mapLayers[key];
         if (mapLayer) {
           const { config, layer } = mapLayer;
-          // console.log(config, layer, featureId)
-          if (config.icon) {
+          if (config.render && config.render.type === 'marker' && config.icon) {
             // multiple layers for wrapping dateline
             layer.eachLayer(lcopy => {
               const layerCount = lcopy.getLayers().length;
@@ -368,8 +370,7 @@ export function Map({
         const mapLayer = mapLayers[key];
         if (mapLayer) {
           const { config, layer } = mapLayer;
-          // console.log(config, layer, featureId)
-          if (config.icon) {
+          if (config.render && config.render.type === 'marker' && config.icon) {
             // multiple layers for wrapping dateline
             layer.eachLayer(lcopy => {
               const layerCount = lcopy.getLayers().length;
