@@ -101,6 +101,13 @@
           "en": "Where does plastic waste come from?",
           "de": "Wo kommt der Plastikmüll her?"
         }
+      },
+      {
+        "id": "policy",
+        "title": {
+          "en": "Policy test",
+          "de": "Policy test"
+        }
       }
     ]
   }
