@@ -2672,7 +2672,7 @@
       "multiplePriority": ["1", "2"],
       "property": "positions.position_id",
       "style": {
-        "color": {
+        "fillColor": {
           "1": "#8CC63F",
           "2": "#007731"
         }
