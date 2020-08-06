@@ -697,73 +697,6 @@
     }
   },
   {
-    "id": "surface-concentration-yellow-green",
-    "content-id": "surface-concentration",
-    "z-index": "-1",
-    "category": "alt",
-    "group": "destination",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.caza4uh3",
-    "title": {
-      "en": "Floating plastic concentration (yellow-green)",
-      "de": "Konzentration von treibendem Plastik (yellow-green)"
-    },
-    "about": {
-      "en": "Short text about floating plastic concentration",
-      "de": "Short text about floating plastic concentration"
-    },
-    "attribution": {
-      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
-      "year": "2014",
-      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
-      "publication": "PLoS ONE 9, 12",
-      "url": "https://doi.org/10.1371/journal.pone.0111913"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "g per km<sup>2</sup>",
-        "de": "g pro km<sup>2</sup>"
-      },
-      "unit-short": {
-        "en": "g/km<sup>2</sup>",
-        "de": "g/km<sup>2</sup>"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#f8f4e0"
-        },
-        {
-          "value": 10,
-          "color": "#f8f0c6"
-        },
-        {
-          "value": 100,
-          "color": "#f4ea9e"
-        },
-        {
-          "value": 1000,
-          "color": "#d8cb65"
-        },
-        {
-          "value": 10000,
-          "color": "#aa9e1b"
-        },
-        {
-          "value": 100000,
-          "color": "#807502"
-        }
-      ]
-    }
-  },
-  {
     "id": "surface-concentration-yellow-matt",
     "content-id": "surface-concentration",
     "z-index": "-1",
@@ -826,6 +759,73 @@
         {
           "value": 100000,
           "color": "#987a00"
+        }
+      ]
+    }
+  },
+  {
+    "id": "surface-concentration-yellow-green",
+    "content-id": "surface-concentration",
+    "z-index": "-1",
+    "category": "alt",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.caza4uh3",
+    "title": {
+      "en": "Floating plastic concentration (yellow-green)",
+      "de": "Konzentration von treibendem Plastik (yellow-green)"
+    },
+    "about": {
+      "en": "Short text about floating plastic concentration",
+      "de": "Short text about floating plastic concentration"
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#f8f4e0"
+        },
+        {
+          "value": 10,
+          "color": "#f8f0c6"
+        },
+        {
+          "value": 100,
+          "color": "#f4ea9e"
+        },
+        {
+          "value": 1000,
+          "color": "#d8cb65"
+        },
+        {
+          "value": 10000,
+          "color": "#aa9e1b"
+        },
+        {
+          "value": 100000,
+          "color": "#807502"
         }
       ]
     }
