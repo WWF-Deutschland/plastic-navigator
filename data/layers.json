@@ -831,17 +831,17 @@
     }
   },
   {
-    "id": "surface-concentration-yellow-red",
+    "id": "surface-concentration-peachy-light",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.cbty4jsk",
+    "tileset": "tmfrnz.aihlai5g",
     "title": {
-      "en": "Floating plastic concentration (yellow-red)",
-      "de": "Konzentration von treibendem Plastik (gelb-rot)"
+      "en": "Floating plastic concentration (peachy-light)",
+      "de": "Konzentration von treibendem Plastik (peachy-light)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
