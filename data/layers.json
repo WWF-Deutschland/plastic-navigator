@@ -2667,6 +2667,17 @@
         }
       }
     },
+    "featureStyle": {
+      "multiple": "true",
+      "multiplePriority": ["1", "2"],
+      "property": "positions.position_id",
+      "style": {
+        "color": {
+          "1": "#8CC63F",
+          "2": "#007731"
+        }
+      }
+    },
     "icon": {
       "multiple": "true",
       "multiplePriority": ["1", "2"],
