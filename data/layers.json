@@ -764,17 +764,17 @@
     }
   },
   {
-    "id": "surface-concentration-yellow-dark",
+    "id": "surface-concentration-yellow-green",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.1nxk0ssa",
+    "tileset": "tmfrnz.caza4uh3",
     "title": {
-      "en": "Floating plastic concentration (dark yellow)",
-      "de": "Konzentration von treibendem Plastik (dunkel gelb)"
+      "en": "Floating plastic concentration (yellow-green)",
+      "de": "Konzentration von treibendem Plastik (yellow-green)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -805,27 +805,27 @@
       "stops": [
         {
           "value": 1,
-          "color": "#fbf8ce"
+          "color": "#f8f4e0"
         },
         {
           "value": 10,
-          "color": "#feec81"
+          "color": "#f8f0c6"
         },
         {
           "value": 100,
-          "color": "#fdd447"
+          "color": "#f4ea9e"
         },
         {
           "value": 1000,
-          "color": "#f59a1b"
+          "color": "#d8cb65"
         },
         {
           "value": 10000,
-          "color": "#cc4e00"
+          "color": "#aa9e1b"
         },
         {
           "value": 100000,
-          "color": "#993800"
+          "color": "#807502"
         }
       ]
     }
