@@ -1393,7 +1393,7 @@
   {
     "id": "policy-commitments-area",
     "content-id": "policy-commitments",
-    "category": "policy",
+    "category": "alt",
     "group": "policy",
     "source": "data",
     "type": "topojson",
