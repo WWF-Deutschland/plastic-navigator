@@ -1506,6 +1506,219 @@
     }
   },
   {
+    "id": "mismanaged-waste-peachy",
+    "content-id": "mismanaged-waste",
+    "z-index": "10",
+    "category": "alt",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.c7b1fji0",
+    "title": {
+      "en": "Mismanaged plastic waste (peachy)",
+      "de": "Schlechte Handhabung von Plastikmüll (gelb gruen)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#fdece5"
+        },
+        {
+          "value": 10,
+          "color": "#fdded3"
+        },
+        {
+          "value": 100,
+          "color": "#fdd0c3"
+        },
+        {
+          "value": 1000,
+          "color": "#e8a29e"
+        },
+        {
+          "value": 10000,
+          "color": "#cc7673"
+        },
+        {
+          "value": 100000,
+          "color": "#975452"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-light-pink",
+    "content-id": "mismanaged-waste",
+    "z-index": "10",
+    "category": "alt",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.5z04pb8q",
+    "title": {
+      "en": "Mismanaged plastic waste (light pink)",
+      "de": "Schlechte Handhabung von Plastikmüll (gelb gruen)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#fdf4f6"
+        },
+        {
+          "value": 10,
+          "color": "#f2d0d8"
+        },
+        {
+          "value": 100,
+          "color": "#eab4c1"
+        },
+        {
+          "value": 1000,
+          "color": "#d9879b"
+        },
+        {
+          "value": 10000,
+          "color": "#ac2e51"
+        },
+        {
+          "value": 100000,
+          "color": "#801423"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-burgundy-peach",
+    "content-id": "mismanaged-waste",
+    "z-index": "10",
+    "category": "alt",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.2jv1zso5",
+    "title": {
+      "en": "Mismanaged plastic waste (burgundy peach)",
+      "de": "Schlechte Handhabung von Plastikmüll (burgundy peach)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#fec5c3"
+        },
+        {
+          "value": 10,
+          "color": "#f5a2a8"
+        },
+        {
+          "value": 100,
+          "color": "#cb617c"
+        },
+        {
+          "value": 1000,
+          "color": "#963360"
+        },
+        {
+          "value": 10000,
+          "color": "#661f43"
+        },
+        {
+          "value": 100000,
+          "color": "#2f0315"
+        }
+      ]
+    }
+  },
+  {
     "id": "mismanaged-waste-purple-dark",
     "content-id": "mismanaged-waste",
     "z-index": "10",
