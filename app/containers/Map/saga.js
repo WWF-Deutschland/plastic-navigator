@@ -69,29 +69,44 @@ function setFeatureIds(json) {
   }
   return json;
 }
-function setProperties(json, config, parsed) {
-  let properties = parsed[0].data;
-  if (config.extend) {
-    properties = parsed[0].data.map(d => {
-      const dx = d;
-      asArray(config.extend).forEach((x, index) => {
-        dx[x.join.as] = parsed[index + 1].data.find(xdata =>
-          quasiEquals(xdata[x.join.self], d[x.join.related]),
-        );
-      });
-      return dx;
+function extendProperties(properties, config, parsed) {
+  return properties.map(d => {
+    const dx = d;
+    asArray(config.extend).forEach((x, index) => {
+      dx[x.join.as] = parsed[index + 1].data.find(xdata =>
+        quasiEquals(xdata[x.join.self], d[x.join.related]),
+      );
     });
-  }
-  // console.log(properties);
+    return dx;
+  });
+}
+function setProperties(json, config, parsed) {
+  const properties = parsed[0].data;
+  // console.log('setprops',parsed[0].data, properties);
   const features = json.features.reduce((memo, feature) => {
-    const xProperties = properties.filter(p =>
+    let joinProperties = properties.filter(p =>
       quasiEquals(p[config.join.self], feature.properties[config.join.related]),
     );
-    if (xProperties.length === 0) {
+    if (joinProperties.length === 0) {
       if (
         config.featuresWithoutProperties &&
         config.featuresWithoutProperties === 'true'
       ) {
+        if (config.join.default) {
+          joinProperties = asArray(config.join.default);
+          return [
+            ...memo,
+            {
+              ...feature,
+              properties: {
+                ...feature.properties,
+                [config.join.as]: config.extend
+                  ? extendProperties(joinProperties, config, parsed)
+                  : joinProperties,
+              },
+            },
+          ];
+        }
         return [...memo, feature];
       }
       return memo;
@@ -104,7 +119,9 @@ function setProperties(json, config, parsed) {
         ...feature,
         properties: {
           ...feature.properties,
-          [config.join.as]: xProperties,
+          [config.join.as]: config.extend
+            ? extendProperties(joinProperties, config, parsed)
+            : joinProperties,
         },
       },
     ];
