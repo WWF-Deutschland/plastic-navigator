@@ -2572,7 +2572,7 @@
     "type": "topojson",
     "file": "layers/country-areas-topo.json",
     "properties": {
-      "featuresWithoutProperties": "false",
+      "featuresWithoutProperties": "true",
       "file": "layers/policy/country-positions.csv",
       "type": "csv",
       "join": {
@@ -2674,11 +2674,13 @@
       "style": {
         "fillColor": {
           "1": "#007731",
-          "2": "#8CC63F"
+          "2": "#8CC63F",
+          "default": "#555555"
         },
         "color": {
           "1": "#007731",
-          "2": "#8CC63F"
+          "2": "#8CC63F",
+          "default": "#555555"
         }
       }
     }
