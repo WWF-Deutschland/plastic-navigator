@@ -2578,7 +2578,12 @@
       "join": {
         "self": "country_code",
         "related": "code",
-        "as": "positions"
+        "as": "positions",
+        "default": [
+          {
+            "position_id": "0"
+          }
+        ]
       },
       "extend": [
         {
@@ -2669,18 +2674,18 @@
     },
     "featureStyle": {
       "multiple": "true",
-      "multiplePriority": ["1", "2"],
+      "multiplePriority": ["0", "1", "2"],
       "property": "positions.position_id",
       "style": {
         "fillColor": {
           "1": "#007731",
           "2": "#8CC63F",
-          "default": "#555555"
+          "0": "#dddddd"
         },
         "color": {
           "1": "#007731",
           "2": "#8CC63F",
-          "default": "#555555"
+          "0": "#bbbbbb"
         }
       }
     }
