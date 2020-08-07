@@ -187,21 +187,24 @@ const getVectorGridStyle = (properties, config) => {
     ) {
       const ps = config.featureStyle.property.split('.');
       const propertyArray = properties[ps[0]];
-      const values = uniq(propertyArray.map(p => p[ps[1]]));
+      const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
       if (config.featureStyle.multiplePriority) {
         featureStyle = Object.keys(config.featureStyle.style).reduce(
           (styleMemo, attr) => {
             const attrObject = config.featureStyle.style[attr];
-            const attrValue = config.featureStyle.multiplePriority.reduce(
-              (memo, value) => {
+            // prettier-ignore
+            const attrValue = values
+              ? config.featureStyle.multiplePriority.reduce((memo, value) => {
                 if (memo) return memo;
                 if (values.indexOf(value) > -1) {
                   return attrObject[value];
                 }
                 return null;
-              },
-              null,
-            );
+              }, null )
+              : attrObject.default ||
+                attrObject.none ||
+                attrObject.without ||
+                attrObject['0'];
             return {
               ...styleMemo,
               [attr]: attrValue,
@@ -212,7 +215,6 @@ const getVectorGridStyle = (properties, config) => {
       }
     }
   }
-  // console.log(featureStyle)
   // // if (value) {
   //   const color =
   //     GROUP_LAYER_PROPERTIES.OCCURRENCE[value] &&
