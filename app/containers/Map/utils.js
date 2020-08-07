@@ -230,10 +230,9 @@ const getVectorGridStyle = (properties, config) => {
   // }
   return {
     stroke: true,
-    color: 'white',
-    weight: 0.5,
+    weight: 1,
     fill: true,
-    fillOpacity: 0.3,
+    fillOpacity: 0.4,
     ...featureStyle,
   };
 };
