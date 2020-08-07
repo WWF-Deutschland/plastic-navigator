@@ -2579,9 +2579,11 @@
         "self": "country_code",
         "related": "code",
         "as": "positions",
-        "default": {
-          "position_id": "0",
-        }
+        "default": [
+          {
+            "position_id": "0"
+          }
+        ]
       },
       "extend": [
         {
