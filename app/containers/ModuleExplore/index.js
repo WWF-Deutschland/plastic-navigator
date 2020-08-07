@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -25,8 +25,9 @@ import ModuleWrap from 'components/ModuleWrap';
 import {
   selectConfigByKey,
   selectActiveLayers,
+  selectUIStateByKey,
 } from 'containers/App/selectors';
-import { setLayers } from 'containers/App/actions';
+import { setLayers, setUIState } from 'containers/App/actions';
 
 import { getAsideWidth } from 'utils/responsive';
 
@@ -85,7 +86,32 @@ ProjectButton.propTypes = {
   showAll: PropTypes.bool,
 };
 
-export function ModuleExplore({ onSetLayers, layerIds, projects }) {
+const COMPONENT_KEY = 'ModuleExplore';
+
+const DEFAULT_UI_STATE = {
+  layersMemo: null,
+};
+
+export function ModuleExplore({
+  onSetLayers,
+  layerIds,
+  projects,
+  uiState,
+  onMemoLayers,
+  activeLayers,
+}) {
+  const { layersMemo } = uiState
+    ? Object.assign({}, DEFAULT_UI_STATE, uiState)
+    : DEFAULT_UI_STATE;
+  useEffect(() => {
+    if (layersMemo) {
+      onSetLayers(layersMemo);
+    }
+  }, []);
+  useEffect(() => {
+    onMemoLayers(activeLayers, uiState);
+  }, [activeLayers]);
+
   const [show, setShow] = useState(true);
   const [showSmall, setShowSmall] = useState(false);
 
@@ -159,11 +185,16 @@ ModuleExplore.propTypes = {
   layerIds: PropTypes.array,
   projects: PropTypes.array,
   onSetLayers: PropTypes.func,
+  onMemoLayers: PropTypes.func,
+  activeLayers: PropTypes.array,
+  uiState: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   layerIds: state => selectActiveLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
+  uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  activeLayers: state => selectActiveLayers(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -171,6 +202,13 @@ function mapDispatchToProps(dispatch) {
     onSetLayers: layers => {
       dispatch(setLayers(layers));
     },
+    onMemoLayers: (layers, uiState) =>
+      dispatch(
+        setUIState(
+          COMPONENT_KEY,
+          Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
+        ),
+      ),
   };
 }
 
