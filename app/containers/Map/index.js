@@ -205,7 +205,7 @@ export function Map({
               if (config.type === 'raster-tiles') {
                 mapRef.current.removeLayer(layer);
               }
-              if (config.type === 'geojson') {
+              if (config.type === 'geojson' || config.type === 'topojson') {
                 mapRef.current.removeLayer(layer);
               }
             }
