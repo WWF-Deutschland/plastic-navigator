@@ -2675,12 +2675,12 @@
         "fillColor": {
           "1": "#007731",
           "2": "#8CC63F",
-          "default": "#cccccc"
+          "default": "#dddddd"
         },
         "color": {
           "1": "#007731",
           "2": "#8CC63F",
-          "default": "#cccccc"
+          "default": "#bbbbbb"
         }
       }
     }
