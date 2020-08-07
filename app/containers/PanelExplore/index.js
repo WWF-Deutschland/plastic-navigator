@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -33,12 +33,7 @@ import {
   selectUIStateByKey,
   selectActiveLayers,
 } from 'containers/App/selectors';
-import {
-  setUIState,
-  setLayerInfo,
-  toggleLayer,
-  setLayers,
-} from 'containers/App/actions';
+import { setUIState, setLayerInfo, toggleLayer } from 'containers/App/actions';
 
 import { PROJECT_CATEGORY } from 'config';
 
@@ -119,16 +114,12 @@ const COMPONENT_KEY = 'PanelExplore';
 
 const DEFAULT_UI_STATE = {
   tab: 0,
-  layersMemo: null,
-  prrojectsMemo: null,
 };
 
 export function PanelExplore({
   onClose,
   onLayerInfo,
   onToggleLayer,
-  onSetLayers,
-  onMemoLayers,
   onSetTab,
   projects,
   layersConfig,
@@ -137,19 +128,9 @@ export function PanelExplore({
   uiState,
   activeLayers,
 }) {
-  const { tab, layersMemo } = uiState
+  const { tab } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
-  useEffect(() => {
-    if (layersMemo) {
-      onSetLayers(layersMemo);
-    } else {
-      onSetLayers();
-    }
-  }, []);
-  useEffect(() => {
-    onMemoLayers(activeLayers, uiState);
-  }, [activeLayers]);
 
   const activeCategory = exploreConfig && exploreConfig[tab];
 
@@ -278,8 +259,6 @@ PanelExplore.propTypes = {
   onSetTab: PropTypes.func,
   onLayerInfo: PropTypes.func,
   onToggleLayer: PropTypes.func,
-  onSetLayers: PropTypes.func,
-  onMemoLayers: PropTypes.func,
   layersConfig: PropTypes.array,
   exploreConfig: PropTypes.array,
   projects: PropTypes.array,
@@ -306,25 +285,8 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_STATE, uiState, { tab }),
         ),
       ),
-    onMemoLayers: (layers, uiState) =>
-      dispatch(
-        setUIState(
-          COMPONENT_KEY,
-          Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
-        ),
-      ),
-    onMemoProjects: (projects, uiState) =>
-      dispatch(
-        setUIState(
-          COMPONENT_KEY,
-          Object.assign({}, DEFAULT_UI_STATE, uiState, {
-            projectsMemo: projects,
-          }),
-        ),
-      ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
-    onSetLayers: layers => dispatch(setLayers(layers)),
   };
 }
 
