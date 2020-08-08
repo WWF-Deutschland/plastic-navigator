@@ -503,7 +503,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.6m7a9qq9",
+    "tileset": "tmfrnz.3h3eadtr",
     "title": {
       "en": "Floating plastic concentration (purple light)",
       "de": "Konzentration von treibendem Plastik (purple light)"
@@ -637,7 +637,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.4ybjz08o",
+    "tileset": "tmfrnz.8pq87z9k",
     "title": {
       "en": "Floating plastic concentration (peachy 2)",
       "de": "Konzentration von treibendem Plastik (peachy 2)"
@@ -704,7 +704,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.9asj1x2q",
+    "tileset": "tmfrnz.5tuaa9sv",
     "title": {
       "en": "Floating plastic concentration (peachy 3)",
       "de": "Konzentration von treibendem Plastik (peachy 3)"
@@ -771,7 +771,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.40yo93i1",
+    "tileset": "tmfrnz.bt0hc1zb",
     "title": {
       "en": "Floating plastic concentration (peachy matt)",
       "de": "Konzentration von treibendem Plastik (peachy matt"
