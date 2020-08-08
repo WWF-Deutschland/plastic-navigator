@@ -496,7 +496,7 @@
     "align": "bottom"
   },
   {
-    "id": "surface-concentration-purple-light-original",
+    "id": "surface-concentration-purple-light",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
@@ -505,8 +505,8 @@
     "type": "raster-tiles",
     "tileset": "tmfrnz.6m7a9qq9",
     "title": {
-      "en": "Floating plastic concentration (purple light original)",
-      "de": "Konzentration von treibendem Plastik (purple light original)"
+      "en": "Floating plastic concentration (purple light)",
+      "de": "Konzentration von treibendem Plastik (purple light)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -563,74 +563,7 @@
     }
   },
   {
-    "id": "surface-concentration-peachy-light",
-    "content-id": "surface-concentration",
-    "z-index": "-1",
-    "category": "alt",
-    "group": "destination",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.aihlai5g",
-    "title": {
-      "en": "Floating plastic concentration (peachy light)",
-      "de": "Konzentration von treibendem Plastik (peachy light)"
-    },
-    "about": {
-      "en": "Short text about floating plastic concentration",
-      "de": "Short text about floating plastic concentration"
-    },
-    "attribution": {
-      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
-      "year": "2014",
-      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
-      "publication": "PLoS ONE 9, 12",
-      "url": "https://doi.org/10.1371/journal.pone.0111913"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "g per km<sup>2</sup>",
-        "de": "g pro km<sup>2</sup>"
-      },
-      "unit-short": {
-        "en": "g/km<sup>2</sup>",
-        "de": "g/km<sup>2</sup>"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#fdece5"
-        },
-        {
-          "value": 10,
-          "color": "#fdded3"
-        },
-        {
-          "value": 100,
-          "color": "#fdd0c3"
-        },
-        {
-          "value": 1000,
-          "color": "#e8a29e"
-        },
-        {
-          "value": 10000,
-          "color": "#cc7673"
-        },
-        {
-          "value": 100000,
-          "color": "#975452"
-        }
-      ]
-    }
-  },
-  {
-    "id": "surface-concentration-peachy-original",
+    "id": "surface-concentration-peachy",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
@@ -639,8 +572,8 @@
     "type": "raster-tiles",
     "tileset": "tmfrnz.5owvepjw",
     "title": {
-      "en": "Floating plastic concentration (peachy original)",
-      "de": "Konzentration von treibendem Plastik (peachy original)"
+      "en": "Floating plastic concentration (peachy)",
+      "de": "Konzentration von treibendem Plastik (peachy)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -1523,148 +1456,6 @@
         {
           "value": 100000,
           "color": "#473251"
-        }
-      ]
-    }
-  },
-  {
-    "id": "mismanaged-waste-violet",
-    "content-id": "mismanaged-waste",
-    "z-index": "10",
-    "category": "alt",
-    "group": "source",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.9m154mnh",
-    "title": {
-      "en": "Mismanaged plastic waste (violet)",
-      "de": "Schlechte Handhabung von Plastikmüll (violet)"
-    },
-    "about": {
-      "en": "Short text about mismanaged plastic waste",
-      "de": "Short text about mismanaged plastic waste"
-    },
-    "attribution": {
-      "author": "Lebreton LCM, Andrady A",
-      "year": "2019",
-      "title": "Future scenarios of global plastic waste generation and disposal",
-      "publication": "Palgrave Communications 5, 6",
-      "url": "https://doi.org/10.1057/s41599-018-0212-7"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "kg per year and grid cell",
-        "de": "kg pro Jahr und Zelle"
-      },
-      "unit-short": {
-        "en": "kg/yr/cell",
-        "de": "kg/Jahr/Zelle"
-      },
-      "unit-additional": {
-        "en": "30 by 30 arc seconds",
-        "de": "30 mal 30 Winkelsekunden"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#dbb6de"
-        },
-        {
-          "value": 10,
-          "color": "#c089c6"
-        },
-        {
-          "value": 100,
-          "color": "#ac65b2"
-        },
-        {
-          "value": 1000,
-          "color": "#7d3783"
-        },
-        {
-          "value": 10000,
-          "color": "#572161"
-        },
-        {
-          "value": 100000,
-          "color": "#340b41"
-        }
-      ]
-    }
-  },
-  {
-    "id": "mismanaged-waste-violet-blue",
-    "content-id": "mismanaged-waste",
-    "z-index": "10",
-    "category": "alt",
-    "group": "source",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.1rrqadqa",
-    "title": {
-      "en": "Mismanaged plastic waste (violet blue)",
-      "de": "Schlechte Handhabung von Plastikmüll (violet blue)"
-    },
-    "about": {
-      "en": "Short text about mismanaged plastic waste",
-      "de": "Short text about mismanaged plastic waste"
-    },
-    "attribution": {
-      "author": "Lebreton LCM, Andrady A",
-      "year": "2019",
-      "title": "Future scenarios of global plastic waste generation and disposal",
-      "publication": "Palgrave Communications 5, 6",
-      "url": "https://doi.org/10.1057/s41599-018-0212-7"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "kg per year and grid cell",
-        "de": "kg pro Jahr und Zelle"
-      },
-      "unit-short": {
-        "en": "kg/yr/cell",
-        "de": "kg/Jahr/Zelle"
-      },
-      "unit-additional": {
-        "en": "30 by 30 arc seconds",
-        "de": "30 mal 30 Winkelsekunden"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#dbbbde"
-        },
-        {
-          "value": 10,
-          "color": "#b98ebe"
-        },
-        {
-          "value": 100,
-          "color": "#9e68a5"
-        },
-        {
-          "value": 1000,
-          "color": "#75397d"
-        },
-        {
-          "value": 10000,
-          "color": "#421e4e"
-        },
-        {
-          "value": 100000,
-          "color": "#160233"
         }
       ]
     }
