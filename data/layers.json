@@ -503,7 +503,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.3h3eadtr",
+    "tileset": "tmfrnz.17yzolvg",
     "title": {
       "en": "Floating plastic concentration (purple light)",
       "de": "Konzentration von treibendem Plastik (purple light)"
@@ -1242,9 +1242,9 @@
       }
     },
     "style": {
-      "color": "black",
+      "color": "#000A40",
       "weight": "0.5",
-      "fillColor": "black",
+      "fillColor": "#000A40",
       "fillOpacity": "0.3"
     },
     "key": {
@@ -1312,9 +1312,9 @@
       }
     },
     "style": {
-      "color": "black",
+      "color": "#451A07",
       "weight": "0.5",
-      "fillColor": "black",
+      "fillColor": "#451A07",
       "fillOpacity": "0.3"
     },
     "key": {
@@ -1382,9 +1382,9 @@
       }
     },
     "style": {
-      "color": "black",
+      "color": "#651F06",
       "weight": "0.5",
-      "fillColor": "black",
+      "fillColor": "#651F06",
       "fillOpacity": "0.3"
     },
     "key": {
@@ -1452,9 +1452,9 @@
       }
     },
     "style": {
-      "color": "black",
+      "color": "#600000",
       "weight": "0.5",
-      "fillColor": "black",
+      "fillColor": "#600000",
       "fillOpacity": "0.3"
     },
     "key": {
