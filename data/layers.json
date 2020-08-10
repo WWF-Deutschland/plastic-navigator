@@ -503,7 +503,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.17yzolvg",
+    "tileset": "tmfrnz.1j3khz2e",
     "title": {
       "en": "Floating plastic concentration (purple light)",
       "de": "Konzentration von treibendem Plastik (purple light)"
@@ -570,7 +570,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.074oufku",
+    "tileset": "tmfrnz.1j3dg0di",
     "title": {
       "en": "Floating plastic concentration (peach)",
       "de": "Konzentration von treibendem Plastik (peach)"
@@ -637,7 +637,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.2z1cuws3",
+    "tileset": "tmfrnz.1k69q2vl",
     "title": {
       "en": "Floating plastic concentration (peach matt)",
       "de": "Konzentration von treibendem Plastik (peachy matt"
