@@ -1177,9 +1177,9 @@
       }
     },
     "style": {
-      "color": "530003",
+      "color": "#530003",
       "weight": "0.5",
-      "fillColor": "530003",
+      "fillColor": "#530003",
       "fillOpacity": "0.3"
     },
     "key": {
