@@ -563,84 +563,17 @@
     }
   },
   {
-    "id": "surface-concentration-peachy",
+    "id": "surface-concentration-peach",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.49v30biq",
+    "tileset": "tmfrnz.074oufku",
     "title": {
-      "en": "Floating plastic concentration (peachy)",
-      "de": "Konzentration von treibendem Plastik (peachy)"
-    },
-    "about": {
-      "en": "Short text about floating plastic concentration",
-      "de": "Short text about floating plastic concentration"
-    },
-    "attribution": {
-      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
-      "year": "2014",
-      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
-      "publication": "PLoS ONE 9, 12",
-      "url": "https://doi.org/10.1371/journal.pone.0111913"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "g per km<sup>2</sup>",
-        "de": "g pro km<sup>2</sup>"
-      },
-      "unit-short": {
-        "en": "g/km<sup>2</sup>",
-        "de": "g/km<sup>2</sup>"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#fdece5"
-        },
-        {
-          "value": 10,
-          "color": "#fdded3"
-        },
-        {
-          "value": 100,
-          "color": "#fdd0c3"
-        },
-        {
-          "value": 1000,
-          "color": "#e8a29e"
-        },
-        {
-          "value": 10000,
-          "color": "#cc7673"
-        },
-        {
-          "value": 100000,
-          "color": "#975452"
-        }
-      ]
-    }
-  },
-  {
-    "id": "surface-concentration-peachy2",
-    "content-id": "surface-concentration",
-    "z-index": "-1",
-    "category": "alt",
-    "group": "destination",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.8pq87z9k",
-    "title": {
-      "en": "Floating plastic concentration (peachy 2)",
-      "de": "Konzentration von treibendem Plastik (peachy 2)"
+      "en": "Floating plastic concentration (peach)",
+      "de": "Konzentration von treibendem Plastik (peach)"
     },
     "about": {
       "en": "Short text about floating plastic concentration",
@@ -697,83 +630,16 @@
     }
   },
   {
-    "id": "surface-concentration-peachy3",
+    "id": "surface-concentration-peach-matt",
     "content-id": "surface-concentration",
     "z-index": "-1",
     "category": "alt",
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.5tuaa9sv",
+    "tileset": "tmfrnz.2z1cuws3",
     "title": {
-      "en": "Floating plastic concentration (peachy 3)",
-      "de": "Konzentration von treibendem Plastik (peachy 3)"
-    },
-    "about": {
-      "en": "Short text about floating plastic concentration",
-      "de": "Short text about floating plastic concentration"
-    },
-    "attribution": {
-      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
-      "year": "2014",
-      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
-      "publication": "PLoS ONE 9, 12",
-      "url": "https://doi.org/10.1371/journal.pone.0111913"
-    },
-    "data": {
-      "type": "weight",
-      "unit": {
-        "en": "g per km<sup>2</sup>",
-        "de": "g pro km<sup>2</sup>"
-      },
-      "unit-short": {
-        "en": "g/km<sup>2</sup>",
-        "de": "g/km<sup>2</sup>"
-      }
-    },
-    "key": {
-      "scale": "log",
-      "type": "continuous",
-      "exceed": "true",
-      "stops": [
-        {
-          "value": 1,
-          "color": "#fdece5"
-        },
-        {
-          "value": 10,
-          "color": "#fdded3"
-        },
-        {
-          "value": 100,
-          "color": "#fdccbe"
-        },
-        {
-          "value": 1000,
-          "color": "#e8a29e"
-        },
-        {
-          "value": 10000,
-          "color": "#c67370"
-        },
-        {
-          "value": 100000,
-          "color": "#975452"
-        }
-      ]
-    }
-  },
-  {
-    "id": "surface-concentration-peachy-matt",
-    "content-id": "surface-concentration",
-    "z-index": "-1",
-    "category": "alt",
-    "group": "destination",
-    "source": "mapbox",
-    "type": "raster-tiles",
-    "tileset": "tmfrnz.bt0hc1zb",
-    "title": {
-      "en": "Floating plastic concentration (peachy matt)",
+      "en": "Floating plastic concentration (peach matt)",
       "de": "Konzentration von treibendem Plastik (peachy matt"
     },
     "about": {
@@ -913,6 +779,77 @@
     "title": {
       "en": "Mismanaged plastic waste (orange-light)",
       "de": "Schlechte Handhabung von Plastikmüll (orange-light)"
+    },
+    "about": {
+      "en": "Short text about mismanaged plastic waste",
+      "de": "Short text about mismanaged plastic waste"
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and grid cell",
+        "de": "kg pro Jahr und Zelle"
+      },
+      "unit-short": {
+        "en": "kg/yr/cell",
+        "de": "kg/Jahr/Zelle"
+      },
+      "unit-additional": {
+        "en": "30 by 30 arc seconds",
+        "de": "30 mal 30 Winkelsekunden"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#fbf2e3"
+        },
+        {
+          "value": 10,
+          "color": "#f9e5c8"
+        },
+        {
+          "value": 100,
+          "color": "#fbd19d"
+        },
+        {
+          "value": 1000,
+          "color": "#faa549"
+        },
+        {
+          "value": 10000,
+          "color": "#d16800"
+        },
+        {
+          "value": 100000,
+          "color": "#954b00"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste-orange-light-2",
+    "content-id": "mismanaged-waste",
+    "z-index": "10",
+    "category": "alt",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "tmfrnz.ad7oriac",
+    "title": {
+      "en": "Mismanaged plastic waste (orange light 2)",
+      "de": "Schlechte Handhabung von Plastikmüll (orange light 2)"
     },
     "about": {
       "en": "Short text about mismanaged plastic waste",
