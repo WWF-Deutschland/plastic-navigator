@@ -12,7 +12,7 @@ import messages from './messages';
 
 const Styled = styled(Box)`
   margin-right: ${({ exceeds }) => (exceeds ? 30 : 10)}px;
-  margin-left: 10px;
+  margin-left: ${({ exceeds }) => (exceeds ? 30 : 10)}px;
 `;
 const GradientWrap = styled(Box)`
   position: relative;
@@ -97,8 +97,13 @@ export function Gradient({ config, id, simple, intl, dark }) {
           {stops.map((stop, index) => (
             <KeyLabelWrap key={stop.value} offsetLeft={`${stop.left}%`}>
               <KeyLabel>{formatNumber(stop.value, true, intl)}</KeyLabel>
+              {index === 0 && key.exceed && (
+                <KeyLabel size="xxsmall">
+                  <FormattedMessage {...messages['and-less']} />
+                </KeyLabel>
+              )}
               {index === stops.length - 1 && key.exceed && (
-                <KeyLabel size="xsmall">
+                <KeyLabel size="xxsmall">
                   <FormattedMessage {...messages['and-more']} />
                 </KeyLabel>
               )}
