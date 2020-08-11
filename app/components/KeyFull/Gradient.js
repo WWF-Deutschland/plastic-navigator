@@ -11,8 +11,8 @@ import { formatNumber } from 'utils/numbers';
 import messages from './messages';
 
 const Styled = styled(Box)`
-  margin-right: ${({ exceeds }) => (exceeds ? 30 : 10)}px;
-  margin-left: ${({ exceeds }) => (exceeds ? 30 : 10)}px;
+  margin-right: ${({ exceedsBottom }) => (exceedsBottom ? 30 : 10)}px;
+  margin-left: ${({ exceedsTop }) => (exceedsTop ? 30 : 10)}px;
 `;
 const GradientWrap = styled(Box)`
   position: relative;
@@ -44,6 +44,9 @@ const Mark = styled.div`
   transform: translateX(-0.5px);
 `;
 
+const isExceedsTop = exceeds => exceeds === 'true' || exceeds === 'top';
+const isExceedsBottom = exceeds => exceeds === 'true' || exceeds === 'bottom';
+
 export function Gradient({ config, id, simple, intl, dark }) {
   const { key } = config;
   let stops;
@@ -57,8 +60,10 @@ export function Gradient({ config, id, simple, intl, dark }) {
       value: stop.value,
     }));
   }
+  const xTop = isExceedsTop(key.exceed);
+  const xBottom = isExceedsBottom(key.exceed);
   return (
-    <Styled exceeds={key.exceed}>
+    <Styled exceedsTop={xTop} exceedsBottom={xBottom}>
       <GradientWrap>
         <KeyGradient
           id={id || config.id}
@@ -97,12 +102,12 @@ export function Gradient({ config, id, simple, intl, dark }) {
           {stops.map((stop, index) => (
             <KeyLabelWrap key={stop.value} offsetLeft={`${stop.left}%`}>
               <KeyLabel>{formatNumber(stop.value, true, intl)}</KeyLabel>
-              {index === 0 && key.exceed && (
+              {index === 0 && xBottom && (
                 <KeyLabel size="xxsmall">
                   <FormattedMessage {...messages['and-less']} />
                 </KeyLabel>
               )}
-              {index === stops.length - 1 && key.exceed && (
+              {index === stops.length - 1 && xTop && (
                 <KeyLabel size="xxsmall">
                   <FormattedMessage {...messages['and-more']} />
                 </KeyLabel>
