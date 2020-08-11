@@ -220,7 +220,8 @@
         "en": "Annual emissions",
         "de": "Jährlicher Eintrag"
       },
-      "values": [100000]
+      "values": [100000],
+      "values-simple": [50000, 100000]
     }
   },
   {
