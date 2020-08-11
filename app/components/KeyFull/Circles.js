@@ -37,7 +37,6 @@ const Less = styled.div`
 
 export function Circles({ config, simple, intl, range }) {
   const { key, render, style } = config;
-  console.log(key, render, range);
   let minRadius = 10;
   let maxRadius = 20;
   if (simple && key['radius-simple'] && key['radius-simple'].less) {
