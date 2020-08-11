@@ -125,7 +125,7 @@
     "key": {
       "scale": "log",
       "type": "continuous",
-      "exceed": "true",
+      "exceed": "top",
       "stops": [
         {
           "value": 1,
