@@ -11,7 +11,9 @@ import { formatNumber } from 'utils/numbers';
 
 import messages from './messages';
 
-const Styled = styled(p => <Box direction="row" align="center" {...p} />)`
+const Styled = styled(p => (
+  <Box direction="row" gap="xsmall" justify="between" {...p} />
+))`
   margin-right: 10px;
   margin-left: 10px;
 `;
@@ -23,9 +25,7 @@ const KeyLabel = styled(p => <Text size="small" {...p} />)`
 const WrapCircle = styled(p => <Box {...p} />)`
   position: relative;
 `;
-const CircleLabel = styled(p => (
-  <Box direction="row" align="center" gap="xsmall" {...p} />
-))`
+const CircleLabel = styled(p => <Box direction="row" gap="xsmall" {...p} />)`
   position: relative;
 `;
 
@@ -36,19 +36,33 @@ const Less = styled.div`
 `;
 
 export function Circles({ config, simple, intl, range }) {
-  const { key, render } = config;
+  const { key, render, style } = config;
+  console.log(key, render, range);
+  let minRadius = 10;
+  let maxRadius = 20;
+  if (simple && key['radius-simple'] && key['radius-simple'].less) {
+    minRadius = key['radius-simple'].less;
+  } else if (!simple) {
+    minRadius = render.min || range.min;
+  }
+  if (simple && key['radius-simple'] && key['radius-simple'].more) {
+    maxRadius = key['radius-simple'].more;
+  } else if (!simple) {
+    maxRadius = render.max;
+  }
 
   return (
     <Styled
-      height={`${config.render.max * 2}px`}
+      height={{ min: `${render.max * 2}px` }}
       exceeds={!simple && range && render && render.min}
+      align={simple ? 'center' : 'end'}
     >
-      <CircleLabel basis={simple || !range ? '1/2' : '1/3'}>
+      <CircleLabel
+        basis={simple || !range ? '1/2' : 'auto'}
+        align={simple ? 'center' : 'end'}
+      >
         <WrapCircle>
-          <KeyCircle
-            circleStyle={config.style}
-            radius={parseFloat(render.min)}
-          />
+          <KeyCircle circleStyle={style} radius={minRadius} />
         </WrapCircle>
         {simple && (
           <KeyLabel>
@@ -57,18 +71,16 @@ export function Circles({ config, simple, intl, range }) {
         )}
         {!simple && range && render && (
           <Box justify="center">
-            <div>
-              <KeyLabel>
-                {formatNumber(
-                  valueOfCircle(render.min || range.min, range, render),
-                  true,
-                  intl,
-                )}
-              </KeyLabel>
-            </div>
+            <KeyLabel>
+              {formatNumber(
+                valueOfCircle(render.min || range.min, range, render),
+                true,
+                intl,
+              )}
+            </KeyLabel>
             {render.min && (
               <Less>
-                <KeyLabel size="xsmall" style={{ lineHeight: '13px' }}>
+                <KeyLabel size="xxsmall" style={{ lineHeight: '13px' }}>
                   <FormattedMessage {...messages['and-less']} />
                 </KeyLabel>
               </Less>
@@ -80,23 +92,22 @@ export function Circles({ config, simple, intl, range }) {
         range &&
         key.values &&
         key.values.map(val => (
-          <CircleLabel key={val} basis="1/3">
+          <CircleLabel key={val} basis="auto" align={simple ? 'center' : 'end'}>
             <WrapCircle>
               <KeyCircle
-                circleStyle={config.style}
-                radius={scaleCircle(val, range, config.render)}
+                circleStyle={style}
+                radius={scaleCircle(val, range, render)}
               />
             </WrapCircle>
             <KeyLabel>{formatNumber(val, true, intl)}</KeyLabel>
           </CircleLabel>
         ))}
-      <CircleLabel basis={simple || !range ? '1/2' : '1/3'}>
+      <CircleLabel
+        basis={simple || !range ? '1/2' : 'auto'}
+        align={simple ? 'center' : 'end'}
+      >
         <WrapCircle>
-          <KeyCircle
-            relative
-            circleStyle={config.style}
-            radius={parseFloat(config.render.max)}
-          />
+          <KeyCircle relative circleStyle={style} radius={maxRadius} />
         </WrapCircle>
         <KeyLabel>
           {simple && <FormattedMessage {...messages.more} />}

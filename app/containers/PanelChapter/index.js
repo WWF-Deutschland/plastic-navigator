@@ -94,7 +94,7 @@ const Title = styled(Text)`
   font-size: 22px;
   line-height: 28px;
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 5px;
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-weight: normal;
@@ -122,7 +122,7 @@ const LayersFocusWrap = styled(p => (
 ))``;
 const LayerFocus = styled(p => <Box {...p} fill="horizontal" />)``;
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" margin={{ bottom: 'small' }} />
+  <Box {...p} direction="row" align="center" margin={{ bottom: 'xxsmall' }} />
 ))``;
 const LayerTitle = styled(Text)`
   font-size: 15px;
