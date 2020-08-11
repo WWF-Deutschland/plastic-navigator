@@ -59,6 +59,22 @@
           "gyres"
         ],
         "layersFocus": ["currents", "gyres"]
+      },
+      {
+        "title": {
+          "en": "Country treaty positions",
+          "de": "Country treaty positions"
+        },
+        "description": {
+          "en": "Therefore WWF is working with States towards an international treaty to stop marine plastci pollution",
+          "de": "TODO"
+        },
+        "layers": [
+          "surface-concentration",
+          "policy-commitments-area",
+          "policy-commitments"
+        ],
+        "layersFocus": ["policy-commitments-area"]
       }
     ]
   }
