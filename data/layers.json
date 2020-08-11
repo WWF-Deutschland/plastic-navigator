@@ -25,7 +25,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.4z3hh6gr",
+    "tileset": "tmfrnz.4y1htwvg",
     "title": {
       "en": "Floating plastic concentration",
       "de": "Konzentration von treibendem Plastik"
@@ -91,7 +91,7 @@
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.3ff3k3h0",
+    "tileset": "tmfrnz.ad7oriac",
     "title": {
       "en": "Mismanaged plastic waste",
       "de": "Schlechte Handhabung von Plastikmüll"
@@ -503,7 +503,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.1j3khz2e",
+    "tileset": "tmfrnz.4y1htwvg",
     "title": {
       "en": "Floating plastic concentration (purple light)",
       "de": "Konzentration von treibendem Plastik (purple light)"
@@ -570,7 +570,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.1j3dg0di",
+    "tileset": "tmfrnz.6a3q3dj2",
     "title": {
       "en": "Floating plastic concentration (peach)",
       "de": "Konzentration von treibendem Plastik (peach)"
@@ -637,7 +637,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.1k69q2vl",
+    "tileset": "tmfrnz.5a6zktcl",
     "title": {
       "en": "Floating plastic concentration (peach matt)",
       "de": "Konzentration von treibendem Plastik (peachy matt"
