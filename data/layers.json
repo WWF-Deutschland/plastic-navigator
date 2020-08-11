@@ -373,6 +373,25 @@
     "group": "policy",
     "source": "data",
     "type": "topojson",
+    "title": {
+      "en": "Country treaty positions - shown as area",
+      "de": "Country treaty positions (area)"
+    },
+    "title-short": {
+      "en": "Country treaty positions",
+      "de": "Country treaty positions"
+    },
+    "about": {
+      "en": "Short text about layer",
+      "de": "Short text about layer"
+    },
+    "attribution": {
+      "author": {
+        "en": "Own research, various sources",
+        "de": ""
+      },
+      "year": "2020"
+    },
     "file": "layers/country-areas-topo.json",
     "properties": {
       "featuresWithoutProperties": "true",
@@ -409,75 +428,12 @@
         }
       ]
     },
-    "title": {
-      "en": "Country treaty positions - shown as area",
-      "de": "Country treaty positions (area)"
-    },
-    "title-short": {
-      "en": "Country treaty positions",
-      "de": "Country treaty positions"
-    },
-    "about": {
-      "en": "Short text about layer",
-      "de": "Short text about layer"
-    },
-    "attribution": {
-      "author": {
-        "en": "Own research, various sources",
-        "de": ""
-      },
-      "year": "2020"
-    },
     "data": {
       "type": "area",
       "feature-type": "Polygon"
     },
     "render": {
       "type": "area"
-    },
-    "tooltip": {
-      "supTitle": {
-        "en": "Country position(s)",
-        "de": "Country position(s)"
-      },
-      "title": {
-        "propertyByLocale": {
-          "en": "name_en",
-          "de": "name_de"
-        }
-      },
-      "content": {
-        "multiple": "true",
-        "multiplePriority": ["1", "2"],
-        "icon": "true",
-        "propertyByLocale": {
-          "en": "positions.position.position_en",
-          "de": "positions.position.position_en"
-        }
-      },
-      "more": "true"
-    },
-    "key": {
-      "iconValue": {
-        "simple": "2",
-        "full": ["1", "2"]
-      },
-      "iconTitle": {
-        "simple": {
-          "en": "positions.position.position_short_en",
-          "de": "positions.position.position_short_en"
-        },
-        "full": {
-          "1": {
-            "en": "Official statements calling for agreement",
-            "de": "positions.position.position_short_en"
-          },
-          "2": {
-            "en": "Public commitments to explore option of agreement",
-            "de": "positions.position.position_short_en"
-          }
-        }
-      }
     },
     "featureStyle": {
       "multiple": "true",
@@ -495,6 +451,45 @@
           "0": "#bbbbbb"
         }
       }
+    },
+    "key": {
+      "title": {
+        "1": {
+          "en": "Official statements calling for agreement",
+          "de": "positions.position.position_short_en"
+        },
+        "2": {
+          "en": "Public commitments to explore option of agreement",
+          "de": "positions.position.position_short_en"
+        },
+        "0": {
+          "en": "No statement",
+          "de": "positions.position.position_short_en"
+        }
+      }
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Country position",
+        "de": "Country position"
+      },
+      "values": ["1", "2"],
+      "property": "positions.position_id",
+      "title": {
+        "propertyByLocale": {
+          "en": "name_en",
+          "de": "name_de"
+        }
+      },
+      "content": {
+        "multiple": "true",
+        "multiplePriority": ["1", "2"],
+        "propertyByLocale": {
+          "en": "positions.position.position_en",
+          "de": "positions.position.position_en"
+        }
+      },
+      "more": "true"
     }
   },
   {
