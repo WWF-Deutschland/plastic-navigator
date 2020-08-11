@@ -409,6 +409,10 @@
       "en": "Country treaty positions - shown as area",
       "de": "Country treaty positions (area)"
     },
+    "title-short": {
+      "en": "Country treaty positions",
+      "de": "Country treaty positions"
+    },
     "about": {
       "en": "Short text about layer",
       "de": "Short text about layer"
