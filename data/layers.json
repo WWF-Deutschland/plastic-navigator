@@ -437,7 +437,7 @@
     },
     "featureStyle": {
       "multiple": "true",
-      "multiplePriority": ["0", "1", "2"],
+      "multiplePriority": ["1", "2", "0"],
       "property": "positions.position_id",
       "style": {
         "fillColor": {
@@ -456,15 +456,15 @@
       "values": ["1", "2", "0"],
       "title": {
         "1": {
-          "en": "Official statements calling for agreement",
+          "en": "Officially called for new agreement",
           "de": "positions.position.position_short_en"
         },
         "2": {
-          "en": "Public commitments to explore option of agreement",
+          "en": "Willingness to explore option of agreement",
           "de": "positions.position.position_short_en"
         },
         "0": {
-          "en": "No statement",
+          "en": "No statement or commitment recorded",
           "de": "positions.position.position_short_en"
         }
       }
