@@ -80,28 +80,5 @@
         }
       }
     ]
-  },
-  {
-    "id": "alt",
-    "title": {
-      "en": "Alternatives",
-      "de": "Alternativen"
-    },
-    "groups": [
-      {
-        "id": "destination",
-        "title": {
-          "en": "Where does plastic waste accumulate in the oceans?",
-          "de": "Wo endet der Plastikmüll in den Ozeanan?"
-        }
-      },
-      {
-        "id": "source",
-        "title": {
-          "en": "Where does plastic waste come from?",
-          "de": "Wo kommt der Plastikmüll her?"
-        }
-      }
-    ]
   }
 ]
