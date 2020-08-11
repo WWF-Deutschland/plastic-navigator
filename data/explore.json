@@ -51,11 +51,11 @@
       {
         "id": "policy",
         "title": {
-          "en": "What are the countries commitments?",
+          "en": "What are the countries' commitments?",
           "de": "Wo endet der Plastikmüll in den Ozeanan?"
         },
         "description": {
-          "en": "Learn about the countries political commitments to reduce the amount of plastic entering our oceans",
+          "en": "Learn about the countries political commitments to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'",
           "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       }
