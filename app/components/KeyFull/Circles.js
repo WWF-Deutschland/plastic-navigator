@@ -47,7 +47,7 @@ export function Circles({ config, simple, intl, range }) {
   if (simple && key['radius-simple'] && key['radius-simple'].more) {
     maxRadius = parseFloat(key['radius-simple'].more);
   } else if (!simple) {
-    maxRadius = render.max;
+    maxRadius = parseFloat(render.max);
   }
 
   return (
