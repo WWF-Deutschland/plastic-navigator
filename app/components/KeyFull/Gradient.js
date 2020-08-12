@@ -11,8 +11,14 @@ import { formatNumber } from 'utils/numbers';
 import messages from './messages';
 
 const Styled = styled(Box)`
-  margin-right: ${({ exceedsBottom }) => (exceedsBottom ? 30 : 10)}px;
-  margin-left: ${({ exceedsTop }) => (exceedsTop ? 30 : 10)}px;
+  margin-right: ${({ simple, exceedsTop }) => {
+    if (simple) return 20;
+    return exceedsTop ? 30 : 10;
+  }}px;
+  margin-left: ${({ simple, exceedsBottom }) => {
+    if (simple) return 20;
+    return exceedsBottom ? 30 : 10;
+  }}px;
 `;
 const GradientWrap = styled(Box)`
   position: relative;
@@ -63,7 +69,7 @@ export function Gradient({ config, id, simple, intl, dark }) {
   const xTop = isExceedsTop(key.exceed);
   const xBottom = isExceedsBottom(key.exceed);
   return (
-    <Styled exceedsTop={xTop} exceedsBottom={xBottom}>
+    <Styled simple={simple} exceedsTop={xTop} exceedsBottom={xBottom}>
       <GradientWrap>
         <KeyGradient
           id={id || config.id}
