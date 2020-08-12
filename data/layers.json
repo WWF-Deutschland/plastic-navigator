@@ -658,14 +658,8 @@
       "multiplePriority": ["1", "2"],
       "property": "positions.position_id",
       "size": {
-        "default": {
-          "x": "28",
-          "y": "30"
-        },
-        "active": {
-          "x": "42",
-          "y": "45"
-        }
+        "x": "28",
+        "y": "30"
       },
       "datauri": {
         "default": {
