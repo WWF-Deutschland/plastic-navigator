@@ -544,7 +544,7 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Country position(s)",
+        "en": "Country position",
         "de": "Country position(s)"
       },
       "title": {
@@ -556,7 +556,7 @@
       "content": {
         "multiple": "true",
         "multiplePriority": ["1", "2"],
-        "icon": "true",
+        "property": "positions.position_id",
         "propertyByLocale": {
           "en": "positions.position.position_en",
           "de": "positions.position.position_en"
