@@ -1,7 +1,7 @@
 import L from 'leaflet';
 import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
-import { uniq } from 'lodash/array';
+import { uniq, intersection } from 'lodash/array';
 import quasiEquals from 'utils/quasi-equals';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
@@ -171,7 +171,7 @@ const getPolylineLayer = ({ data, config }) => {
   });
   return layer;
 };
-const getVectorGridStyle = (properties, config) => {
+const getVectorGridStyle = (properties, config, state = 'default') => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
   let featureStyle = {};
@@ -215,39 +215,64 @@ const getVectorGridStyle = (properties, config) => {
       }
     }
   }
-  // // if (value) {
-  //   const color =
-  //     GROUP_LAYER_PROPERTIES.OCCURRENCE[value] &&
-  //     GROUP_LAYER_PROPERTIES.OCCURRENCE[value].color;
-  //   if (color)
-  //     // prettier-ignore
-  //     return type === 'line'
-  //       ? { ...featureStyle, opacity, color }
-  //       : {
-  //         ...featureStyle,
-  //         opacity,
-  //         fillColor: color,
-  //         color,
-  //       };
-  // }
   return {
     stroke: true,
     weight: 1,
     fill: true,
-    fillOpacity: 0.4,
+    fillOpacity: state === 'hover' ? 0.8 : 0.4,
     ...featureStyle,
   };
 };
-const getPolygonLayer = ({ data, config }) => {
+const featureInteractive = (e, config) => {
+  if (
+    config.tooltip &&
+    config.tooltip.values &&
+    config.featureStyle.multiple &&
+    config.featureStyle.multiple === 'true'
+  ) {
+    // figure out feature values
+    const ps = config.featureStyle.property.split('.');
+    const { properties } = e.layer;
+    const propertyArray = properties[ps[0]];
+    const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
+    return intersection(config.tooltip.values, values).length > 0;
+  }
+  return false;
+};
+
+const getPolygonLayer = ({ data, config, markerEvents }) => {
   const layer = L.featureGroup(null, { pane: 'overlayPane' });
   // const options = {
   //
   // };
   const vectorGrid = L.vectorGrid.slicer(data, {
+    data,
     zIndex: config['z-index'] || 1,
     rendererFactory: L.svg.tile,
     vectorTileLayerStyles: {
       sliced: properties => getVectorGridStyle(properties, config),
+    },
+    interactive: true,
+    getFeatureId: f => f.properties.f_id,
+  });
+  vectorGrid.on({
+    mouseover: e => {
+      if (featureInteractive(e, config)) {
+        markerEvents.mouseover(e, config);
+      }
+      return null;
+    },
+    mouseout: e => {
+      if (featureInteractive(e, config)) {
+        markerEvents.mouseout(e, config);
+      }
+      return null;
+    },
+    click: e => {
+      if (featureInteractive(e, config)) {
+        return markerEvents.click(e, config);
+      }
+      return null;
     },
   });
   layer.addLayer(vectorGrid);
@@ -315,7 +340,7 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       ) {
         return L.divIcon({
           ...options,
-          html: `<img style="transform:scale(1, -1);width:100%;" src="${iconForState}">`,
+          html: `<img style="transform:scale(-1, 1);width:100%;" src="${iconForState}">`,
         });
       }
     }
@@ -460,7 +485,7 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents }) => {
   }
   // polygon
   if (config.render && config.render.type === 'area' && data.features) {
-    return getPolygonLayer({ data, config });
+    return getPolygonLayer({ data, config, markerEvents });
   }
 
   // regular point marker

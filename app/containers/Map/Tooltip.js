@@ -15,7 +15,7 @@ const Root = styled.div`
   position: absolute;
   top: ${({ position }) => position.y}px;
   left: ${({ position }) => position.x}px;
-  z-index: 3000;
+  z-index: 4001;
 `;
 
 // const BlockMouse = styled.div`
@@ -142,6 +142,9 @@ const getMarkerSize = config => {
   if (config.render && config.render.type === 'scaledCircle') {
     return { x: 0, y: 0 };
   }
+  if (config.render && config.render.type === 'area') {
+    return { x: 0, y: 0 };
+  }
   if (config.icon && config.icon.size) {
     return config.icon.size.default || config.icon.size;
   }
@@ -173,7 +176,6 @@ const Tooltip = ({
   const offset = getOffset(config, feature, markerSize);
   const layer = layerOptions ? layerOptions.layer : null;
 
-  // console.log(config, feature)
   // prettier-ignore
   return (
     <Root position={position}>

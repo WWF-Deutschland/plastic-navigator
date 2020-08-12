@@ -87,6 +87,7 @@ export function Map({
   const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
+  // const areaHighlightRef = useRef(null);
   const [layerId, featureId, copy] = getLayerFeatureIds(info);
   const [
     layerHighlightId,
@@ -96,22 +97,16 @@ export function Map({
 
   const showMarker = (e, config) => {
     L.DomEvent.stopPropagation(e);
-    const { target } = e;
+    const { target, layer } = e;
+    const feature = layer || target.feature;
     const eLayerId = target.options.layerId || config.id;
-    const eFeatureId = target.feature.properties.f_id;
-    // if (
-    //   tooltip &&
-    //   tooltip.layerId === eLayerId &&
-    //   tooltip.featureId === eFeatureId
-    // ) {
-    //   setTooltip(null);
-    // } else {
+    const eFeatureId = feature.properties.f_id;
     setTooltip({
       config,
       anchor: e.containerPoint,
       layerId: eLayerId,
       featureId: eFeatureId,
-      feature: target.feature,
+      feature,
       options: target.options,
     });
     // }
@@ -120,12 +115,14 @@ export function Map({
   // console.log(tooltip)
   const onMarkerOver = (e, config) => {
     if (e && config) {
+      const feature = e.layer || e.target.feature;
       // console.log(e.target)
       onFeatureHighlight({
-        feature: e.target.feature.properties.f_id,
+        feature: feature.properties.f_id,
         layer: e.target.options.layerId || config.id,
         copy: e.target.options.copy,
       });
+      showMarker(e, config);
     }
   };
   const onMarkerOut = () => onFeatureHighlight(null);
@@ -161,6 +158,8 @@ export function Map({
       ],
     }).on(mapEvents);
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
+    // areaHighlightRef.current = L.layerGroup();
+    // areaHighlightRef.current.addTo(mapRef.current);
   }, []);
 
   // add basemap
@@ -350,6 +349,28 @@ export function Map({
               });
             });
           }
+          // else if (config.render && config.render.type === 'area') {
+          //   console.log(mapLayer, featureHighlightId)
+          //   areaHighlightRef.current.clearLayers();
+          //   if (featureHighlightId) {
+          //     /* eslint-disable no-underscore-dangle */
+          //     const layerData =
+          //       mapLayer.layer &&
+          //       mapLayer.layer._layers &&
+          //       Object.values(mapLayer.layer._layers)[0].options.data;
+          //     console.log(layerData)
+          //     if (layerData) {
+          //       const highlightLayer = L.geoJSON(layerData, {
+          //         style: {
+          //           interactive: false,
+          //         },
+          //         filter: feature =>
+          //           feature.properties.f_id === featureHighlightId,
+          //       });
+          //       areaHighlightRef.current.addLayer(highlightLayer);
+          //     }
+          //   }
+          // }
         }
       });
     }
@@ -410,6 +431,15 @@ export function Map({
   return (
     <Styled>
       <MapContainer id="ll-map" />
+      {activeLayerIds && activeLayerIds.length > 0 && hasKey && (
+        <KeyPanel
+          activeLayerIds={activeLayerIds.slice().reverse()}
+          layersConfig={layersConfig}
+          projects={projects}
+          onLayerInfo={onFeatureClick}
+          jsonLayers={jsonLayers}
+        />
+      )}
       {tooltip && (
         <Tooltip
           position={tooltip.anchor}
@@ -422,15 +452,6 @@ export function Map({
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
           onFeatureClick={onFeatureClick}
-        />
-      )}
-      {activeLayerIds && activeLayerIds.length > 0 && hasKey && (
-        <KeyPanel
-          activeLayerIds={activeLayerIds.slice().reverse()}
-          layersConfig={layersConfig}
-          projects={projects}
-          onLayerInfo={onFeatureClick}
-          jsonLayers={jsonLayers}
         />
       )}
     </Styled>
