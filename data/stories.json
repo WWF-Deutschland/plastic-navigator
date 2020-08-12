@@ -16,11 +16,11 @@
       },
       {
         "title": {
-          "en": "Poor waste management is a major source of debris",
-          "de": "Poor waste management is a major source of debris"
+          "en": "Poor waste management is a major source of plastic debris",
+          "de": "Poor waste management is a major source of plastic debris"
         },
         "description": {
-          "en": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment taking into account population data and GDP. Darker colours indicate higher amounts of mismanaged waste.",
+          "en": "This map layer shows estimates of mismanaged plastic waste per km2, that were derived using population data and GDP. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
           "de": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
