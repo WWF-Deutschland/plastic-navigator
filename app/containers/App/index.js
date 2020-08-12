@@ -13,11 +13,10 @@ import { Helmet } from 'react-helmet';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import appTheme from 'theme';
-import { Grommet, Button, ResponsiveContext } from 'grommet';
+import { Grommet, ResponsiveContext } from 'grommet';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -25,12 +24,7 @@ import { getHeaderHeight } from 'utils/responsive';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
-import {
-  loadConfig,
-  navigateHome,
-  navigate,
-  setLayerInfo,
-} from 'containers/App/actions';
+import { loadConfig, navigate, setLayerInfo } from 'containers/App/actions';
 import {
   selectRouterPath,
   selectPageSearch,
@@ -48,8 +42,6 @@ import LayerInfo from 'containers/LayerInfo';
 import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
 import { appLocales, DEFAULT_LOCALE } from 'i18n';
-
-import commonMessages from 'messages';
 
 const AppWrapper = styled.div`
   width: 100%;
@@ -77,25 +69,8 @@ const Content = styled.div`
   }
 `;
 
-const Brand = styled(props => <Button {...props} plain />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  position: absolute;
-  z-index: 3000;
-  top: 20px;
-  left: 0;
-  max-width: 140px;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
-  color: ${({ route, theme }) =>
-    theme.global.colors[route !== ROUTES.INTRO ? 'white' : 'black']};
-  background: ${({ route, theme }) =>
-    theme.global.colors[route === ROUTES.INTRO ? 'white' : 'black']};
-`;
-
 function App({
   onLoadConfig,
-  navHome,
   path,
   page,
   info,
@@ -141,11 +116,6 @@ function App({
           {info !== '' && (
             <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
           )}
-          <Brand
-            onClick={() => navHome()}
-            label={<FormattedMessage {...commonMessages.appTitle} />}
-            route={route}
-          />
         </Content>
         <GlobalStyle />
       </AppWrapper>
@@ -154,7 +124,6 @@ function App({
 }
 
 App.propTypes = {
-  navHome: PropTypes.func,
   onLoadConfig: PropTypes.func,
   onClosePage: PropTypes.func,
   onCloseLayerInfo: PropTypes.func,
@@ -185,7 +154,6 @@ export function mapDispatchToProps(dispatch) {
         }),
       ),
     onCloseLayerInfo: () => dispatch(setLayerInfo()),
-    navHome: () => dispatch(navigateHome()),
   };
 }
 

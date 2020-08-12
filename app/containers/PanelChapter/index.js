@@ -92,13 +92,12 @@ const Content = styled(p => (
 // const TitleWrap = styled(Box)``;
 const Title = styled(Text)`
   font-size: 22px;
-  line-height: 28px;
+  line-height: 24px;
   margin-top: 0;
   margin-bottom: 5px;
   font-family: 'wwfregular';
-  text-transform: uppercase;
   font-weight: normal;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
 `;
 
 const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`

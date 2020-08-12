@@ -74,10 +74,6 @@ const GlobalStyle = createGlobalStyle`
   figure {
     margin: 0;
   }
-
-  .leaflet-top .leaflet-control-zoom {
-    margin-top: 80px;
-  }
 `;
 
 export default GlobalStyle;

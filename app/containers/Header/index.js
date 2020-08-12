@@ -9,7 +9,7 @@ import { Button, Box, ResponsiveContext, Layer } from 'grommet';
 import { Menu } from 'grommet-icons';
 
 import { selectRouterPath } from 'containers/App/selectors';
-import { navigate, navigatePage } from 'containers/App/actions';
+import { navigate, navigatePage, navigateHome } from 'containers/App/actions';
 import { MODULES, PAGES } from 'config';
 
 import LocaleToggle from 'containers/LocaleToggle';
@@ -84,7 +84,17 @@ const toArray = obj =>
     ...obj[key],
   }));
 
-function Header({ nav, navPage, path }) {
+const Brand = styled(props => <Button {...props} plain />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 3000;
+  max-width: 120px;
+  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
+  color: ${({ theme }) => theme.global.colors.white};
+`;
+
+function Header({ nav, navPage, path, navHome }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const paths = path.split('/');
@@ -99,6 +109,11 @@ function Header({ nav, navPage, path }) {
             justify={isMinSize(size, 'large') ? 'start' : 'between'}
             alignContent="end"
           >
+            <Brand
+              onClick={() => navHome()}
+              label={<FormattedMessage {...commonMessages.appTitle} />}
+              route={route}
+            />
             <NavPrimary>
               {toArray(MODULES).map((m, index) => (
                 <Primary
@@ -194,6 +209,7 @@ function Header({ nav, navPage, path }) {
 Header.propTypes = {
   nav: PropTypes.func,
   navPage: PropTypes.func,
+  navHome: PropTypes.func,
   path: PropTypes.string,
 };
 
@@ -205,6 +221,7 @@ export function mapDispatchToProps(dispatch) {
   return {
     nav: path => dispatch(navigate(path, { deleteSearchParams: ['info'] })),
     navPage: id => dispatch(navigatePage(id)),
+    navHome: () => dispatch(navigateHome()),
   };
 }
 
