@@ -37,4 +37,8 @@ export default defineMessages({
     id: `${scope}.clickMarkerHint`,
     defaultMessage: 'Click marker for details',
   },
+  hoverAreaHint: {
+    id: `${scope}.hoverAreaHint`,
+    defaultMessage: 'Hover map for details',
+  },
 });

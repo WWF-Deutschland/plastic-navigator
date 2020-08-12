@@ -42,9 +42,16 @@ const HTMLWrapper = ({ innerhtml, onNavigate, inject }) => (
             </a>
           );
         }
-        if (inject && inject.length > 0 && node.type === 'text') {
-          const inj = inject.find(({ tag }) => tag === node.data);
-          return inj ? inj.el : undefined;
+        if (
+          inject &&
+          inject.length > 0 &&
+          node.name === 'p' &&
+          node.children &&
+          node.children.length === 1 &&
+          node.children[0]
+        ) {
+          const inj = inject.find(({ tag }) => tag === node.children[0].data);
+          return inj ? <span key={index}>{inj.el}</span> : undefined;
         }
         return undefined;
       },

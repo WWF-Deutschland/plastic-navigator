@@ -5,6 +5,7 @@ import { Box } from 'grommet';
 
 import KeyGradient from 'components/KeyGradient';
 import KeyCircle from 'components/KeyCircle';
+import KeyArea from 'components/KeyArea';
 
 const Styled = styled(p => <Box {...p} fill />)`
   position: relative;
@@ -37,6 +38,11 @@ export function KeyIcon({ config, id }) {
     config.render &&
     config.render.type === 'scaledCircle' &&
     !!config.style;
+  const isArea =
+    config.key &&
+    config.render &&
+    config.render.type === 'area' &&
+    !!config.featureStyle;
   let marker;
   let markerSize;
   if (isIconMarker) {
@@ -58,6 +64,25 @@ export function KeyIcon({ config, id }) {
       marker = config.icon.datauri;
     }
   }
+  let areaStyles = [];
+  if (
+    isArea &&
+    config.featureStyle &&
+    config.featureStyle.style &&
+    config.featureStyle.multiple === 'true' &&
+    config.key &&
+    config.key.values
+  ) {
+    areaStyles = config.key.values.map(val =>
+      Object.keys(config.featureStyle.style).reduce(
+        (memo, attr) => ({
+          ...memo,
+          [attr]: config.featureStyle.style[attr][val],
+        }),
+        {},
+      ),
+    );
+  }
   return (
     <Styled>
       {isGradient && (
@@ -67,6 +92,7 @@ export function KeyIcon({ config, id }) {
           log={config.key.scale === 'log'}
         />
       )}
+      {isArea && <KeyArea areaStyles={areaStyles} />}
       {isCircle && <KeyCircle circleStyle={config.style} />}
       {isIconURI && (
         <KeyIconURI src={config.key.icon.datauri} markerSize={markerSize} />

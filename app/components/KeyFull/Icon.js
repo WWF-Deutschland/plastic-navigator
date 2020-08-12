@@ -57,10 +57,10 @@ export function Icon({ config, simple, intl, dark, title }) {
   if (!isIconMarker) {
     marker.uri = key && key.icon && key.icon.datauri;
   } else {
-    markerSize = getMarkerSize(config.icon);
-    const defaultIcon = config.icon.datauri.default;
+    markerSize = getMarkerSize(icon);
+    const defaultIcon = icon.datauri.default;
     if (defaultIcon) {
-      if (config.icon.multiple === 'true') {
+      if (icon.multiple === 'true') {
         const hasFull = key && key.iconValue && !!key.iconValue.full;
         // simple : pick one
         if (simple || !hasFull) {
@@ -89,19 +89,19 @@ export function Icon({ config, simple, intl, dark, title }) {
         }
         // not simple: show all
         else if (hasFull) {
-          marker = config.key.iconValue.full.map(val => {
+          marker = key.iconValue.full.map(val => {
             let t;
             if (key.iconTitle) {
               if (key.iconTitle.full) {
                 t =
                   key.iconTitle.full[val][locale] ||
-                  config.key.iconTitle.full[val][DEFAULT_LOCALE] ||
-                  config.key.iconTitle.full[val];
+                  key.iconTitle.full[val][DEFAULT_LOCALE] ||
+                  key.iconTitle.full[val];
               } else {
                 t =
                   key.iconTitle[locale] ||
-                  config.key.iconTitle[DEFAULT_LOCALE] ||
-                  config.key.iconTitle;
+                  key.iconTitle[DEFAULT_LOCALE] ||
+                  key.iconTitle;
               }
             }
             return {

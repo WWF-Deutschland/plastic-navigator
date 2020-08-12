@@ -241,9 +241,7 @@ export function KeyPanel({
                         <Box>
                           <ButtonInfo
                             onClick={() =>
-                              onLayerInfo({
-                                layer: config['content-id'] || config.id,
-                              })
+                              onLayerInfo({ layer: config.id })
                             }
                             icon={<CircleInformation />}
                           />

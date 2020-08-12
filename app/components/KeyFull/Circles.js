@@ -40,12 +40,12 @@ export function Circles({ config, simple, intl, range }) {
   let minRadius = 10;
   let maxRadius = 20;
   if (simple && key['radius-simple'] && key['radius-simple'].less) {
-    minRadius = key['radius-simple'].less;
+    minRadius = parseFloat(key['radius-simple'].less);
   } else if (!simple) {
     minRadius = render.min || range.min;
   }
   if (simple && key['radius-simple'] && key['radius-simple'].more) {
-    maxRadius = key['radius-simple'].more;
+    maxRadius = parseFloat(key['radius-simple'].more);
   } else if (!simple) {
     maxRadius = render.max;
   }
