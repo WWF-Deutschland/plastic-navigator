@@ -171,7 +171,7 @@ const getPolylineLayer = ({ data, config }) => {
   });
   return layer;
 };
-const getVectorGridStyle = (properties, config, state = 'default') => {
+export const getVectorGridStyle = (properties, config, state = 'default') => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
   let featureStyle = {};

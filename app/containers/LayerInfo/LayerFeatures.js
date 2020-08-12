@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { intlShape, injectIntl } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYER } from 'config';
+import { POLICY_LAYERS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 
@@ -29,23 +29,36 @@ export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
 
   useEffect(() => {
     // kick off loading of page content
-    if (config.id === POLICY_LAYER) {
+    if (POLICY_LAYERS.indexOf(config.id) > -1) {
       onLoadLayer(config.id, config);
     }
   }, [config]);
   const { locale } = intl;
-  if (!config.id === POLICY_LAYER || !layer) return null;
+  if (POLICY_LAYERS.indexOf(config.id) === -1 || !layer) return null;
 
   return (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries)}
-      layerId={POLICY_LAYER}
-      items={layer.data.features.map(f => ({
-        id: f.properties.f_id,
-        label:
-          f.properties[`name_${locale}`] ||
-          f.properties[`name_${DEFAULT_LOCALE}`],
-      }))}
+      layerId={config.id}
+      items={layer.data.features
+        .filter(f => {
+          if (config.info) {
+            const ps = config.info.property.split('.');
+            const propertyArray = f.properties[ps[0]];
+            const otherProps = ps.slice(1);
+            return propertyArray.find(prop => {
+              const propDeep = otherProps.reduce((memo, p) => memo[p], prop);
+              return config.info.values.indexOf(propDeep) > -1;
+            });
+          }
+          return true;
+        })
+        .map(f => ({
+          id: f.properties.f_id,
+          label:
+            f.properties[`name_${locale}`] ||
+            f.properties[`name_${DEFAULT_LOCALE}`],
+        }))}
     />
   );
 }
@@ -59,8 +72,8 @@ LayerFeatures.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   layer: (state, { config }) => {
-    if (config.id === POLICY_LAYER) {
-      return selectLayerByKey(state, POLICY_LAYER);
+    if (POLICY_LAYERS.indexOf(config.id) > -1) {
+      return selectLayerByKey(state, config.id);
     }
     return null;
   },

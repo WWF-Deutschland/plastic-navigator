@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { Button, Box, ResponsiveContext } from 'grommet';
 import { Close } from 'grommet-icons';
 
-import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
+import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
 
 import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
@@ -71,7 +71,7 @@ export function LayerInfo({ id, onClose, config }) {
             {!featureId && !isProjectInfo && config && (
               <LayerContent config={config} />
             )}
-            {!featureId && config && config.id === POLICY_LAYER && (
+            {!featureId && config && POLICY_LAYERS.indexOf(config.id) > -1 && (
               <LayerFeatures config={config} />
             )}
           </ContentWrap>

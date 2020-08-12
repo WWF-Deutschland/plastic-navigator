@@ -15,7 +15,7 @@ import { Button, Heading } from 'grommet';
 import { Previous } from 'grommet-icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYER } from 'config';
+import { POLICY_LAYERS } from 'config';
 
 import { findFeature } from 'utils/layers';
 
@@ -65,7 +65,7 @@ export function FeatureContent({
     onLoadLayer(config.id, config);
   }, [config]);
   if (!featureId || !config || !layerData) return null;
-  if (!config.id === POLICY_LAYER || !config.tooltip) {
+  if (POLICY_LAYERS.indexOf(config.id) === -1 || !config.tooltip) {
     return <LayerContent layer={config} />;
   }
   const feature = findFeature(layerData.data.features, featureId);
@@ -84,7 +84,7 @@ export function FeatureContent({
         <SupTitle onClick={() => onSetLayerInfo(config.id)} label={supTitle} />
       </div>
       <Title>{getTitle(feature, config, locale)}</Title>
-      {config.id === POLICY_LAYER && (
+      {POLICY_LAYERS.indexOf(config.id) > -1 && (
         <CountryPolicyCommitments feature={feature} config={config} />
       )}
     </Styled>

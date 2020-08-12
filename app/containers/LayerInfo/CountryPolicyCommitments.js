@@ -7,11 +7,19 @@ import {
   injectIntl,
   intlShape,
 } from 'react-intl';
-import { Button } from 'grommet';
+import { Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
+
+import { KeyArea } from 'components/KeyArea';
+
 import messages from './messages';
 
 const Styled = styled.div``;
+const StyledButton = styled(p => (
+  <Button plain as="a" target="_blank" {...p} />
+))`
+  text-decoration: underline;
+`;
 
 const Quote = styled.blockquote`
   font-style: italic;
@@ -20,10 +28,52 @@ const Quote = styled.blockquote`
 const IconImgWrap = styled.div`
   width: ${({ size }) => size.x}px;
 `;
+const AreaWrap = styled.div`
+  width: 30px;
+  height: 30px;
+  position: relative;
+`;
 
 const IconImg = styled.img`
   width: 100%;
 `;
+
+const getSquareStyle = (config, position) => {
+  if (
+    config.render &&
+    config.render.type === 'area' &&
+    config.featureStyle &&
+    config.featureStyle.property
+  ) {
+    const ps = config.featureStyle.property.split('.');
+    const positionValue = position[ps[1]];
+    const style = Object.keys(config.featureStyle.style).reduce(
+      (styleMemo, attr) => {
+        const attrObject = config.featureStyle.style[attr];
+        // prettier-ignore
+        const attrValue =
+          attrObject[positionValue] ||
+          attrObject.default ||
+          attrObject.none ||
+          attrObject.without ||
+          attrObject['0'];
+        return {
+          ...styleMemo,
+          [attr]: attrValue,
+        };
+      },
+      {},
+    );
+    return {
+      stroke: true,
+      weight: 1,
+      fill: true,
+      fillOpacity: 0.4,
+      ...style,
+    };
+  }
+  return null;
+};
 
 const CountryPolicyCommitments = ({ config, feature, intl }) => {
   const { locale } = intl;
@@ -42,27 +92,33 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
     config.icon.datauri &&
     (config.icon.datauri.default || config.icon.datauri);
   const iconsize = { x: 50, y: 50 };
-  // const iconsize =
-  //   config.icon &&
-  //   config.icon.size &&
-  //   (config.icon.size.default || config.icon.size);
+  // console.log(config, feature)
+  // console.log(getVectorGridStyle(feature.properties, config))
+  // const square =
   return (
     <Styled>
       {positions.length > 1 && (
-        <FormattedMessage {...messages.multiplePositions} />
+        <Text size="small">
+          <FormattedMessage {...messages.multiplePositions} />
+        </Text>
       )}
       {sorted.map(position => {
-        const icon = iconuri[position.position_id];
+        const icon = iconuri && iconuri[position.position_id];
+        const square = getSquareStyle(config, position);
         return (
           <div key={`${position.position_id}${position.source_id}`}>
             <hr />
             {position.position && (
               <div>
-                <FormattedMessage {...messages.position} />
                 {icon && (
                   <IconImgWrap size={iconsize}>
                     <IconImg src={icon} />
                   </IconImgWrap>
+                )}
+                {square && (
+                  <AreaWrap>
+                    <KeyArea areaStyles={[square]} />
+                  </AreaWrap>
                 )}
                 <p>
                   {position.position[`position_${locale}`] ||
@@ -91,16 +147,13 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
                   </Quote>
                 )}
                 {position.source.url && (
-                  <Button
-                    plain
-                    as="a"
+                  <StyledButton
                     href={position.source.url}
-                    target="_blank"
                     label={
-                      <>
+                      <Text size="small">
                         <FormattedMessage {...messages.sourceLinkExternal} />
                         {` (${position.source_id})`}
-                      </>
+                      </Text>
                     }
                   />
                 )}
