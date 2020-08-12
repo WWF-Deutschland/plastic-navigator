@@ -424,7 +424,6 @@
   },
   {
     "id": "policy-commitments-area",
-    "content-id": "policy-commitments",
     "z-index": "20",
     "category": "policy",
     "group": "policy",
