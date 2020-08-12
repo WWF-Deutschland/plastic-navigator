@@ -31,6 +31,7 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   text-transform: uppercase;
   font-weight: normal;
   font-size: 1.8em;
+  line-height: 1.2;
   letter-spacing: 0.05em;
 `;
 
