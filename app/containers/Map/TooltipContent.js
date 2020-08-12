@@ -6,6 +6,7 @@ import { injectIntl, intlShape } from 'react-intl';
 
 import asArray from 'utils/as-array';
 import { getPropertyByLocale } from './utils';
+// import messages from './messages';
 
 const Styled = styled.div``;
 

@@ -560,16 +560,44 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   return layer;
 };
 
-export const getPropertyByLocale = (properties, element, locale) => {
+export const getPropertyByLocale = (
+  properties,
+  element,
+  locale,
+  // multiHint = 'test',
+) => {
   const props = element.propertyByLocale[locale].split('.');
   if (
     (element.multiple || element.multiple === 'true') &&
     element.multiple !== 'false' &&
     Array.isArray(properties[props[0]])
   ) {
-    const multiProps = properties[props[0]];
+    const attributes = properties[props[0]];
     const otherProps = props.slice(1);
-    return multiProps.map(mp =>
+    if (element.multiplePriority && element.property) {
+      const ps = element.property.split('.');
+      const propertyArray = properties[ps[0]];
+      const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
+      // console.log(ps, propertyArray, values)
+      // console.log(
+      //   attributes.map(mp =>
+      //     otherProps.reduce((memo, prop) => memo[prop], mp),
+      //   )
+      // )
+      const bestValue = element.multiplePriority.reduce((memo, pvalue) => {
+        if (memo) return memo;
+        return values.find(val => val === pvalue);
+      }, null);
+      const bestAttr = propertyArray.find(attr => attr[ps[1]] === bestValue);
+      // console.log(bestValue, bestAttr, otherProps)
+      const bestProperty = otherProps.reduce(
+        (memo, prop) => memo[prop],
+        bestAttr,
+      );
+      // return values.length > 1 ? `${bestProperty} ${multiHint}` : bestProperty;
+      return bestProperty;
+    }
+    return attributes.map(mp =>
       otherProps.reduce((memo, prop) => memo[prop], mp),
     );
   }
