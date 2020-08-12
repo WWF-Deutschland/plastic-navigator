@@ -11,10 +11,6 @@
         "title": {
           "en": "Where does plastic waste accumulate in the oceans?",
           "de": "Wo endet der Plastikmüll in den Ozeanan?"
-        },
-        "description": {
-          "en": "Optional description",
-          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       },
       {
@@ -22,10 +18,6 @@
         "title": {
           "en": "Where does plastic waste come from?",
           "de": "Wo kommt der Plastikmüll her?"
-        },
-        "description": {
-          "en": "Optional description",
-          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       },
       {
@@ -33,10 +25,6 @@
         "title": {
           "en": "How does the plastic debris travel?",
           "de": "Meeresströmungen"
-        },
-        "description": {
-          "en": "Optional description",
-          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       }
     ]
@@ -75,7 +63,7 @@
           "de": ""
         },
         "description": {
-          "en": "Learn about projects targeting plastic pollution oaround the world",
+          "en": "Learn about projects targeting plastic pollution around the world",
           "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe"
         }
       }

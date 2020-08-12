@@ -31,7 +31,7 @@
       "de": "Konzentration von treibendem Plastik"
     },
     "about": {
-      "en": "Short text about floating plastic concentration",
+      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight ",
       "de": "Short text about floating plastic concentration"
     },
     "attribution": {
@@ -50,6 +50,10 @@
       "unit-short": {
         "en": "g/km<sup>2</sup>",
         "de": "g/km<sup>2</sup>"
+      },
+      "unit-additional": {
+        "en": "items measuring 0.33mm and more",
+        "de": "items measuring 0.33mm and more"
       }
     },
     "key": {
@@ -97,7 +101,7 @@
       "de": "Schlechte Handhabung von Plastikmüll"
     },
     "about": {
-      "en": "Short text about mismanaged plastic waste",
+      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation",
       "de": "Short text about mismanaged plastic waste"
     },
     "attribution": {
@@ -110,16 +114,12 @@
     "data": {
       "type": "weight",
       "unit": {
-        "en": "kg per year and grid cell",
-        "de": "kg pro Jahr und Zelle"
+        "en": "kg per year and and km<sup>2</sup>",
+        "de": "kg pro Jahr und km<sup>2</sup>"
       },
       "unit-short": {
-        "en": "kg/yr/cell",
-        "de": "kg/Jahr/Zelle"
-      },
-      "unit-additional": {
-        "en": "30 by 30 arc second grid (~ 0.85km<sup>2</sup>)",
-        "de": "30 mal 30 Winkelsekunden (~ 0.85km<sup>2</sup>)"
+        "en": "kg/yr/km<sup>2</sup>",
+        "de": "kg/Jahr/km<sup>2</sup>"
       }
     },
     "key": {
@@ -170,7 +170,7 @@
       "de": "Flusseinträge"
     },
     "about": {
-      "en": "The top 122 rivers estimated to emit most plastic into our oceans",
+      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers",
       "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
     },
     "attribution": {
@@ -243,7 +243,7 @@
       "de": "Strömungen"
     },
     "about": {
-      "en": "Major currents of the world's oceans",
+      "en": "The arrows show the direction of our ocean's major currents",
       "de": "Vorherrschende Strömungen auf unseren Meeren"
     },
     "attribution": {
@@ -300,7 +300,7 @@
       "de": "Meeresstrudel"
     },
     "about": {
-      "en": "Short text about principal gyres",
+      "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers",
       "de": "Short text about principal gyres"
     },
     "attribution": {
