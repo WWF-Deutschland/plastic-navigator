@@ -8,7 +8,7 @@
           "de": "Plastik wurde in allen Ozeanen gefunden"
         },
         "description": {
-          "en": "Plastic in the ocean is a threat to marine wildlife as well as seafood consumers. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste.",
+          "en": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste.",
           "de": "Plastic in the ocean is a threat to marine wildlife as well as seafood consumers. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste."
         },
         "layers": ["surface-concentration"],
@@ -20,7 +20,7 @@
           "de": "Poor waste management is a major source of debris"
         },
         "description": {
-          "en": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste.",
+          "en": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment taking into account population data and GDP. Darker colours indicate higher amounts of mismanaged waste.",
           "de": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
@@ -62,11 +62,11 @@
       },
       {
         "title": {
-          "en": "Country treaty positions",
+          "en": "Towards an international agreement",
           "de": "Country treaty positions"
         },
         "description": {
-          "en": "Therefore WWF is working with States towards an international treaty to stop marine plastci pollution",
+          "en": "Therefore WWF is working with States towards an international treaty to stop marine plastic pollution",
           "de": "TODO"
         },
         "layers": [
