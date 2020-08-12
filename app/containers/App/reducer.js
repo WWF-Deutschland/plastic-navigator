@@ -18,6 +18,7 @@ import {
   CONFIG_LOAD_SUCCESS,
   CONFIG_LOAD_ERROR,
   SET_UI_STATE,
+  SET_LANDING,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -54,6 +55,7 @@ export const initialState = {
   // // record error time
   // contentError: Object.assign({}, initialContent),
   uiState: {},
+  landing: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -103,6 +105,9 @@ const appReducer = (state = initialState, action) =>
         } else {
           draft.uiState = {};
         }
+        break;
+      case SET_LANDING:
+        draft.landing = true;
         break;
     }
   });

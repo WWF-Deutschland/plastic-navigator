@@ -202,3 +202,8 @@ export const selectActiveLayers = createSelector(
   layersSearch =>
     layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
 );
+
+export const selectFirstLanding = createSelector(
+  selectGlobal,
+  global => !global.landing,
+);

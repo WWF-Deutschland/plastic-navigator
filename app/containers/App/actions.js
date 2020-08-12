@@ -36,6 +36,7 @@ import {
   SET_LAYERS,
   SET_STORY,
   SET_CHAPTER,
+  SET_LANDING,
 } from './constants';
 
 export function setLocale(locale) {
@@ -207,5 +208,10 @@ export function setStory(index) {
   return {
     type: SET_STORY,
     index,
+  };
+}
+export function setLanding() {
+  return {
+    type: SET_LANDING,
   };
 }

@@ -26,8 +26,9 @@ import {
   selectConfigByKey,
   selectActiveLayers,
   selectUIStateByKey,
+  selectFirstLanding,
 } from 'containers/App/selectors';
-import { setLayers, setUIState } from 'containers/App/actions';
+import { setLayers, setUIState, setLanding } from 'containers/App/actions';
 
 import { getAsideWidth } from 'utils/responsive';
 
@@ -99,6 +100,8 @@ export function ModuleExplore({
   uiState,
   onMemoLayers,
   activeLayers,
+  firstLanding,
+  onSetLanding,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -106,8 +109,11 @@ export function ModuleExplore({
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
-    } else if (MODULES.explore.layers) {
+    } else if (MODULES.explore.layers && !firstLanding) {
       onSetLayers(MODULES.explore.layers);
+    }
+    if (firstLanding) {
+      onSetLanding();
     }
   }, []);
   useEffect(() => {
@@ -188,8 +194,10 @@ ModuleExplore.propTypes = {
   projects: PropTypes.array,
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
+  onSetLanding: PropTypes.func,
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
+  firstLanding: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -197,13 +205,13 @@ const mapStateToProps = createStructuredSelector({
   projects: state => selectConfigByKey(state, { key: 'projects' }),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
+  firstLanding: state => selectFirstLanding(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetLayers: layers => {
-      dispatch(setLayers(layers));
-    },
+    onSetLanding: () => dispatch(setLanding()),
+    onSetLayers: layers => dispatch(setLayers(layers)),
     onMemoLayers: (layers, uiState) =>
       dispatch(
         setUIState(
