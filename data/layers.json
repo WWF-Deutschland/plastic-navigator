@@ -474,7 +474,7 @@
       "content": {
         "multiple": "true",
         "multiplePriority": ["1", "2"],
-        "property": "positions.position_id",
+        "property": "positions.position.id",
         "propertyByLocale": {
           "en": "positions.position.position_en",
           "de": "positions.position.position_en"
