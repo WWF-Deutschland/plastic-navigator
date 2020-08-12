@@ -12,9 +12,6 @@ export const PAGES = {
   about: {
     path: 'about',
   },
-  glossary: {
-    path: 'glossary',
-  },
 };
 export const MODULES = {
   stories: {
