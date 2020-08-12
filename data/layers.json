@@ -481,6 +481,10 @@
         }
       },
       "more": "true"
+    },
+    "info": {
+      "values": ["1", "2"],
+      "property": "positions.position_id"
     }
   },
   {
