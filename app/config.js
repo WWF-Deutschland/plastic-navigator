@@ -24,6 +24,7 @@ export const MODULES = {
   explore: {
     path: ROUTES.EXPLORE,
     icon: <Layer color="white" />,
+    layers: ['surface-concentration'],
   },
 };
 

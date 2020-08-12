@@ -17,7 +17,7 @@ import { Layer as LayerIcon } from 'grommet-icons';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
 
-import { PROJECT_CONFIG } from 'config';
+import { PROJECT_CONFIG, MODULES } from 'config';
 
 import PanelExplore from 'containers/PanelExplore';
 import ModuleWrap from 'components/ModuleWrap';
@@ -106,6 +106,8 @@ export function ModuleExplore({
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
+    } else if (MODULES.explore.layers) {
+      onSetLayers(MODULES.explore.layers);
     }
   }, []);
   useEffect(() => {
