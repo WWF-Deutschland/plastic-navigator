@@ -97,7 +97,8 @@ const Title = styled(Text)`
   margin-bottom: 5px;
   font-family: 'wwfregular';
   font-weight: normal;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 `;
 
 const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`
