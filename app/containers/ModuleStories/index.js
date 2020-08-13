@@ -43,7 +43,7 @@ export function ModuleStories({
   firstLanding,
 }) {
   useEffect(() => {
-    if (!firstLanding) {
+    if (firstLanding) {
       onSetLanding();
     }
   }, []);
