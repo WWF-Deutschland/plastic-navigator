@@ -215,11 +215,17 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
       }
     }
   }
+  if (state === 'hover') {
+    featureStyle.fillOpacity = 0.2;
+  } else if (state === 'active') {
+    featureStyle.fillOpacity = 0.2;
+  } else {
+    featureStyle.fillOpacity = 0.4;
+  }
   return {
     stroke: true,
     weight: 1,
     fill: true,
-    fillOpacity: state === 'hover' ? 0.8 : 0.4,
     ...featureStyle,
   };
 };
@@ -240,7 +246,7 @@ const featureInteractive = (e, config) => {
   return false;
 };
 
-const getPolygonLayer = ({ data, config, markerEvents }) => {
+const getPolygonLayer = ({ data, config, markerEvents, state }) => {
   const layer = L.featureGroup(null, { pane: 'overlayPane' });
   // const options = {
   //
@@ -250,31 +256,33 @@ const getPolygonLayer = ({ data, config, markerEvents }) => {
     zIndex: config['z-index'] || 1,
     rendererFactory: L.svg.tile,
     vectorTileLayerStyles: {
-      sliced: properties => getVectorGridStyle(properties, config),
+      sliced: properties => getVectorGridStyle(properties, config, state),
     },
-    interactive: true,
+    interactive: state !== 'hover' && state !== 'active',
     getFeatureId: f => f.properties.f_id,
   });
-  vectorGrid.on({
-    mouseover: e => {
-      if (featureInteractive(e, config)) {
-        markerEvents.mouseover(e, config);
-      }
-      return null;
-    },
-    mouseout: e => {
-      if (featureInteractive(e, config)) {
-        markerEvents.mouseout(e, config);
-      }
-      return null;
-    },
-    click: e => {
-      if (featureInteractive(e, config)) {
-        return markerEvents.click(e, config);
-      }
-      return null;
-    },
-  });
+  if (markerEvents) {
+    vectorGrid.on({
+      mouseover: e => {
+        if (featureInteractive(e, config) && markerEvents.mouseover) {
+          markerEvents.mouseover(e, config);
+        }
+        return null;
+      },
+      mouseout: e => {
+        if (featureInteractive(e, config) && markerEvents.mouseout) {
+          markerEvents.mouseout(e, config);
+        }
+        return null;
+      },
+      click: e => {
+        if (featureInteractive(e, config) && markerEvents.click) {
+          return markerEvents.click(e, config);
+        }
+        return null;
+      },
+    });
+  }
   layer.addLayer(vectorGrid);
   return layer;
 };
@@ -360,9 +368,11 @@ const getPointLayer = ({ data, config, markerEvents }) => {
     zIndex: config['z-index'] || 1,
   };
   const events = {
-    mouseover: e => markerEvents.mouseover(e, config),
-    mouseout: e => markerEvents.mouseout(e, config),
-    click: e => markerEvents.click(e, config),
+    mouseover: e =>
+      markerEvents.mouseover ? markerEvents.mouseover(e, config) : null,
+    mouseout: e =>
+      markerEvents.mouseout ? markerEvents.mouseout(e, config) : null,
+    click: e => (markerEvents.click ? markerEvents.click(e, config) : null),
   };
   const jsonLayer = L.geoJSON(data, {
     pointToLayer: (feature, latlng) =>
@@ -477,24 +487,24 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
   return layer;
 };
 
-export const getVectorLayer = ({ jsonLayer, config, markerEvents }) => {
+export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
   const { data } = jsonLayer;
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
-    return getPolylineLayer({ data, config });
+    return getPolylineLayer({ data, config, state });
   }
   // polygon
   if (config.render && config.render.type === 'area' && data.features) {
-    return getPolygonLayer({ data, config, markerEvents });
+    return getPolygonLayer({ data, config, markerEvents, state });
   }
 
   // regular point marker
   if (config.render && config.render.type === 'marker') {
-    return getPointLayer({ data, config, markerEvents });
+    return getPointLayer({ data, config, markerEvents, state });
   }
   // scaled circle marker
   if (config.render && config.render.type === 'scaledCircle') {
-    return getCircleLayer({ data, config, markerEvents });
+    return getCircleLayer({ data, config, markerEvents, state });
   }
   return null;
 };

@@ -87,7 +87,8 @@ export function Map({
   const [tooltip, setTooltip] = useState(null);
 
   const mapRef = useRef(null);
-  // const areaHighlightRef = useRef(null);
+  const areaHighlightRef = useRef(null);
+  const areaTooltipRef = useRef(null);
   const [layerId, featureId, copy] = getLayerFeatureIds(info);
   const [
     layerHighlightId,
@@ -95,15 +96,29 @@ export function Map({
     copyHighlight,
   ] = getLayerFeatureIds(highlightFeature);
 
-  const showMarker = (e, config) => {
+  const showTooltip = (e, config) => {
+    // console.log('click', e, config, tooltip);
     L.DomEvent.stopPropagation(e);
     const { target, layer } = e;
     const feature = layer || target.feature;
     const eLayerId = target.options.layerId || config.id;
     const eFeatureId = feature.properties.f_id;
+    let anchor = e.containerPoint;
+    const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
+    const direction = {
+      x: anchor.x < mapSize.x / 2 ? 'right' : 'left',
+      y: anchor.y < (mapSize.y * 3) / 4 ? 'bottom' : 'top',
+    };
+    if (!(config.render && config.render.type === 'marker' && config.icon)) {
+      anchor = {
+        x: direction.x === 'right' ? anchor.x + 10 : anchor.x - 10,
+        y: anchor.y,
+      };
+    }
     setTooltip({
       config,
-      anchor: e.containerPoint,
+      anchor,
+      direction,
       layerId: eLayerId,
       featureId: eFeatureId,
       feature,
@@ -115,18 +130,19 @@ export function Map({
   // console.log(tooltip)
   const onMarkerOver = (e, config) => {
     if (e && config) {
+      // console.log('over', e, config, tooltip);
       const feature = e.layer || e.target.feature;
-      // console.log(e.target)
       onFeatureHighlight({
         feature: feature.properties.f_id,
         layer: e.target.options.layerId || config.id,
         copy: e.target.options.copy,
       });
-      showMarker(e, config);
     }
   };
+  // const onMarkerOut = (e, config) => {
+  // console.log('out', e, config, tooltip);
   const onMarkerOut = () => onFeatureHighlight(null);
-  const onMarkerClick = showMarker;
+  const onMarkerClick = showTooltip;
 
   const markerEvents = {
     mouseover: onMarkerOver,
@@ -135,15 +151,35 @@ export function Map({
   };
 
   const mapEvents = {
-    resize: () => setTooltip(null),
-    click: () => {
+    resize: () => {
+      // console.log('resize')
       setTooltip(null);
     },
-    zoomstart: () => setTooltip(null),
-    movestart: () => setTooltip(null),
-    layeradd: () => setTooltip(null),
-    layerremove: () => setTooltip(null),
+    click: () => {
+      // console.log('mapClick')
+      setTooltip(null);
+    },
+    zoomstart: () => {
+      // console.log('zoomstart')
+      setTooltip(null);
+    },
+    movestart: () => {
+      // console.log('movestart')
+      setTooltip(null);
+    },
+    layeradd: () => {
+      // console.log('layerAdd', layer)
+      // setTooltip(null)
+    },
+    layerremove: () => {
+      // console.log('layerremove', layer)
+      // setTooltip(null)
+    },
   };
+  // move active marker into view
+  useEffect(() => {
+    setTooltip(null);
+  }, [activeLayerIds]);
 
   // init map
   useEffect(() => {
@@ -158,8 +194,10 @@ export function Map({
       ],
     }).on(mapEvents);
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
-    // areaHighlightRef.current = L.layerGroup();
-    // areaHighlightRef.current.addTo(mapRef.current);
+    areaHighlightRef.current = L.layerGroup();
+    areaTooltipRef.current = L.layerGroup();
+    areaHighlightRef.current.addTo(mapRef.current);
+    areaTooltipRef.current.addTo(mapRef.current);
   }, []);
 
   // add basemap
@@ -293,7 +331,12 @@ export function Map({
         const mapLayer = mapLayers[key];
         if (mapLayer) {
           const { config, layer } = mapLayer;
-          if (config.render && config.render.type === 'marker' && config.icon) {
+          if (
+            config.render &&
+            config.render.type === 'marker' &&
+            config.icon &&
+            mapLayer.config.id === layerHighlightId
+          ) {
             // multiple layers for wrapping dateline
             layer.eachLayer(lcopy => {
               const layerCount = lcopy.getLayers().length;
@@ -349,28 +392,6 @@ export function Map({
               });
             });
           }
-          // else if (config.render && config.render.type === 'area') {
-          //   console.log(mapLayer, featureHighlightId)
-          //   areaHighlightRef.current.clearLayers();
-          //   if (featureHighlightId) {
-          //     /* eslint-disable no-underscore-dangle */
-          //     const layerData =
-          //       mapLayer.layer &&
-          //       mapLayer.layer._layers &&
-          //       Object.values(mapLayer.layer._layers)[0].options.data;
-          //     console.log(layerData)
-          //     if (layerData) {
-          //       const highlightLayer = L.geoJSON(layerData, {
-          //         style: {
-          //           interactive: false,
-          //         },
-          //         filter: feature =>
-          //           feature.properties.f_id === featureHighlightId,
-          //       });
-          //       areaHighlightRef.current.addLayer(highlightLayer);
-          //     }
-          //   }
-          // }
         }
       });
     }
@@ -383,6 +404,106 @@ export function Map({
     featureHighlightId,
     tooltip,
   ]);
+
+  // update tooltip highlight area layers
+  useEffect(() => {
+    if (mapLayers && layersConfig) {
+      if (tooltip) {
+        Object.keys(mapLayers).forEach(key => {
+          const mapLayer = mapLayers[key];
+          if (
+            mapLayer &&
+            mapLayer.config.render &&
+            mapLayer.config.render.type === 'area' &&
+            jsonLayers[mapLayer.config.id]
+          ) {
+            const { config } = mapLayer;
+            const jsonLayer = jsonLayers[config.id];
+            const jsonLayerFiltered = {
+              config,
+              data: {
+                type: jsonLayer.data.type,
+                features: jsonLayer.data.features.filter(
+                  feature => feature.properties.f_id === tooltip.featureId,
+                ),
+              },
+            };
+            const ttLayer = getVectorLayer({
+              jsonLayer: jsonLayerFiltered,
+              config,
+              state: 'active',
+            });
+            const ll = areaTooltipRef.current.getLayers();
+            areaTooltipRef.current.addLayer(ttLayer);
+            ll.forEach(l => {
+              areaTooltipRef.current.removeLayer(l);
+            });
+          }
+        });
+      } else {
+        areaTooltipRef.current.clearLayers();
+      }
+    }
+  }, [layersConfig, mapLayers, tooltip]);
+
+  // update feature highlight area layers
+  useEffect(() => {
+    if (mapLayers && layersConfig) {
+      if (featureHighlightId) {
+        Object.keys(mapLayers).forEach(key => {
+          const mapLayer = mapLayers[key];
+          if (
+            mapLayer &&
+            mapLayer.config.render &&
+            mapLayer.config.render.type === 'area' &&
+            mapLayer.config.id === layerHighlightId &&
+            jsonLayers[mapLayer.config.id]
+          ) {
+            const { config } = mapLayer;
+            const jsonLayer = jsonLayers[config.id];
+            const jsonLayerFiltered = {
+              config,
+              data: {
+                type: jsonLayer.data.type,
+                features: jsonLayer.data.features.filter(
+                  feature =>
+                    feature.properties.f_id === featureHighlightId &&
+                    (!tooltip || tooltip.featureId !== feature.properties.f_id),
+                ),
+              },
+            };
+            const highlightLayer = getVectorLayer({
+              jsonLayer: jsonLayerFiltered,
+              config,
+              state: 'hover',
+              markerEvents: {
+                click: markerEvents.click,
+              },
+            });
+            // shouldn't really be any layers present but just in case
+            areaHighlightRef.current.clearLayers();
+            areaHighlightRef.current.addLayer(highlightLayer);
+          }
+        });
+      } else {
+        areaHighlightRef.current.clearLayers();
+      }
+    }
+  }, [layersConfig, mapLayers, highlightFeature]);
+
+  // useEffect(() => {
+  //   if (mapLayers && layersConfig) {
+  //     if (highlightFeature) {
+  //       Object.keys(mapLayers).forEach(key => {
+  //         const mapLayer = mapLayers[key];
+  //         const { config } = mapLayer;
+  //         if (config.render && config.render.type === 'scaledCircle') {
+  //           console.log('c', featureHighlightId, layerHighlightId, mapLayer)
+  //         }
+  //       });
+  //     }
+  //   }
+  // }, [highlightFeature]);
 
   // move active marker into view
   useEffect(() => {
@@ -427,7 +548,8 @@ export function Map({
     }
   }, [info, layersConfig, projects, mapLayers, size]);
 
-  const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
+  // move active marker into view
+
   return (
     <Styled>
       <MapContainer id="ll-map" />
@@ -443,10 +565,7 @@ export function Map({
       {tooltip && (
         <Tooltip
           position={tooltip.anchor}
-          direction={{
-            x: tooltip.anchor.x < mapSize.x / 2 ? 'right' : 'left',
-            y: tooltip.anchor.y < (mapSize.y * 3) / 4 ? 'bottom' : 'top',
-          }}
+          direction={tooltip.direction}
           feature={tooltip.feature}
           config={tooltip.config}
           layerOptions={tooltip.options}
