@@ -2190,15 +2190,6 @@
     {
       "type": "Feature",
       "properties": {
-        "code": "TUV",
-        "name_en": "Tuvalu",
-        "name_de": "Tuvalu"
-      },
-      "geometry": { "type": "Point", "coordinates": [179.2, -8.516667] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "code": "EU",
         "name_en": "European Union",
         "name_de": "European Union"
