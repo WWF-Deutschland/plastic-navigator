@@ -59704,7 +59704,7 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "code": "-99",
+            "code": "NOR",
             "name_de": "Norwegen",
             "name_en": "Norway"
           }
@@ -60657,7 +60657,7 @@
           ],
           "type": "MultiPolygon",
           "properties": {
-            "code": "-99",
+            "code": "FRA",
             "name_de": "Frankreich",
             "name_en": "France"
           }
