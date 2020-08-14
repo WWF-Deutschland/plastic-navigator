@@ -54,9 +54,10 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
     theme.global.colors[projects ? 'black' : 'white']};
   border-radius: 20px;
   padding: 5px 15px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     background: ${({ theme, projects }) =>
-    theme.global.colors[projects ? 'light' : 'brandDark']};
+    theme.global.colors[projects ? 'light-1' : 'brandDark']};
   }
 `;
 
