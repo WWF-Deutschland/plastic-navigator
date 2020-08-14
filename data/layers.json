@@ -160,7 +160,7 @@
     "group": "source",
     "source": "data",
     "type": "geojson",
-    "file": "layers/river-emissions-top.json",
+    "file": "layers/river-emissions-122.json",
     "title": {
       "en": "River plastic emissions (top 122)",
       "de": "Plastikeinträge der Top 122 Flüsse"
@@ -228,7 +228,7 @@
     }
   },
   {
-    "id": "currents",
+    "id": "currents-original",
     "category": "plastic",
     "group": "hydro",
     "source": "data",
@@ -285,7 +285,7 @@
     }
   },
   {
-    "id": "currentsx",
+    "id": "currents",
     "category": "plastic",
     "group": "hydro",
     "source": "data",
