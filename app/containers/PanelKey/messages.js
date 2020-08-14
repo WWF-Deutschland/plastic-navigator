@@ -6,7 +6,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.Map';
+export const scope = 'app.containers.PanelKey';
 
 export default defineMessages({
   keyTabKey: {
@@ -15,7 +15,7 @@ export default defineMessages({
   },
   keyTabAbout: {
     id: `${scope}.keyTabAbout`,
-    defaultMessage: 'About',
+    defaultMessage: 'Annotation',
   },
   keyProjectsTitle: {
     id: `${scope}.keyProjectsTitle`,

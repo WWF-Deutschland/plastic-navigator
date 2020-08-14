@@ -60,8 +60,10 @@ export const colors = {
   // also see https://github.com/grommet/grommet/wiki/Grommet-v2-theming-documentation
   // and https://github.com/grommet/grommet/blob/master/src/js/themes/base.js
   black: '#000000',
+  'black-trans': 'rgba(0, 0, 0, 0.6)',
   dark: '#999999',
   white: '#ffffff',
+  'white-trans': 'rgba(255, 255, 255, 0.7)',
   // active: '#ffffff',
   brand: '#035367',
   brandDark: '#00728F',

@@ -28,9 +28,9 @@ import {
 } from 'containers/App/selectors';
 
 import { setLayerInfo } from 'containers/App/actions';
+import PanelKey from 'containers/PanelKey';
 
 import Tooltip from './Tooltip';
-import KeyPanel from './KeyPanel';
 
 import {
   getProjectLayer,
@@ -554,7 +554,7 @@ export function Map({
     <Styled>
       <MapContainer id="ll-map" />
       {activeLayerIds && activeLayerIds.length > 0 && hasKey && (
-        <KeyPanel
+        <PanelKey
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
           projects={projects}
