@@ -289,6 +289,7 @@ export function Map({
                     id: config.tileset,
                     accessToken: MAPBOX.TOKEN,
                     zIndex: config['z-index'] || 1,
+                    opacity: (config.style && config.style.opacity) || 1,
                   });
                   mapRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
