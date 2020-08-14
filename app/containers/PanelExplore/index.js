@@ -167,7 +167,8 @@ export function PanelExplore({
                 </Title>
               </TitleWrap>
               <Tabs>
-                {exploreConfig &&
+                {layersConfig &&
+                  exploreConfig &&
                   exploreConfig.map((category, index) => {
                     let activeCategoryLayers = [];
                     if (activeLayers.length > 0) {
