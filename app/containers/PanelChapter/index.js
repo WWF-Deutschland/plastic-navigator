@@ -77,7 +77,7 @@ const ContentWrap = styled(p => (
 const Content = styled(p => (
   <Box
     {...p}
-    background="black-trans"
+    background="black"
     pad="small"
     fill="horizontal"
     elevation="small"
