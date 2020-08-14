@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { injectIntl, intlShape } from 'react-intl';
 
 import {
   selectLayersConfig,
@@ -25,7 +26,7 @@ import { setChapter, setStory, setLanding } from 'containers/App/actions';
 import PanelChapter from 'containers/PanelChapter';
 import ModuleWrap from 'components/ModuleWrap';
 
-// import commonMessages from 'messages';
+import commonMessages from 'messages';
 // import messages from './messages';
 
 const Styled = styled.div``;
@@ -41,6 +42,7 @@ export function ModuleStories({
   onSetChapter,
   onSetLanding,
   firstLanding,
+  intl,
 }) {
   useEffect(() => {
     if (firstLanding) {
@@ -68,8 +70,9 @@ export function ModuleStories({
   return (
     <Styled>
       <Helmet>
-        <title>Module Stories</title>
-        <meta name="description" content="stories" />
+        <title>{`${intl.formatMessage(
+          commonMessages.module_stories_metaTitle,
+        )}`}</title>
       </Helmet>
       <ModuleWrap>
         {layersConfig &&
@@ -107,6 +110,7 @@ ModuleStories.propTypes = {
   chapter: PropTypes.number,
   onSetLanding: PropTypes.func,
   firstLanding: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -132,4 +136,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(ModuleStories);
+export default compose(withConnect)(injectIntl(ModuleStories));

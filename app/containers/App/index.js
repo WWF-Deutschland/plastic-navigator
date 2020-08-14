@@ -8,7 +8,7 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -43,6 +43,8 @@ import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
 import { appLocales, DEFAULT_LOCALE } from 'i18n';
 
+import commonMessages from 'messages';
+
 const AppWrapper = styled.div`
   width: 100%;
   min-height: 100%;
@@ -76,7 +78,7 @@ function App({
   info,
   onClosePage,
   onCloseLayerInfo,
-  locale,
+  intl,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -84,16 +86,16 @@ function App({
     onLoadConfig();
   }, []);
 
+  const { locale } = intl;
+
   // figure out route for Brand element colours
   const paths = path.split('/');
   const route = paths.length > 1 ? paths[2] : '';
+  const title = intl.formatMessage(commonMessages.appTitle);
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
-        <Helmet
-          titleTemplate="%s - Marine Plastic Explorer"
-          defaultTitle="Marine Plastic Explorer"
-        >
+        <Helmet titleTemplate={`%s - ${title}`} defaultTitle={title}>
           <meta name="description" content="" />
         </Helmet>
         <Header route={route} />
@@ -130,7 +132,7 @@ App.propTypes = {
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
-  locale: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -162,4 +164,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(App);
+export default compose(withConnect)(injectIntl(App));

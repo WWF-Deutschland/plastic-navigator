@@ -1,9 +1,11 @@
 {
-  "app.common.appTitle": "Marine Plastic Explorer",
+  "app.common.appTitle": "Global Plastic Navigator",
   "app.common.countries": "Countries",
   "app.common.locations": "Locations",
   "app.common.module_explore": "Explore",
+  "app.common.module_explore_pageTitle": "Explore",
   "app.common.module_stories": "Intro",
+  "app.common.module_stories_pageTitle": "Introduction",
   "app.common.page_about": "About",
   "app.common.page_glossary": "Glossary",
   "app.common.projectLocation": "Project location",

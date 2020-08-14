@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+
 import styled from 'styled-components';
 import { Box, Button, ResponsiveContext, Layer } from 'grommet';
 import { Layer as LayerIcon } from 'grommet-icons';
@@ -32,8 +33,8 @@ import { setLayers, setUIState, setLanding } from 'containers/App/actions';
 
 import { getAsideWidth } from 'utils/responsive';
 
+import commonMessages from 'messages';
 import messages from './messages';
-// import commonMessages from 'messages';
 
 const Buttons = styled(props => <Box {...props} direction="row" />)`
   position: absolute;
@@ -102,6 +103,7 @@ export function ModuleExplore({
   activeLayers,
   firstLanding,
   onSetLanding,
+  intl,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -141,8 +143,9 @@ export function ModuleExplore({
       {size => (
         <div>
           <Helmet>
-            <title>ModuleExplore</title>
-            <meta name="description" content="Description of ModuleExplore" />
+            <title>{`${intl.formatMessage(
+              commonMessages.module_explore_metaTitle,
+            )}`}</title>
           </Helmet>
           <ModuleWrap>
             {show && size !== 'small' && (
@@ -198,6 +201,7 @@ ModuleExplore.propTypes = {
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
   firstLanding: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -227,5 +231,5 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(ModuleExplore);
+export default compose(withConnect)(injectIntl(ModuleExplore));
 // export default ModuleExplore;

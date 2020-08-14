@@ -20,6 +20,14 @@ export default defineMessages({
     id: `${scope}.module_stories`,
     defaultMessage: 'Intro',
   },
+  module_explore_metaTitle: {
+    id: `${scope}.module_explore_metaTitle`,
+    defaultMessage: 'Explore',
+  },
+  module_stories_metaTitle: {
+    id: `${scope}.module_stories_metaTitle`,
+    defaultMessage: 'Introduction',
+  },
   page_about: {
     id: `${scope}.page_about`,
     defaultMessage: 'About',
