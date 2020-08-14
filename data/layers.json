@@ -313,19 +313,8 @@
       "derived": "WikiMedia: Corriented-oceanicas.png",
       "url": "https://commons.wikimedia.org/wiki/File:Corrientes-oceanicas.png"
     },
-    "data": {
-      "type": "direction",
-      "feature-type": "LineString"
-    },
-    "render": {
-      "type": "polyline",
-      "bezier": "true",
-      "decorate": "arrow"
-    },
     "style": {
-      "color": "black",
-      "opacity": "0.3",
-      "weight": "1"
+      "opacity": "0.2"
     },
     "key": {
       "icon": {
