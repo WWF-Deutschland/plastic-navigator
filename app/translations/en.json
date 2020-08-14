@@ -41,5 +41,14 @@
   "app.containers.PanelKey.keyProjectsAbout": "About the WWF Projects",
   "app.containers.PanelKey.keyProjectsTitle": "WWF Projects",
   "app.containers.PanelKey.keyTabAbout": "Annotation",
-  "app.containers.PanelKey.keyTabKey": "Key"
+  "app.containers.PanelKey.keyTabKey": "Key",
+  "rle.containers.Attribution.appBy": "dumpark",
+  "rle.containers.Attribution.appByLabel": "Interactive by",
+  "rle.containers.Attribution.appByURL": "//dumpark.com",
+  "rle.containers.Attribution.copyright": "©WWF",
+  "rle.containers.Attribution.mapAttributionBasemapInfo": "Landmass data by Natural Earth (naturalearthdata.com)",
+  "rle.containers.Attribution.mapAttributionBasemapTitle": "Basemap",
+  "rle.containers.Attribution.mapAttributionLabel": "Map attribution",
+  "rle.containers.Attribution.mapAttributionLayersInfo": "For layer specific references and attribution please refer to the individual layer descriptions",
+  "rle.containers.Attribution.mapAttributionLayersTitle": "Map layers"
 }

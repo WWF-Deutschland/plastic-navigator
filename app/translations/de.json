@@ -41,5 +41,14 @@
   "app.containers.PanelKey.keyProjectsAbout": "",
   "app.containers.PanelKey.keyProjectsTitle": "",
   "app.containers.PanelKey.keyTabAbout": "",
-  "app.containers.PanelKey.keyTabKey": ""
+  "app.containers.PanelKey.keyTabKey": "",
+  "rle.containers.Attribution.appBy": "",
+  "rle.containers.Attribution.appByLabel": "",
+  "rle.containers.Attribution.appByURL": "",
+  "rle.containers.Attribution.copyright": "",
+  "rle.containers.Attribution.mapAttributionBasemapInfo": "",
+  "rle.containers.Attribution.mapAttributionBasemapTitle": "",
+  "rle.containers.Attribution.mapAttributionLabel": "",
+  "rle.containers.Attribution.mapAttributionLayersInfo": "",
+  "rle.containers.Attribution.mapAttributionLayersTitle": ""
 }
