@@ -22,6 +22,7 @@ import {
 import { Close, Layer } from 'grommet-icons';
 
 import { getAsideWidth } from 'utils/responsive';
+import { startsWith } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -33,11 +34,17 @@ import {
   selectUIStateByKey,
   selectActiveLayers,
 } from 'containers/App/selectors';
-import { setUIState, setLayerInfo, toggleLayer } from 'containers/App/actions';
+import {
+  setUIState,
+  setLayerInfo,
+  toggleLayer,
+  setLayers,
+} from 'containers/App/actions';
 
-import { PROJECT_CATEGORY } from 'config';
+import { PROJECT_CATEGORY, PROJECT_CONFIG } from 'config';
 
 import GroupLayers from 'components/GroupLayers';
+import ButtonDeleteLayers from './ButtonDeleteLayers';
 
 import messages from './messages';
 // import commonMessages from 'messages';
@@ -83,6 +90,10 @@ const Title = styled(Text)`
 const Tabs = styled(p => <Box {...p} direction="row" gap="hair" />)`
   padding: 1px;
 `;
+const TabWrapper = styled(Box)`
+  position: relative;
+`;
+
 const TabLink = styled(p => <Button plain {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
@@ -127,6 +138,7 @@ export function PanelExplore({
   locale,
   uiState,
   activeLayers,
+  onSetLayers,
 }) {
   const { tab } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -134,6 +146,7 @@ export function PanelExplore({
 
   const activeCategory = exploreConfig && exploreConfig[tab];
 
+  // console.log(activeLayers, layersConfig, activeCategory)
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -155,19 +168,45 @@ export function PanelExplore({
               </TitleWrap>
               <Tabs>
                 {exploreConfig &&
-                  exploreConfig.map((category, index) => (
-                    <TabLink
-                      key={category.id}
-                      onClick={() => onSetTab(index, uiState)}
-                      active={tab === index}
-                      disabled={tab === index}
-                      label={
-                        <TabLinkAnchor active={tab === index}>
-                          {category.title[locale] || category.title[DEFAULT_LOCALE]}
-                        </TabLinkAnchor>
+                  exploreConfig.map((category, index) => {
+                    let activeCategoryLayers = [];
+                    if (activeLayers.length > 0) {
+                      if (PROJECT_CATEGORY === category.id) {
+                        activeCategoryLayers = activeLayers.filter(
+                          layer => startsWith(layer, `${PROJECT_CONFIG.id}-`),
+                        );
+                      } else {
+                        activeCategoryLayers = activeLayers.filter(layer => {
+                          const layerConfig = layersConfig.find(lc => lc.id === layer);
+                          return layerConfig && layerConfig.category === category.id;
+                        });
                       }
-                    />
-                  ))}
+                    }
+                    const keepLayers = activeLayers.filter(
+                      l => activeCategoryLayers.indexOf(l) === -1
+                    );
+                    return (
+                      <TabWrapper>
+                        {activeCategoryLayers.length > 0 && (
+                          <ButtonDeleteLayers
+                            updateLayers={() => onSetLayers(keepLayers)}
+                            layerCount={activeCategoryLayers.length}
+                          />
+                        )}
+                        <TabLink
+                          key={category.id}
+                          onClick={() => onSetTab(index, uiState)}
+                          active={tab === index}
+                          disabled={tab === index}
+                          label={
+                            <TabLinkAnchor active={tab === index}>
+                              {category.title[locale] || category.title[DEFAULT_LOCALE]}
+                            </TabLinkAnchor>
+                          }
+                        />
+                      </TabWrapper>
+                    );
+                  })}
               </Tabs>
             </PanelHeader>
             <PanelBody>
@@ -258,6 +297,7 @@ PanelExplore.propTypes = {
   onClose: PropTypes.func,
   onSetTab: PropTypes.func,
   onLayerInfo: PropTypes.func,
+  onSetLayers: PropTypes.func,
   onToggleLayer: PropTypes.func,
   layersConfig: PropTypes.array,
   exploreConfig: PropTypes.array,
@@ -286,6 +326,7 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onSetLayers: layers => dispatch(setLayers(layers)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
   };
 }
