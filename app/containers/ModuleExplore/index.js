@@ -36,21 +36,28 @@ import { getAsideWidth } from 'utils/responsive';
 import commonMessages from 'messages';
 import messages from './messages';
 
-const Buttons = styled(props => <Box {...props} direction="row" />)`
+const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
   position: absolute;
   right: 20px;
   top: 20px;
   pointer-events: all;
 `;
 
+// prettier-ignore
 const ShowButton = styled(p => <Button plain reverse {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: ${({ theme }) => theme.global.colors.black};
-  color: ${({ theme }) => theme.global.colors.white};
+  background: ${({ theme, projects }) =>
+    theme.global.colors[projects ? 'white' : 'brand']};
+  color: ${({ theme, projects }) =>
+    theme.global.colors[projects ? 'black' : 'white']};
   border-radius: 20px;
   padding: 5px 15px;
+  &:hover {
+    background: ${({ theme, projects }) =>
+    theme.global.colors[projects ? 'light' : 'brandDark']};
+  }
 `;
 
 const ProjectButtonWrap = styled.div`
@@ -62,6 +69,7 @@ const ProjectButtonWrap = styled.div`
 
 const ProjectButton = ({ showAll, lids, pids, onClick }) => (
   <ShowButton
+    projects
     onClick={() => {
       if (showAll) {
         onClick(

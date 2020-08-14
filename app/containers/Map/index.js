@@ -29,6 +29,7 @@ import {
 
 import { setLayerInfo } from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
+import Attribution from 'containers/Attribution';
 
 import Tooltip from './Tooltip';
 
@@ -65,6 +66,13 @@ const MapContainer = styled.div`
   right: 0;
   left: 0;
   background: ${({ theme }) => theme.global.colors.map};
+`;
+
+const AttributionWrap = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 `;
 
 export function Map({
@@ -188,6 +196,7 @@ export function Map({
       zoom: MAP_OPTIONS.ZOOM.INIT,
       minZoom: MAP_OPTIONS.ZOOM.MIN,
       maxZoom: MAP_OPTIONS.ZOOM.MAX,
+      attributionControl: false,
       maxBounds: [
         [MAP_OPTIONS.BOUNDS.N, MAP_OPTIONS.BOUNDS.W],
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
@@ -574,6 +583,9 @@ export function Map({
           onFeatureClick={onFeatureClick}
         />
       )}
+      <AttributionWrap>
+        <Attribution map />
+      </AttributionWrap>
     </Styled>
   );
 }

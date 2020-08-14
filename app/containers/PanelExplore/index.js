@@ -59,7 +59,7 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
 `;
 
 const PanelHeader = styled(p => (
-  <Box background="black" justify="between" {...p} />
+  <Box background="brand" justify="between" {...p} />
 ))`
   position: absolute;
   right: 0;
@@ -186,7 +186,7 @@ export function PanelExplore({
                       l => activeCategoryLayers.indexOf(l) === -1
                     );
                     return (
-                      <TabWrapper>
+                      <TabWrapper key={category.id}>
                         {activeCategoryLayers.length > 0 && (
                           <ButtonDeleteLayers
                             updateLayers={() => onSetLayers(keepLayers)}
@@ -194,7 +194,6 @@ export function PanelExplore({
                           />
                         )}
                         <TabLink
-                          key={category.id}
                           onClick={() => onSetTab(index, uiState)}
                           active={tab === index}
                           disabled={tab === index}

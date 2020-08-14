@@ -17,10 +17,12 @@ export const MODULES = {
   stories: {
     path: ROUTES.INTRO,
     icon: <DocumentText color="white" />,
+    iconActive: <DocumentText color="black" />,
   },
   explore: {
     path: ROUTES.EXPLORE,
     icon: <Layer color="white" />,
+    iconActive: <Layer color="black" />,
     layers: ['surface-concentration'],
   },
 };

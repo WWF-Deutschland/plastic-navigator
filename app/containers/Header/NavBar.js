@@ -12,7 +12,7 @@ export default styled(props => (
   right: 0;
   width: 100%;
   z-index: ${({ theme }) => theme.dimensions.header.zIndex};
-  background: ${({ theme }) => theme.global.colors.brand};
+  background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   /* responsive height */
   height: ${getHeaderHeight('small')}px;

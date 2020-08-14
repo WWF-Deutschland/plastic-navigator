@@ -65,8 +65,9 @@ export const colors = {
   white: '#ffffff',
   'white-trans': 'rgba(255, 255, 255, 0.7)',
   // active: '#ffffff',
-  brand: '#035367',
-  brandDark: '#00728F',
+  brand: '#00728F',
+  brandDark: '#08586C',
+  light: '#F0F0F0',
   focus: '#333333',
   hover: '#AD190F',
   // placeholder: '#ffffff',
@@ -178,7 +179,7 @@ const theme = {
       },
     },
     drop: {
-      zIndex: 1200,
+      zIndex: 9999,
     },
   },
   rangeInput: {

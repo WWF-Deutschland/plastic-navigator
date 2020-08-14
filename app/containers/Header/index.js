@@ -44,12 +44,13 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   font-family: 'wwfregular';
   letter-spacing: 0.05em;
   padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
-  color: ${({ theme }) => theme.global.colors.white};
+  color: ${({ theme, active }) =>
+    theme.global.colors[active ? 'black' : 'white']};
   opacity: 1;
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   text-transform: uppercase;
   background: ${({ theme, active }) =>
-    active ? theme.global.colors.brandDark : 'transparent'};
+    active ? theme.global.colors.light : 'transparent'};
   &:hover {
     text-decoration: underline;
   }
@@ -134,7 +135,7 @@ function Header({ nav, navPage, path, navHome }) {
                   active={route === m.path}
                   disabled={route === m.path}
                   last={index === Object.keys(PAGES).length - 1}
-                  icon={m.icon}
+                  icon={route === m.path ? m.iconActive : m.icon}
                 />
               ))}
             </NavPrimary>
