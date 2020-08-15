@@ -111,11 +111,11 @@ const getTitle = (feature, config, layer, intl) => {
   if (config.tooltip.title.property) {
     const value = feature.properties[config.tooltip.title.property];
     if (config.tooltip.title.type === 'number') {
-      const rounded = roundNumber(value);
+      const rounded = roundNumber(value, 0);
       const unit =
         config.tooltip.title.units &&
         config.tooltip.title.units === 'true' &&
-        config.data['unit-short'][locale];
+        config.data.unit[locale];
       return `${intl.formatNumber(rounded)} ${unit}`;
     }
     return value;
@@ -191,7 +191,6 @@ const Tooltip = ({
   const markerSize = getMarkerSize(config, feature, layerOptions);
   const offset = getOffset(config, feature, markerSize);
   const layer = layerOptions ? layerOptions.layer : null;
-
   // prettier-ignore
   return (
     <Root position={position}>
@@ -210,7 +209,7 @@ const Tooltip = ({
             {tooltip.content && (
               <TooltipContent feature={feature} config={config} layer={layer} />
             )}
-            {(tooltip.more || tooltip.more === 'true') && tooltip.more !== 'false' && (
+            {tooltip.more !== 'false' && (
               <ButtonWrap>
                 <ButtonMore
                   label={intl.formatMessage(messages.tooltipMore)}

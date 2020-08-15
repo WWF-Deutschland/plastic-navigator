@@ -42,7 +42,7 @@ export function Circles({ config, simple, intl, range }) {
   if (simple && key['radius-simple'] && key['radius-simple'].less) {
     minRadius = parseFloat(key['radius-simple'].less);
   } else if (!simple) {
-    minRadius = render.min || range.min;
+    minRadius = parseFloat(render.min || range.min);
   }
   if (simple && key['radius-simple'] && key['radius-simple'].more) {
     maxRadius = parseFloat(key['radius-simple'].more);

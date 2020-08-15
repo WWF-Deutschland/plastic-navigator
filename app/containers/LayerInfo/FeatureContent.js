@@ -66,7 +66,7 @@ export function FeatureContent({
   }, [config]);
   if (!featureId || !config || !layerData) return null;
   if (POLICY_LAYERS.indexOf(config.id) === -1 || !config.tooltip) {
-    return <LayerContent layer={config} />;
+    return <LayerContent config={config} />;
   }
   const feature = findFeature(layerData.data.features, featureId);
   if (!feature) return <LayerContent config={config} />;

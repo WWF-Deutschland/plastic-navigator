@@ -372,12 +372,7 @@ export function Map({
         const mapLayer = mapLayers[key];
         if (mapLayer) {
           const { config, layer } = mapLayer;
-          if (
-            config.render &&
-            config.render.type === 'marker' &&
-            config.icon &&
-            mapLayer.config.id === layerHighlightId
-          ) {
+          if (config.render && config.render.type === 'marker' && config.icon) {
             // multiple layers for wrapping dateline
             layer.eachLayer(lcopy => {
               const layerCount = lcopy.getLayers().length;
@@ -442,7 +437,7 @@ export function Map({
     projects,
     mapLayers,
     size,
-    featureHighlightId,
+    highlightFeature,
     tooltip,
   ]);
 
