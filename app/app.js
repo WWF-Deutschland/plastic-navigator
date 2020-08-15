@@ -39,7 +39,6 @@ const wwfFontObserver = new FontFaceObserver('wwfregular', {});
 
 // When Open Sans is loaded, add a font-family using Open Sans to the body
 Promise.all([openSansObserver.load(), wwfFontObserver.load()]).then(() => {
-  console.log('both fonts loaded');
   document.body.classList.add('fontLoaded');
 });
 
