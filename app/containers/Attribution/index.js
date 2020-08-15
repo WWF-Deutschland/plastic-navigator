@@ -1,22 +1,19 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Drop, Button, Heading, Paragraph } from 'grommet';
+import { navigatePage } from 'containers/App/actions';
+import { PAGES } from 'config';
+
 import messages from './messages';
 
 const Styled = styled(Box)`
   color: ${({ theme }) => theme.global.colors['dark-3']};
 `;
 const StyledButton = styled(Button)`
-  &:hover {
-    text-decoration: underline;
-    color: ${({ theme }) => theme.global.colors.brand};
-  }
-`;
-
-const ButtonText = styled(props => <Button plain {...props} />)`
-  font-weight: bold;
   text-decoration: none;
   color: ${({ theme }) => theme.global.colors['dark-3']};
   &:hover {
@@ -29,19 +26,25 @@ const StyledHeading = styled(Heading)`
   margin: 0;
 `;
 
-const Label = styled(p => <Text size="xsmall" {...p} />)``;
+const Label = styled(p => <Text size="xxsmall" {...p} />)``;
 const Para = styled(p => <Paragraph size="xsmall" {...p} />)`
   margin: 5px 0 10px;
 `;
 
-export function Attribution({ map, intl }) {
+export function Attribution({ map, intl, onNavAbout }) {
   const attributionButtonRef = useRef(null);
   const [showAttribution, setShowAttribution] = useState(false);
   return (
-    <Styled direction="row" margin="small" gap="xsmall" align="center">
-      <Label>
-        <FormattedMessage {...messages.copyright} />
-      </Label>
+    <Styled direction="row" margin="xsmall" gap="xxsmall" align="center">
+      <StyledButton
+        plain
+        onClick={() => onNavAbout()}
+        label={
+          <Label>
+            <FormattedMessage {...messages.copyright} />
+          </Label>
+        }
+      />
       <Label>|</Label>
       {map && (
         <StyledButton
@@ -56,18 +59,17 @@ export function Attribution({ map, intl }) {
         />
       )}
       {map && <Label>|</Label>}
-      <Label>
-        <FormattedMessage {...messages.appByLabel} />
-      </Label>
-      <ButtonText
+      <StyledButton
         as="a"
         target="_blank"
         href={intl.formatMessage(messages.appByURL)}
       >
         <Label>
-          <FormattedMessage {...messages.appBy} />
+          {`${intl.formatMessage(messages.appByLabel)} ${intl.formatMessage(
+            messages.appBy,
+          )}`}
         </Label>
-      </ButtonText>
+      </StyledButton>
       {map && showAttribution && attributionButtonRef.current && (
         <Drop
           align={{ bottom: 'top', left: 'left' }}
@@ -108,7 +110,19 @@ export function Attribution({ map, intl }) {
 
 Attribution.propTypes = {
   map: PropTypes.bool,
+  onNavAbout: PropTypes.func,
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(Attribution);
+export function mapDispatchToProps(dispatch) {
+  return {
+    onNavAbout: () => dispatch(navigatePage(PAGES.about.path)),
+  };
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(injectIntl(Attribution));
