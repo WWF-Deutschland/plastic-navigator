@@ -202,7 +202,7 @@ export function PanelKey({
 
   // update active layer when new layers are added
   useEffect(() => {
-    if (activeLayerIds.length !== activeLength) {
+    if (!active || activeLayerIds.length !== activeLength) {
       const latestActive = activeLayerIds[0];
       const isProject =
         projects &&
