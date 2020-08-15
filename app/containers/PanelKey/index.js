@@ -59,15 +59,11 @@ const KeyScrollButton = styled(p => (
 const Styled = styled(p => <Box {...p} direction="row" gap="hair" />)`
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 30px;
-  width: 100%;
+  bottom: 35px;
   height: 200px;
   pointer-events: all;
-  z-index: 4000;
+  z-index: 2500;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    right: auto;
-    width: auto;
     bottom: 40px;
   }
 `;
@@ -78,8 +74,9 @@ const ToggleWrap = styled(p => (
     fill="vertical"
     align="center"
     background="white"
-    elevation="medium"
+    elevation="small"
     flex={{ shrink: 0 }}
+    responsive={false}
   />
 ))`
   width: 40px;
@@ -136,8 +133,10 @@ const Content = styled(p => (
     pad="small"
     fill="horizontal"
     elevation="medium"
+    responsive={false}
   />
 ))`
+  max-width: 350px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
   }
@@ -149,14 +148,6 @@ const Title = styled(Text)`
   margin: 0;
   font-weight: bold;
 `;
-
-const COMPONENT_KEY = 'PanelKey';
-
-const DEFAULT_UI_STATE = {
-  open: true,
-};
-
-const OFFSET_STEP = 80;
 
 // figure out how far to scroll down
 const getScrollOffsetBottom = (
@@ -177,6 +168,17 @@ const getScrollOffsetTop = (offset, offsetStep) =>
 
 // figure out if scrolling up is possible
 const hasScrollTop = offset => offset > 0;
+
+const COMPONENT_KEY = 'PanelKey';
+
+const DEFAULT_UI_STATE = {
+  open: true,
+};
+
+const OFFSET_STEP = 80;
+
+const MIN_EXPAND = 'xlarge';
+const MAX_FOLD = 'large';
 
 export function PanelKey({
   onLayerInfo,
@@ -310,7 +312,7 @@ export function PanelKey({
           {open && (
             <ContentWrap>
               <Content>
-                {isMaxSize(size, 'large') && (
+                {isMaxSize(size, MAX_FOLD) && (
                   <Box direction="row" gap="xsmall" margin={{ bottom: 'small' }}>
                     <ButtonTab
                       onClick={() => setTab(0)}
@@ -324,11 +326,11 @@ export function PanelKey({
                     />
                   </Box>
                 )}
-                {(tab === 0 || isMinSize(size, 'xlarge')) && (
+                {(tab === 0 || isMinSize(size, MIN_EXPAND)) && (
                   <Tab>
                     {config && locale && (
                       <Box>
-                        {isMinSize(size, 'xlarge') && (
+                        {isMinSize(size, MIN_EXPAND) && (
                           <Box>
                             <FormattedMessage {...messages.keyTabKey} />
                           </Box>
@@ -375,7 +377,7 @@ export function PanelKey({
                     )}
                   </Tab>
                 )}
-                {tab === 1 && isMaxSize(size, 'large') && (
+                {tab === 1 && isMaxSize(size, MAX_FOLD) && (
                   <Tab>
                     {config && locale && (
                       <Box>
@@ -420,7 +422,7 @@ export function PanelKey({
                   </Tab>
                 )}
               </Content>
-              {isMinSize(size, 'xlarge') && (
+              {isMinSize(size, MIN_EXPAND) && (
                 <Content>
                   <Box>
                     <FormattedMessage {...messages.keyTabAbout} />

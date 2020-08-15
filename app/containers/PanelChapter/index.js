@@ -31,21 +31,19 @@ import {
 
 import KeyFull from 'components/KeyFull';
 
+import { isMinSize, isMaxSize } from 'utils/responsive';
+
 // import commonMessages from 'messages';
 import messages from './messages';
 
 const Styled = styled(p => <Box {...p} direction="row" gap="hair" />)`
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 30px;
-  width: 100%;
+  bottom: 35px;
   height: 200px;
   pointer-events: all;
   z-index: 4000;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    right: auto;
-    width: auto;
     bottom: 40px;
   }
 `;
@@ -59,6 +57,7 @@ const ToggleWrap = styled(p => (
     background="black"
     elevation="small"
     flex={{ shrink: 0 }}
+    responsive={false}
   />
 ))`
   width: 40px;
@@ -81,8 +80,10 @@ const Content = styled(p => (
     pad="small"
     fill="horizontal"
     elevation="small"
+    responsive={false}
   />
 ))`
+  max-width: 350px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
   }
@@ -144,6 +145,9 @@ const DEFAULT_UI_STATE = {
   open: true,
 };
 
+const MIN_EXPAND = 'xlarge';
+const MAX_FOLD = 'large';
+
 export function PanelChapter({
   onPrevious,
   onNext,
@@ -188,7 +192,7 @@ export function PanelChapter({
           </ToggleWrap>
           {open && (
             <ContentWrap>
-              {(size !== 'small' || step === 0) && (
+              {(isMinSize(size, MIN_EXPAND) || step === 0) && (
                 <Content>
                   {chapter && locale && (
                     <Title>
@@ -227,7 +231,7 @@ export function PanelChapter({
                   )}
                 </Content>
               )}
-              {(size !== 'small' || step === 1) && (
+              {(isMinSize(size, MIN_EXPAND) || step === 1) && (
                 <Content>
                   {chapter && locale && (
                     <Description>
@@ -238,11 +242,11 @@ export function PanelChapter({
                 </Content>
               )}
               <ButtonWrap>
-                {(!isFirst || (size === 'small' && step > 0)) && (
+                {(!isFirst || (isMaxSize(size, MAX_FOLD) && step > 0)) && (
                   <ButtonPrevious
                     icon={<Previous color="white" />}
                     onClick={() => {
-                      if (size === 'small') {
+                      if (isMaxSize(size, MAX_FOLD)) {
                         if (step > 0) {
                           setStep(step - 1);
                         }
@@ -265,7 +269,7 @@ export function PanelChapter({
                     icon={<Next color="white" />}
                     label={<FormattedMessage {...messages.next} />}
                     onClick={() => {
-                      if (size === 'small') {
+                      if (isMaxSize(size, MAX_FOLD)) {
                         if (step < STEPS - 1) {
                           setStep(step + 1);
                         }

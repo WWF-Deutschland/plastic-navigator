@@ -4,12 +4,7 @@ import { Header } from 'grommet';
 import { getHeaderHeight } from 'utils/responsive';
 
 export default styled(props => (
-  <Header
-    {...props}
-    align="start"
-    pad={{ horizontal: 'medium' }}
-    elevation="small"
-  />
+  <Header align="start" elevation="small" {...props} />
 ))`
   position: absolute;
   top: 0;

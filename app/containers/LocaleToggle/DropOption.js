@@ -5,11 +5,12 @@ import { Button } from 'grommet';
 // prettier-ignore
 export default styled(p => <Button plain {...p} />)`
   text-align: left;
-  padding: 2px 10px;
+  padding: 2px ${({ theme }) => theme.global.edgeSize.small};
   display: block;
   width: 100%;
   font-weight: ${({ active }) => (active ? 600 : 400)};
   opacity: 1;
+  color: ${({ theme, list }) => theme.global.colors[list ? 'white' : 'black'] };
   border-top: 1px solid ${({ theme }) => theme.global.colors.border.light };
   border-left: 4px solid transparent;
   font-size: ${({ theme }) => theme.text.xsmall.size};

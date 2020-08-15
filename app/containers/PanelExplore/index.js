@@ -54,8 +54,11 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
   right: 0;
   top: 0;
   bottom: 0;
-  width: ${({ panelWidth }) => panelWidth || 400}px;
+  width: 100%;
   pointer-events: all;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    width: ${({ panelWidth }) => panelWidth || 400}px;
+  }
 `;
 
 const PanelHeader = styled(p => (

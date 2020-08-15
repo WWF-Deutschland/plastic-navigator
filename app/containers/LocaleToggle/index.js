@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import styled from 'styled-components';
-import { DropButton, Box, ResponsiveContext } from 'grommet';
+import { DropButton, Box } from 'grommet';
 import { FormDown, FormUp } from 'grommet-icons';
 
 import { appLocales, appLocaleLabels } from 'i18n';
@@ -30,16 +30,17 @@ const StyledDropButton = styled(DropButton)`
   color: ${({ theme }) => theme.global.colors.white} !important;
   background: transparent;
   vertical-align: middle;
+  min-width: 50px;
   &:hover {
     text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
 `;
 
-const DropContent = ({ active, options, onSelect, localeLabels }) => (
+const DropContent = ({ active, options, onSelect, localeLabels, list }) => (
   <Box
     pad="none"
     margin={{ top: 'xxsmall' }}
-    background="white"
+    background={list ? 'transparent' : 'white'}
     elevation="small"
   >
     {options &&
@@ -49,6 +50,7 @@ const DropContent = ({ active, options, onSelect, localeLabels }) => (
           onClick={() => onSelect(option)}
           active={active === option}
           disabled={active === option}
+          list={list}
         >
           {(localeLabels && localeLabels[option]) || option}
         </DropOption>
@@ -60,40 +62,47 @@ DropContent.propTypes = {
   active: PropTypes.string,
   options: PropTypes.array,
   localeLabels: PropTypes.array,
+  list: PropTypes.bool,
 };
 
-export function LocaleToggle({ locale, onLocaleToggle, light }) {
+export function LocaleToggle({ locale, onLocaleToggle, list }) {
   const [open, setOpen] = useState(false);
   return (
     <Styled fill="vertical">
-      <ResponsiveContext.Consumer>
-        {() => (
-          <StyledDropButton
-            plain
-            reverse
-            light={light}
-            gap="xxsmall"
-            active={open}
-            fill="vertical"
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            dropProps={{
-              align: { top: 'bottom', right: 'right' },
-              plain: true,
-            }}
-            icon={open ? <FormUp color="white" /> : <FormDown color="white" />}
-            label={locale}
-            dropContent={
-              <DropContent
-                active={locale}
-                options={appLocales}
-                onSelect={onLocaleToggle}
-                localeLabels={appLocaleLabels}
-              />
-            }
-          />
-        )}
-      </ResponsiveContext.Consumer>
+      {!list && (
+        <StyledDropButton
+          plain
+          reverse
+          gap="xxsmall"
+          active={open}
+          fill="vertical"
+          onClose={() => setOpen(false)}
+          onOpen={() => setOpen(true)}
+          dropProps={{
+            align: { top: 'bottom', right: 'right' },
+            plain: true,
+          }}
+          icon={open ? <FormUp color="white" /> : <FormDown color="white" />}
+          label={locale}
+          dropContent={
+            <DropContent
+              active={locale}
+              options={appLocales}
+              onSelect={onLocaleToggle}
+              localeLabels={appLocaleLabels}
+            />
+          }
+        />
+      )}
+      {list && (
+        <DropContent
+          active={locale}
+          options={appLocales}
+          onSelect={onLocaleToggle}
+          localeLabels={appLocaleLabels}
+          list
+        />
+      )}
     </Styled>
   );
 }
@@ -101,7 +110,7 @@ export function LocaleToggle({ locale, onLocaleToggle, light }) {
 LocaleToggle.propTypes = {
   onLocaleToggle: PropTypes.func,
   locale: PropTypes.string,
-  light: PropTypes.bool,
+  list: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({

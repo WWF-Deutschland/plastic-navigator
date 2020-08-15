@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import { Button, Box, ResponsiveContext, Layer } from 'grommet';
+import { DropButton, Button, Box, ResponsiveContext } from 'grommet';
 import { Menu } from 'grommet-icons';
 
 import { selectRouterPath } from 'containers/App/selectors';
@@ -14,18 +14,19 @@ import { MODULES, PAGES } from 'config';
 
 import LocaleToggle from 'containers/LocaleToggle';
 
-import { getHeaderHeight, isMinSize, isMaxSize } from 'utils/responsive';
+import { isMinSize, isMaxSize } from 'utils/responsive';
 
 import commonMessages from 'messages';
 
 import NavBar from './NavBar';
 
-const MenuButton = styled(props => <Button plain {...props} fill="vertical" />)`
-  width: ${getHeaderHeight('small')}px;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    width: ${getHeaderHeight('medium')}px;
-  }
+const MenuButton = styled(props => (
+  <DropButton plain {...props} fill="vertical" />
+))`
   text-align: center;
+  background: black !important;
+  width: 40px;
+  min-width: 40px;
 `;
 
 const MenuOpen = styled(Menu)`
@@ -51,24 +52,27 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
     theme.global.colors[active ? 'black' : 'white']};
   background: ${({ theme, active }) =>
     active ? theme.global.colors.light : 'transparent'};
-  padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
   border-right: 1px solid;
   border-left: 1px solid;
   border-color: ${({ theme }) => theme.global.colors.light};
-  min-width: 140px;
   &:hover {
     text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+  width: 50px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    width: auto;
+    min-width: 120px;
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    min-width: 140px;
+    padding: 0 ${({ theme }) => theme.global.edgeSize.ms};
   }
 `;
 // prettier-ignore
 const Secondary = styled(props => <Button {...props} plain />)`
-  font-family: 'wwfregular';
-  letter-spacing: 0.05em;
-  font-size: ${({ theme }) => theme.text.large.size};
-  padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
+  font-size: ${({ theme }) => theme.text.medium.size};
+  padding: ${({ theme }) => theme.global.edgeSize.small};
   color: ${({ theme }) => theme.global.colors.white};
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   background: transparent;
@@ -76,9 +80,49 @@ const Secondary = styled(props => <Button {...props} plain />)`
     text-decoration: underline;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    font-size: ${({ theme }) => theme.text.large.size};
+    font-family: 'wwfregular';
+    letter-spacing: 0.05em;
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
     padding-right: ${({ theme, last }) =>
     last ? 0 : theme.global.edgeSize.small};
+  }
+`;
+
+const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 3000;
+  max-width: 85px;
+  padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
+  color: ${({ theme }) => theme.global.colors.white};
+  font-size: ${({ theme }) => theme.text.small.size};
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    max-width: 120px;
+    font-size: ${({ theme }) => theme.text.large.size};
+  }
+`;
+const BrandWWFWrap = styled(props => <Box {...props} />)`
+  position: relative;
+  width: 44px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    width: 60px;
+  }
+`;
+const BrandWWF = styled(props => <Button {...props} plain />)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  height: 50px;
+  width: 44px;
+  background: ${({ theme }) => theme.global.colors.white};
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    height: 68px;
+    width: 60px;
   }
 `;
 
@@ -87,32 +131,6 @@ const toArray = obj =>
     key,
     ...obj[key],
   }));
-
-const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  z-index: 3000;
-  max-width: 120px;
-  padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
-  color: ${({ theme }) => theme.global.colors.white};
-  font-size: ${({ theme }) => theme.text.large.size};
-`;
-const BrandWWFWrap = styled(props => <Box {...props} />)`
-  position: relative;
-  width: 72px;
-`;
-const BrandWWF = styled(props => <Button {...props} plain />)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 3000;
-  height: 81px;
-  width: 72px;
-  background: ${({ theme }) => theme.global.colors.white};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-`;
 
 function Header({ nav, navPage, path, navHome }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -127,101 +145,129 @@ function Header({ nav, navPage, path, navHome }) {
           <NavBar
             justify={isMinSize(size, 'large') ? 'start' : 'between'}
             alignContent="end"
+            pad={
+              isMinSize(size, 'large')
+                ? { horizontal: 'medium' }
+                : { left: 'medium', right: 'small' }
+            }
+            gap="none"
           >
-            {!window.wwfMpxInsideIframe && (
-              <BrandWWFWrap>
-                <BrandWWF as="a" target="_blank" href="//wwf.de" />
-              </BrandWWFWrap>
-            )}
-            <Brand
-              onClick={() => navHome()}
-              label={<FormattedMessage {...commonMessages.appTitle} />}
-            />
-            <NavPrimary>
-              {toArray(MODULES).map((m, index) => (
-                <Primary
-                  key={m.key}
-                  onClick={() => {
-                    setShowMenu(false);
-                    nav(m.path);
-                  }}
-                  active={route === m.path}
-                  disabled={route === m.path}
-                  last={index === Object.keys(PAGES).length - 1}
-                >
-                  <Box direction="row" justify="start" align="center" gap="ms">
-                    {route === m.path ? m.iconActive : m.icon}
-                    {isMinSize(size, 'medium') && (
-                      <FormattedMessage
-                        {...commonMessages[`module_${m.key}`]}
-                      />
-                    )}
-                  </Box>
-                </Primary>
-              ))}
-            </NavPrimary>
-            {isMaxSize(size, 'medium') && (
-              <MenuButton
-                plai
-                onClick={() => setShowMenu(!showMenu)}
-                label={
-                  showMenu ? <MenuOpen color="white" /> : <Menu color="white" />
-                }
+            <Box
+              direction="row"
+              fill
+              gap="small"
+              justify={isMinSize(size, 'medium') ? 'start' : 'between'}
+            >
+              {!window.wwfMpxInsideIframe && (
+                <BrandWWFWrap>
+                  <BrandWWF as="a" target="_blank" href="//wwf.de" />
+                </BrandWWFWrap>
+              )}
+              <Brand
+                onClick={() => navHome()}
+                label={<FormattedMessage {...commonMessages.appTitle} />}
               />
-            )}
-            {isMinSize(size, 'large') && (
+              <NavPrimary
+                margin={{
+                  left: isMaxSize(size, 'small') ? 'auto' : '0',
+                  right: isMaxSize(size, 'small') ? 'small' : '0',
+                }}
+              >
+                {toArray(MODULES).map((m, index) => (
+                  <Primary
+                    key={m.key}
+                    onClick={() => {
+                      setShowMenu(false);
+                      nav(m.path);
+                    }}
+                    active={route === m.path}
+                    disabled={route === m.path}
+                    last={index === Object.keys(PAGES).length - 1}
+                  >
+                    <Box
+                      direction="row"
+                      justify={isMinSize(size, 'medium') ? 'start' : 'center'}
+                      align="center"
+                      gap="ms"
+                    >
+                      {route === m.path ? m.iconActive : m.icon}
+                      {isMinSize(size, 'medium') && (
+                        <FormattedMessage
+                          {...commonMessages[`module_${m.key}`]}
+                        />
+                      )}
+                    </Box>
+                  </Primary>
+                ))}
+              </NavPrimary>
+            </Box>
+            {isMinSize(size, 'medium') && (
               <Box
                 fill="vertical"
-                pad={{ horizontal: 'small' }}
+                flex={{ grow: 1 }}
+                pad={{ left: 'small' }}
                 margin={{ left: 'auto' }}
               >
                 <NavSecondary justify="end">
-                  {pagesArray.map((p, index) => (
-                    <Secondary
-                      key={p.key}
-                      onClick={() => navPage(p.key)}
-                      label={
-                        <FormattedMessage
-                          {...commonMessages[`page_${p.key}`]}
-                        />
-                      }
-                      last={index === Object.keys(PAGES).length - 1}
-                    />
-                  ))}
+                  {isMinSize(size, 'large') &&
+                    pagesArray.map((p, index) => (
+                      <Secondary
+                        key={p.key}
+                        fill="vertical"
+                        onClick={() => navPage(p.key)}
+                        label={
+                          <FormattedMessage
+                            {...commonMessages[`page_${p.key}`]}
+                          />
+                        }
+                        last={index === Object.keys(PAGES).length - 1}
+                      />
+                    ))}
                   <LocaleToggle />
                 </NavSecondary>
               </Box>
             )}
+            {isMaxSize(size, 'medium') && (
+              <MenuButton
+                plain
+                onClose={() => setShowMenu(false)}
+                onOpen={() => setShowMenu(true)}
+                active={showMenu}
+                label={
+                  showMenu ? <MenuOpen color="white" /> : <Menu color="white" />
+                }
+                dropProps={{
+                  align: { top: 'bottom', right: 'right' },
+                  plain: true,
+                }}
+                dropContent={
+                  <Box
+                    background="black"
+                    pad="none"
+                    margin={{ top: 'xxsmall' }}
+                    elevation="small"
+                    style={{ minWidth: '120px' }}
+                  >
+                    {pagesArray.map(p => (
+                      <Secondary
+                        key={p.key}
+                        onClick={() => {
+                          setShowMenu(false);
+                          navPage(p.key);
+                        }}
+                        label={
+                          <FormattedMessage
+                            {...commonMessages[`page_${p.key}`]}
+                          />
+                        }
+                      />
+                    ))}
+                    {isMaxSize(size, 'small') && <LocaleToggle list />}
+                  </Box>
+                }
+              />
+            )}
           </NavBar>
-          {isMaxSize(size, 'medium') && showMenu && (
-            <Layer
-              full="horizontal"
-              margin={{ top: '52px' }}
-              onClickOutside={() => setShowMenu(false)}
-              responsive={false}
-              modal={false}
-              animate={false}
-              background="black"
-              position="top"
-              style={{ zIndex: 3000 }}
-            >
-              <Box background="black">
-                {pagesArray.map(p => (
-                  <Secondary
-                    key={p.key}
-                    onClick={() => {
-                      setShowMenu(false);
-                      navPage(p.key);
-                    }}
-                    label={
-                      <FormattedMessage {...commonMessages[`page_${p.key}`]} />
-                    }
-                  />
-                ))}
-                <LocaleToggle />
-              </Box>
-            </Layer>
-          )}
         </>
       )}
     </ResponsiveContext.Consumer>
