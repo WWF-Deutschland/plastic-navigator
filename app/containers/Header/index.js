@@ -59,7 +59,7 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   }
   border-right: 1px solid;
   border-left: 1px solid;
-  border-color: ${({ theme }) => theme.global.colors.brandDark};
+  border-color: ${({ theme }) => theme.global.colors.light};
 `;
 // prettier-ignore
 const Secondary = styled(props => <Button {...props} plain />)`
@@ -85,14 +85,30 @@ const toArray = obj =>
     ...obj[key],
   }));
 
-const Brand = styled(props => <Button {...props} plain />)`
+const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   letter-spacing: 0.05em;
   z-index: 3000;
   max-width: 120px;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
+  padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
   color: ${({ theme }) => theme.global.colors.white};
+  font-size: ${({ theme }) => theme.text.large.size};
+`;
+const BrandWWFWrap = styled(props => <Box {...props} />)`
+  position: relative;
+  width: 72px;
+`;
+const BrandWWF = styled(props => <Button {...props} plain />)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3000;
+  height: 81px;
+  width: 72px;
+  background: ${({ theme }) => theme.global.colors.white};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 function Header({ nav, navPage, path, navHome }) {
@@ -101,7 +117,6 @@ function Header({ nav, navPage, path, navHome }) {
   const paths = path.split('/');
   const route = path[0] === '/' ? paths[2] : paths[1];
   const pagesArray = toArray(PAGES);
-  console.log(window.wwfMpxInsideIframe);
   return (
     <ResponsiveContext.Consumer>
       {size => (
@@ -110,10 +125,14 @@ function Header({ nav, navPage, path, navHome }) {
             justify={isMinSize(size, 'large') ? 'start' : 'between'}
             alignContent="end"
           >
+            {!window.wwfMpxInsideIframe && (
+              <BrandWWFWrap>
+                <BrandWWF as="a" target="_blank" href="//wwf.de" />
+              </BrandWWFWrap>
+            )}
             <Brand
               onClick={() => navHome()}
               label={<FormattedMessage {...commonMessages.appTitle} />}
-              route={route}
             />
             <NavPrimary>
               {toArray(MODULES).map((m, index) => (

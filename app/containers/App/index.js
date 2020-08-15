@@ -50,6 +50,17 @@ const AppWrapper = styled.div`
   min-height: 100%;
 `;
 
+const AppIframeShadow = styled.div`
+  pointer-events: none;
+  box-shadow: inset 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999999;
+`;
+
 const Content = styled.div`
   position: absolute;
   bottom: 0;
@@ -119,6 +130,7 @@ function App({
             <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
           )}
         </Content>
+        {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
       </AppWrapper>
     </Grommet>

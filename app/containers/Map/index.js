@@ -617,7 +617,7 @@ export function Map({
           <LoadingIndicator />
         </LoadingWrap>
       )}
-      <MapControls position="left">
+      <MapControls position="left" hasBrand={!window.wwfMpxInsideIframe}>
         <MapControl
           disabled={MAP_OPTIONS.ZOOM.MAX === zoom}
           icon={
