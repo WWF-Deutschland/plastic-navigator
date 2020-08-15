@@ -52,7 +52,7 @@ const AppWrapper = styled.div`
 
 const AppIframeShadow = styled.div`
   pointer-events: none;
-  box-shadow: inset 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
   position: absolute;
   top: 0;
   bottom: 0;
