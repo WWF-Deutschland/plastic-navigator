@@ -43,28 +43,31 @@ const NavPrimary = styled(props => (
 const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   font-family: 'wwfregular';
   letter-spacing: 0.05em;
-  padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: ${({ theme }) => theme.text.large.size};
+  opacity: 1;
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'black' : 'white']};
-  opacity: 1;
-  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
-  text-transform: uppercase;
   background: ${({ theme, active }) =>
     active ? theme.global.colors.light : 'transparent'};
+  padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
+  border-right: 1px solid;
+  border-left: 1px solid;
+  border-color: ${({ theme }) => theme.global.colors.light};
+  min-width: 140px;
   &:hover {
-    text-decoration: underline;
+    text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
   }
-  border-right: 1px solid;
-  border-left: 1px solid;
-  border-color: ${({ theme }) => theme.global.colors.light};
 `;
 // prettier-ignore
 const Secondary = styled(props => <Button {...props} plain />)`
   font-family: 'wwfregular';
   letter-spacing: 0.05em;
+  font-size: ${({ theme }) => theme.text.large.size};
   padding: ${({ theme }) => theme.global.edgeSize.small} ${({ theme }) => theme.global.edgeSize.medium};
   color: ${({ theme }) => theme.global.colors.white};
   text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
@@ -142,20 +145,19 @@ function Header({ nav, navPage, path, navHome }) {
                     setShowMenu(false);
                     nav(m.path);
                   }}
-                  label={
-                    isMinSize(size, 'medium') ? (
-                      <FormattedMessage
-                        {...commonMessages[`module_${m.key}`]}
-                      />
-                    ) : (
-                      ''
-                    )
-                  }
                   active={route === m.path}
                   disabled={route === m.path}
                   last={index === Object.keys(PAGES).length - 1}
-                  icon={route === m.path ? m.iconActive : m.icon}
-                />
+                >
+                  <Box direction="row" justify="start" align="center" gap="ms">
+                    {route === m.path ? m.iconActive : m.icon}
+                    {isMinSize(size, 'medium') && (
+                      <FormattedMessage
+                        {...commonMessages[`module_${m.key}`]}
+                      />
+                    )}
+                  </Box>
+                </Primary>
               ))}
             </NavPrimary>
             {isMaxSize(size, 'medium') && (
