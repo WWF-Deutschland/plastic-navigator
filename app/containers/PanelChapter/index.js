@@ -112,6 +112,9 @@ const ButtonNext = styled(p => <Button {...p} reverse plain />)`
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
   padding: 5px 15px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDark};
+  }
 `;
 const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
 

@@ -104,6 +104,9 @@ const ButtonMore = styled(p => <Button {...p} plain />)`
   font-size: ${({ theme }) => theme.text.small.size};
   border-radius: 20px;
   padding: 3px 12px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDark};
+  }
 `;
 
 const getTitle = (feature, config, layer, intl) => {
