@@ -31,6 +31,11 @@ import { setLayerInfo } from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
+import { Add as Plus, Subtract as Minus } from 'grommet-icons';
+import LoadingIndicator from 'components/LoadingIndicator';
+import MapControls from 'components/MapControls';
+import MapControl from 'components/MapControl';
+
 import Tooltip from './Tooltip';
 
 import {
@@ -47,6 +52,7 @@ import {
   selectLayerConfig,
   selectMapLayers,
   selectHighlightFeature,
+  selectLayersLoading,
 } from './selectors';
 import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
 
@@ -75,6 +81,12 @@ const AttributionWrap = styled.div`
   z-index: 1000;
 `;
 
+const LoadingWrap = styled(MapContainer)`
+  z-index: 999;
+  pointer-events: none;
+  background: none;
+`;
+
 export function Map({
   layersConfig,
   activeLayerIds,
@@ -89,10 +101,13 @@ export function Map({
   onFeatureHighlight,
   highlightFeature,
   hasKey,
+  loading,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
   const [tooltip, setTooltip] = useState(null);
+  const [tilesLoading, setTilesLoading] = useState(false);
+  const [zoom, setZoom] = useState(MAP_OPTIONS.ZOOM.INIT);
 
   const mapRef = useRef(null);
   const areaHighlightRef = useRef(null);
@@ -197,6 +212,7 @@ export function Map({
       minZoom: MAP_OPTIONS.ZOOM.MIN,
       maxZoom: MAP_OPTIONS.ZOOM.MAX,
       attributionControl: false,
+      zoomControl: false,
       maxBounds: [
         [MAP_OPTIONS.BOUNDS.N, MAP_OPTIONS.BOUNDS.W],
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
@@ -207,7 +223,16 @@ export function Map({
     areaTooltipRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
+    mapRef.current.on('zoomend', () => {
+      setZoom(mapRef.current.getZoom());
+    });
   }, []);
+
+  useEffect(() => {
+    if (mapRef.current.getZoom() !== zoom) {
+      mapRef.current.setZoom(zoom);
+    }
+  }, [zoom]);
 
   // add basemap
   useEffect(() => {
@@ -222,6 +247,9 @@ export function Map({
               username: MAPBOX.USER,
               accessToken: MAPBOX.TOKEN,
               zIndex: config['z-index'] || 1,
+            }).on({
+              loading: () => setTilesLoading(true),
+              load: () => setTilesLoading(false),
             }),
           );
         }
@@ -299,6 +327,9 @@ export function Map({
                     accessToken: MAPBOX.TOKEN,
                     zIndex: config['z-index'] || 1,
                     opacity: (config.style && config.style.opacity) || 1,
+                  }).on({
+                    loading: () => setTilesLoading(true),
+                    load: () => setTilesLoading(false),
                   });
                   mapRef.current.addLayer(layer);
                   newMapLayers[id] = { layer, config };
@@ -586,6 +617,27 @@ export function Map({
       <AttributionWrap>
         <Attribution map />
       </AttributionWrap>
+      {(tilesLoading || loading) && (
+        <LoadingWrap>
+          <LoadingIndicator />
+        </LoadingWrap>
+      )}
+      <MapControls position="left">
+        <MapControl
+          disabled={MAP_OPTIONS.ZOOM.MAX === zoom}
+          icon={
+            <Plus color={MAP_OPTIONS.ZOOM.MAX === zoom ? 'dark-4' : 'black'} />
+          }
+          onClick={() => setZoom(zoom + 1)}
+        />
+        <MapControl
+          disabled={MAP_OPTIONS.ZOOM.MIN === zoom}
+          icon={
+            <Minus color={MAP_OPTIONS.ZOOM.MIN === zoom ? 'dark-4' : 'black'} />
+          }
+          onClick={() => setZoom(zoom - 1)}
+        />
+      </MapControls>
     </Styled>
   );
 }
@@ -604,6 +656,7 @@ Map.propTypes = {
   info: PropTypes.string,
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -615,6 +668,7 @@ const mapStateToProps = createStructuredSelector({
   projects: state => selectConfigByKey(state, { key: 'projects' }),
   info: state => selectInfoSearch(state),
   highlightFeature: state => selectHighlightFeature(state),
+  loading: state => selectLayersLoading(state),
 });
 
 function mapDispatchToProps(dispatch) {

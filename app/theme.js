@@ -97,6 +97,7 @@ const text = {
 // grommet paddings and margins
 const edgeSize = {
   hair: '1px',
+  xxxsmall: '3px',
   xxsmall: '3px',
   xsmall: '6px',
   small: '12px',
