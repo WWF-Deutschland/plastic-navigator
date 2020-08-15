@@ -35,9 +35,11 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
 const openSansObserver = new FontFaceObserver('Open Sans', {});
+const wwfFontObserver = new FontFaceObserver('wwfregular', {});
 
 // When Open Sans is loaded, add a font-family using Open Sans to the body
-openSansObserver.load().then(() => {
+Promise.all([openSansObserver.load(), wwfFontObserver.load()]).then(() => {
+  console.log('both fonts loaded');
   document.body.classList.add('fontLoaded');
 });
 
