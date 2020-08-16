@@ -53,16 +53,21 @@ const ToggleWrap = styled(p => (
     {...p}
     fill="vertical"
     align="center"
-    pad="small"
-    background="black"
     elevation="small"
     flex={{ shrink: 0 }}
     responsive={false}
+    background="black"
   />
 ))`
   width: 40px;
 `;
-const ButtonToggle = styled(p => <Button {...p} plain />)``;
+const ButtonToggle = styled(p => <Button {...p} plain fill />)`
+  background: ${({ theme }) => theme.global.colors.black};
+  padding: ${({ theme }) => theme.global.edgeSize.small};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['dark-1']};
+  }
+`;
 
 const ContentWrap = styled(p => (
   <Box {...p} direction="row" gap="hair" fill="horizontal" />
@@ -73,10 +78,11 @@ const Content = styled(p => (
   <Box
     {...p}
     background="black"
-    pad="small"
+    pad={{ horizontal: 'small', top: 'small' }}
     fill="horizontal"
     elevation="small"
     responsive={false}
+    flex={false}
   />
 ))`
   max-width: 350px;
@@ -90,7 +96,7 @@ const Content = styled(p => (
 const Title = styled(Text)`
   font-size: 22px;
   line-height: 24px;
-  margin-top: 0;
+  margin: 0;
   margin-bottom: 5px;
   font-family: 'wwfregular';
   font-weight: normal;
@@ -118,18 +124,24 @@ const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
 const Description = styled(Text)``;
 
 const LayersFocusWrap = styled(p => (
-  <Box {...p} direction="row" gap="small" />
+  <Box {...p} direction="row" gap="small" flex={false} />
 ))``;
-const LayerFocus = styled(p => <Box {...p} fill="horizontal" />)``;
+const LayerFocus = styled(p => <Box {...p} flex={false} />)``;
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" margin={{ bottom: 'xxsmall' }} />
+  <Box {...p} direction="row" align="center" margin={{ bottom: 'xsmall' }} />
 ))``;
 const LayerTitle = styled(Text)`
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
 `;
-const LayerButtonInfo = styled(p => <Button {...p} />)`
+
+const LayerButtonInfo = styled(p => <Button plain {...p} />)`
+  padding: ${({ theme }) => theme.global.edgeSize.xsmall};
   margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
+  border-radius: 9999px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['dark-1']};
+  }
 `;
 
 // content is split into 2 sub-chapters on small screens
@@ -182,7 +194,11 @@ export function PanelChapter({
         <Styled>
           <ToggleWrap>
             <ButtonToggle
-              icon={open ? <ArrowLeft /> : <ArrowRight />}
+              icon={
+                <Box fill justify="start">
+                  {open ? <ArrowLeft /> : <ArrowRight />}
+                </Box>
+              }
               onClick={() => onSetOpen(!open)}
             />
           </ToggleWrap>
@@ -198,7 +214,10 @@ export function PanelChapter({
                   {configsFocus && configsFocus.length > 0 && (
                     <LayersFocusWrap>
                       {configsFocus.map(config => (
-                        <LayerFocus key={config.id}>
+                        <LayerFocus
+                          key={config.id}
+                          fill={configsFocus.length === 1 && 'horizontal'}
+                        >
                           <LayerTitleWrap
                             fill={configsFocus.length === 1 && 'horizontal'}
                           >

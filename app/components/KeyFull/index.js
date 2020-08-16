@@ -15,7 +15,7 @@ import Icon from './Icon';
 
 import messages from './messages';
 
-const Styled = styled(p => <Box {...p} fill />)`
+const Styled = styled(p => <Box {...p} fill="horizontal" flex={false} />)`
   position: relative;
 `;
 
