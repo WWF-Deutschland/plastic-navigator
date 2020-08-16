@@ -1,13 +1,8 @@
 import React from 'react';
 import StyledIcon from './StyledIcon';
-function ExploreSmall(props) {
+function ExploreS(props) {
   return (
-    <StyledIcon
-      size="30px"
-      viewBox="0 0 30 30"
-      a11yTitle="ExploreSmall"
-      {...props}
-    >
+    <StyledIcon size="30px" viewBox="0 0 30 30" a11yTitle="ExploreS" {...props}>
       <g>
         <path
           fill="inherit"
@@ -19,4 +14,4 @@ function ExploreSmall(props) {
   );
 }
 
-export default ExploreSmall;
+export default ExploreS;
