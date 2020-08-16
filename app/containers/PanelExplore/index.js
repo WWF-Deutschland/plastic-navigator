@@ -19,7 +19,7 @@ import {
   Paragraph,
   ResponsiveContext,
 } from 'grommet';
-import { Close, Layer } from 'grommet-icons';
+import { Close, ExploreS as Layer } from 'components/Icons';
 
 import { getAsideWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
@@ -164,7 +164,7 @@ export function PanelExplore({
                 alignSelf="end"
               />
               <TitleWrap>
-                <Layer size="xlarge" />
+                <Layer />
                 <Title>
                   <FormattedMessage {...messages.title} />
                 </Title>

@@ -25,7 +25,7 @@ export default defineMessages({
     id: `${scope}.showProjectsShort`,
     defaultMessage: 'Show projects',
   },
-  hideProjectsSHort: {
+  hideProjectsShort: {
     id: `${scope}.hideProjectsShort`,
     defaultMessage: 'Hide projects',
   },

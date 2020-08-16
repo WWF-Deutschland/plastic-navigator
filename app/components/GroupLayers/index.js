@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { CheckBox, Button, Box } from 'grommet';
-import { Layer } from 'grommet-icons';
+import { ExploreXS as Layer } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -104,7 +104,7 @@ function GroupLayers({
         <ListHeaderRow>
           <ListHeaderCell>
             <Box direction="row" gap="small" align="center">
-              <Layer size="small" color="dark-4" />
+              <Layer color="dark-4" />
               <FormattedMessage
                 {...messages[projects ? 'columnProject' : 'columnLayer']}
               />

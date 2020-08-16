@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { injectIntl, intlShape } from 'react-intl';
 import { Button, Box } from 'grommet';
-import { Close } from 'grommet-icons';
+import { CloseS } from 'components/Icons';
 
 import { roundNumber } from 'utils/numbers';
 
@@ -233,7 +233,7 @@ const Tooltip = ({
             <Button
               plain
               onClick={() => onClose()}
-              icon={<Close size="large" />}
+              icon={<CloseS />}
               fill
               style={{
                 textAlign: 'center',

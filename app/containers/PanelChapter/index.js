@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Button, ResponsiveContext, Text } from 'grommet';
-import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
+import { ArrowRight, ArrowLeft, InfoOutline } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { MODULES } from 'config';
@@ -63,10 +63,6 @@ const ToggleWrap = styled(p => (
   width: 40px;
 `;
 const ButtonToggle = styled(p => <Button {...p} plain />)``;
-
-const MenuOpen = styled(Menu)`
-  transform: rotate(90deg);
-`;
 
 const ContentWrap = styled(p => (
   <Box {...p} direction="row" gap="hair" fill="horizontal" />
@@ -186,7 +182,7 @@ export function PanelChapter({
         <Styled>
           <ToggleWrap>
             <ButtonToggle
-              icon={open ? <MenuOpen /> : <Menu />}
+              icon={open ? <ArrowLeft /> : <ArrowRight />}
               onClick={() => onSetOpen(!open)}
             />
           </ToggleWrap>
@@ -220,7 +216,7 @@ export function PanelChapter({
                               onClick={() =>
                                 onLayerInfo(config['content-id'] || config.id)
                               }
-                              icon={<CircleInformation />}
+                              icon={<InfoOutline />}
                               stretch={configsFocus.length === 1}
                             />
                           </LayerTitleWrap>
@@ -244,7 +240,7 @@ export function PanelChapter({
               <ButtonWrap>
                 {(!isFirst || (isMaxSize(size, MAX_FOLD) && step > 0)) && (
                   <ButtonPrevious
-                    icon={<Previous color="white" />}
+                    icon={<ArrowLeft color="white" />}
                     onClick={() => {
                       if (isMaxSize(size, MAX_FOLD)) {
                         if (step > 0) {
@@ -266,7 +262,7 @@ export function PanelChapter({
                 )}
                 {!isLast && (
                   <ButtonNext
-                    icon={<Next color="white" />}
+                    icon={<ArrowRight color="white" />}
                     label={<FormattedMessage {...messages.next} />}
                     onClick={() => {
                       if (isMaxSize(size, MAX_FOLD)) {

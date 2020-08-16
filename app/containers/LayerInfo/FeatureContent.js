@@ -12,7 +12,7 @@ import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Heading } from 'grommet';
-import { Previous } from 'grommet-icons';
+import { ArrowLeftL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
@@ -77,7 +77,7 @@ export function FeatureContent({
         <Button
           plain
           onClick={() => onSetLayerInfo(config.id)}
-          icon={<Previous size="large" />}
+          icon={<ArrowLeftL size="large" />}
         />
       </div>
       <div>

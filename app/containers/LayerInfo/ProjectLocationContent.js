@@ -12,8 +12,8 @@ import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Heading } from 'grommet';
-import { Previous } from 'grommet-icons';
-// import { Previous } from 'grommet-icons';
+import { ArrowLeftL } from 'components/Icons';
+// import { ArrowLeftL } from 'components/Icons';
 import Markdown from 'react-remarkable';
 import anchorme from 'anchorme';
 
@@ -60,7 +60,7 @@ export function ProjectLocationContent({
         <Button
           plain
           onClick={() => onSetLayerInfo(projectId)}
-          icon={<Previous size="large" />}
+          icon={<ArrowLeftL size="large" />}
         />
       </div>
       <div>

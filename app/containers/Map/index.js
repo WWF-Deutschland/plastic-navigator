@@ -31,10 +31,10 @@ import { setLayerInfo } from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
-import { Add as Plus, Subtract as Minus } from 'grommet-icons';
 import LoadingIndicator from 'components/LoadingIndicator';
 import MapControls from 'components/MapControls';
 import MapControl from 'components/MapControl';
+import { Plus, Minus } from 'components/Icons';
 
 import Tooltip from './Tooltip';
 

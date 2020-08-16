@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, Text } from 'grommet';
-import { FormClose } from 'grommet-icons';
+import { CloseXS } from 'components/Icons';
 
 const TabDelete = styled(p => <Button plain {...p} />)`
   position: absolute;
@@ -34,7 +34,7 @@ export function ButtonDeleteLayers({ layerCount, updateLayers }) {
       label={
         <WrapContent>
           {hover ? (
-            <FormClose color="black" size="large" />
+            <CloseXS color="black" />
           ) : (
             <Text size="small">{layerCount}</Text>
           )}
