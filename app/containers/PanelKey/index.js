@@ -100,6 +100,9 @@ const ButtonToggle = styled(p => <Button {...p} plain fill="horizontal" />)`
   height: 40px;
   width: 40px;
   text-align: center;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['light-2']};
+  }
 `;
 const ButtonTab = styled(p => <Button {...p} plain />)`
   text-decoration: ${({ activeTab }) => (activeTab ? 'underline' : 'none')};
@@ -114,14 +117,18 @@ const KeyUL = styled.ul`
   top: ${({ offset }) => -1 * offset || 0}px;
 `;
 const KeyLI = styled.li`
-  background: ${({ activeLayer, theme }) =>
-    theme.global.colors[activeLayer ? 'light-4' : 'white']};
   height: 40px;
   width: 40px;
   display: block;
-  padding: 5px;
 `;
-const ButtonKey = styled(p => <Button {...p} plain fill />)``;
+const ButtonKey = styled(p => <Button {...p} plain fill />)`
+  background: ${({ activeLayer, theme }) =>
+    theme.global.colors[activeLayer ? 'light-4' : 'white']};
+  padding: 5px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['light-2']};
+  }
+`;
 
 const ButtonInfo = styled(p => <Button {...p} plain fill />)``;
 
@@ -280,8 +287,9 @@ export function PanelKey({
                   {cleanActiveLayerIds.map(id => {
                     const conf = allConfig && allConfig.find(l => l.id === id);
                     return (
-                      <KeyLI activeLayer={open && id === active} key={id}>
+                      <KeyLI key={id}>
                         <ButtonKey
+                          activeLayer={open && id === active}
                           onClick={() => {
                             onSetOpen(!open || id !== active);
                             setActive(id);

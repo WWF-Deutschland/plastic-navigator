@@ -217,7 +217,7 @@
     },
     "key": {
       "title": {
-        "en": "Annual emissions (by weight)",
+        "en": "Annual emissions",
         "de": "Jährlicher Eintrag"
       },
       "values": [100000],
