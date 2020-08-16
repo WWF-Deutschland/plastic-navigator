@@ -1,23 +1,22 @@
 import React from 'react';
 import StyledIcon from './StyledIcon';
-
-function ArrowRightL(props) {
+function Collapse(props) {
   return (
     <StyledIcon
       size="16px"
       viewBox="0 0 16 16"
-      a11yTitle="ArrowLeft"
+      a11yTitle="Collapse"
       {...props}
     >
       <g>
         <path
           fill="inherit"
           stroke="inherit"
-          d="M5.71,14.71,4.29,13.29,9.59,8,4.29,2.71,5.71,1.29,12.41,8Z"
+          d="M8.41,8l5.3,5.29-1.42,1.42L5.59,8l6.7-6.71,1.42,1.42ZM2,15H4V1H2Z"
         />
       </g>
     </StyledIcon>
   );
 }
 
-export default ArrowRightL;
+export default Collapse;

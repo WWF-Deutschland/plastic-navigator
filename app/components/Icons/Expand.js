@@ -1,23 +1,22 @@
 import React from 'react';
 import StyledIcon from './StyledIcon';
-
-function ArrowRightL(props) {
+function Expand(props) {
   return (
     <StyledIcon
       size="16px"
       viewBox="0 0 16 16"
-      a11yTitle="ArrowLeft"
+      a11yTitle="Expand"
       {...props}
     >
       <g>
         <path
           fill="inherit"
           stroke="inherit"
-          d="M5.71,14.71,4.29,13.29,9.59,8,4.29,2.71,5.71,1.29,12.41,8Z"
+          d="M13.71,8,7,14.71,5.59,13.29,10.88,8,5.59,2.71,7,1.29ZM2,15H4V1H2Z"
         />
       </g>
     </StyledIcon>
   );
 }
 
-export default ArrowRightL;
+export default Expand;

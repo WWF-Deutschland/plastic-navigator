@@ -4,12 +4,12 @@ import StyledIcon from './StyledIcon';
 // Use in bubble for removing multiple layers
 function CloseXS(props) {
   return (
-    <StyledIcon size="16px" viewBox="0 0 30 30" a11yTitle="Close" {...props}>
+    <StyledIcon size="16px" viewBox="0 0 16 16" a11yTitle="Close" {...props}>
       <g>
         <path
           fill="inherit"
           stroke="inherit"
-          d="M23.29,24.71,15,16.41l-8.29,8.3L5.29,23.29,13.59,15,5.29,6.71,6.71,5.29,15,13.59l8.29-8.3,1.42,1.42L16.41,15l8.3,8.29Z"
+          d="M9.41,8l3.3,3.29-1.42,1.42L8,9.41l-3.29,3.3L3.29,11.29,6.59,8,3.29,4.71,4.71,3.29,8,6.59l3.29-3.3,1.42,1.42Z"
         />
       </g>
     </StyledIcon>
