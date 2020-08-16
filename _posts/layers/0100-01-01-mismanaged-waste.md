@@ -18,7 +18,7 @@ The visualisation shows the global **estimated annual mismanaged plastic waste g
 
 [KEY]
 
-### Please beware
+#### Please beware
 
 * The underlying data on waste generation come from a variety of sources using different methods. The study used estimates where country-level data were incomplete or not available (see below).
 * Combining the country-level data with population densities, the estimates shown here can vary greatly within each country. As a result the apparent lack of estimated mismanaged waste - as can for example be observed in vast parts of Australia and the world’s deserts - does not indicate the absence of data but rather the absence of people.

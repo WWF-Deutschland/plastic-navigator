@@ -20,7 +20,7 @@ The map layer shows the estimated concentration of floating plastic by weight an
 
 [KEY]
 
-### Please beware
+#### Please beware
 
 * This study is only concerned with floating plastic and does not consider the significant portion of plastic items that sinks. Plastic pollution has been documented throughout the water column, including at the bottom of the world’s deepest trench at 11,000 meters below sea level.
 * Due to limitations of the data collection method, this study only included plastic items of a minimum size of 0.33 mm and thus does not account for any smaller plastic pieces. Further, subsequent analysis using aerial imagery indicates that the data collected also appears to have underestimated the presence of the larger Macroplastics with a size of 200 mm and above
