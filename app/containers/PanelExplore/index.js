@@ -62,37 +62,35 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
 `;
 
 const PanelHeader = styled(p => (
-  <Box background="brand" justify="between" {...p} />
+  <Box background="brand" justify="between" {...p} elevation="xsmall" />
 ))`
   position: absolute;
   right: 0;
   left: 0;
   top: 0;
   width: 100%;
-  height: 120px;
+  height: 125px;
 `;
 const PanelBody = styled(p => (
-  <Box {...p} pad="small" margin={{ bottom: 'small' }} />
+  <Box {...p} pad={{ top: 'small', bottom: 'large', horizontal: 'small' }} />
 ))`
   position: absolute;
   right: 0;
   left: 0;
-  top: 120px;
+  top: 125px;
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
 `;
 const TitleWrap = styled(p => (
-  <Box {...p} pad={{ horizontal: 'small', bottom: 'small' }} />
+  <Box margin={{ top: 'ms' }} {...p} align="center" />
 ))``;
 const Title = styled(Text)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   letter-spacing: 0.05em;
 `;
-const Tabs = styled(p => <Box {...p} direction="row" gap="hair" />)`
-  padding: 1px;
-`;
+const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
 const TabWrapper = styled(Box)`
   position: relative;
 `;
@@ -101,27 +99,45 @@ const TabLink = styled(p => <Button plain {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-weight: normal;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   padding: 0 ${({ theme }) => theme.global.edgeSize.small};
   color: ${({ theme, active }) =>
-    theme.global.colors[active ? 'white' : 'light-4']};
+    theme.global.colors[active ? 'white' : 'brandLight']};
   opacity: 1;
-  border-bottom: 3px solid;
+  border-bottom: 4px solid;
   border-color: ${({ theme, active }) =>
     active ? theme.global.colors.white : 'transparent'};
+  &:hover {
+    color: ${({ theme }) => theme.global.colors.white};
+  }
 `;
-const TabLinkAnchor = styled(Text)``;
+const TabLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
 
 const SectionLayerGroup = styled(p => <Box flex={{ shrink: 0 }} {...p} />)``;
-const TitleGroup = styled(p => <Heading {...p} level={4} />)`
+const TitleGroup = styled(p => <Heading {...p} level={3} />)`
   font-family: 'wwfregular';
-  text-transform: uppercase;
   font-weight: normal;
   letter-spacing: 0.05em;
   margin-bottom: 0;
+  font-size: 22px;
+  line-height: 30px;
 `;
 const DescriptionGroup = styled(Paragraph)`
   margin-bottom: 0;
+`;
+
+const ButtonClose = styled(p => (
+  <Button icon={<Close />} plain alignSelf="end" {...p} />
+))`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 10px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.brandDark};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDarker};
+  }
 `;
 
 const COMPONENT_KEY = 'PanelExplore';
@@ -157,12 +173,7 @@ export function PanelExplore({
         <Styled background="white" panelWidth={getAsideWidth(size)}>
           <div>
             <PanelHeader>
-              <Button
-                onClick={() => onClose()}
-                icon={<Close size="xlarge" />}
-                plain
-                alignSelf="end"
-              />
+              <ButtonClose onClick={() => onClose()} />
               <TitleWrap>
                 <Layer />
                 <Title>

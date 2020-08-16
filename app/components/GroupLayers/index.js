@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
-import { CheckBox, Button, Box } from 'grommet';
+import { Button, Box } from 'grommet';
 import { ExploreXS as Layer } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -16,13 +16,14 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
 
 import KeyIcon from 'components/KeyIcon';
+import Checkbox from 'components/Checkbox';
 
 import messages from './messages';
 
 const Styled = styled.div`
   display: table;
   table-layout: fixed;
-  margin-top: 20px;
+  margin-top: 12px;
   margin-bottom: 20px;
 `;
 const ListHeader = styled.div`
@@ -33,17 +34,18 @@ const ListHeaderRow = styled.div`
 `;
 const ListHeaderCell = styled.div`
   display: table-cell;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 14px;
   border-bottom: 1px solid;
   vertical-align: middle;
   color: ${({ theme }) => theme.global.colors['dark-4']};
 `;
 const ListHeaderKey = styled(ListHeaderCell)`
-  width: 60px;
+  width: 45px;
   text-align: center;
 `;
 const ListHeaderInfo = styled(ListHeaderCell)`
-  width: 60px;
+  width: 65px;
   text-align: center;
 `;
 
@@ -65,22 +67,18 @@ const ListBodyCellCenter = styled(ListBodyCell)`
   text-align: center;
 `;
 
-const Label = styled.span`
-  line-height: 18px;
-`;
-
 const InfoButton = styled(p => <Button {...p} plain />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
-  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
-  border-radius: 5px;
-`;
-
-const StyledCheckBox = styled(CheckBox)`
-  margin-right: 6px;
+  padding: 0 ${({ theme }) => theme.global.edgeSize.small};
+  border-radius: 50px;
+  height: 25px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['dark-1']};
+  }
 `;
 
 const KeyWrap = styled.div`
@@ -103,7 +101,7 @@ function GroupLayers({
       <ListHeader>
         <ListHeaderRow>
           <ListHeaderCell>
-            <Box direction="row" gap="small" align="center">
+            <Box direction="row" gap="xsmall" align="center">
               <Layer color="dark-4" />
               <FormattedMessage
                 {...messages[projects ? 'columnProject' : 'columnLayer']}
@@ -132,10 +130,10 @@ function GroupLayers({
             return (
               <ListBodyRow key={id}>
                 <ListBodyCell>
-                  <StyledCheckBox
+                  <Checkbox
                     checked={activeLayers.indexOf(id) > -1}
-                    onChange={() => onToggleLayer(id)}
-                    label={<Label>{title}</Label>}
+                    onToggle={() => onToggleLayer(id)}
+                    label={title}
                   />
                 </ListBodyCell>
                 <ListBodyCellCenter>

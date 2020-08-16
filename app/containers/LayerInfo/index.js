@@ -48,6 +48,12 @@ const Styled = styled(props => (
   }
 `;
 
+const ButtonClose = styled(p => (
+  <Button icon={<Close />} plain alignSelf="end" {...p} />
+))`
+  padding: 10px;
+`;
+
 export function LayerInfo({ id, onClose, config }) {
   const [layerId, featureId] = getLayerFeatureIds(id);
   const isProjectInfo = startsWith(layerId, `${PROJECT_CONFIG.id}-`);
@@ -56,12 +62,7 @@ export function LayerInfo({ id, onClose, config }) {
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
           <ContentWrap>
-            <Button
-              onClick={() => onClose()}
-              icon={<Close />}
-              plain
-              alignSelf="end"
-            />
+            <ButtonClose onClick={() => onClose()} />
             {isProjectInfo && (
               <ProjectContent id={layerId} location={featureId} />
             )}

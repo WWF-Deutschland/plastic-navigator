@@ -78,6 +78,7 @@
     "express": "4.16.4",
     "fontfaceobserver": "2.1.0",
     "grommet": "^2.13.0",
+    "grommet-icons": "^4.4.0",
     "history": "4.9.0",
     "hoist-non-react-statics": "3.3.0",
     "immer": "3.0.0",

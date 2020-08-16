@@ -3,7 +3,7 @@ import StyledIcon from './StyledIcon';
 function ExploreXS(props) {
   return (
     <StyledIcon
-      size="24px"
+      size="20px"
       viewBox="0 0 22 22"
       a11yTitle="ExploreXS"
       {...props}

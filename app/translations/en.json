@@ -37,7 +37,7 @@
   "app.containers.PanelExplore.showLayerPanel": "Map Layers",
   "app.containers.PanelExplore.showProjects": "Show WWF Projects",
   "app.containers.PanelExplore.showProjectsShort": "Show Projects",
-  "app.containers.PanelExplore.title": "Map layers",
+  "app.containers.PanelExplore.title": "Explore map layers",
   "app.containers.PanelKey.keyProjectsAbout": "About the WWF Projects",
   "app.containers.PanelKey.keyProjectsTitle": "WWF Projects",
   "app.containers.PanelKey.keyTabAbout": "Annotation",

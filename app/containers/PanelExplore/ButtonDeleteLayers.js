@@ -7,22 +7,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, Text } from 'grommet';
+import { Button, Text, Box } from 'grommet';
 import { CloseXS } from 'components/Icons';
 
 const TabDelete = styled(p => <Button plain {...p} />)`
   position: absolute;
-  bottom: 100%;
+  bottom: 98%;
   border-radius: 9999px;
   background: white;
   left: 50%;
   transform: translate(-50%);
-  min-width: 20px;
-  height: 20px;
-  color: black;
+  min-width: 18px;
+  height: 18px;
+  color: ${({ theme }) => theme.global.colors.brandDark};
   text-align: center;
+  font-weight: 600;
 `;
-const WrapContent = styled.span`
+const WrapContent = styled(Box)`
   pointer-events: none;
 `;
 
@@ -32,11 +33,11 @@ export function ButtonDeleteLayers({ layerCount, updateLayers }) {
     <TabDelete
       onClick={() => updateLayers()}
       label={
-        <WrapContent>
+        <WrapContent justify="center" align="center">
           {hover ? (
-            <CloseXS color="black" />
+            <CloseXS color="brandDark" />
           ) : (
-            <Text size="small">{layerCount}</Text>
+            <Text size="xsmall">{layerCount}</Text>
           )}
         </WrapContent>
       }

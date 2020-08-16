@@ -67,6 +67,8 @@ export const colors = {
   // active: '#ffffff',
   brand: '#00728F',
   brandDark: '#08586C',
+  brandDarker: '#074E5F',
+  brandLight: '#AFD3DD',
   light: '#F0F0F0',
   focus: '#333333',
   hover: '#AD190F',
@@ -181,15 +183,6 @@ const theme = {
     },
     drop: {
       zIndex: 9999,
-    },
-  },
-  rangeInput: {
-    thumb: {
-      color: 'black',
-    },
-    track: {
-      color: colors.dark,
-      //   height: '4px',
     },
   },
   checkBox: {
