@@ -31,8 +31,8 @@
       "de": "Konzentration von treibendem Plastik"
     },
     "about": {
-      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight ",
-      "de": "Short text about floating plastic concentration"
+      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic.",
+      "de": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic."
     },
     "attribution": {
       "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
@@ -101,8 +101,8 @@
       "de": "Schlechte Handhabung von Plastikmüll"
     },
     "about": {
-      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation",
-      "de": "Short text about mismanaged plastic waste"
+      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher is the estimated amount of mismanaged waste.",
+      "de": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher is the estimated amount of mismanaged waste."
     },
     "attribution": {
       "author": "Lebreton LCM, Andrady A",
@@ -170,7 +170,7 @@
       "de": "Flusseinträge"
     },
     "about": {
-      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers",
+      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers. Larger circles thus represent rivers estimated to contribute larger amounts of plastic.",
       "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
     },
     "attribution": {
@@ -200,7 +200,7 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Estimated plastic emissions",
+        "en": "Annual estimated plastic emission",
         "de": "Geschätzter Plastikeintrag"
       },
       "title": {
@@ -217,7 +217,7 @@
     },
     "key": {
       "title": {
-        "en": "Annual emissions",
+        "en": "Annual emissions (by weight)",
         "de": "Jährlicher Eintrag"
       },
       "values": [100000],
@@ -243,7 +243,7 @@
       "de": "Strömungen"
     },
     "about": {
-      "en": "The arrows show the direction of our ocean's major currents",
+      "en": "The arrows show the direction of our ocean's major currents.",
       "de": "Vorherrschende Strömungen auf unseren Meeren"
     },
     "attribution": {
@@ -348,7 +348,7 @@
       "de": "Strömungen"
     },
     "about": {
-      "en": "The arrows show the direction of our ocean's major currents",
+      "en": "The arrows show the direction of our ocean's major currents.",
       "de": "Vorherrschende Strömungen auf unseren Meeren"
     },
     "attribution": {
@@ -394,7 +394,7 @@
       "de": "Meeresstrudel"
     },
     "about": {
-      "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers",
+      "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers.",
       "de": "Short text about principal gyres"
     },
     "attribution": {
@@ -457,16 +457,16 @@
     "source": "data",
     "type": "topojson",
     "title": {
-      "en": "Country treaty positions - shown as area",
-      "de": "Country treaty positions (area)"
+      "en": "Country’s level of support for treaty - shown as area",
+      "de": "Country’s level of support for treaty (area)"
     },
     "title-short": {
-      "en": "Country treaty positions",
-      "de": "Country treaty positions"
+      "en": "Country’s level of support",
+      "de": "Country’s level of support"
     },
     "about": {
-      "en": "Short text about layer",
-      "de": "Short text about layer"
+      "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
+      "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
     },
     "attribution": {
       "author": {
@@ -554,8 +554,8 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Country position",
-        "de": "Country position"
+        "en": "Country’s level of support",
+        "de": "Country’s level of support"
       },
       "values": ["1", "2"],
       "property": "positions.position_id",
@@ -619,12 +619,12 @@
       ]
     },
     "title": {
-      "en": "Country treaty positions - shown as markers",
-      "de": "Country treaty positions"
+      "en": "Country’s level of support for treaty - shown as markers",
+      "de": "Country’s level of support for treaty - shown as markers"
     },
     "about": {
-      "en": "Short text about layer",
-      "de": "Short text about layer"
+      "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
+      "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
     },
     "attribution": {
       "author": {
@@ -642,8 +642,8 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Country position",
-        "de": "Country position(s)"
+        "en": "Country’s level of support",
+        "de": "Country’s level of support"
       },
       "title": {
         "propertyByLocale": {
