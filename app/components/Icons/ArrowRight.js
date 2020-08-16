@@ -1,0 +1,17 @@
+import React from 'react';
+import StyledIcon from './StyledIcon';
+function ArrowLeft(props) {
+  return (
+    <StyledIcon viewBox="0 0 30 30" a11yTitle="ArrowLeft" {...props}>
+      <g>
+        <path
+          fill="inherit"
+          stroke="inherit"
+          d="M5.71,14.71,4.29,13.29,9.59,8,4.29,2.71,5.71,1.29,12.41,8Z"
+        />
+      </g>
+    </StyledIcon>
+  );
+}
+
+export default ArrowLeft;
