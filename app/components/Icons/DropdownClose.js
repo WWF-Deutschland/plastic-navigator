@@ -3,8 +3,8 @@ import StyledIcon from './StyledIcon';
 function DropdownOpen(props) {
   return (
     <StyledIcon
-      size="30px"
-      viewBox="0 0 30 30"
+      size="16px"
+      viewBox="0 0 16 16"
       a11yTitle="DropdownOpen"
       {...props}
     >

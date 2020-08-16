@@ -2,6 +2,8 @@ import Explore from './Explore';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import Close from './Close';
+import DropdownClose from './DropdownClose';
+import DropdownOpen from './DropdownOpen';
 import ExploreSmall from './ExploreSmall';
 import InfoOutline from './InfoOutline';
 import InfoSolid from './InfoSolid';
@@ -16,6 +18,8 @@ export {
   ArrowLeft,
   ArrowRight,
   Close,
+  DropdownClose,
+  DropdownOpen,
   ExploreSmall,
   InfoOutline,
   InfoSolid,
