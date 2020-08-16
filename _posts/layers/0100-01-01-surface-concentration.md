@@ -28,7 +28,6 @@ The map layer shows the estimated concentration of floating plastic by weight an
 * The accumulating trash does not form solid garbage patches (or even solid islands) as it is often portrayed in popular media. Instead, the plastic pollution can be better understood as an omnipresent plastic soup that contains varying concentrations of independently floating plastic items of all types and sizes.
 * While the original model estimates were made available for each of the four size classes, this visualisation shows the aggregated values for all classes.
 
-
 ### About the study
 
 The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios. The study estimated a global total of 5.25 trillion floating plastic pieces together weighing over 268,000 tons.
