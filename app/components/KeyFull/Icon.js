@@ -28,8 +28,10 @@ const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
   width: 30px;
   padding: 2px;
   border-radius: 9999px;
-  background: ${({ addBackground }) =>
-    addBackground ? 'white' : 'transparent'};
+  background: ${({ backgroundColor, theme }) =>
+    backgroundColor
+      ? theme.global.colors[backgroundColor] || backgroundColor
+      : 'transparent'};
 `;
 
 const KeyIconURI = styled.img`
@@ -131,11 +133,7 @@ export function Icon({ config, simple, intl, dark, title }) {
         key['title-short'][DEFAULT_LOCALE]} `;
     }
   }
-  const addBackground =
-    dark &&
-    key.icon &&
-    key.icon.needsBackgroundOnDark &&
-    key.icon.needsBackgroundOnDark === 'true';
+  const backgroundColor = dark && key.icon && key.icon.backgroundOnDark;
 
   const markerArray = asArray(marker);
   let labelSize = 'medium';
@@ -148,7 +146,7 @@ export function Icon({ config, simple, intl, dark, title }) {
     <Box gap="xsmall">
       {asArray(marker).map(mrk => (
         <IconLabelWrap key={mrk.id}>
-          <IconWrap addBackground={addBackground} flex={{ shrink: 0 }}>
+          <IconWrap backgroundColor={backgroundColor} flex={{ shrink: 0 }}>
             <KeyIconURI src={mrk.uri} markerSize={markerSize} />
           </IconWrap>
           <StyledKeyLabel size={labelSize}>{mrk.title}</StyledKeyLabel>
