@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 const Styled = styled.div`
   background: white;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  position: relative;
+  width: 22px;
+  height: 22px;
   overflow: hidden;
 `;
 

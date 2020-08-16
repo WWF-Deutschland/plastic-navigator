@@ -7,7 +7,7 @@ import KeyGradient from 'components/KeyGradient';
 import KeyCircle from 'components/KeyCircle';
 import KeyArea from 'components/KeyArea';
 
-const Styled = styled(p => <Box {...p} fill />)`
+const Styled = styled(p => <Box {...p} fill align="center" justify="center" />)`
   position: relative;
 `;
 

@@ -12,6 +12,7 @@ import Gradient from './Gradient';
 import Circles from './Circles';
 import Areas from './Areas';
 import Icon from './Icon';
+import SubTitle from './SubTitle';
 
 import messages from './messages';
 
@@ -19,7 +20,9 @@ const Styled = styled(p => <Box {...p} fill="horizontal" flex={false} />)`
   position: relative;
 `;
 
-const Title = styled(Text)``;
+const SubTitleWrap = styled.div`
+  margin-bottom: 5px;
+`;
 
 export function KeyFull({ config, id, simple, intl, dark, range }) {
   const { key, render, style, data, icon, featureStyle } = config;
@@ -32,30 +35,34 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
   /* eslint-disable react/no-danger */
+  const hasTitle =
+    (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
   return (
     <Styled>
-      <div>
-        {key && key.title && !isIcon && !isArea && (
-          <Title>
-            {`${key.title[locale] || key.title[DEFAULT_LOCALE]} `}
-            {simple &&
-              data.type &&
-              ` ${intl.formatMessage(messages[`by-${config.data.type}`])} `}
-          </Title>
-        )}
-        {!simple && data && data.unit && (
-          <Text>
-            <FormattedMessage {...messages['in-unit']} />
-            <span
-              dangerouslySetInnerHTML={{
-                __html: ` ${data.unit[locale] || data.unit[DEFAULT_LOCALE]}${
-                  data['unit-additional'] ? '<sup>*</sup> ' : ' '
-                }`,
-              }}
-            />
-          </Text>
-        )}
-      </div>
+      {hasTitle && (
+        <SubTitleWrap>
+          {key && key.title && !isIcon && !isArea && (
+            <SubTitle>
+              {`${key.title[locale] || key.title[DEFAULT_LOCALE]} `}
+              {simple &&
+                data.type &&
+                ` ${intl.formatMessage(messages[`by-${config.data.type}`])} `}
+            </SubTitle>
+          )}
+          {!simple && data && data.unit && (
+            <SubTitle>
+              <FormattedMessage {...messages['in-unit']} />
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: ` ${data.unit[locale] || data.unit[DEFAULT_LOCALE]}${
+                    data['unit-additional'] ? '<sup>*</sup> ' : ' '
+                  }`,
+                }}
+              />
+            </SubTitle>
+          )}
+        </SubTitleWrap>
+      )}
       {isIcon && (
         <Icon
           id={myId}
@@ -87,7 +94,7 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
       {!simple && data && data.unit && data['unit-additional'] && (
         <div>
           <Text
-            size="xsmall"
+            size="xxsmall"
             dangerouslySetInnerHTML={{
               __html: `<sup>*</sup> ${data['unit-additional'][locale] ||
                 data['unit-additional'][DEFAULT_LOCALE]}`,

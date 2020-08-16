@@ -12,7 +12,17 @@ import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Button, ResponsiveContext, Text } from 'grommet';
-import { ArrowRight, ArrowLeft, InfoOutline } from 'components/Icons';
+import Markdown from 'react-remarkable';
+
+import {
+  Expand,
+  Collapse,
+  ArrowRight,
+  ArrowLeft,
+  InfoOutline,
+} from 'components/Icons';
+
+import { prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { MODULES } from 'config';
@@ -86,6 +96,7 @@ const Content = styled(p => (
   />
 ))`
   max-width: 350px;
+  overflow: hidden;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
   }
@@ -125,10 +136,12 @@ const Description = styled(Text)``;
 
 const LayersFocusWrap = styled(p => (
   <Box {...p} direction="row" gap="small" flex={false} />
-))``;
-const LayerFocus = styled(p => <Box {...p} flex={false} />)``;
+))`
+  width: 100%;
+`;
+const LayerFocus = styled(p => <Box {...p} />)``;
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" margin={{ bottom: 'xsmall' }} />
+  <Box {...p} direction="row" align="center" />
 ))``;
 const LayerTitle = styled(Text)`
   font-size: 14px;
@@ -196,7 +209,7 @@ export function PanelChapter({
             <ButtonToggle
               icon={
                 <Box fill justify="start">
-                  {open ? <ArrowLeft /> : <ArrowRight />}
+                  {open ? <Collapse /> : <Expand />}
                 </Box>
               }
               onClick={() => onSetOpen(!open)}
@@ -212,11 +225,16 @@ export function PanelChapter({
                     </Title>
                   )}
                   {configsFocus && configsFocus.length > 0 && (
-                    <LayersFocusWrap>
+                    <LayersFocusWrap fill>
                       {configsFocus.map(config => (
                         <LayerFocus
                           key={config.id}
                           fill={configsFocus.length === 1 && 'horizontal'}
+                          basis={
+                            configsFocus.length > 1
+                              ? `${1 / configsFocus.length}`
+                              : '1'
+                          }
                         >
                           <LayerTitleWrap
                             fill={configsFocus.length === 1 && 'horizontal'}
@@ -249,9 +267,17 @@ export function PanelChapter({
               {(isMinSize(size, MIN_EXPAND) || step === 1) && (
                 <Content>
                   {chapter && locale && (
-                    <Description>
-                      {chapter.description[locale] ||
-                        chapter.description[DEFAULT_LOCALE]}
+                    <Description className="mpx-wrap-markdown-intro">
+                      <Markdown
+                        options={{
+                          html: true,
+                        }}
+                        source={prepMarkdown(
+                          chapter.description[locale] ||
+                            chapter.description[DEFAULT_LOCALE],
+                          { para: true },
+                        )}
+                      />
                     </Description>
                   )}
                 </Content>

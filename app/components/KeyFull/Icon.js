@@ -1,41 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Text } from 'grommet';
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { Box } from 'grommet';
+// import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
 import asArray from 'utils/as-array';
-
-import messages from './messages';
-
-const Hint = styled(p => <Text size="small" {...p} />)`
-  font-style: italic;
-`;
+import KeyLabel from './KeyLabel';
+// import messages from './messages';
+//
+// const Hint = styled(p => <Text size="xsmall" {...p} />)`
+//   font-style: italic;
+//   margin-top: 10px;
+// `;
 
 const IconLabelWrap = styled(p => (
-  <Box fill="horizontal" direction="row" align="center" gap="xxsmall" {...p} />
+  <Box direction="row" align="center" gap="xsmall" {...p} />
 ))`
   position: relative;
 `;
 
 const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
-  height: 40px;
-  width: 40px;
   display: block;
-  padding: 5px;
+  height: 30px;
+  width: 30px;
+  padding: 2px;
+  border-radius: 9999px;
   background: ${({ addBackground }) =>
     addBackground ? 'white' : 'transparent'};
 `;
-const LabelWrap = styled(p => <Box {...p} />)``;
-
-const KeyLabel = styled(p => <Text size="small" {...p} />)``;
 
 const KeyIconURI = styled.img`
   margin: 0 auto;
   width: ${({ markerSize }) => (markerSize && markerSize.width) || '100%'};
   height: ${({ markerSize }) => (markerSize && markerSize.height) || 'auto'};
+`;
+
+const StyledKeyLabel = styled(KeyLabel)`
+  white-space: normal;
 `;
 
 const getMarkerSize = configIcon => {
@@ -133,29 +137,29 @@ export function Icon({ config, simple, intl, dark, title }) {
     key.icon.needsBackgroundOnDark &&
     key.icon.needsBackgroundOnDark === 'true';
 
+  const markerArray = asArray(marker);
+  let labelSize = 'medium';
+  if (markerArray.length > 1) {
+    labelSize = 'small';
+  } else if (markerArray.length > 2) {
+    labelSize = 'xsmall';
+  }
   return (
-    <Box>
+    <Box gap="xsmall">
       {asArray(marker).map(mrk => (
         <IconLabelWrap key={mrk.id}>
           <IconWrap addBackground={addBackground} flex={{ shrink: 0 }}>
             <KeyIconURI src={mrk.uri} markerSize={markerSize} />
           </IconWrap>
-          <LabelWrap>
-            <KeyLabel>{mrk.title}</KeyLabel>
-          </LabelWrap>
+          <StyledKeyLabel size={labelSize}>{mrk.title}</StyledKeyLabel>
         </IconLabelWrap>
       ))}
-      {!simple && isIconMarker && (
-        <Hint>
-          <FormattedMessage {...messages.clickMarkerHint} />
-        </Hint>
-      )}
     </Box>
   );
 }
 
 Icon.propTypes = {
-  data: PropTypes.object,
+  // data: PropTypes.object,
   config: PropTypes.object,
   title: PropTypes.string,
   simple: PropTypes.bool,

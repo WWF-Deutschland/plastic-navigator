@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Text } from 'grommet';
+import { Box } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
 import KeyCircle from 'components/KeyCircle';
@@ -9,6 +9,7 @@ import KeyCircle from 'components/KeyCircle';
 import { scaleCircle, valueOfCircle } from 'containers/Map/utils';
 import { formatNumber } from 'utils/numbers';
 
+import KeyLabel from './KeyLabel';
 import messages from './messages';
 
 const Styled = styled(p => (
@@ -18,10 +19,11 @@ const Styled = styled(p => (
   margin-left: 10px;
 `;
 
-const KeyLabel = styled(p => <Text size="small" {...p} />)`
-  white-space: nowrap;
-`;
-
+// const WrapCircle = styled(p => <Box pad="xxsmall" {...p} />)`
+//   position: relative;
+//   background: white;
+//   border-radius: 9999px;
+// `;
 const WrapCircle = styled(p => <Box {...p} />)`
   position: relative;
 `;
@@ -59,6 +61,7 @@ export function Circles({ config, simple, intl, range }) {
       <CircleLabel
         basis={simple || !range ? '1/2' : 'auto'}
         align={simple ? 'center' : 'end'}
+        justify={simple ? 'center' : 'start'}
       >
         <WrapCircle>
           <KeyCircle circleStyle={style} radius={minRadius} />
@@ -104,6 +107,7 @@ export function Circles({ config, simple, intl, range }) {
       <CircleLabel
         basis={simple || !range ? '1/2' : 'auto'}
         align={simple ? 'center' : 'end'}
+        justify={simple ? 'center' : 'start'}
       >
         <WrapCircle>
           <KeyCircle relative circleStyle={style} radius={maxRadius} />

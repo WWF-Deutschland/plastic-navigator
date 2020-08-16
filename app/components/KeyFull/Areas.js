@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Text } from 'grommet';
+import { Box } from 'grommet';
 import { intlShape, injectIntl } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -9,24 +9,26 @@ import { DEFAULT_LOCALE } from 'i18n';
 import asArray from 'utils/as-array';
 
 import KeyArea from 'components/KeyArea';
+import KeyLabel from './KeyLabel';
 
 // import messages from './messages';
 
 const SquareLabelWrap = styled(p => (
   <Box direction="row" align="center" gap="xsmall" {...p} />
 ))``;
-const KeyLabel = styled(p => <Text size="small" {...p} />)``;
-// const Hint = styled(p => <Text size="small" {...p} />)`
-//   font-style: italic;
-// `;
 
-const KeyAreaWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
+const KeyAreaWrap = styled.div`
   position: relative;
-  width: 16px;
-  height: 16px;
+  height: ${({ simple }) => (simple ? 22 : 30)}px;
+  width: ${({ simple }) => (simple ? 22 : 30)}px;
+  padding: ${({ simple }) => (simple ? 0 : 4)}px;
 `;
 
-export function Areas({ config, intl, title }) {
+const StyledKeyLabel = styled(KeyLabel)`
+  white-space: normal;
+`;
+
+export function Areas({ config, intl, title, simple }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
   let square = { style: { color: 'black' }, title, id: config.id };
@@ -57,13 +59,13 @@ export function Areas({ config, intl, title }) {
     });
   }
   return (
-    <Box gap="xsmall">
+    <Box gap={simple ? 'xxsmall' : 'xsmall'}>
       {asArray(square).map(sq => (
         <SquareLabelWrap key={sq.id}>
-          <KeyAreaWrap>
+          <KeyAreaWrap simple={simple}>
             <KeyArea areaStyles={[sq.style]} />
           </KeyAreaWrap>
-          <KeyLabel>{sq.title}</KeyLabel>
+          <StyledKeyLabel>{sq.title}</StyledKeyLabel>
         </SquareLabelWrap>
       ))}
     </Box>
@@ -73,7 +75,7 @@ export function Areas({ config, intl, title }) {
 Areas.propTypes = {
   config: PropTypes.object,
   title: PropTypes.string,
-  // simple: PropTypes.bool,
+  simple: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

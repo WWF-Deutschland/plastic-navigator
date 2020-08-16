@@ -63,7 +63,7 @@ export const colors = {
   'black-trans': 'rgba(0, 0, 0, 0.6)',
   dark: '#999999',
   white: '#ffffff',
-  'white-trans': 'rgba(255, 255, 255, 0.7)',
+  'white-trans': 'rgba(255, 255, 255, 0.8)',
   // active: '#ffffff',
   brand: '#00728F',
   brandDark: '#08586C',

@@ -1,4 +1,5 @@
 import { toLower } from 'lodash/string';
+import anchorme from 'anchorme';
 
 export const lowerCase = str => toLower(str);
 export const upperCaseFirst = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -27,3 +28,29 @@ const VOWEL_REGEX =
   '^[aieouAIEOUàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕäëïöüÄËÏÖÜ].*';
 
 export const startsWithVowel = str => !!str.match(VOWEL_REGEX);
+
+export const injectMarkdownParagraph = str =>
+  str
+    .split(' __ ')
+    .map(i => i.trim())
+    .join('\n\n ');
+
+export const prepMarkdown = (str, { anchor, para }) => {
+  let res = str;
+  if (anchor) {
+    res = anchorme({
+      input: res,
+      options: {
+        truncate: 40,
+        attributes: {
+          target: '_blank',
+          class: 'mpx-content-link',
+        },
+      },
+    });
+  }
+  if (para) {
+    res = injectMarkdownParagraph(res);
+  }
+  return res;
+};

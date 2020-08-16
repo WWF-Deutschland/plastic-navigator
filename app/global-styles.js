@@ -74,6 +74,10 @@ const GlobalStyle = createGlobalStyle`
   figure {
     margin: 0;
   }
+  .mpx-wrap-markdown-intro p {
+    margin: 0;
+    line-height: 21px
+  }
 `;
 
 export default GlobalStyle;

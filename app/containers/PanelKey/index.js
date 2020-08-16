@@ -12,18 +12,20 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Button, Text, ResponsiveContext } from 'grommet';
+import Markdown from 'react-remarkable';
+
 import {
-  ArrowLeft,
-  ArrowRight,
+  Expand,
+  Collapse,
   ArrowDown,
   ArrowUp,
-  InfoOutline,
+  InfoSolid as Info,
 } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
 
-import { startsWith } from 'utils/string';
+import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
 
 import { selectUIStateByKey } from 'containers/App/selectors';
@@ -121,18 +123,19 @@ const KeyLI = styled.li`
   width: 40px;
   display: block;
 `;
+// prettier-ignore
 const ButtonKey = styled(p => <Button {...p} plain fill />)`
   background: ${({ activeLayer, theme }) =>
     theme.global.colors[activeLayer ? 'light-4' : 'white']};
   padding: 5px;
+  opacity: 1;
   &:hover {
-    background: ${({ theme }) => theme.global.colors['light-2']};
+    background: ${({ theme, activeLayer }) =>
+    theme.global.colors[activeLayer ? 'light-4' : 'light-2']};
   }
 `;
 
-const ButtonInfo = styled(p => <Button {...p} plain fill />)``;
-
-const Tab = styled(Box)``;
+const Tab = styled(p => <Box flex={false} {...p} />)``;
 
 const ContentWrap = styled(p => (
   <Box {...p} direction="row" gap="hair" fill="horizontal" />
@@ -141,25 +144,49 @@ const ContentWrap = styled(p => (
 `;
 const Content = styled(p => (
   <Box
-    {...p}
     background="white-trans"
     pad="small"
     fill="horizontal"
     elevation="medium"
     responsive={false}
+    flex={false}
+    {...p}
   />
 ))`
-  max-width: 350px;
+  width: 350px;
+  max-width: 100%;
+  overflow: hidden;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
   }
 `;
 
-//
-// const TitleWrap = styled(Box)``;
-const Title = styled(Text)`
-  margin: 0;
-  font-weight: bold;
+const Description = styled(Text)``;
+
+const LayerTitleWrap = styled(p => (
+  <Box {...p} direction="row" align="center" margin={{ bottom: 'xxsmall' }} />
+))`
+  min-height: 42px;
+`;
+
+const LayerTitle = styled(Text)`
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+`;
+
+const TabLabel = styled(p => <Text size="xxsmall" {...p} />)`
+  text-transform: uppercase;
+  font-weight: 700;
+`;
+
+const LayerButtonInfo = styled(p => <Button plain {...p} />)`
+  padding: ${({ theme }) => theme.global.edgeSize.xsmall};
+  border-radius: 9999px;
+  margin-left: auto;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['light-4']};
+  }
 `;
 
 // figure out how far to scroll down
@@ -265,7 +292,7 @@ export function PanelKey({
           <ToggleWrap>
             <ButtonToggleWrap>
               <ButtonToggle
-                icon={open ? <ArrowLeft /> : <ArrowRight />}
+                icon={open ? <Collapse /> : <Expand />}
                 onClick={() => onSetOpen(!open)}
               />
             </ButtonToggleWrap>
@@ -291,9 +318,10 @@ export function PanelKey({
                         <ButtonKey
                           activeLayer={open && id === active}
                           onClick={() => {
-                            onSetOpen(!open || id !== active);
+                            onSetOpen(true);
                             setActive(id);
                           }}
+                          disabled={open && id === active}
                         >
                           {conf && <KeyIcon config={conf} />}
                         </ButtonKey>
@@ -325,17 +353,30 @@ export function PanelKey({
           </ToggleWrap>
           {open && (
             <ContentWrap>
-              <Content>
+              <Content
+                pad={{
+                  top: isMaxSize(size, MAX_FOLD) ? 'xsmall' : 'small',
+                  bottom: 'small',
+                  horizontal: 'small',
+                }}>
                 {isMaxSize(size, MAX_FOLD) && (
-                  <Box direction="row" gap="xsmall" margin={{ bottom: 'small' }}>
+                  <Box direction="row" gap="xsmall">
                     <ButtonTab
                       onClick={() => setTab(0)}
-                      label={<FormattedMessage {...messages.keyTabKey} />}
+                      label={
+                        <TabLabel>
+                          <FormattedMessage {...messages.keyTabKey} />
+                        </TabLabel>
+                      }
                       activeTab={tab === 0}
                     />
                     <ButtonTab
                       onClick={() => setTab(1)}
-                      label={<FormattedMessage {...messages.keyTabAbout} />}
+                      label={
+                        <TabLabel>
+                          <FormattedMessage {...messages.keyTabAbout} />
+                        </TabLabel>
+                      }
                       activeTab={tab === 1}
                     />
                   </Box>
@@ -343,39 +384,29 @@ export function PanelKey({
                 {(tab === 0 || isMinSize(size, MIN_EXPAND)) && (
                   <Tab>
                     {config && locale && (
-                      <Box>
+                      <Box flex={false}>
                         {isMinSize(size, MIN_EXPAND) && (
-                          <Box>
+                          <TabLabel>
                             <FormattedMessage {...messages.keyTabKey} />
-                          </Box>
+                          </TabLabel>
                         )}
-                        <Box
-                          direction="row"
-                          fill="horizontal"
-                          justify="between"
-                          align="center"
-                          gap="small"
-                        >
-                          <Box>
-                            <Title>
-                              {isActiveProject ? (
-                                <FormattedMessage {...messages.keyProjectsTitle} />
-                              ) : (
-                                config.title[locale] || config.title[DEFAULT_LOCALE]
-                              )}
-                            </Title>
-                          </Box>
+                        <LayerTitleWrap>
+                          <LayerTitle>
+                            {isActiveProject ? (
+                              <FormattedMessage {...messages.keyProjectsTitle} />
+                            ) : (
+                              config.title[locale] || config.title[DEFAULT_LOCALE]
+                            )}
+                          </LayerTitle>
                           {!isActiveProject && (
-                            <Box>
-                              <ButtonInfo
-                                onClick={() =>
-                                  onLayerInfo(config.id)
-                                }
-                                icon={<InfoOutline />}
-                              />
-                            </Box>
+                            <LayerButtonInfo
+                              onClick={() =>
+                                onLayerInfo(config.id)
+                              }
+                              icon={<Info />}
+                            />
                           )}
-                        </Box>
+                        </LayerTitleWrap>
                         <KeyFull
                           config={config}
                           range={
@@ -394,41 +425,41 @@ export function PanelKey({
                 {tab === 1 && isMaxSize(size, MAX_FOLD) && (
                   <Tab>
                     {config && locale && (
-                      <Box>
-                        <Box
-                          direction="row"
-                          fill="horizontal"
-                          justify="between"
-                          align="center"
-                          gap="small"
-                        >
-                          <Box>
-                            <Title>
-                              {isActiveProject ? (
-                                <FormattedMessage {...messages.keyProjectsTitle} />
-                              ) : (
-                                config.title[locale] || config.title[DEFAULT_LOCALE]
-                              )}
-                            </Title>
-                          </Box>
+                      <Box flex={false}>
+                        <LayerTitleWrap>
+                          <LayerTitle>
+                            {isActiveProject ? (
+                              <FormattedMessage {...messages.keyProjectsTitle} />
+                            ) : (
+                              config.title[locale] || config.title[DEFAULT_LOCALE]
+                            )}
+                          </LayerTitle>
                           {!isActiveProject && (
-                            <Box>
-                              <ButtonInfo
-                                onClick={() =>
-                                  onLayerInfo(config['content-id'] || config.id)
-                                }
-                                icon={<InfoOutline />}
-                              />
-                            </Box>
+                            <LayerButtonInfo
+                              onClick={() =>
+                                onLayerInfo(config.id)
+                              }
+                              icon={<Info />}
+                            />
                           )}
-                        </Box>
-                        <Text>
-                          {isActiveProject ? (
+                        </LayerTitleWrap>
+                        <Description>
+                          {isActiveProject && (
                             <FormattedMessage {...messages.keyProjectsAbout} />
-                          ) : (
-                            config.about[locale] || config.about[DEFAULT_LOCALE]
                           )}
-                        </Text>
+                          {!isActiveProject && (
+                            <Markdown
+                              options={{
+                                html: true,
+                              }}
+                              source={prepMarkdown(
+                                config.about[locale] ||
+                                  config.about[DEFAULT_LOCALE],
+                                { para: true },
+                              )}
+                            />
+                          )}
+                        </Description>
                       </Box>
                     )}
                   </Tab>
@@ -436,18 +467,20 @@ export function PanelKey({
               </Content>
               {isMinSize(size, MIN_EXPAND) && (
                 <Content>
-                  <Box>
+                  <TabLabel>
                     <FormattedMessage {...messages.keyTabAbout} />
+                  </TabLabel>
+                  <Box margin={{ top: 'small'}}>
+                    {config && locale && (
+                      <Text>
+                        {isActiveProject ? (
+                          <FormattedMessage {...messages.keyProjectsAbout} />
+                        ) : (
+                          config.about[locale] || config.about[DEFAULT_LOCALE]
+                        )}
+                      </Text>
+                    )}
                   </Box>
-                  {config && locale && (
-                    <Text>
-                      {isActiveProject ? (
-                        <FormattedMessage {...messages.keyProjectsAbout} />
-                      ) : (
-                        config.about[locale] || config.about[DEFAULT_LOCALE]
-                      )}
-                    </Text>
-                  )}
                 </Content>
               )}
             </ContentWrap>

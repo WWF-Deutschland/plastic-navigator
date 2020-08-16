@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Text } from 'grommet';
+import { Box } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
 import KeyGradient from 'components/KeyGradient';
 
 import { formatNumber } from 'utils/numbers';
 
+import KeyLabel from './KeyLabel';
 import messages from './messages';
 
 const Styled = styled(Box)`
@@ -36,9 +37,6 @@ const KeyLabelWrap = styled(p => <Box {...p} align="center" />)`
   top: 0;
   left: ${({ offsetLeft }) => offsetLeft || '0'};
   transform: translate(-50%, 0);
-`;
-const KeyLabel = styled(p => <Text size="small" {...p} />)`
-  white-space: nowrap;
 `;
 const Mark = styled.div`
   position: absolute;
@@ -70,7 +68,7 @@ export function Gradient({ config, id, simple, intl, dark }) {
   const xBottom = isExceedsBottom(key.exceed);
   return (
     <Styled simple={simple} exceedsTop={xTop} exceedsBottom={xBottom}>
-      <GradientWrap>
+      <GradientWrap margin={{ bottom: 'xxsmall' }}>
         <KeyGradient
           id={id || config.id}
           stops={key.stops}

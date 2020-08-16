@@ -13,7 +13,8 @@ import { intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Heading } from 'grommet';
 import Markdown from 'react-remarkable';
-import anchorme from 'anchorme';
+
+import { prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
@@ -81,19 +82,7 @@ export function ProjectContent({
               options={{
                 html: true,
               }}
-              source={anchorme({
-                input: projectInfo,
-                options: {
-                  truncate: 40,
-                  attributes: {
-                    target: '_blank',
-                    class: 'mpx-content-link',
-                  },
-                },
-              })
-                .split(' __ ')
-                .map(i => i.trim())
-                .join('\n\n ')}
+              source={prepMarkdown(projectInfo, { anchor: true, para: true })}
             />
           </div>
           {projectLocations && projectLocations.length > 1 && (
