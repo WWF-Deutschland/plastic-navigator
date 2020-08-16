@@ -7,8 +7,10 @@ import ArrowUp from './ArrowUp';
 import Close from './Close';
 import CloseS from './CloseS';
 import CloseXS from './CloseXS';
+import Collapse from './Collapse';
 import DropdownUp from './DropdownUp';
 import DropdownDown from './DropdownDown';
+import Expand from './Expand';
 import Explore from './Explore';
 import ExploreS from './ExploreS';
 import ExploreXS from './ExploreXS';
@@ -32,8 +34,10 @@ export {
   Close,
   CloseS,
   CloseXS,
+  Collapse,
   DropdownUp,
   DropdownDown,
+  Expand,
   Explore,
   ExploreS,
   ExploreXS,
