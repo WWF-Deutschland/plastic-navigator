@@ -29,4 +29,8 @@ export default defineMessages({
     id: `${scope}.sourceLinkExternal`,
     defaultMessage: 'Go to source',
   },
+  projectLinkExternal: {
+    id: `${scope}.projectLinkExternal`,
+    defaultMessage: 'Visit project website',
+  },
 });

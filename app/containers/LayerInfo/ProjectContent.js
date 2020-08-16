@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { intlShape, injectIntl } from 'react-intl';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Heading } from 'grommet';
+import { Button } from 'grommet';
 import Markdown from 'react-remarkable';
 
 import { prepMarkdown } from 'utils/string';
@@ -24,19 +24,26 @@ import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 
 import commonMessages from 'messages';
-// import messages from './messages';
+import messages from './messages';
 import ProjectLocationContent from './ProjectLocationContent';
 import FeatureList from './FeatureList';
+import Title from './Title';
 
-const Styled = styled.div``;
-
-const Title = styled(p => <Heading level={1} {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: 1.8em;
-  letter-spacing: 0.05em;
+const Styled = styled.div`
+  margin-bottom: 50px;
 `;
+
+const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
+  background: ${({ theme }) => theme.global.colors.brand};
+  color: ${({ theme }) => theme.global.colors.white};
+  border-radius: 20px;
+  padding: 5px 15px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDark};
+  }
+`;
+
+const exists = str => str && str.trim().length > 0;
 
 export function ProjectContent({
   project,
@@ -55,6 +62,12 @@ export function ProjectContent({
     project[`project_title_${DEFAULT_LOCALE}`];
   const projectInfo =
     project[`project_info_${locale}` || `project_info_${DEFAULT_LOCALE}`];
+  const imageAttribution =
+    project[`image_attribution_${locale}`] ||
+    project[`image_attribution_${DEFAULT_LOCALE}`];
+  const projectLink =
+    project[`project_link_${locale}`] ||
+    project[`project_link_${DEFAULT_LOCALE}`];
 
   const projectLocations =
     locations &&
@@ -77,7 +90,25 @@ export function ProjectContent({
       {(!theLocation || projectLocations.length <= 1) && (
         <>
           <Title>{title}</Title>
-          <div>
+          {exists(project.image_url) && (
+            <div>
+              <figure className="mpx-figure">
+                <div className="mpx-image-wrap">
+                  <img
+                    className="mpx-img"
+                    src={project.image_url}
+                    alt={imageAttribution}
+                  />
+                </div>
+                {exists(imageAttribution) && (
+                  <figcaption className="mpx-figcaption">
+                    {imageAttribution}
+                  </figcaption>
+                )}
+              </figure>
+            </div>
+          )}
+          <div className="mpx-content">
             <Markdown
               options={{
                 html: true,
@@ -98,6 +129,15 @@ export function ProjectContent({
                   l[`location_title_${DEFAULT_LOCALE}`],
               }))}
             />
+          )}
+          {exists(projectLink) && (
+            <div style={{ textAlign: 'center', marginTop: '30px' }}>
+              <ButtonExternal
+                href={projectLink}
+                target="_blank"
+                label={<FormattedMessage {...messages.projectLinkExternal} />}
+              />
+            </div>
           )}
         </>
       )}

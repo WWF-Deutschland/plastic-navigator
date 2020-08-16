@@ -61,7 +61,7 @@ DropContent.propTypes = {
   onSelect: PropTypes.func,
   active: PropTypes.string,
   options: PropTypes.array,
-  localeLabels: PropTypes.array,
+  localeLabels: PropTypes.object,
   list: PropTypes.bool,
 };
 

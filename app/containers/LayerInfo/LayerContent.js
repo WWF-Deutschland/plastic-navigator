@@ -10,49 +10,78 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Heading } from 'grommet';
+import { Box, Text } from 'grommet';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
 import { useInjectSaga } from 'utils/injectSaga';
 
 import saga from 'containers/App/saga';
-import { selectContentByKey, selectLocale } from 'containers/App/selectors';
-import { loadContent } from 'containers/App/actions';
+import {
+  selectContentByKey,
+  selectLocale,
+  selectIsActiveLayer,
+} from 'containers/App/selectors';
+import { loadContent, toggleLayer } from 'containers/App/actions';
 
+import LoadingIndicator from 'components/LoadingIndicator';
 import HTMLWrapper from 'components/HTMLWrapper';
 import KeyFull from 'components/KeyFull';
+import Checkbox from 'components/Checkbox';
 
+import Title from './Title';
 import LayerReference from './LayerReference';
 // import messages from './messages';
 
-const Title = styled(p => <Heading level={1} {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: 1.8em;
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+const LayerTitle = styled(Text)`
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
 `;
 
-export function LayerContent({ onLoadContent, content, config, locale }) {
+export function LayerContent({
+  onLoadContent,
+  content,
+  config,
+  locale,
+  onToggleLayer,
+  isActive,
+}) {
   useInjectSaga({ key: 'default', saga });
 
   useEffect(() => {
     // kick off loading of page content
     onLoadContent(config['content-id'] || config.id);
   }, [config]);
-
+  const title = config
+    ? config.title[locale] || config.title[DEFAULT_LOCALE]
+    : 'loading';
   return (
     <>
-      <Title>{config.title[locale] || config.title[DEFAULT_LOCALE]}</Title>
+      <Title>{title}</Title>
+      {!content && <LoadingIndicator />}
       {content && (
         <HTMLWrapper
           innerhtml={content}
           inject={[
             {
               tag: '[KEY]',
-              el: <KeyFull config={config} />,
+              el: (
+                <Box margin={{ bottom: 'medium', top: 'medium' }}>
+                  <Box
+                    direction="row"
+                    gap="xsmall"
+                    margin={{ bottom: 'small' }}
+                  >
+                    <Checkbox
+                      checked={isActive}
+                      onToggle={() => onToggleLayer(config.id)}
+                    />
+                    <LayerTitle>{title}</LayerTitle>
+                  </Box>
+                  <KeyFull config={config} />
+                </Box>
+              ),
             },
           ]}
         />
@@ -64,9 +93,11 @@ export function LayerContent({ onLoadContent, content, config, locale }) {
 
 LayerContent.propTypes = {
   onLoadContent: PropTypes.func.isRequired,
+  onToggleLayer: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
   locale: PropTypes.string,
+  isActive: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -75,6 +106,7 @@ const mapStateToProps = createStructuredSelector({
       contentType: 'layers',
       key: config['content-id'] || config.id,
     }),
+  isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
   locale: state => selectLocale(state),
 });
 
@@ -83,6 +115,7 @@ function mapDispatchToProps(dispatch) {
     onLoadContent: id => {
       dispatch(loadContent('layers', id));
     },
+    onToggleLayer: id => dispatch(toggleLayer(id)),
   };
 }
 

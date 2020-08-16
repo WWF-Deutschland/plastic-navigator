@@ -27,7 +27,15 @@ import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 // import messages from './messages';
 
-const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
+const ContentWrap = styled(props => (
+  <Box
+    pad={{
+      horizontal: 'medium',
+      vertical: 'xlarge',
+    }}
+    {...props}
+  />
+))``;
 
 const Styled = styled(props => (
   <Box {...props} background="white" elevation="medium" />
@@ -49,9 +57,17 @@ const Styled = styled(props => (
 `;
 
 const ButtonClose = styled(p => (
-  <Button icon={<Close />} plain alignSelf="end" {...p} />
+  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
 ))`
+  position: absolute;
+  top: 15px;
+  right: 15px;
   padding: 10px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.black};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['dark-1']};
+  }
 `;
 
 export function LayerInfo({ id, onClose, config }) {

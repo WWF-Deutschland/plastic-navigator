@@ -202,6 +202,11 @@ export const selectActiveLayers = createSelector(
   layersSearch =>
     layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
 );
+export const selectIsActiveLayer = createSelector(
+  (state, id) => id,
+  selectActiveLayers,
+  (id, activeLayers) => activeLayers.indexOf(id) > -1,
+);
 
 export const selectFirstLanding = createSelector(
   selectGlobal,

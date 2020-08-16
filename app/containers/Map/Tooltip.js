@@ -7,7 +7,10 @@ import { CloseS } from 'components/Icons';
 
 import { roundNumber } from 'utils/numbers';
 
+import { PROJECT_CONFIG } from 'config';
+
 import TooltipContent from './TooltipContent';
+import TooltipProjectContent from './TooltipProjectContent';
 import messages from './messages';
 
 import { getPropertyByLocale } from './utils';
@@ -211,6 +214,9 @@ const Tooltip = ({
             )}
             {tooltip.content && (
               <TooltipContent feature={feature} config={config} layer={layer} />
+            )}
+            {config.id === PROJECT_CONFIG.id && (
+              <TooltipProjectContent loaction={feature.properties} project={layer} />
             )}
             {tooltip.more !== 'false' && (
               <ButtonWrap>

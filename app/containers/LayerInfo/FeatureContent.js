@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Button, Heading } from 'grommet';
+import { Box, Button } from 'grommet';
 import { ArrowLeftL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -26,17 +26,12 @@ import { loadLayer } from 'containers/Map/actions';
 
 import { getPropertyByLocale } from 'containers/Map/utils';
 
+import Title from './Title';
 import LayerContent from './LayerContent';
 import CountryPolicyCommitments from './CountryPolicyCommitments';
 
 const Styled = styled.div``;
-const Title = styled(p => <Heading level={1} {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: 1.8em;
-  letter-spacing: 0.05em;
-`;
+
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
@@ -73,16 +68,14 @@ export function FeatureContent({
   const supTitle = config.title[locale] || config.title[DEFAULT_LOCALE];
   return (
     <Styled>
-      <div>
+      <Box direction="row" align="center">
         <Button
           plain
           onClick={() => onSetLayerInfo(config.id)}
-          icon={<ArrowLeftL size="large" />}
+          icon={<ArrowLeftL />}
         />
-      </div>
-      <div>
         <SupTitle onClick={() => onSetLayerInfo(config.id)} label={supTitle} />
-      </div>
+      </Box>
       <Title>{getTitle(feature, config, locale)}</Title>
       {POLICY_LAYERS.indexOf(config.id) > -1 && (
         <CountryPolicyCommitments feature={feature} config={config} />

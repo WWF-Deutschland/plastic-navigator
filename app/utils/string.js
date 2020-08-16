@@ -33,7 +33,7 @@ export const injectMarkdownParagraph = str =>
   str
     .split(' __ ')
     .map(i => i.trim())
-    .join('\n\n ');
+    .join('\n ');
 
 export const prepMarkdown = (str, { anchor, para }) => {
   let res = str;

@@ -23,6 +23,9 @@ const FeatureButton = styled(p => (
   <Button {...p} plain fill="horizontal" alignSelf="start" />
 ))`
   border-top: 1px solid;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.light};
+  }
 `;
 
 export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
@@ -37,7 +40,12 @@ export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
           key={item.id}
           onClick={() => onSetLayerInfo(layerId, item.id)}
           label={
-            <Box direction="row" justify="between" pad="small">
+            <Box
+              direction="row"
+              justify="between"
+              pad={{ vertical: 'small', right: 'small', left: 'xxsmall' }}
+              align="center"
+            >
               <Text>{item.label}</Text>
               <ArrowRightL />
             </Box>

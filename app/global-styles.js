@@ -56,20 +56,31 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .mpx-img {
-    max-width: 100%;
+    width: 100%;
   }
+  .mpx-figcaption {
+    text-align: right;
+    font-size: 13px;
+    line-height: 16px;
+  }
+
   .mpx-layer-lead {
     font-size: 20px;
     font-weight: 600;
     // compare theme.js colors.brand
-    color: #009191;
+    color: #00728F;
   }
   .mpx-content h1,
   .mpx-content h2,
-  .mpx-content h3 {
+  .mpx-content h3,
+  .mpx-content h4 {
     font-family: 'wwfregular';
     font-weight: normal;
     letter-spacing: 0.05em;
+    font-size: 24px;
+  }
+  .mpx-content h4 {
+    font-size: 20px;
   }
   figure {
     margin: 0;

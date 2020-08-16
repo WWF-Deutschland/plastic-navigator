@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Button, Heading } from 'grommet';
+import { Box, Button } from 'grommet';
 import { ArrowLeftL } from 'components/Icons';
 // import { ArrowLeftL } from 'components/Icons';
 import Markdown from 'react-remarkable';
@@ -23,19 +23,27 @@ import { PROJECT_CONFIG } from 'config';
 
 import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
+import Title from './Title';
+import messages from './messages';
+
 const Styled = styled.div``;
 
-const Title = styled(p => <Heading level={1} {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: 1.8em;
-  letter-spacing: 0.05em;
-`;
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
 `;
+
+const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
+  background: ${({ theme }) => theme.global.colors.brand};
+  color: ${({ theme }) => theme.global.colors.white};
+  border-radius: 20px;
+  padding: 5px 15px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDark};
+  }
+`;
+
+const exists = str => str && str.trim().length > 0;
 
 export function ProjectLocationContent({
   location,
@@ -53,24 +61,48 @@ export function ProjectLocationContent({
   const locationInfo =
     location.properties[`location_info_${locale}`] ||
     location.properties[`location_info_${DEFAULT_LOCALE}`];
+  const imageAttribution =
+    location[`image_attribution_${locale}`] ||
+    location[`image_attribution_${DEFAULT_LOCALE}`];
+  const projectLink =
+    location[`location_link_${locale}`] ||
+    location[`location_link_${DEFAULT_LOCALE}`] ||
+    project[`project_link_${locale}`] ||
+    project[`project_link_${DEFAULT_LOCALE}`];
   const projectId = `${PROJECT_CONFIG.id}-${project.project_id}`;
   return (
     <Styled>
-      <div>
+      <Box direction="row" align="center" gap="small">
         <Button
           plain
           onClick={() => onSetLayerInfo(projectId)}
-          icon={<ArrowLeftL size="large" />}
+          icon={<ArrowLeftL />}
         />
-      </div>
-      <div>
         <SupTitle
           onClick={() => onSetLayerInfo(projectId)}
           label={projectTitle}
         />
-      </div>
+      </Box>
       <Title>{title}</Title>
-      <div>
+      {exists(location.image_url) && (
+        <div>
+          <figure className="mpx-figure">
+            <div className="mpx-image-wrap">
+              <img
+                className="mpx-img"
+                src={location.image_url}
+                alt={imageAttribution}
+              />
+            </div>
+            {exists(imageAttribution) && (
+              <figcaption className="mpx-figcaption">
+                {imageAttribution}
+              </figcaption>
+            )}
+          </figure>
+        </div>
+      )}
+      <div className="mpx-content">
         <Markdown
           options={{
             html: true,
@@ -90,6 +122,15 @@ export function ProjectLocationContent({
             .join('\n\n ')}
         />
       </div>
+      {exists(projectLink) && (
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <ButtonExternal
+            href={projectLink}
+            target="_blank"
+            label={<FormattedMessage {...messages.projectLinkExternal} />}
+          />
+        </div>
+      )}
     </Styled>
   );
 }

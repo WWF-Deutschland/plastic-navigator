@@ -130,8 +130,8 @@ const ButtonClose = styled(p => (
   <Button icon={<Close />} plain alignSelf="end" {...p} />
 ))`
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 15px;
+  right: 15px;
   padding: 10px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.brandDark};

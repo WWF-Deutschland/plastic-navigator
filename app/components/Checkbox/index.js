@@ -37,7 +37,12 @@ export function Checkbox({ label, checked, onToggle }) {
         )}
         {!checked && <CheckButton onClick={() => onToggle()} />}
       </Box>
-      <LabelButton label={<Label>{label}</Label>} onClick={() => onToggle()} />
+      {label && (
+        <LabelButton
+          label={<Label>{label}</Label>}
+          onClick={() => onToggle()}
+        />
+      )}
     </Box>
   );
 }
