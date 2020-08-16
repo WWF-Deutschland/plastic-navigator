@@ -2,7 +2,12 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function InfoOutline(props) {
   return (
-    <StyledIcon viewBox="0 0 30 30" a11yTitle="InfoOutline" {...props}>
+    <StyledIcon
+      size="30px"
+      viewBox="0 0 30 30"
+      a11yTitle="InfoOutline"
+      {...props}
+    >
       <g>
         <path
           fill="inherit"

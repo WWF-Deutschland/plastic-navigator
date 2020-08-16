@@ -2,7 +2,12 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function WWFLogoSmall(props) {
   return (
-    <StyledIcon viewBox="0 0 24 24" a11yTitle="WWFLogoSmall" {...props}>
+    <StyledIcon
+      size="24px"
+      viewBox="0 0 24 24"
+      a11yTitle="WWFLogoSmall"
+      {...props}
+    >
       <g>
         <path
           fill="inherit"

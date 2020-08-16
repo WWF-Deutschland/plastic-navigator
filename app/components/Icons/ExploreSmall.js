@@ -2,7 +2,12 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function ExploreSmall(props) {
   return (
-    <StyledIcon viewBox="0 0 30 30" a11yTitle="ExploreSmall" {...props}>
+    <StyledIcon
+      size="30px"
+      viewBox="0 0 30 30"
+      a11yTitle="ExploreSmall"
+      {...props}
+    >
       <g>
         <path
           fill="inherit"
