@@ -3,8 +3,8 @@ import StyledIcon from './StyledIcon';
 function Expand(props) {
   return (
     <StyledIcon
-      size="16px"
-      viewBox="0 0 16 16"
+      size="20px"
+      viewBox="0 0 20 20"
       a11yTitle="Expand"
       {...props}
     >
@@ -12,7 +12,7 @@ function Expand(props) {
         <path
           fill="inherit"
           stroke="inherit"
-          d="M13.71,8,7,14.71,5.59,13.29,10.88,8,5.59,2.71,7,1.29ZM2,15H4V1H2Z"
+          d="M18.41,10l-5.7,5.71-1.42-1.42L14.59,11H7V9h7.59l-3.3-3.29,1.42-1.42ZM3,17H5V3H3Z"
         />
       </g>
     </StyledIcon>

@@ -7,7 +7,7 @@ function Intro(props) {
         <path
           fill="inherit"
           stroke="inherit"
-          d="M15,19.5H27v1H15Zm0,5H27v-1H15Zm0,4h6v-1H15ZM32,13.59V35H10V31H6V3H28V9.59ZM10,29V7H25.41l.59.59V5H8V29ZM30,15H24V9H12V33H30"
+          d="M28,9.59V3H6V31h4v4H32V13.59ZM10,29H8V5H26V7.59L25.41,7H10Zm20,4H12V9H24v6h6ZM15,21.5H27v1H15Zm0,3H27v1H15Zm0,3h6v1H15Z"
         />
       </g>
     </StyledIcon>

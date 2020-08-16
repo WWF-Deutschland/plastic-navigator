@@ -3,8 +3,8 @@ import StyledIcon from './StyledIcon';
 function Collapse(props) {
   return (
     <StyledIcon
-      size="16px"
-      viewBox="0 0 16 16"
+      size="20px"
+      viewBox="0 0 20 20"
       a11yTitle="Collapse"
       {...props}
     >
@@ -12,7 +12,7 @@ function Collapse(props) {
         <path
           fill="inherit"
           stroke="inherit"
-          d="M8.41,8l5.3,5.29-1.42,1.42L5.59,8l6.7-6.71,1.42,1.42ZM2,15H4V1H2Z"
+          d="M3,3H5V17H3ZM18,9H10.41l3.3-3.29L12.29,4.29,6.59,10l5.7,5.71,1.42-1.42L10.41,11H18Z"
         />
       </g>
     </StyledIcon>
