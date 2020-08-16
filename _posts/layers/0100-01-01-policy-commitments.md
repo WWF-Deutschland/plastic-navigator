@@ -7,8 +7,7 @@ title: Policy commitments
 image_file_name: policy_layer.jpg
 image_caption: Markus Winkler / WWF
 fact_lead: >-
-  Lead on policy commitments.
-text_references: Marine plastic pollution has reached crisis levels. It is estimated that more than eight million tonnes of plastic waste enters the world’s oceans every year, threatening marine life, coastal livelihoods and potentially even human health. It is a global problem that urgently requires a global response: It is time to begin negotiations on a new global legally binding agreement.
+  Marine plastic pollution has reached crisis levels. It is estimated that more than eight million tonnes of plastic waste enters the world’s oceans every year, threatening marine life, coastal livelihoods and potentially even human health. It is a global problem that urgently requires a global response: It is time to begin negotiations on a new global legally binding agreement.
 ---
 
 As of today, there is no international treaty in place dedicated to fully tackling this issue. The existing legal framework covering marine plastic pollution is fragmented and ineffective, and does not provide the tools necessary for an effective global response to the problem. This issue cannot be solved on a national or regional level, or through non-binding, voluntary measures alone. It requires coordinated international action, shared responsibility and a common approach.
