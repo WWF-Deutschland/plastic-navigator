@@ -71,7 +71,6 @@ const Main = styled.div`
 
 const Title = styled.div`
   font-family: 'wwfregular';
-  text-transform: uppercase;
   font-weight: normal;
   letter-spacing: 0.05em;
   font-size: 1.4em;
