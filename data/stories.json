@@ -20,7 +20,7 @@
           "de": "Poor waste management is a major source of plastic debris"
         },
         "description": {
-          "en": "This map layer shows estimates of mismanaged plastic waste per km2, that were derived using population data and GDP. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
+          "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using population data and GDP. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
           "de": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
@@ -63,11 +63,11 @@
       {
         "title": {
           "en": "Towards an international agreement",
-          "de": "Country treaty positions"
+          "de": "Towards an international agreement"
         },
         "description": {
-          "en": "Therefore WWF is working with States towards an international treaty to stop marine plastic pollution",
-          "de": "TODO"
+          "en": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'.",
+          "de": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'."
         },
         "layers": [
           "surface-concentration",
