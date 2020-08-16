@@ -2,7 +2,7 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function Plus(props) {
   return (
-    <StyledIcon viewBox="0 0 30 30" a11yTitle="Plus" {...props}>
+    <StyledIcon size="30px" viewBox="0 0 30 30" a11yTitle="Plus" {...props}>
       <g>
         <path
           fill="inherit"

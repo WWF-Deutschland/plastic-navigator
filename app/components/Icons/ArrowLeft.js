@@ -2,7 +2,12 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function ArrowLeft(props) {
   return (
-    <StyledIcon viewBox="0 0 30 30" a11yTitle="ArrowLeft" {...props}>
+    <StyledIcon
+      size="30px"
+      viewBox="0 0 30 30"
+      a11yTitle="ArrowLeft"
+      {...props}
+    >
       <g>
         <path
           fill="inherit"

@@ -2,7 +2,7 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function Close(props) {
   return (
-    <StyledIcon viewBox="0 0 30 30" a11yTitle="Close" {...props}>
+    <StyledIcon size="30px" viewBox="0 0 30 30" a11yTitle="Close" {...props}>
       <g>
         <path
           fill="inherit"
