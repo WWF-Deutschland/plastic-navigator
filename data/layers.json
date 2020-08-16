@@ -674,11 +674,11 @@
         },
         "full": {
           "1": {
-            "en": "Official statements calling for agreement",
+            "en": "Officially called for new agreement",
             "de": "positions.position.position_short_en"
           },
           "2": {
-            "en": "Public commitments to explore option of agreement",
+            "en": "Willingness to explore option of agreement",
             "de": "positions.position.position_short_en"
           }
         }
