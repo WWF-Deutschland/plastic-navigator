@@ -12,7 +12,13 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Button, Text, ResponsiveContext } from 'grommet';
-import { Menu, CircleInformation, FormDown, FormUp } from 'grommet-icons';
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowDown,
+  ArrowUp,
+  InfoOutline,
+} from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
@@ -48,6 +54,10 @@ const KeyScrollButton = styled(p => (
   box-shadow: ${({ top }) => top
     ? '0px 4px 8px rgba(0, 0, 0, 0.1)'
     : '0px -4px 12px rgba(0, 0, 0, 0.1)'};
+  border-top: 1px solid;
+  border-color: ${({ top, theme }) =>
+    top ? theme.global.colors.light : 'transparent'};
+
   &:hover {
     background: ${({ theme }) => theme.global.colors.white};
     box-shadow: ${({ top }) => top
@@ -114,10 +124,6 @@ const KeyLI = styled.li`
 const ButtonKey = styled(p => <Button {...p} plain fill />)``;
 
 const ButtonInfo = styled(p => <Button {...p} plain fill />)``;
-
-const MenuOpen = styled(Menu)`
-  transform: rotate(90deg);
-`;
 
 const Tab = styled(Box)``;
 
@@ -252,7 +258,7 @@ export function PanelKey({
           <ToggleWrap>
             <ButtonToggleWrap>
               <ButtonToggle
-                icon={open ? <MenuOpen /> : <Menu />}
+                icon={open ? <ArrowLeft /> : <ArrowRight />}
                 onClick={() => onSetOpen(!open)}
               />
             </ButtonToggleWrap>
@@ -261,7 +267,7 @@ export function PanelKey({
                 keyWrapperRef.current &&
                 hasScrollTop(keyIconOffset) && (
                 <KeyScrollButton
-                  icon={<FormUp size="large" />}
+                  icon={<ArrowUp color="dark-4" />}
                   top
                   onClick={() => setKeyIconOffset(getScrollOffsetTop(
                     keyIconOffset,
@@ -297,7 +303,7 @@ export function PanelKey({
                   keyIconOffset,
                 ) && (
                 <KeyScrollButton
-                  icon={<FormDown size="large" />}
+                  icon={<ArrowDown color="dark-4" />}
                   onClick={() => setKeyIconOffset(getScrollOffsetBottom(
                     cleanActiveLayerIds.length,
                     40,
@@ -355,9 +361,9 @@ export function PanelKey({
                             <Box>
                               <ButtonInfo
                                 onClick={() =>
-                                  onLayerInfo({ layer: config.id })
+                                  onLayerInfo(config.id)
                                 }
-                                icon={<CircleInformation />}
+                                icon={<InfoOutline />}
                               />
                             </Box>
                           )}
@@ -401,11 +407,9 @@ export function PanelKey({
                             <Box>
                               <ButtonInfo
                                 onClick={() =>
-                                  onLayerInfo({
-                                    layer: config['content-id'] || config.id,
-                                  })
+                                  onLayerInfo(config['content-id'] || config.id)
                                 }
-                                icon={<CircleInformation />}
+                                icon={<InfoOutline />}
                               />
                             </Box>
                           )}

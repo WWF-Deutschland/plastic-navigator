@@ -1,12 +1,17 @@
-import Explore from './Explore';
 import ArrowDown from './ArrowDown';
 import ArrowLeft from './ArrowLeft';
+import ArrowLeftL from './ArrowLeftL';
 import ArrowRight from './ArrowRight';
+import ArrowRightL from './ArrowRightL';
 import ArrowUp from './ArrowUp';
 import Close from './Close';
-import DropdownClose from './DropdownClose';
-import DropdownOpen from './DropdownOpen';
-import ExploreSmall from './ExploreSmall';
+import CloseS from './CloseS';
+import CloseXS from './CloseXS';
+import DropdownUp from './DropdownUp';
+import DropdownDown from './DropdownDown';
+import Explore from './Explore';
+import ExploreS from './ExploreS';
+import ExploreXS from './ExploreXS';
 import InfoOutline from './InfoOutline';
 import InfoSolid from './InfoSolid';
 import Intro from './Intro';
@@ -18,15 +23,20 @@ import WWFLogoHeader from './WWFLogoHeader';
 import WWFLogoSmall from './WWFLogoSmall';
 
 export {
-  Explore,
   ArrowDown,
   ArrowLeft,
+  ArrowLeftL,
   ArrowRight,
+  ArrowRightL,
   ArrowUp,
   Close,
-  DropdownClose,
-  DropdownOpen,
-  ExploreSmall,
+  CloseS,
+  CloseXS,
+  DropdownUp,
+  DropdownDown,
+  Explore,
+  ExploreS,
+  ExploreXS,
   InfoOutline,
   InfoSolid,
   Intro,

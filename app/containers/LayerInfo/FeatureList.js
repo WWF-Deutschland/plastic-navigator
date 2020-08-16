@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
-import { Next } from 'grommet-icons';
+import { ArrowRightL } from 'components/Icons';
 import { deburr } from 'lodash/string';
 
 import { setLayerInfo } from 'containers/App/actions';
@@ -39,7 +39,7 @@ export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
           label={
             <Box direction="row" justify="between" pad="small">
               <Text>{item.label}</Text>
-              <Next />
+              <ArrowRightL />
             </Box>
           }
         />

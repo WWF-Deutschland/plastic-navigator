@@ -1,9 +1,10 @@
 import React from 'react';
 import StyledIcon from './StyledIcon';
-function ArrowRight(props) {
+
+function ArrowRightL(props) {
   return (
     <StyledIcon
-      size="16px"
+      size="20px"
       viewBox="0 0 16 16"
       a11yTitle="ArrowLeft"
       {...props}
@@ -19,4 +20,4 @@ function ArrowRight(props) {
   );
 }
 
-export default ArrowRight;
+export default ArrowRightL;

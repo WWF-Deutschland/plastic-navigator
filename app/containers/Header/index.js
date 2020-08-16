@@ -6,16 +6,16 @@ import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
 import { DropButton, Button, Box, ResponsiveContext } from 'grommet';
-import { Menu } from 'grommet-icons';
+import { WWFLogoHeader, Menu, MenuOpen } from 'components/Icons';
 
 import { selectRouterPath } from 'containers/App/selectors';
 import { navigate, navigatePage, navigateHome } from 'containers/App/actions';
-import { MODULES, PAGES } from 'config';
 
 import LocaleToggle from 'containers/LocaleToggle';
 
 import { isMinSize, isMaxSize } from 'utils/responsive';
 
+import { MODULES, PAGES } from 'config';
 import commonMessages from 'messages';
 
 import NavBar from './NavBar';
@@ -27,10 +27,6 @@ const MenuButton = styled(props => (
   background: black !important;
   width: 40px;
   min-width: 40px;
-`;
-
-const MenuOpen = styled(Menu)`
-  transform: rotate(90deg);
 `;
 
 const NavSecondary = styled(props => (
@@ -105,9 +101,9 @@ const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
 `;
 const BrandWWFWrap = styled(props => <Box {...props} />)`
   position: relative;
-  width: 44px;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    width: 60px;
+  width: 60px;
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    width: 72px;
   }
 `;
 const BrandWWF = styled(props => <Button {...props} plain />)`
@@ -116,13 +112,13 @@ const BrandWWF = styled(props => <Button {...props} plain />)`
   left: 0;
   right: 0;
   z-index: 3000;
-  height: 50px;
-  width: 44px;
+  height: 68px;
+  width: 60px;
   background: ${({ theme }) => theme.global.colors.white};
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-    height: 68px;
-    width: 60px;
+    height: 81px;
+    width: 72px;
   }
 `;
 
@@ -145,10 +141,11 @@ function Header({ nav, navPage, path, navHome }) {
           <NavBar
             justify={isMinSize(size, 'large') ? 'start' : 'between'}
             alignContent="end"
+            responsive={false}
             pad={
               isMinSize(size, 'large')
                 ? { horizontal: 'medium' }
-                : { left: 'medium', right: 'small' }
+                : { left: 'small', right: 'xsmall' }
             }
             gap="none"
           >
@@ -160,7 +157,12 @@ function Header({ nav, navPage, path, navHome }) {
             >
               {!window.wwfMpxInsideIframe && (
                 <BrandWWFWrap>
-                  <BrandWWF as="a" target="_blank" href="//wwf.de" />
+                  <BrandWWF as="a" target="_blank" href="//wwf.de">
+                    <WWFLogoHeader
+                      color="black"
+                      size={isMaxSize(size, 'medium') ? '60px' : '72px'}
+                    />
+                  </BrandWWF>
                 </BrandWWFWrap>
               )}
               <Brand

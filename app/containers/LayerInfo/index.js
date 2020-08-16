@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, ResponsiveContext } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Close } from 'components/Icons';
 
 import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
 

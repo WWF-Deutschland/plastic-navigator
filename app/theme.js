@@ -37,7 +37,7 @@ export const sizes = {
 export const dimensions = {
   header: {
     // by breakpoint
-    height: [50, 50, 50, 50, 50],
+    height: [50, 50, 60, 60, 60],
     zIndex: 1200,
   },
   // layer select

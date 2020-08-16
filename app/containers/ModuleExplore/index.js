@@ -14,14 +14,15 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import styled from 'styled-components';
 import { Box, Button, ResponsiveContext, Layer } from 'grommet';
-import { Layer as LayerIcon } from 'grommet-icons';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
+import { getAsideWidth, isMaxSize } from 'utils/responsive';
 
 import { PROJECT_CONFIG, MODULES } from 'config';
 
 import PanelExplore from 'containers/PanelExplore';
 import ModuleWrap from 'components/ModuleWrap';
+import { ExploreS, WWFLogoSmall } from 'components/Icons';
 
 import {
   selectConfigByKey,
@@ -30,8 +31,6 @@ import {
   selectFirstLanding,
 } from 'containers/App/selectors';
 import { setLayers, setUIState, setLanding } from 'containers/App/actions';
-
-import { getAsideWidth } from 'utils/responsive';
 
 import commonMessages from 'messages';
 import messages from './messages';
@@ -68,33 +67,38 @@ const ProjectButtonWrap = styled.div`
   pointer-events: all;
 `;
 
-const ProjectButton = ({ showAll, lids, pids, onClick }) => (
-  <ShowButton
-    projects
-    onClick={() => {
-      if (showAll) {
-        onClick(
-          uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}-${pid}`)]),
-        );
-      } else {
-        onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}-`)));
-      }
-    }}
-    label={
-      showAll ? (
-        <FormattedMessage {...messages.showProjects} />
-      ) : (
-        <FormattedMessage {...messages.hideProjects} />
-      )
-    }
-  />
-);
+const ProjectButton = ({ showAll, lids, pids, onClick, small, ...rest }) => {
+  let label = '';
+
+  if (small) {
+    label = showAll ? messages.showProjectsShort : messages.hideProjectsShort;
+  } else {
+    label = showAll ? messages.showProjects : messages.hideProjects;
+  }
+  return (
+    <ShowButton
+      projects
+      onClick={() => {
+        if (showAll) {
+          onClick(
+            uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}-${pid}`)]),
+          );
+        } else {
+          onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}-`)));
+        }
+      }}
+      label={<FormattedMessage {...label} />}
+      {...rest}
+    />
+  );
+};
 
 ProjectButton.propTypes = {
   lids: PropTypes.array,
   pids: PropTypes.array,
   onClick: PropTypes.func,
   showAll: PropTypes.bool,
+  small: PropTypes.bool,
 };
 
 const COMPONENT_KEY = 'ModuleExplore';
@@ -164,6 +168,8 @@ export function ModuleExplore({
                   lids={layerIds}
                   pids={projectIds}
                   onClick={onSetLayers}
+                  small={isMaxSize(size, 'small')}
+                  icon={<WWFLogoSmall color="black" />}
                 />
               </ProjectButtonWrap>
             )}
@@ -183,13 +189,15 @@ export function ModuleExplore({
                   lids={layerIds}
                   pids={projectIds}
                   onClick={onSetLayers}
+                  small={isMaxSize(size, 'small')}
+                  icon={<WWFLogoSmall color="black" />}
                 />
                 <ShowButton
                   onClick={() => {
                     setShow(true);
                     setShowSmall(true);
                   }}
-                  icon={<LayerIcon color="white" />}
+                  icon={<ExploreS color="white" />}
                   label={<FormattedMessage {...messages.showLayerPanel} />}
                 />
               </Buttons>

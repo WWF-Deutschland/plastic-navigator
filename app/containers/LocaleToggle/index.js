@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { DropButton, Box } from 'grommet';
-import { FormDown, FormUp } from 'grommet-icons';
+import { DropdownDown, DropdownUp } from 'components/Icons';
 
 import { appLocales, appLocaleLabels } from 'i18n';
 
@@ -82,7 +82,9 @@ export function LocaleToggle({ locale, onLocaleToggle, list }) {
             align: { top: 'bottom', right: 'right' },
             plain: true,
           }}
-          icon={open ? <FormUp color="white" /> : <FormDown color="white" />}
+          icon={
+            open ? <DropdownUp color="white" /> : <DropdownDown color="white" />
+          }
           label={locale}
           dropContent={
             <DropContent

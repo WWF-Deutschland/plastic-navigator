@@ -1,4 +1,4 @@
-import { DocumentText, Layer } from 'grommet-icons';
+import { Explore, Intro } from 'components/Icons';
 import React from 'react';
 
 // application routes and paths
@@ -16,13 +16,13 @@ export const PAGES = {
 export const MODULES = {
   stories: {
     path: ROUTES.INTRO,
-    icon: <DocumentText color="white" />,
-    iconActive: <DocumentText color="black" />,
+    icon: <Intro color="white" />,
+    iconActive: <Intro color="black" />,
   },
   explore: {
     path: ROUTES.EXPLORE,
-    icon: <Layer color="white" />,
-    iconActive: <Layer color="black" />,
+    icon: <Explore color="white" />,
+    iconActive: <Explore color="black" />,
     layers: ['surface-concentration'],
   },
 };
