@@ -69,7 +69,7 @@ const PanelHeader = styled(p => (
   left: 0;
   top: 0;
   width: 100%;
-  height: 125px;
+  height: 150px;
 `;
 const PanelBody = styled(p => (
   <Box {...p} pad={{ top: 'small', bottom: 'large', horizontal: 'small' }} />
@@ -77,7 +77,7 @@ const PanelBody = styled(p => (
   position: absolute;
   right: 0;
   left: 0;
-  top: 125px;
+  top: 150px;
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
@@ -206,6 +206,7 @@ export function PanelExplore({
                           <ButtonDeleteLayers
                             updateLayers={() => onSetLayers(keepLayers)}
                             layerCount={activeCategoryLayers.length}
+                            active={tab === index}
                           />
                         )}
                         <TabLink

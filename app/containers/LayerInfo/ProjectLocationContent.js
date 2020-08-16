@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Button } from 'grommet';
+import { Text, Box, Button, Heading } from 'grommet';
 import { ArrowLeftL } from 'components/Icons';
 // import { ArrowLeftL } from 'components/Icons';
 import Markdown from 'react-remarkable';
@@ -23,7 +23,6 @@ import { PROJECT_CONFIG } from 'config';
 
 import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
-import Title from './Title';
 import messages from './messages';
 
 const Styled = styled.div``;
@@ -31,6 +30,9 @@ const Styled = styled.div``;
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
+  &:hover {
+    color: ${({ theme }) => theme.global.colors['dark-1']};
+  }
 `;
 
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
@@ -40,6 +42,23 @@ const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   padding: 5px 15px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
+  }
+`;
+
+const Title = styled(p => <Heading level={1} {...p} />)`
+  font-weight: bold;
+  font-size: 1.8em;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-align: center;
+`;
+
+const BackButton = styled(p => <Button {...p} />)`
+  padding: 15px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.white};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.light};
   }
 `;
 
@@ -72,15 +91,21 @@ export function ProjectLocationContent({
   const projectId = `${PROJECT_CONFIG.id}-${project.project_id}`;
   return (
     <Styled>
-      <Box direction="row" align="center" gap="small">
-        <Button
+      <Box
+        direction="row"
+        align="center"
+        gap="small"
+        margin={{ right: 'xxlarge', bottom: 'xlarge' }}
+        style={{ minHeight: '50px' }}
+      >
+        <BackButton
           plain
           onClick={() => onSetLayerInfo(projectId)}
           icon={<ArrowLeftL />}
         />
         <SupTitle
           onClick={() => onSetLayerInfo(projectId)}
-          label={projectTitle}
+          label={<Text size="small">{projectTitle}</Text>}
         />
       </Box>
       <Title>{title}</Title>

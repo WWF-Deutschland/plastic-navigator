@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Button } from 'grommet';
+import { Button, Box } from 'grommet';
 import Markdown from 'react-remarkable';
 
 import { prepMarkdown } from 'utils/string';
@@ -29,9 +29,9 @@ import ProjectLocationContent from './ProjectLocationContent';
 import FeatureList from './FeatureList';
 import Title from './Title';
 
-const Styled = styled.div`
-  margin-bottom: 50px;
-`;
+const Styled = styled(p => (
+  <Box flex={false} margin={{ vertical: 'large' }} {...p} />
+))``;
 
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
@@ -83,12 +83,12 @@ export function ProjectContent({
       feature => feature.properties.f_id === location,
     );
   return (
-    <Styled>
+    <>
       {theLocation && projectLocations.length > 1 && (
         <ProjectLocationContent location={theLocation} project={project} />
       )}
       {(!theLocation || projectLocations.length <= 1) && (
-        <>
+        <Styled>
           <Title>{title}</Title>
           {exists(project.image_url) && (
             <div>
@@ -139,9 +139,9 @@ export function ProjectContent({
               />
             </div>
           )}
-        </>
+        </Styled>
       )}
-    </Styled>
+    </>
   );
 }
 

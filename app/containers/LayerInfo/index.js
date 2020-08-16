@@ -31,11 +31,14 @@ const ContentWrap = styled(props => (
   <Box
     pad={{
       horizontal: 'medium',
-      vertical: 'xlarge',
+      bottom: 'xlarge',
     }}
     {...props}
   />
-))``;
+))`
+  margin-top: ${({ theme, isProjectInfo }) =>
+    theme.global.edgeSize[isProjectInfo ? 'ms' : 'xlarge']};
+`;
 
 const Styled = styled(props => (
   <Box {...props} background="white" elevation="medium" />
@@ -77,7 +80,7 @@ export function LayerInfo({ id, onClose, config }) {
     <ResponsiveContext.Consumer>
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
-          <ContentWrap>
+          <ContentWrap isProjectInfo={isProjectInfo}>
             <ButtonClose onClick={() => onClose()} />
             {isProjectInfo && (
               <ProjectContent id={layerId} location={featureId} />
