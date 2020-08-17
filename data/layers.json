@@ -328,7 +328,7 @@
     "source": "data",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.26f5zn23",
+    "tileset": "tmfrnz.apl4njpa",
     "title": {
       "en": "Ocean currents 5pt 100%",
       "de": "Meeresströmungen"
@@ -422,7 +422,7 @@
     "source": "data",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.26f5zn23",
+    "tileset": "tmfrnz.apl4njpa",
     "title": {
       "en": "Ocean currents 5pt 20%",
       "de": "Meeresströmungen"
