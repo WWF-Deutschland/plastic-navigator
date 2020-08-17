@@ -30,7 +30,9 @@ The map layer shows the **estimated concentration of floating plastic** by weigh
 
 ### About the study
 
-The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios. **The study estimated a global total of 5.25 trillion floating plastic pieces together weighing over 268,000 tons**.
+The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios.
+
+**The study estimated a global total of 5.25 trillion floating plastic pieces together weighing over 268,000 tons.**
 
 The model results were calibrated using survey data from 24 expeditions that collected data for four different size classes:
 * microplastics with a size between 0.33 and 1 mm
