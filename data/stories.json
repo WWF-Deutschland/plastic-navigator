@@ -8,8 +8,8 @@
           "de": "Plastik wurde in allen Ozeanen gefunden"
         },
         "description": {
-          "en": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste.",
-          "de": "Plastic in the ocean is a threat to marine wildlife as well as seafood consumers. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more plastic waste."
+          "en": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris.",
+          "de": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris."
         },
         "layers": ["surface-concentration"],
         "layersFocus": ["surface-concentration"]
@@ -20,8 +20,8 @@
           "de": "Poor waste management is a major source of plastic debris"
         },
         "description": {
-          "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using population data and GDP. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
-          "de": "This map layer shows an estimate of mismanaged plastic waste that can enter the environment based on population data and GDP. Darker colours indicate higher amounts of mismanaged waste."
+          "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
+          "de": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
