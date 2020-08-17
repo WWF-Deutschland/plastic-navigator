@@ -101,15 +101,21 @@ const SupTitle = styled.div`
 const CloseWrap = styled.div`
   width: 30px;
   height: 30px;
-  border-radius: 9999px;
-  background: black;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
   position: absolute;
   right: 10px;
   top: 10px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     right: -10px;
     top: -10px;
+  }
+`;
+
+const CloseButton = styled(Button)`
+  border-radius: 9999px;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
+  background: black;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.dark};
   }
 `;
 
@@ -260,7 +266,7 @@ const Tooltip = ({
             )}
           </Box>
           <CloseWrap>
-            <Button
+            <CloseButton
               plain
               onClick={() => onClose()}
               icon={<CloseS color="white" />}
