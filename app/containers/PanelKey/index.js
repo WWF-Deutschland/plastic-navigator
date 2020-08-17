@@ -223,7 +223,6 @@ const MAX_FOLD = 'large';
 export function PanelKey({
   onLayerInfo,
   layersConfig,
-  projects,
   activeLayerIds,
   intl,
   jsonLayers,
@@ -246,12 +245,7 @@ export function PanelKey({
   useEffect(() => {
     if (!active || activeLayerIds.length !== activeLength) {
       const latestActive = activeLayerIds[0];
-      const isProject =
-        projects &&
-        projects.find(
-          p =>
-            p.project_id === latestActive.replace(`${PROJECT_CONFIG.id}-`, ''),
-        );
+      const isProject = startsWith(latestActive, `${PROJECT_CONFIG.id}-`);
       if (isProject) {
         setActive(PROJECT_CONFIG.id);
       } else {
@@ -495,7 +489,6 @@ PanelKey.propTypes = {
   onLayerInfo: PropTypes.func,
   layersConfig: PropTypes.array,
   activeLayerIds: PropTypes.array,
-  projects: PropTypes.array,
   jsonLayers: PropTypes.object,
   intl: intlShape.isRequired,
   uiState: PropTypes.object,

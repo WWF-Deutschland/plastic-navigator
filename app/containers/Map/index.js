@@ -593,7 +593,6 @@ export function Map({
         <PanelKey
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
-          projects={projects}
           onLayerInfo={onFeatureClick}
           jsonLayers={jsonLayers}
         />
