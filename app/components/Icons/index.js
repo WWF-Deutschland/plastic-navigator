@@ -3,6 +3,7 @@ import ArrowLeft from './ArrowLeft';
 import ArrowLeftL from './ArrowLeftL';
 import ArrowRight from './ArrowRight';
 import ArrowRightL from './ArrowRightL';
+import Checkmark from './Checkmark';
 import ArrowUp from './ArrowUp';
 import Close from './Close';
 import CloseS from './CloseS';
@@ -31,6 +32,7 @@ export {
   ArrowRight,
   ArrowRightL,
   ArrowUp,
+  Checkmark,
   Close,
   CloseS,
   CloseXS,
