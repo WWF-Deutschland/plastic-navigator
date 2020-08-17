@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Checkmark } from 'grommet-icons';
 import { Box, Button, Text } from 'grommet';
 
+import { Checkmark } from 'components/Icons';
+
 const CheckButton = styled(p => <Button round="3px" plain {...p} />)`
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background: white;
   border-radius: 3px;
-  padding: 3px;
+  padding: 0px;
   border: 1px solid black;
 `;
 const ActiveCheckButton = styled(CheckButton)`
@@ -31,7 +32,7 @@ export function Checkbox({ label, checked, onToggle }) {
       <Box flex={{ shrink: 0 }}>
         {checked && (
           <ActiveCheckButton
-            icon={<Checkmark color="white" size="xsmall" />}
+            icon={<Checkmark color="white" />}
             onClick={() => onToggle()}
           />
         )}
