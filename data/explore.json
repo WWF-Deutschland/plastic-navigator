@@ -39,12 +39,12 @@
       {
         "id": "policy",
         "title": {
-          "en": "What are the countries' commitments?",
-          "de": "Wo endet der Plastikmüll in den Ozeanan?"
+          "en": "What are the countries’ level of support for a new global agreement on marine plastic pollution?",
+          "de": "What are the countries’ level of support for a new global agreement on marine plastic pollution?"
         },
         "description": {
           "en": "Learn about the countries political commitments to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'.",
-          "de": "Eine optionale Beschreibung dieser Ebenen-Gruppe."
+          "de": "Learn about the countries political commitments to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'."
         }
       }
     ]
