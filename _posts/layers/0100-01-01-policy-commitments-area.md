@@ -24,8 +24,8 @@ The visualization shows the level of publicly expressed support by United Nation
 
 The estimated level of support by each country is based on WWF’s assessment of publicly available documents, including regional declarations and decisions (Africa, EU, Caribbean, Nordic countries), regional action plans (Pacific Islands), as well as the Terms of Reference for the Group of Friends in New York. [All references are listed below.]
 
-<span class="mpx-reference">
 
+<div class="mpx-reference">
 #### References
 
 African Ministerial Congress on the Environment (AMCEN). Durban Declaration on taking action for environmental sustainability and prosperity in Africa ([AMCEN2019](https://wedocs.unep.org/bitstream/handle/20.500.11822/30786/AMCEN_17L1.pdf?sequence=1&isAllowed=y))
@@ -40,4 +40,4 @@ Pacific Regional Action Plan on Marine Litter endorsed by heads of state at the 
 
 St. John's declaration adopted by the The Fortieth Regular Meeting of the Conference of Heads of Government of the Caribbean Community ([CARICOM2019](https://today.caricom.org/2019/07/06/communique-issued-at-the-conclusion-of-the-fortieth-regular-meeting-of-the-conference-of-heads-of-government-of-the-caribbean-community-gros-islet-saint-lucia-3-5-july-2019/))
 
-</span>
+</div>
