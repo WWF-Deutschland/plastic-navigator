@@ -18,11 +18,15 @@ export const MODULES = {
     path: ROUTES.INTRO,
     icon: <Intro color="white" />,
     iconActive: <Intro color="black" />,
+    iconS: <Intro color="white" size="26px" />,
+    iconActiveS: <Intro color="black" size="26px" />,
   },
   explore: {
     path: ROUTES.EXPLORE,
     icon: <Explore color="white" />,
     iconActive: <Explore color="black" />,
+    iconS: <Explore color="white" size="26px" />,
+    iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
   },
 };
@@ -130,7 +134,7 @@ export const MAP_OPTIONS = {
   CENTER: [20, 180],
   ZOOM: {
     INIT: 2,
-    MIN: 2,
+    MIN: 1,
     MAX: 7,
   },
   BOUNDS: {

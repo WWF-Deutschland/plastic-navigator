@@ -81,7 +81,7 @@ export function FeatureContent({
         direction="row"
         align="center"
         gap="xsmall"
-        margin={{ right: 'xxlarge', bottom: 'ml' }}
+        margin={{ right: 'xxlarge', bottom: 'ml', left: '-10px' }}
         style={{ minHeight: '50px' }}
       >
         <BackButton

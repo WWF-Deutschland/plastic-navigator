@@ -105,13 +105,17 @@ const Content = styled(p => (
 //
 // const TitleWrap = styled(Box)``;
 const Title = styled(Text)`
-  font-size: 24px;
-  line-height: 27px;
+  font-size: 21px;
+  line-height: 24px;
   margin: 0;
   margin-bottom: 5px;
   font-family: 'wwfregular';
   font-weight: normal;
   text-transform: uppercase;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 24px;
+    line-height: 27px;
+  }
 `;
 
 const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`
@@ -124,20 +128,33 @@ const ButtonNext = styled(p => <Button {...p} reverse plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
-  padding: 5px 20px;
-  height: 35px;
+  padding: 2px 12px;
   font-family: 'wwfregular';
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 16px;
+  height: 25px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 20px;
+    height: 35px;
+    padding: 5px 20px;
+  }
 `;
 const ButtonPrevious = styled(p => <ButtonNext {...p} />)`
-  padding: 5px 15px;
+  padding: 2px 12px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 5px 15px;
+  }
 `;
 
-const Description = styled(Text)``;
+const Description = styled(Text)`
+  font-size: 13px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 15px;
+  }
+`;
 
 const LayersFocusWrap = styled(p => (
   <Box {...p} direction="row" gap="small" flex={false} />
@@ -272,7 +289,7 @@ export function PanelChapter({
               {(isMinSize(size, MIN_EXPAND) || step === 1) && (
                 <Content>
                   {chapter && locale && (
-                    <Description className="mpx-wrap-markdown-intro">
+                    <Description className="mpx-wrap-markdown-description">
                       <Markdown
                         options={{
                           html: true,
@@ -310,14 +327,15 @@ export function PanelChapter({
                     }}
                   />
                 )}
-                {!isLast && (
+                {(!isLast || (isMaxSize(size, MAX_FOLD) && step === 0)) && (
                   <ButtonNext
                     icon={<ArrowRight color="white" />}
                     label={
-                      <Box margin={{ top: '-4px' }}>
+                      <Box margin={{ top: size === 'small' ? '-3px' : '-4px' }}>
                         <FormattedMessage {...messages.next} />
                       </Box>
                     }
+                    gap={size === 'small' ? 'xsmall' : 'small'}
                     onClick={() => {
                       if (isMaxSize(size, MAX_FOLD)) {
                         if (step < STEPS - 1) {
@@ -337,7 +355,7 @@ export function PanelChapter({
                     }}
                   />
                 )}
-                {isLast && (
+                {isLast && (!isMaxSize(size, MAX_FOLD) || step > 0) && (
                   <ButtonNext
                     label={
                       <Box margin={{ top: '-4px' }}>

@@ -51,11 +51,14 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
   color: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'black' : 'white']};
   border-radius: 20px;
-  padding: 5px 15px;
+  padding: 2px 12px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     background: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'lightHover' : 'brandDark']};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 5px 15px;
   }
 `;
 
@@ -183,14 +186,16 @@ export function ModuleExplore({
             {((!show && size !== 'small') ||
               (!showSmall && size === 'small')) && (
               <Buttons>
-                <ProjectButton
-                  showAll={!hasAllProjectsActive}
-                  lids={layerIds}
-                  pids={projectIds}
-                  onClick={onSetLayers}
-                  small={isMaxSize(size, 'small')}
-                  icon={<WWFLogoSmall color="black" />}
-                />
+                {size !== 'small' && (
+                  <ProjectButton
+                    showAll={!hasAllProjectsActive}
+                    lids={layerIds}
+                    pids={projectIds}
+                    onClick={onSetLayers}
+                    small={isMaxSize(size, 'small')}
+                    icon={<WWFLogoSmall color="black" />}
+                  />
+                )}
                 <ShowButton
                   onClick={() => {
                     setShow(true);

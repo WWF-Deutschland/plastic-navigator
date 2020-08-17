@@ -10,6 +10,11 @@ import { getPropertyByLocale } from './utils';
 
 const Styled = styled.div``;
 
+const P = styled.p`
+  margin-top: 0;
+  font-size: 13px;
+`;
+
 const getContent = (feature, element, layer, locale) => {
   if (layer && element.propertyFromLayer) {
     return getPropertyByLocale(layer, element, locale);
@@ -32,7 +37,7 @@ const TooltipContent = ({ config, feature, intl, layer }) => {
   return (
     <Styled>
       {contentList.map(c => (
-        <p key={c.key}>{c.content}</p>
+        <P key={c.key}>{c.content}</P>
       ))}
     </Styled>
   );

@@ -57,8 +57,9 @@ const Styled = styled(props => (
   width: 100%;
   pointer-events: all;
   overflow-y: auto;
-  z-index: 3001;
+  z-index: 4003;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    z-index: 3001;
     position: absolute;
     width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
@@ -71,12 +72,15 @@ const ButtonClose = styled(p => (
   position: absolute;
   top: 15px;
   right: 30px;
-  padding: 10px;
+  padding: 5px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
     background: ${({ theme }) => theme.global.colors.dark};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 10px;
   }
 `;
 

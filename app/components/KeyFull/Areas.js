@@ -59,7 +59,7 @@ export function Areas({ config, intl, title, simple }) {
     });
   }
   return (
-    <Box gap={simple ? 'xxsmall' : 'xsmall'}>
+    <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
       {asArray(square).map(sq => (
         <SquareLabelWrap key={sq.id}>
           <KeyAreaWrap simple={simple}>

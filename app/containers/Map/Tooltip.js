@@ -17,9 +17,16 @@ import { getPropertyByLocale } from './utils';
 
 const Root = styled.div`
   position: absolute;
-  top: ${({ position }) => position.y}px;
-  left: ${({ position }) => position.x}px;
+  bottom: 35px;
+  left: 0;
+  right: 0;
   z-index: 4001;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    bottom: auto;
+    right: auto;
+    top: ${({ position }) => position.y}px;
+    left: ${({ position }) => position.x}px;
+  }
 `;
 
 // const BlockMouse = styled.div`
@@ -34,23 +41,25 @@ const Root = styled.div`
 
 // prettier-ignore
 const Anchor = styled.div`
-  position: absolute;
-  top: ${({ xy }) => xy.y}px;
-  left: ${({ dirLeft, xy, w }) =>
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    position: absolute;
+    top: ${({ xy }) => xy.y}px;
+    left: ${({ dirLeft, xy, w }) =>
     dirLeft ? -1 * (xy.x + w) : xy.x}px;
-  &::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-style: solid;
-    display: inline-block;
-    border-width: ${({ dirLeft }) =>
+    &::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-style: solid;
+      display: inline-block;
+      border-width: ${({ dirLeft }) =>
     dirLeft ? '7px 0 7px 10px' : '7px 10px 7px 0'};
-    border-color: ${({ dirLeft }) =>
+      border-color: ${({ dirLeft }) =>
     dirLeft ? 'transparent transparent transparent white' : 'transparent white transparent transparent'};
-    position: relative;
-    top: -7px;
-    left: ${({ dirLeft, w }) => (dirLeft ? w - 10 : 'auto')}${({ dirLeft }) => (dirLeft ? 'px' : '')};
+      position: relative;
+      top: -7px;
+      left: ${({ dirLeft, w }) => (dirLeft ? w - 10 : 'auto')}${({ dirLeft }) => (dirLeft ? 'px' : '')};
+    }
   }
 `;
 
@@ -58,15 +67,21 @@ const Anchor = styled.div`
 // border-right-color: ${({ dirLeft }) => (!dirLeft ? 'white' : 'transparent')};
 
 const Main = styled.div`
-  position: absolute;
-  top: -40px;
-  left: ${({ dirLeft }) => (dirLeft ? -10 : 10)}px;
+  min-height: 200px;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
   display: block;
   background: white;
-  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
-  width: ${({ w }) => w}px;
-  min-height: 100px;
-  pointer-events: all;
+  width: 100%;
+  overflow: auto;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    overflow: visible;
+    min-height: 100px;
+    position: absolute;
+    top: -40px;
+    left: ${({ dirLeft }) => (dirLeft ? -10 : 10)}px;
+    width: ${({ w }) => w}px;
+    pointer-events: all;
+  }
 `;
 
 const Title = styled.div`
@@ -84,14 +99,18 @@ const SupTitle = styled.div`
 `;
 
 const CloseWrap = styled.div`
-  position: absolute;
-  right: -10px;
-  top: -10px;
   width: 30px;
   height: 30px;
   border-radius: 9999px;
-  background: white;
+  background: black;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    right: -10px;
+    top: -10px;
+  }
 `;
 
 const ButtonWrap = styled.div`
@@ -244,7 +263,7 @@ const Tooltip = ({
             <Button
               plain
               onClick={() => onClose()}
-              icon={<CloseS />}
+              icon={<CloseS color="white" />}
               fill
               style={{
                 textAlign: 'center',

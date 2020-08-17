@@ -616,22 +616,28 @@ export function Map({
           <LoadingIndicator />
         </LoadingWrap>
       )}
-      <MapControls position="left" hasBrand={!window.wwfMpxInsideIframe}>
-        <MapControl
-          disabled={MAP_OPTIONS.ZOOM.MAX === zoom}
-          icon={
-            <Plus color={MAP_OPTIONS.ZOOM.MAX === zoom ? 'dark-4' : 'black'} />
-          }
-          onClick={() => setZoom(zoom + 1)}
-        />
-        <MapControl
-          disabled={MAP_OPTIONS.ZOOM.MIN === zoom}
-          icon={
-            <Minus color={MAP_OPTIONS.ZOOM.MIN === zoom ? 'dark-4' : 'black'} />
-          }
-          onClick={() => setZoom(zoom - 1)}
-        />
-      </MapControls>
+      {size !== 'small' && (
+        <MapControls position="left" hasBrand={!window.wwfMpxInsideIframe}>
+          <MapControl
+            disabled={MAP_OPTIONS.ZOOM.MAX === zoom}
+            icon={
+              <Plus
+                color={MAP_OPTIONS.ZOOM.MAX === zoom ? 'dark-4' : 'black'}
+              />
+            }
+            onClick={() => setZoom(zoom + 1)}
+          />
+          <MapControl
+            disabled={MAP_OPTIONS.ZOOM.MIN === zoom}
+            icon={
+              <Minus
+                color={MAP_OPTIONS.ZOOM.MIN === zoom ? 'dark-4' : 'black'}
+              />
+            }
+            onClick={() => setZoom(zoom - 1)}
+          />
+        </MapControls>
+      )}
     </Styled>
   );
 }

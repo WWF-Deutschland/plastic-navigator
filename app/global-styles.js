@@ -110,7 +110,7 @@ const GlobalStyle = createGlobalStyle`
   figure {
     margin: 0;
   }
-  .mpx-wrap-markdown-intro p {
+  .mpx-wrap-markdown-description p {
     margin: 0;
     line-height: 20px
   }

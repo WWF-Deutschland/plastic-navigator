@@ -25,11 +25,6 @@ const TooltipProjectContent = ({ location, project, intl }) => {
             <div className="mpx-image-wrap">
               <img className="mpx-img" src={imageURL} alt={imageAttribution} />
             </div>
-            {exists(imageAttribution) && (
-              <figcaption className="mpx-figcaption">
-                {imageAttribution}
-              </figcaption>
-            )}
           </figure>
         </Box>
       )}

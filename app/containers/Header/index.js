@@ -5,8 +5,8 @@ import { createStructuredSelector } from 'reselect';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 
-import { DropButton, Button, Box, ResponsiveContext } from 'grommet';
-import { WWFLogoHeader, Menu, MenuOpen } from 'components/Icons';
+import { Button, Box, ResponsiveContext } from 'grommet';
+import { WWFLogoHeader, Menu } from 'components/Icons';
 
 import { selectRouterPath } from 'containers/App/selectors';
 import { navigate, navigatePage, navigateHome } from 'containers/App/actions';
@@ -19,10 +19,9 @@ import { MODULES, PAGES, LOCALE_TOGGLE } from 'config';
 import commonMessages from 'messages';
 
 import NavBar from './NavBar';
+import MenuLayer from './MenuLayer';
 
-const MenuButton = styled(props => (
-  <DropButton plain {...props} fill="vertical" />
-))`
+const MenuButton = styled(props => <Button plain {...props} fill="vertical" />)`
   text-align: center;
   background: black !important;
   width: 40px;
@@ -69,7 +68,6 @@ const Secondary = styled(props => <Button {...props} plain />)`
   font-size: ${({ theme }) => theme.text.medium.size};
   padding: ${({ theme }) => theme.global.edgeSize.small};
   color: ${({ theme }) => theme.global.colors.white};
-  text-decoration: ${({ active }) => (active ? 'underline' : 'none')};
   background: transparent;
   &:hover {
     text-decoration: underline;
@@ -173,7 +171,7 @@ function Header({ nav, navPage, path, navHome }) {
                   right: isMaxSize(size, 'small') ? 'small' : '0',
                 }}
               >
-                {toArray(MODULES).map((m, index) => (
+                {toArray(MODULES).map(m => (
                   <Primary
                     key={m.key}
                     onClick={() => {
@@ -182,7 +180,6 @@ function Header({ nav, navPage, path, navHome }) {
                     }}
                     active={route === m.path}
                     disabled={route === m.path}
-                    last={index === Object.keys(PAGES).length - 1}
                   >
                     <Box
                       direction="row"
@@ -190,7 +187,12 @@ function Header({ nav, navPage, path, navHome }) {
                       align="center"
                       gap="ms"
                     >
-                      {route === m.path ? m.iconActive : m.icon}
+                      {isMinSize(size, 'large') && (
+                        <>{route === m.path ? m.iconActive : m.icon}</>
+                      )}
+                      {isMaxSize(size, 'medium') && (
+                        <>{route === m.path ? m.iconActiveS : m.iconS}</>
+                      )}
                       {isMinSize(size, 'medium') && (
                         <FormattedMessage
                           {...commonMessages[`module_${m.key}`]}
@@ -230,41 +232,19 @@ function Header({ nav, navPage, path, navHome }) {
             {isMaxSize(size, 'medium') && (
               <MenuButton
                 plain
-                onClose={() => setShowMenu(false)}
-                onOpen={() => setShowMenu(true)}
+                onClick={() => setShowMenu(true)}
                 active={showMenu}
-                label={
-                  showMenu ? <MenuOpen color="white" /> : <Menu color="white" />
-                }
-                dropProps={{
-                  align: { top: 'bottom', right: 'right' },
-                  plain: true,
-                }}
-                dropContent={
-                  <Box
-                    background="black"
-                    pad="none"
-                    margin={{ top: 'xxsmall' }}
-                    elevation="small"
-                    style={{ minWidth: '120px' }}
-                  >
-                    {pagesArray.map(p => (
-                      <Secondary
-                        key={p.key}
-                        onClick={() => {
-                          setShowMenu(false);
-                          navPage(p.key);
-                        }}
-                        label={
-                          <FormattedMessage
-                            {...commonMessages[`page_${p.key}`]}
-                          />
-                        }
-                      />
-                    ))}
-                    {isMaxSize(size, 'small') && <LocaleToggle list />}
-                  </Box>
-                }
+                label={<Menu color="white" />}
+              />
+            )}
+            {isMaxSize(size, 'medium') && showMenu && (
+              <MenuLayer
+                onClose={() => setShowMenu(false)}
+                navPage={key => navPage(key)}
+                nav={modulePath => nav(modulePath)}
+                route={route}
+                modulesArray={toArray(MODULES)}
+                pagesArray={pagesArray}
               />
             )}
           </NavBar>

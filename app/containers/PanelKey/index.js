@@ -158,10 +158,21 @@ const Content = styled(p => (
   }
 `;
 
-const Description = styled(Text)``;
+const Description = styled(Text)`
+  font-size: 13px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 15px;
+  }
+`;
 
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" margin={{ bottom: 'xxsmall' }} />
+  <Box
+    {...p}
+    direction="row"
+    align="center"
+    margin={{ bottom: 'xxsmall' }}
+    responsive={false}
+  />
 ))`
   min-height: 42px;
 `;
@@ -351,7 +362,7 @@ export function PanelKey({
                   horizontal: 'small',
                 }}>
                 {isMaxSize(size, MAX_FOLD) && (
-                  <Box direction="row" gap="xsmall">
+                  <Box direction="row" gap="xsmall" flex={false}>
                     <ButtonTab
                       onClick={() => setTab(0)}
                       label={
@@ -434,7 +445,7 @@ export function PanelKey({
                             />
                           )}
                         </LayerTitleWrap>
-                        <Description>
+                        <Description className="mpx-wrap-markdown-description">
                           {isActiveProject && (
                             <FormattedMessage {...messages.keyProjectsAbout} />
                           )}
