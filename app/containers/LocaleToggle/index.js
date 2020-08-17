@@ -22,10 +22,9 @@ const Styled = styled(Box)``;
 // prettier-ignore
 const StyledDropButton = styled(DropButton)`
   font-family: 'wwfregular';
-  font-size: ${({ theme }) => theme.text.large.size};
-  letter-spacing: 0.05em;
-  text-decoration: none;
   text-transform: uppercase;
+  font-size: ${({ theme }) => theme.text.large.size};
+  text-decoration: none;
   padding: 0 0 0 6px;
   color: ${({ theme }) => theme.global.colors.white} !important;
   background: transparent;

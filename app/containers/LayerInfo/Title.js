@@ -5,10 +5,11 @@ import { Heading } from 'grommet';
 const Title = styled(p => <Heading level={1} {...p} />)`
   font-family: 'wwfregular';
   font-weight: normal;
-  font-size: 1.8em;
-  line-height: 1.2;
-  letter-spacing: 0.05em;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0.5px;
   text-align: center;
+  margin-top: 0px;
 `;
 
 export default Title;

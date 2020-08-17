@@ -30,14 +30,20 @@ import FeatureContent from './FeatureContent';
 const ContentWrap = styled(props => (
   <Box
     pad={{
+      top: 'ms',
       horizontal: 'medium',
       bottom: 'xlarge',
     }}
     {...props}
   />
 ))`
-  margin-top: ${({ theme, isProjectInfo }) =>
-    theme.global.edgeSize[isProjectInfo ? 'ms' : 'xlarge']};
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  overflow-y: scroll;
 `;
 
 const Styled = styled(props => (
@@ -64,12 +70,13 @@ const ButtonClose = styled(p => (
 ))`
   position: absolute;
   top: 15px;
-  right: 15px;
+  right: 30px;
   padding: 10px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
-    background: ${({ theme }) => theme.global.colors['dark-1']};
+    background: ${({ theme }) => theme.global.colors.dark};
   }
 `;
 
@@ -81,7 +88,6 @@ export function LayerInfo({ id, onClose, config }) {
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
           <ContentWrap isProjectInfo={isProjectInfo}>
-            <ButtonClose onClick={() => onClose()} />
             {isProjectInfo && (
               <ProjectContent id={layerId} location={featureId} />
             )}
@@ -95,6 +101,7 @@ export function LayerInfo({ id, onClose, config }) {
               <LayerFeatures config={config} />
             )}
           </ContentWrap>
+          <ButtonClose onClick={() => onClose()} />
         </Styled>
       )}
     </ResponsiveContext.Consumer>

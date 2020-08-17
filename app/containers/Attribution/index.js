@@ -35,6 +35,11 @@ const StyledButton = styled(Button)`
 const StyledHeading = styled(Heading)`
   margin: 0;
 `;
+const Title = styled(Heading)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  margin: 0;
+`;
 
 const Label = styled(p => <Text size="xxsmall" {...p} />)``;
 const Para = styled(p => <Paragraph size="xsmall" {...p} />)`
@@ -103,9 +108,9 @@ export function Attribution({ map, intl, onNavAbout }) {
                 elevation="small"
                 width={{ max: 'medium' }}
               >
-                <StyledHeading level={5}>
+                <Title level={4}>
                   <FormattedMessage {...messages.mapAttributionLabel} />
-                </StyledHeading>
+                </Title>
                 <Box margin={{ top: 'small' }}>
                   <StyledHeading level={6}>
                     <FormattedMessage {...messages.mapAttributionLayersTitle} />

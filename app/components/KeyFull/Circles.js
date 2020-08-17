@@ -17,6 +17,7 @@ const Styled = styled(p => (
 ))`
   margin-right: 10px;
   margin-left: 10px;
+  max-width: 300px;
 `;
 
 // const WrapCircle = styled(p => <Box pad="xxsmall" {...p} />)`
@@ -52,9 +53,9 @@ export function Circles({ config, simple, intl, range }) {
     maxRadius = parseFloat(render.max);
   }
 
+  console.log(config, range);
   return (
     <Styled
-      height={{ min: `${render.max * 2}px` }}
       exceeds={!simple && range && render && render.min}
       align={simple ? 'center' : 'end'}
     >

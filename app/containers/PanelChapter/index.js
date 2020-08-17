@@ -75,7 +75,7 @@ const ButtonToggle = styled(p => <Button {...p} plain fill />)`
   background: ${({ theme }) => theme.global.colors.black};
   padding: ${({ theme }) => theme.global.edgeSize.small};
   &:hover {
-    background: ${({ theme }) => theme.global.colors['dark-1']};
+    background: ${({ theme }) => theme.global.colors.dark};
   }
 `;
 
@@ -105,13 +105,12 @@ const Content = styled(p => (
 //
 // const TitleWrap = styled(Box)``;
 const Title = styled(Text)`
-  font-size: 22px;
-  line-height: 24px;
+  font-size: 24px;
+  line-height: 27px;
   margin: 0;
   margin-bottom: 5px;
   font-family: 'wwfregular';
   font-weight: normal;
-  letter-spacing: 0.05em;
   text-transform: uppercase;
 `;
 
@@ -125,12 +124,18 @@ const ButtonNext = styled(p => <Button {...p} reverse plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
-  padding: 5px 15px;
+  padding: 5px 20px;
+  height: 35px;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 20px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
 `;
-const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
+const ButtonPrevious = styled(p => <ButtonNext {...p} />)`
+  padding: 5px 15px;
+`;
 
 const Description = styled(Text)``;
 
@@ -149,7 +154,7 @@ const LayerTitle = styled(Text)`
 `;
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.xsmall};
+  padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
   margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
   border-radius: 9999px;
   &:hover {
@@ -308,7 +313,11 @@ export function PanelChapter({
                 {!isLast && (
                   <ButtonNext
                     icon={<ArrowRight color="white" />}
-                    label={<FormattedMessage {...messages.next} />}
+                    label={
+                      <Box margin={{ top: '-4px' }}>
+                        <FormattedMessage {...messages.next} />
+                      </Box>
+                    }
                     onClick={() => {
                       if (isMaxSize(size, MAX_FOLD)) {
                         if (step < STEPS - 1) {
@@ -330,7 +339,11 @@ export function PanelChapter({
                 )}
                 {isLast && (
                   <ButtonNext
-                    label={<FormattedMessage {...messages.exploreAll} />}
+                    label={
+                      <Box margin={{ top: '-4px' }}>
+                        <FormattedMessage {...messages.exploreAll} />
+                      </Box>
+                    }
                     onClick={() => {
                       navModule('explore');
                     }}

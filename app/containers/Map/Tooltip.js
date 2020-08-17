@@ -72,9 +72,9 @@ const Main = styled.div`
 const Title = styled.div`
   font-family: 'wwfregular';
   font-weight: normal;
-  letter-spacing: 0.05em;
-  font-size: 1.4em;
-  line-height: 1.1em;
+  letter-spacing: 0.5px;
+  font-size: 30px;
+  line-height: 36px;
   margin-bottom: 20px;
 `;
 const SupTitle = styled.div`
@@ -103,9 +103,11 @@ const ButtonWrap = styled.div`
 const ButtonMore = styled(p => <Button {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
-  font-size: ${({ theme }) => theme.text.small.size};
   border-radius: 20px;
-  padding: 3px 12px;
+  padding: 5px 20px;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 16px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
@@ -220,7 +222,11 @@ const Tooltip = ({
             {tooltip.more !== 'false' && (
               <ButtonWrap>
                 <ButtonMore
-                  label={intl.formatMessage(messages.tooltipMore)}
+                  label={
+                    <Box margin={{ top: '-2px' }}>
+                      {intl.formatMessage(messages.tooltipMore)}
+                    </Box>
+                  }
                   onClick={() => {
                     onFeatureClick({
                       feature: feature.properties.f_id,

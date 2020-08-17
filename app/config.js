@@ -140,3 +140,5 @@ export const MAP_OPTIONS = {
     E: 540,
   },
 };
+
+export const LOCALE_TOGGLE = false;

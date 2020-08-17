@@ -6,17 +6,19 @@ import { Box, Button, Text } from 'grommet';
 import { Checkmark } from 'components/Icons';
 
 const CheckButton = styled(p => <Button round="3px" plain {...p} />)`
-  width: 16px;
-  height: 16px;
-  background: white;
+  width: 18px;
+  height: 18px;
+  background: ${({ theme }) => theme.global.colors.lightHover};
   border-radius: 3px;
-  padding: 0px;
+  padding: 0 0 0 0;
   border: 1px solid black;
 `;
 const ActiveCheckButton = styled(CheckButton)`
   background: black;
 `;
-const LabelButton = styled(p => <Button plain {...p} />)``;
+const LabelButton = styled(p => <Button plain {...p} />)`
+  margin-top: -1px;
+`;
 
 const Label = styled(p => <Text size="small" {...p} />)``;
 
@@ -24,7 +26,7 @@ export function Checkbox({ label, checked, onToggle }) {
   return (
     <Box
       direction="row"
-      gap="xsmall"
+      gap="small"
       align="center"
       flex={false}
       justify="start"

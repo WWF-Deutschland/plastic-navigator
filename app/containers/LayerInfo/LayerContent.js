@@ -22,12 +22,16 @@ import {
   selectLocale,
   selectIsActiveLayer,
 } from 'containers/App/selectors';
+import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadContent, toggleLayer } from 'containers/App/actions';
+import { loadLayer } from 'containers/Map/actions';
+import { getRange } from 'containers/Map/utils';
 
 import LoadingIndicator from 'components/LoadingIndicator';
 import HTMLWrapper from 'components/HTMLWrapper';
 import KeyFull from 'components/KeyFull';
 import Checkbox from 'components/Checkbox';
+import { ExploreS as Layer } from 'components/Icons';
 
 import Title from './Title';
 import LayerReference from './LayerReference';
@@ -39,6 +43,10 @@ const LayerTitle = styled(Text)`
   line-height: 20px;
 `;
 
+const TitleWrap = styled(p => (
+  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
+))``;
+
 export function LayerContent({
   onLoadContent,
   content,
@@ -46,6 +54,8 @@ export function LayerContent({
   locale,
   onToggleLayer,
   isActive,
+  layerData,
+  onLoadLayer,
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -53,12 +63,23 @@ export function LayerContent({
     // kick off loading of page content
     onLoadContent(config['content-id'] || config.id);
   }, [config]);
+  useEffect(() => {
+    // kick off loading of page content
+    if (config.render && config.render.type === 'scaledCircle') {
+      onLoadLayer(config.id, config);
+    }
+  }, [layerData]);
   const title = config
     ? config.title[locale] || config.title[DEFAULT_LOCALE]
     : 'loading';
+
+  // prettier-ignore
   return (
     <>
-      <Title>{title}</Title>
+      <TitleWrap>
+        <Layer />
+        <Title>{title}</Title>
+      </TitleWrap>
       {!content && <LoadingIndicator />}
       {content && (
         <HTMLWrapper
@@ -67,7 +88,7 @@ export function LayerContent({
             {
               tag: '[KEY]',
               el: (
-                <Box margin={{ bottom: 'medium', top: 'medium' }}>
+                <Box margin={{ bottom: 'large', top: 'medium' }}>
                   <Box
                     direction="row"
                     gap="xsmall"
@@ -79,7 +100,17 @@ export function LayerContent({
                     />
                     <LayerTitle>{title}</LayerTitle>
                   </Box>
-                  <KeyFull config={config} />
+                  <KeyFull
+                    config={config}
+                    range={
+                      layerData && layerData.data
+                        ? getRange(
+                          layerData.data.features,
+                          config.render.attribute,
+                        )
+                        : null
+                    }
+                  />
                 </Box>
               ),
             },
@@ -94,8 +125,10 @@ export function LayerContent({
 LayerContent.propTypes = {
   onLoadContent: PropTypes.func.isRequired,
   onToggleLayer: PropTypes.func.isRequired,
+  onLoadLayer: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
+  layerData: PropTypes.object,
   locale: PropTypes.string,
   isActive: PropTypes.bool,
 };
@@ -106,6 +139,7 @@ const mapStateToProps = createStructuredSelector({
       contentType: 'layers',
       key: config['content-id'] || config.id,
     }),
+  layerData: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
   locale: state => selectLocale(state),
 });
@@ -114,6 +148,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadContent: id => {
       dispatch(loadContent('layers', id));
+    },
+    onLoadLayer: (key, config) => {
+      dispatch(loadLayer(key, config));
     },
     onToggleLayer: id => dispatch(toggleLayer(id)),
   };

@@ -23,7 +23,14 @@ const Study = styled.span`
 const Publication = styled.span`
   font-style: italic;
 `;
-const URL = styled.a``;
+const URL = styled.a`
+  &:visited {
+    color: ${({ theme }) => theme.global.colors.black};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.global.colors.brandDark};
+  }
+`;
 
 export function LayerReference({ attribution, intl }) {
   const { author, year, title, publication, url } = attribution;
@@ -37,13 +44,17 @@ export function LayerReference({ attribution, intl }) {
         {author && <Author>{author[locale] || author}</Author>}
         {year && <Year> ({year})</Year>}
         {'. '}
-        {title && <Study>{title[locale] || title}</Study>}
+        {title && url && (
+          <URL target="_blank" href={url}>
+            {title[locale] || title}
+          </URL>
+        )}
+        {title && !url && <Study>{title[locale] || title}</Study>}
         {title && <span>. </span>}
         {publication && (
           <Publication>{publication[locale] || publication}</Publication>
         )}
-        {publication && <span>. </span>}
-        {url && (
+        {!title && url && (
           <URL target="_blank" href={url}>
             {url}
           </URL>

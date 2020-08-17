@@ -18,6 +18,7 @@ import { prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
+import { WWFLogoSmall } from 'components/Icons';
 
 import { selectSingleProjectConfig } from 'containers/App/selectors';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -30,18 +31,24 @@ import FeatureList from './FeatureList';
 import Title from './Title';
 
 const Styled = styled(p => (
-  <Box flex={false} margin={{ vertical: 'large' }} {...p} />
+  <Box flex={false} margin={{ bottom: 'large' }} {...p} />
 ))``;
 
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
-  padding: 5px 15px;
+  padding: 8px 20px;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 20px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
 `;
+const TitleWrap = styled(p => (
+  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
+))``;
 
 const exists = str => str && str.trim().length > 0;
 
@@ -89,7 +96,10 @@ export function ProjectContent({
       )}
       {(!theLocation || projectLocations.length <= 1) && (
         <Styled>
-          <Title>{title}</Title>
+          <TitleWrap>
+            <WWFLogoSmall size="30px" />
+            <Title>{title}</Title>
+          </TitleWrap>
           {exists(project.image_url) && (
             <div>
               <figure className="mpx-figure">
@@ -135,7 +145,11 @@ export function ProjectContent({
               <ButtonExternal
                 href={projectLink}
                 target="_blank"
-                label={<FormattedMessage {...messages.projectLinkExternal} />}
+                label={
+                  <Box margin={{ top: '-4px' }}>
+                    <FormattedMessage {...messages.projectLinkExternal} />
+                  </Box>
+                }
               />
             </div>
           )}

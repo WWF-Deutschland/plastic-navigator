@@ -14,18 +14,14 @@ const TabDelete = styled(p => <Button plain {...p} />)`
   position: absolute;
   bottom: 98%;
   border-radius: 9999px;
-  background: ${({ theme, tabActive }) =>
-    theme.global.colors[tabActive ? 'white' : 'brandLight']};
+  background: ${({ theme }) => theme.global.colors.white};
   left: 50%;
   transform: translate(-50%);
-  min-width: 20px;
-  height: 20px;
+  min-width: 22px;
+  height: 22px;
   color: ${({ theme }) => theme.global.colors.brandDark};
   text-align: center;
-  font-weight: 600;
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.white};
-  }
+  font-weight: 700;
 `;
 const WrapContent = styled(Box)`
   pointer-events: none;

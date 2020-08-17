@@ -70,14 +70,13 @@ const ListBodyCellCenter = styled(ListBodyCell)`
 const InfoButton = styled(p => <Button {...p} plain />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   padding: 0 ${({ theme }) => theme.global.edgeSize.small};
   border-radius: 50px;
   height: 25px;
   &:hover {
-    background: ${({ theme }) => theme.global.colors['dark-1']};
+    background: ${({ theme }) => theme.global.colors.dark};
   }
 `;
 
@@ -101,7 +100,7 @@ function GroupLayers({
       <ListHeader>
         <ListHeaderRow>
           <ListHeaderCell>
-            <Box direction="row" gap="xsmall" align="center">
+            <Box direction="row" gap="small" align="center">
               <Layer color="dark-4" />
               <FormattedMessage
                 {...messages[projects ? 'columnProject' : 'columnLayer']}

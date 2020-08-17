@@ -61,7 +61,7 @@ export const colors = {
   // and https://github.com/grommet/grommet/blob/master/src/js/themes/base.js
   black: '#000000',
   'black-trans': 'rgba(0, 0, 0, 0.6)',
-  dark: '#999999',
+  dark: '#282A2C',
   white: '#ffffff',
   'white-trans': 'rgba(255, 255, 255, 0.8)',
   // active: '#ffffff',
@@ -70,6 +70,8 @@ export const colors = {
   brandDarker: '#074E5F',
   brandLight: '#AFD3DD',
   light: '#F0F0F0',
+  'light-trans': 'rgba(243, 243, 243, 0.7)',
+  lightHover: '#E3E3E3',
   focus: '#333333',
   hover: '#AD190F',
   // placeholder: '#ffffff',
@@ -90,7 +92,7 @@ const text = {
   xxsmall: { size: '12px', height: '14px', maxWidth: '500px' },
   xsmall: { size: '13px', height: '16px', maxWidth: '600px' },
   small: { size: '14px', height: '18px', maxWidth: '700px' },
-  medium: { size: '16px', height: '21px', maxWidth: '800px' },
+  medium: { size: '15px', height: '20px', maxWidth: '800px' },
   large: { size: '18px', height: '24px', maxWidth: '800px' },
   xlarge: { size: '22px', height: '30px', maxWidth: '800px' },
   xxlarge: { size: '30px', height: '36px', maxWidth: '800px' },
@@ -144,8 +146,8 @@ const theme = {
     edgeSize,
     font: {
       // family: 'Source Sans Pro',
-      height: '22px',
-      size: '16px',
+      height: '20px',
+      size: '15px',
     },
     colors,
     input: {

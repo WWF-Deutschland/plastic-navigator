@@ -15,7 +15,7 @@ import LocaleToggle from 'containers/LocaleToggle';
 
 import { isMinSize, isMaxSize } from 'utils/responsive';
 
-import { MODULES, PAGES } from 'config';
+import { MODULES, PAGES, LOCALE_TOGGLE } from 'config';
 import commonMessages from 'messages';
 
 import NavBar from './NavBar';
@@ -39,10 +39,9 @@ const NavPrimary = styled(props => (
 // prettier-ignore
 const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   font-family: 'wwfregular';
-  letter-spacing: 0.05em;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: ${({ theme }) => theme.text.large.size};
+  font-size: 20px;
   opacity: 1;
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'black' : 'white']};
@@ -50,9 +49,9 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
     active ? theme.global.colors.light : 'transparent'};
   border-right: 1px solid;
   border-left: 1px solid;
-  border-color: ${({ theme }) => theme.global.colors.light};
+  border-color: ${({ theme }) => theme.global.colors.dark};
   &:hover {
-    text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
+    background: ${({ active, theme }) => theme.global.colors[active ? 'light' : 'dark']};
   }
   width: 50px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
@@ -76,9 +75,9 @@ const Secondary = styled(props => <Button {...props} plain />)`
     text-decoration: underline;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    font-size: ${({ theme }) => theme.text.large.size};
+    text-transform: uppercase;
+    font-size: 20px;
     font-family: 'wwfregular';
-    letter-spacing: 0.05em;
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
     padding-right: ${({ theme, last }) =>
     last ? 0 : theme.global.edgeSize.small};
@@ -88,7 +87,6 @@ const Secondary = styled(props => <Button {...props} plain />)`
 const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   z-index: 3000;
   max-width: 85px;
   padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
@@ -96,7 +94,7 @@ const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   font-size: ${({ theme }) => theme.text.small.size};
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     max-width: 120px;
-    font-size: ${({ theme }) => theme.text.large.size};
+    font-size: 20px;
   }
 `;
 const BrandWWFWrap = styled(props => <Box {...props} />)`
@@ -225,7 +223,7 @@ function Header({ nav, navPage, path, navHome }) {
                         last={index === Object.keys(PAGES).length - 1}
                       />
                     ))}
-                  <LocaleToggle />
+                  {LOCALE_TOGGLE && <LocaleToggle />}
                 </NavSecondary>
               </Box>
             )}

@@ -33,7 +33,6 @@ const GlobalStyle = createGlobalStyle`
   body.fontLoaded {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
-
   sup, sub {
     vertical-align: baseline;
     position: relative;
@@ -62,11 +61,13 @@ const GlobalStyle = createGlobalStyle`
     text-align: right;
     font-size: 13px;
     line-height: 16px;
+    color: #606367;
+    padding-top: 4px;
   }
 
   .mpx-layer-lead {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 18px;
+    line-height: 25px;
     // compare theme.js colors.brand
     color: #00728F;
   }
@@ -82,12 +83,31 @@ const GlobalStyle = createGlobalStyle`
   .mpx-content h4 {
     font-size: 20px;
   }
+  .mpx-content a {
+    &:visited{
+      color: #000000;
+    }
+    &:hover{
+      color: #08586C;
+    }
+  }
+  .mpx-content {
+    font-size: 15px;
+  }
+  .mpx-content ul{
+    padding-inline-start: 20px;
+  }
+  .mpx-content li{
+    margin-bottom: 8px;
+  }
   figure {
     margin: 0;
   }
+  figcaption {
+  }
   .mpx-wrap-markdown-intro p {
     margin: 0;
-    line-height: 21px
+    line-height: 20px
   }
 `;
 

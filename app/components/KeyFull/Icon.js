@@ -141,14 +141,6 @@ export function Icon({ config, simple, intl, dark, title }) {
     }
   }
   const backgroundColor = dark && key.icon && key.icon.backgroundOnDark;
-
-  const markerArray = asArray(marker);
-  let labelSize = 'medium';
-  if (markerArray.length > 1) {
-    labelSize = 'small';
-  } else if (markerArray.length > 2) {
-    labelSize = 'xsmall';
-  }
   return (
     <Box gap="xsmall">
       {asArray(marker).map(mrk => (
@@ -156,7 +148,7 @@ export function Icon({ config, simple, intl, dark, title }) {
           <IconWrap backgroundColor={backgroundColor} flex={{ shrink: 0 }}>
             <KeyIconURI src={mrk.uri} markerSize={markerSize} />
           </IconWrap>
-          <StyledKeyLabel size={labelSize}>{mrk.title}</StyledKeyLabel>
+          <StyledKeyLabel>{mrk.title}</StyledKeyLabel>
         </IconLabelWrap>
       ))}
     </Box>

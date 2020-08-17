@@ -54,17 +54,14 @@ const KeyScrollButton = styled(p => (
   right: 0;
   text-align: center;
   box-shadow: ${({ top }) => top
-    ? '0px 4px 8px rgba(0, 0, 0, 0.1)'
-    : '0px -4px 12px rgba(0, 0, 0, 0.1)'};
+    ? '0px 2px 6px rgba(0, 0, 0, 0.1)'
+    : '0px -2px 6px rgba(0, 0, 0, 0.1)'};
   border-top: 1px solid;
   border-color: ${({ top, theme }) =>
     top ? theme.global.colors.light : 'transparent'};
 
   &:hover {
-    background: ${({ theme }) => theme.global.colors.white};
-    box-shadow: ${({ top }) => top
-    ? '0px 4px 8px rgba(0, 0, 0, 0.2)'
-    : '0px -4px 12px rgba(0, 0, 0, 0.2)'};
+    background: ${({ theme }) => theme.global.colors.lightHover};
   }
 `;
 
@@ -103,7 +100,7 @@ const ButtonToggle = styled(p => <Button {...p} plain fill="horizontal" />)`
   width: 40px;
   text-align: center;
   &:hover {
-    background: ${({ theme }) => theme.global.colors['light-2']};
+    background: ${({ theme }) => theme.global.colors.lightHover};
   }
 `;
 const ButtonTab = styled(p => <Button {...p} plain />)`
@@ -126,12 +123,12 @@ const KeyLI = styled.li`
 // prettier-ignore
 const ButtonKey = styled(p => <Button {...p} plain fill />)`
   background: ${({ activeLayer, theme }) =>
-    theme.global.colors[activeLayer ? 'light-4' : 'white']};
+    theme.global.colors[activeLayer ? 'lightHover' : 'white']};
   padding: 5px;
   opacity: 1;
   &:hover {
     background: ${({ theme, activeLayer }) =>
-    theme.global.colors[activeLayer ? 'light-4' : 'light-2']};
+    theme.global.colors[activeLayer ? 'light-4' : 'lightHover']};
   }
 `;
 
@@ -181,11 +178,11 @@ const TabLabel = styled(p => <Text size="xxsmall" {...p} />)`
 `;
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.xsmall};
+  padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
   border-radius: 9999px;
   margin-left: auto;
   &:hover {
-    background: ${({ theme }) => theme.global.colors['light-4']};
+    background: ${({ theme }) => theme.global.colors.lightHover};
   }
 `;
 

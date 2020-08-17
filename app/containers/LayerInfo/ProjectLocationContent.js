@@ -39,7 +39,10 @@ const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
-  padding: 5px 15px;
+  padding: 8px 20px;
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 20px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
@@ -152,7 +155,11 @@ export function ProjectLocationContent({
           <ButtonExternal
             href={projectLink}
             target="_blank"
-            label={<FormattedMessage {...messages.projectLinkExternal} />}
+            label={
+              <Box margin={{ top: '-4px' }}>
+                <FormattedMessage {...messages.projectLinkExternal} />
+              </Box>
+            }
           />
         </div>
       )}

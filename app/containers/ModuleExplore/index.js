@@ -37,8 +37,8 @@ import messages from './messages';
 
 const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 12px;
+  top: 22px;
   pointer-events: all;
 `;
 
@@ -46,7 +46,6 @@ const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
 const ShowButton = styled(p => <Button plain reverse {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   background: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'white' : 'brand']};
   color: ${({ theme, projects }) =>
@@ -56,7 +55,7 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     background: ${({ theme, projects }) =>
-    theme.global.colors[projects ? 'light-1' : 'brandDark']};
+    theme.global.colors[projects ? 'lightHover' : 'brandDark']};
   }
 `;
 
