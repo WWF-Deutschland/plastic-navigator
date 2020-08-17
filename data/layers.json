@@ -31,8 +31,8 @@
       "de": "Konzentration von treibendem Plastik"
     },
     "about": {
-      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic.",
-      "de": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic."
+      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic debris.",
+      "de": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic debris."
     },
     "attribution": {
       "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
@@ -170,7 +170,7 @@
       "de": "Flusseinträge"
     },
     "about": {
-      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers. Larger circles thus represent rivers estimated to contribute larger amounts of plastic.",
+      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers. Larger circles represent rivers estimated to contribute larger amounts of plastic.",
       "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
     },
     "attribution": {
@@ -588,8 +588,8 @@
     "source": "data",
     "type": "topojson",
     "title": {
-      "en": "Country’s level of support for treaty - shown as area",
-      "de": "Country’s level of support for treaty (area)"
+      "en": "Country’s level of support for treaty (shown as area)",
+      "de": "Country’s level of support for treaty (shown as area)"
     },
     "title-short": {
       "en": "Country’s level of support",
@@ -750,8 +750,8 @@
       ]
     },
     "title": {
-      "en": "Country’s level of support for treaty - shown as markers",
-      "de": "Country’s level of support for treaty - shown as markers"
+      "en": "Country’s level of support for treaty (shown as markers)",
+      "de": "Country’s level of support for treaty (shown as markers)"
     },
     "about": {
       "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",

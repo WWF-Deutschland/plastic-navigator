@@ -16,7 +16,7 @@ Discussions on how the international community should respond to the problem hav
 
 ## How to read the data
 
-The visualization shows the level of publicly expressed support by United Nations members states for a new global agreement to address marine plastic pollution. Darker green indicates countries that have officially called for a new agreement; lighter green shows countries that have expressed—including through regional declarations or decisions—a willingness to explore option of a new global agreement; and grey indicates countries for which no public statement or commitment of support (for a new global agreement) has been recorded.
+The visualization shows the level of publicly expressed support by United Nations members states for a new global agreement to address marine plastic pollution. Darker green indicates countries that have officially called for a new agreement; lighter green shows countries that have expressed — including through regional declarations or decisions — a willingness to explore option of a new global agreement; and grey indicates countries for which no public statement or commitment of support (for a new global agreement) has been recorded.
 
 [KEY]
 
