@@ -112,7 +112,7 @@ const Title = styled(Text)`
   font-family: 'wwfregular';
   font-weight: normal;
   text-transform: uppercase;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
     font-size: 24px;
     line-height: 27px;
   }

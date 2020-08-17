@@ -160,7 +160,7 @@ const Content = styled(p => (
 
 const Description = styled(Text)`
   font-size: 13px;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
     font-size: 15px;
   }
 `;
