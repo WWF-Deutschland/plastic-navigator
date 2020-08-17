@@ -21,13 +21,13 @@ The visualization shows the level of publicly expressed support by United Nation
 
 [KEY]
 
-## About the data
+### About the data
 
 The estimated level of support by each country is based on WWF’s assessment of publicly available documents, including regional declarations and decisions (Africa, EU, Caribbean, Nordic countries), regional action plans (Pacific Islands), as well as the Terms of Reference for the Group of Friends in New York. [All references are listed below.]
 
 <span class="mpx-reference">
 
-## References
+### References
 
 African Ministerial Congress on the Environment (AMCEN). Durban Declaration on taking action for environmental sustainability and prosperity in Africa ([AMCEN2019](https://wedocs.unep.org/bitstream/handle/20.500.11822/30786/AMCEN_17L1.pdf?sequence=1&isAllowed=y))
 
