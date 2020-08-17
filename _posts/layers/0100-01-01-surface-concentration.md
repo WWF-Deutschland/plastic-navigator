@@ -16,7 +16,7 @@ While much of the debris stays in coastal waters and ends up stranded on beaches
 
 ### How to read the data
 
-The map layer shows the estimated concentration of floating plastic by weight and per km<sup>2</sup>, specifically for plastic items measuring 0.33 mm and more.
+The map layer shows the **estimated concentration of floating plastic** by weight and per km<sup>2</sup>, specifically for plastic items measuring 0.33 mm and more.
 
 The darker the colour, the higher is the estimated concentration of floating plastic.
 
