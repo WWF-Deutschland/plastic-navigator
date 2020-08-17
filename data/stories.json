@@ -66,8 +66,8 @@
           "de": "Towards an international agreement"
         },
         "description": {
-          "en": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'.",
-          "de": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'."
+          "en": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans.",
+          "de": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans."
         },
         "layers": [
           "surface-concentration",
