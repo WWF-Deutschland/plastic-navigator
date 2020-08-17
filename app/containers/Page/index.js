@@ -10,10 +10,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { ResponsiveContext, Button, Layer, Box } from 'grommet';
+import { Button, Layer, Box } from 'grommet';
 import { Close } from 'components/Icons';
 import { useInjectSaga } from 'utils/injectSaga';
-import { isMinSize } from 'utils/responsive';
 
 import saga from 'containers/App/saga';
 import { selectContentByKey } from 'containers/App/selectors';
@@ -21,7 +20,32 @@ import { loadContent } from 'containers/App/actions';
 
 import HTMLWrapper from 'components/HTMLWrapper';
 
-const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
+const ContentWrap = styled(props => (
+  <Box pad="medium" {...props} responsive={false} />
+))`
+  overflow-y: auto;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    width: 600px;
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    width: 720px;
+  }
+`;
+
+const ButtonClose = styled(p => (
+  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
+))`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 10px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.black};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.dark};
+  }
+`;
 
 // import messages from './messages';
 // import commonMessages from 'messages';
@@ -34,27 +58,17 @@ export function Page({ page, onLoadContent, content, onClose }) {
   }, []);
 
   return (
-    <ResponsiveContext.Consumer>
-      {size => (
-        <Layer
-          onEsc={() => onClose()}
-          onClickOutside={() => onClose()}
-          animation={false}
-          margin={isMinSize(size, 'medium') ? 'large' : 'none'}
-          full
-        >
-          <ContentWrap>
-            <Button
-              onClick={() => onClose()}
-              icon={<Close />}
-              plain
-              alignSelf="end"
-            />
-            {content && <HTMLWrapper innerhtml={content} />}
-          </ContentWrap>
-        </Layer>
-      )}
-    </ResponsiveContext.Consumer>
+    <Layer
+      onEsc={() => onClose()}
+      onClickOutside={() => onClose()}
+      animation={false}
+      margin={{ top: 'xlarge', horizontal: 'large' }}
+    >
+      <ContentWrap>
+        <ButtonClose onClick={() => onClose()} />
+        {content && <HTMLWrapper innerhtml={content} />}
+      </ContentWrap>
+    </Layer>
   );
 }
 

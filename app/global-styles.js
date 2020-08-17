@@ -77,8 +77,15 @@ const GlobalStyle = createGlobalStyle`
   .mpx-content h4 {
     font-family: 'wwfregular';
     font-weight: normal;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.5px;
     font-size: 24px;
+  }
+  .mpx-content h1 {
+    letter-spacing: 0.9px;
+    font-size: 38px;
+    line-height: 46px;
+    margin-top: 0;
+    margin-bottom: 30px;
   }
   .mpx-content h4 {
     font-size: 20px;
