@@ -9,19 +9,27 @@ import KeyArea from 'components/KeyArea';
 
 const Styled = styled(p => <Box {...p} fill align="center" justify="center" />)`
   position: relative;
+  background: ${({ theme, background }) =>
+    background ? theme.global.colors[background] || background : 'transparent'};
 `;
 
 const KeyIconURI = styled.img`
   margin: 0 auto;
   width: ${({ markerSize }) => (markerSize && markerSize.width) || '100%'};
   height: ${({ markerSize }) => (markerSize && markerSize.height) || 'auto'};
+  max-width: ${({ markerSize }) =>
+    (markerSize && markerSize.maxWidth) || 'auto'};
 `;
 
 const getMarkerSize = configIcon => {
-  const sizeXY = configIcon.size.default || configIcon.size;
+  const sizeXY =
+    (configIcon.size && configIcon.size.default) || configIcon.size;
   // wide
-  if (sizeXY.x >= sizeXY.y) {
+  if (!sizeXY) {
     return { width: '100%', height: 'auto' };
+  }
+  if (sizeXY.x >= sizeXY.y) {
+    return { width: '100%', height: 'auto', maxWidth: `${sizeXY.x}px` };
   }
   // high
   return { height: '100%', width: `${(sizeXY.x / sizeXY.y) * 100}%` };
@@ -30,7 +38,7 @@ const getMarkerSize = configIcon => {
 export function KeyIcon({ config, id }) {
   const isIconURI = config.key && config.key.icon && !!config.key.icon.datauri;
   const isIconMarker =
-    config.render && config.render.type === 'marker' && !!config.icon.datauri;
+    config.render && config.render.type === 'marker' && !isIconURI;
   const isGradient =
     config.key && config.key.stops && config.key.type === 'continuous';
   const isCircle =
@@ -45,6 +53,9 @@ export function KeyIcon({ config, id }) {
     !!config.featureStyle;
   let marker;
   let markerSize;
+  if (isIconURI) {
+    markerSize = getMarkerSize(config.key.icon);
+  }
   if (isIconMarker) {
     markerSize = getMarkerSize(config.icon);
     const defaultIcon = config.icon.datauri.default;
@@ -84,7 +95,7 @@ export function KeyIcon({ config, id }) {
     );
   }
   return (
-    <Styled>
+    <Styled background={isIconURI && config.key.icon.background}>
       {isGradient && (
         <KeyGradient
           id={id || config.id}

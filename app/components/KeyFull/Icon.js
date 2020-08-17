@@ -38,6 +38,8 @@ const KeyIconURI = styled.img`
   margin: 0 auto;
   width: ${({ markerSize }) => (markerSize && markerSize.width) || '100%'};
   height: ${({ markerSize }) => (markerSize && markerSize.height) || 'auto'};
+  max-width: ${({ markerSize }) =>
+    (markerSize && markerSize.maxWidth) || 'auto'};
 `;
 
 const StyledKeyLabel = styled(KeyLabel)`
@@ -45,24 +47,29 @@ const StyledKeyLabel = styled(KeyLabel)`
 `;
 
 const getMarkerSize = configIcon => {
-  const sizeXY = configIcon.size.default || configIcon.size;
+  const sizeXY =
+    (configIcon.size && configIcon.size.default) || configIcon.size;
   // wide
-  if (sizeXY.x >= sizeXY.y) {
+  if (!sizeXY) {
     return { width: '100%', height: 'auto' };
+  }
+  if (sizeXY.x >= sizeXY.y) {
+    return { width: '100%', height: 'auto', maxWidth: `${sizeXY.x}px` };
   }
   // high
   return { height: '100%', width: `${(sizeXY.x / sizeXY.y) * 100}%` };
 };
 
 export function Icon({ config, simple, intl, dark, title }) {
-  const { key, render, icon } = config;
+  const { key, icon } = config;
   const { locale } = intl;
-  const isIconMarker = render && render.type === 'marker' && !!icon.datauri;
+  const isIconURI = key && key.icon && !!key.icon.datauri;
   let marker = { uri: null, title, id: config.id };
   let markerSize;
-  if (!isIconMarker) {
+  if (isIconURI) {
     marker.uri = key && key.icon && key.icon.datauri;
-  } else {
+    markerSize = getMarkerSize(config.key.icon);
+  } else if (icon.datauri) {
     markerSize = getMarkerSize(icon);
     const defaultIcon = icon.datauri.default;
     if (defaultIcon) {
@@ -121,7 +128,7 @@ export function Icon({ config, simple, intl, dark, title }) {
         marker.uri = defaultIcon;
       }
     } else {
-      marker.uri = config.icon.datauri;
+      marker.uri = icon.datauri;
     }
   }
   if (!marker.title) {
