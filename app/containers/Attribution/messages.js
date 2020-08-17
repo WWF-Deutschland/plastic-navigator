@@ -5,7 +5,7 @@
  */
 import { defineMessages } from 'react-intl';
 
-export const scope = 'rle.containers.Attribution';
+export const scope = 'app.containers.Attribution';
 
 export default defineMessages({
   copyright: {
