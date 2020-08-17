@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Button } from 'grommet';
+import { Text, Box, Button } from 'grommet';
 import { ArrowLeftL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -35,6 +35,15 @@ const Styled = styled.div``;
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
+`;
+
+const BackButton = styled(p => <Button {...p} />)`
+  padding: 15px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.white};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.light};
+  }
 `;
 
 const getTitle = (feature, config, locale) => {
@@ -68,13 +77,22 @@ export function FeatureContent({
   const supTitle = config.title[locale] || config.title[DEFAULT_LOCALE];
   return (
     <Styled>
-      <Box direction="row" align="center">
-        <Button
+      <Box
+        direction="row"
+        align="center"
+        gap="xsmall"
+        margin={{ right: 'xxlarge', bottom: 'ml' }}
+        style={{ minHeight: '50px' }}
+      >
+        <BackButton
           plain
           onClick={() => onSetLayerInfo(config.id)}
           icon={<ArrowLeftL />}
         />
-        <SupTitle onClick={() => onSetLayerInfo(config.id)} label={supTitle} />
+        <SupTitle
+          onClick={() => onSetLayerInfo(config.id)}
+          label={<Text size="small">{supTitle}</Text>}
+        />
       </Box>
       <Title>{getTitle(feature, config, locale)}</Title>
       {POLICY_LAYERS.indexOf(config.id) > -1 && (

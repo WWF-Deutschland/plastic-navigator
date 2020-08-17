@@ -103,11 +103,35 @@ const GlobalStyle = createGlobalStyle`
   figure {
     margin: 0;
   }
-  figcaption {
-  }
   .mpx-wrap-markdown-intro p {
     margin: 0;
     line-height: 20px
+  }
+  .mpx-reference {
+    color: #606367;
+    font-size: 13px;
+    line-height: 19px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .mpx-reference h2,
+  .mpx-reference h3,
+  .mpx-reference h4,
+  .mpx-reference h5,
+  .mpx-reference h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .mpx-reference a {
+    color: #606367;
+    &:visited{
+      color: #000000;
+    }
+    &:hover{
+      color: #08586C;
+    }
   }
 `;
 

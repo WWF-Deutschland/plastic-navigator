@@ -9,7 +9,6 @@ import messages from './messages';
 
 const Styled = styled.div`
   margin-bottom: 30px;
-  font-size: 0.8em;
 `;
 
 const Title = styled.h3``;
@@ -17,26 +16,19 @@ const Title = styled.h3``;
 const Reference = styled.div``;
 const Author = styled.span``;
 const Year = styled.span``;
+const URL = styled.a``;
 const Study = styled.span`
   text-decoration: underline;
 `;
 const Publication = styled.span`
   font-style: italic;
 `;
-const URL = styled.a`
-  &:visited {
-    color: ${({ theme }) => theme.global.colors.black};
-  }
-  &:hover {
-    color: ${({ theme }) => theme.global.colors.brandDark};
-  }
-`;
 
 export function LayerReference({ attribution, intl }) {
   const { author, year, title, publication, url } = attribution;
   const locale = intl.locale || DEFAULT_LOCALE;
   return (
-    <Styled>
+    <Styled className="mpx-reference">
       <Title>
         <FormattedMessage {...messages.titleReference} />
       </Title>

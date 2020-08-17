@@ -36,7 +36,7 @@ const ListHeaderCell = styled.div`
   display: table-cell;
   font-size: 12px;
   line-height: 14px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   vertical-align: middle;
   color: ${({ theme }) => theme.global.colors['dark-4']};
 `;

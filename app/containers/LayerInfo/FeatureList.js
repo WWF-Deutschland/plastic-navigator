@@ -15,14 +15,20 @@ import { deburr } from 'lodash/string';
 
 import { setLayerInfo } from 'containers/App/actions';
 
-const ListTitle = styled(p => <Heading level={4} {...p} />)``;
+const ListTitle = styled(p => <Heading level={2} {...p} />)`
+  font-family: 'wwfregular';
+  letter-spacing: 0.05em;
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 10px;
+`;
 
 const FeatureListWrap = styled(Box)``;
 
 const FeatureButton = styled(p => (
   <Button {...p} plain fill="horizontal" alignSelf="start" />
 ))`
-  border-top: 1px solid;
+  border-top: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   &:hover {
     background: ${({ theme }) => theme.global.colors.light};
   }
@@ -43,7 +49,7 @@ export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
             <Box
               direction="row"
               justify="between"
-              pad={{ vertical: 'small', right: 'small', left: 'xxsmall' }}
+              pad={{ vertical: 'small', right: 'small', left: 'small' }}
               align="center"
             >
               <Text>{item.label}</Text>

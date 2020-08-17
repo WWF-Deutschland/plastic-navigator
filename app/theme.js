@@ -217,7 +217,7 @@ const theme = {
     overlay: {
       background: 'rgba(0, 0, 0, 0.5)',
     },
-    zIndex: 3000,
+    zIndex: 3002,
   },
 };
 

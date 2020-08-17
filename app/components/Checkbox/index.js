@@ -22,7 +22,7 @@ const LabelButton = styled(p => <Button plain {...p} />)`
 
 const Label = styled(p => <Text size="small" {...p} />)``;
 
-export function Checkbox({ label, checked, onToggle }) {
+export function Checkbox({ label, styledLabel, checked, onToggle }) {
   return (
     <Box
       direction="row"
@@ -46,6 +46,9 @@ export function Checkbox({ label, checked, onToggle }) {
           onClick={() => onToggle()}
         />
       )}
+      {styledLabel && (
+        <LabelButton label={styledLabel} onClick={() => onToggle()} />
+      )}
     </Box>
   );
 }
@@ -54,6 +57,7 @@ Checkbox.propTypes = {
   onToggle: PropTypes.func,
   label: PropTypes.string,
   checked: PropTypes.bool,
+  styledLabel: PropTypes.node,
 };
 
 export default Checkbox;

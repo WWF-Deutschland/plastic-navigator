@@ -97,7 +97,7 @@ export function ProjectLocationContent({
       <Box
         direction="row"
         align="center"
-        gap="small"
+        gap="xsmall"
         margin={{ right: 'xxlarge', bottom: 'xlarge' }}
         style={{ minHeight: '50px' }}
       >

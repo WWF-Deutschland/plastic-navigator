@@ -21,6 +21,10 @@ export default defineMessages({
     id: `${scope}.position`,
     defaultMessage: 'Position',
   },
+  quote: {
+    id: `${scope}.quote`,
+    defaultMessage: 'Statement',
+  },
   source: {
     id: `${scope}.source`,
     defaultMessage: 'Source',

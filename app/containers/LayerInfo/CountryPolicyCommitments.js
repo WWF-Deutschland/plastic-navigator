@@ -7,7 +7,7 @@ import {
   injectIntl,
   intlShape,
 } from 'react-intl';
-import { Text, Button } from 'grommet';
+import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import { KeyArea } from 'components/KeyArea';
@@ -15,27 +15,36 @@ import { KeyArea } from 'components/KeyArea';
 import messages from './messages';
 
 const Styled = styled.div``;
+const Section = styled.div`
+  margin-bottom: 30px;
+`;
 const StyledButton = styled(p => (
   <Button plain as="a" target="_blank" {...p} />
 ))`
   text-decoration: underline;
 `;
 
-const Quote = styled.blockquote`
-  font-style: italic;
+const P = styled.p`
+  margin-top: 0;
+  margin-bottom: 0;
 `;
+const Quote = styled(P)``;
 
 const IconImgWrap = styled.div`
   width: ${({ size }) => size.x}px;
 `;
-const AreaWrap = styled.div`
-  width: 30px;
-  height: 30px;
+const AreaWrap = styled(p => <Box {...p} />)`
   position: relative;
 `;
 
 const IconImg = styled.img`
   width: 100%;
+`;
+
+const SectionTitle = styled(p => <Heading level="5" {...p} />)`
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
 `;
 
 const getSquareStyle = (config, position) => {
@@ -95,6 +104,7 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
   // console.log(config, feature)
   // console.log(getVectorGridStyle(feature.properties, config))
   // const square =
+  // prettier-ignore
   return (
     <Styled>
       {positions.length > 1 && (
@@ -109,55 +119,78 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
           <div key={`${position.position_id}${position.source_id}`}>
             <hr />
             {position.position && (
-              <div>
-                {icon && (
-                  <IconImgWrap size={iconsize}>
-                    <IconImg src={icon} />
-                  </IconImgWrap>
-                )}
-                {square && (
-                  <AreaWrap>
-                    <KeyArea areaStyles={[square]} />
-                  </AreaWrap>
-                )}
-                <p>
-                  {position.position[`position_${locale}`] ||
-                    position.position[`position_${DEFAULT_LOCALE}`]}
-                </p>
-              </div>
+              <Section>
+                <SectionTitle>
+                  <FormattedMessage {...messages.position} />
+                </SectionTitle>
+                <Box direction="row" gap="medium" margin={{ bottom: 'medium' }} align="center">
+                  {icon && (
+                    <IconImgWrap size={iconsize}>
+                      <IconImg src={icon} />
+                    </IconImgWrap>
+                  )}
+                  {square && (
+                    <AreaWrap>
+                      <KeyArea areaStyles={[square]} />
+                    </AreaWrap>
+                  )}
+                  <Text size="small">
+                    {position.position[`position_${locale}`] ||
+                      position.position[`position_${DEFAULT_LOCALE}`]}
+                  </Text>
+                </Box>
+              </Section>
             )}
-            {position.source && (
-              <div>
-                <div>
-                  <FormattedMessage {...messages.source} />
-                </div>
-                <p>
-                  {position.source[`source_${locale}`] ||
-                    position.source[`source_${DEFAULT_LOCALE}`]}
-                </p>
+            {position.source &&
+              (position.source[`quote_${locale}`] ||
+                position.source[`quote_${DEFAULT_LOCALE}`]) && (
+              <Section>
+                <SectionTitle>
+                  <FormattedMessage {...messages.quote} />
+                </SectionTitle>
+                <Quote>
+                  {position.source[`quote_${locale}`] ||
+                    position.source[`quote_${DEFAULT_LOCALE}`]}
+                </Quote>
                 {position.source.date && (
-                  <div>
-                    <FormattedDate value={new Date(position.source.date)} />
-                  </div>
+                  <P>
+                    <Text size="xsmall">
+                      (<FormattedDate value={new Date(position.source.date)} />)
+                    </Text>
+                  </P>
                 )}
-                {position.source[`quote_${locale}`] && (
-                  <Quote>
-                    {position.source[`quote_${locale}`] ||
-                      position.source[`quote_${DEFAULT_LOCALE}`]}
-                  </Quote>
-                )}
+              </Section>
+            )}
+            {position.source &&
+              (position.source[`source_${locale}`] ||
+                position.source[`source_${DEFAULT_LOCALE}`]
+              ) && (
+              <Section>
+                <SectionTitle>
+                  <FormattedMessage {...messages.source} />
+                </SectionTitle>
                 {position.source.url && (
-                  <StyledButton
-                    href={position.source.url}
-                    label={
-                      <Text size="small">
-                        <FormattedMessage {...messages.sourceLinkExternal} />
-                        {` (${position.source_id})`}
-                      </Text>
-                    }
-                  />
+                  <P>
+                    <StyledButton
+                      href={position.source.url}
+                      label={
+                        <Text>
+                          {position.source[`source_${locale}`] ||
+                          position.source[`source_${DEFAULT_LOCALE}`]}
+                        </Text>
+                      }
+                    />
+                  </P>
                 )}
-              </div>
+                {!position.source.url && (
+                  <P>
+                    <Text>
+                      {position.source[`source_${locale}`] ||
+                      position.source[`source_${DEFAULT_LOCALE}`]}
+                    </Text>
+                  </P>
+                )}
+              </Section>
             )}
           </div>
         );

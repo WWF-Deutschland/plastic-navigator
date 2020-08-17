@@ -88,36 +88,34 @@ export function LayerContent({
             {
               tag: '[KEY]',
               el: (
-                <Box margin={{ bottom: 'large', top: 'medium' }}>
-                  <Box
-                    direction="row"
-                    gap="xsmall"
-                    margin={{ bottom: 'small' }}
-                  >
-                    <Checkbox
-                      checked={isActive}
-                      onToggle={() => onToggleLayer(config.id)}
-                    />
-                    <LayerTitle>{title}</LayerTitle>
-                  </Box>
-                  <KeyFull
-                    config={config}
-                    range={
-                      layerData && layerData.data
-                        ? getRange(
-                          layerData.data.features,
-                          config.render.attribute,
-                        )
-                        : null
+                <Box margin={{ bottom: 'large', top: 'medium' }} gap="small">
+                  <Checkbox
+                    checked={isActive}
+                    onToggle={() => onToggleLayer(config.id)}
+                    styledLabel={
+                      <LayerTitle>{title}</LayerTitle>
                     }
                   />
+                  <Box margin={{ left: '30px', }} flex={false}>
+                    <KeyFull
+                      config={config}
+                      range={
+                        layerData && layerData.data
+                          ? getRange(
+                            layerData.data.features,
+                            config.render.attribute,
+                          )
+                          : null
+                      }
+                    />
+                  </Box>
                 </Box>
               ),
             },
           ]}
         />
       )}
-      <LayerReference attribution={config.attribution} />
+      {config.attribution && <LayerReference attribution={config.attribution} />}
     </>
   );
 }
