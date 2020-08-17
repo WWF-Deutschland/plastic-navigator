@@ -457,8 +457,8 @@
     "source": "data",
     "type": "topojson",
     "title": {
-      "en": "Country’s level of support for treaty - shown as area",
-      "de": "Country’s level of support for treaty (area)"
+      "en": "Country’s level of support for treaty (shown as area)",
+      "de": "Country’s level of support for treaty (shown as area)"
     },
     "title-short": {
       "en": "Country’s level of support",
@@ -619,8 +619,8 @@
       ]
     },
     "title": {
-      "en": "Country’s level of support for treaty - shown as markers",
-      "de": "Country’s level of support for treaty - shown as markers"
+      "en": "Country’s level of support for treaty (shown as markers)",
+      "de": "Country’s level of support for treaty (shown as markers)"
     },
     "about": {
       "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
