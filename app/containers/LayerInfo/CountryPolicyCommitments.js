@@ -88,14 +88,26 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
   const { locale } = intl;
   const { positions } = feature.properties;
   if (!positions || positions.length < 0) return null;
-  const sorted = positions.sort((a, b) => {
-    const aDate = a.source && a.source.date && new Date(a.source.date);
-    const bDate = b.source && b.source.date && new Date(b.source.date);
-    if (aDate && !bDate) return -1;
-    if (!aDate && bDate) return 1;
-    if (aDate > bDate) return -1;
-    return 1;
-  });
+  const sorted = positions
+    .sort((a, b) => {
+      const aDate = a.source && a.source.date && new Date(a.source.date);
+      const bDate = b.source && b.source.date && new Date(b.source.date);
+      if (aDate && !bDate) return -1;
+      if (!aDate && bDate) return 1;
+      if (aDate > bDate) return -1;
+      return 1;
+    })
+    .sort((a, b) => {
+      if (config.key && config.key.values) {
+        const aIndex =
+          a.position_id && config.key.values.indexOf(a.position_id);
+        const bIndex =
+          b.position_id && config.key.values.indexOf(b.position_id);
+        if (aIndex < bIndex) return -1;
+        return 1;
+      }
+      return 1;
+    });
   const iconuri =
     config.icon &&
     config.icon.datauri &&
