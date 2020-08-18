@@ -17,8 +17,8 @@ const TabDelete = styled(p => <Button plain {...p} />)`
   background: ${({ theme }) => theme.global.colors.white};
   left: 50%;
   transform: translate(-50%);
-  min-width: 22px;
-  height: 22px;
+  min-width: 21px;
+  height: 21px;
   color: ${({ theme }) => theme.global.colors.brandDark};
   text-align: center;
   font-weight: 700;
@@ -34,11 +34,13 @@ export function ButtonDeleteLayers({ layerCount, updateLayers, active }) {
       tabActive={active}
       onClick={() => updateLayers()}
       label={
-        <WrapContent justify="center" align="center">
+        <WrapContent justify="center" align="center" fill>
           {hover ? (
             <CloseXS color="brandDark" />
           ) : (
-            <Text size="xxsmall">{layerCount}</Text>
+            <Text size="xxsmall" style={{ paddingTop: '1px' }}>
+              {layerCount}
+            </Text>
           )}
         </WrapContent>
       }
