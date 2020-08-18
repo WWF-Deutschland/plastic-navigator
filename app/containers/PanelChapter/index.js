@@ -52,7 +52,7 @@ const Styled = styled(p => <Box {...p} direction="row" gap="hair" />)`
   bottom: 35px;
   height: 200px;
   pointer-events: all;
-  z-index: 4000;
+  z-index: 2500;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     bottom: 40px;
   }

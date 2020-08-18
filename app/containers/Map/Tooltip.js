@@ -20,7 +20,7 @@ const Root = styled.div`
   bottom: 35px;
   left: 0;
   right: 0;
-  z-index: 4001;
+  z-index: 2501;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     bottom: auto;
     right: auto;
