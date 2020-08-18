@@ -8,7 +8,10 @@
   "features": [
     {
       "type": "Feature",
-      "properties": { "name_en": "N. Pacific gyre", "name_de": "Nordpazifik" },
+      "properties": {
+        "name_en": "North Pacific gyre",
+        "name_de": "Nordpazifik-Wirbel"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [-144.552320618230596, 29.222278301119779]
@@ -17,7 +20,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name_en": "N. Atlantic gyre",
+        "name_en": "North Atlantic gyre",
         "name_de": "Nordatlantik"
       },
       "geometry": {
@@ -27,7 +30,10 @@
     },
     {
       "type": "Feature",
-      "properties": { "name_en": "S. Atlantic gyre", "name_de": "Südatlantik" },
+      "properties": {
+        "name_en": "South Atlantic gyre",
+        "name_de": "Südatlantik-Wirbel"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [-7.899537168731215, -28.59713277980233]
@@ -35,7 +41,10 @@
     },
     {
       "type": "Feature",
-      "properties": { "name_en": "S. Pacific gyre", "name_de": "Südpazifik" },
+      "properties": {
+        "name_en": "South Pacific gyre",
+        "name_de": "Südpazifik-Wirbel"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [-101.191341254447138, -28.211873297431797]
@@ -45,7 +54,7 @@
       "type": "Feature",
       "properties": {
         "name_en": "Indian Ocean gyre",
-        "name_de": "Indischer Ozean"
+        "name_de": "Indischer-Ozean-Wirbel"
       },
       "geometry": {
         "type": "Point",
