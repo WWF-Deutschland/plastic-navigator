@@ -5,6 +5,7 @@ import ArrowRight from './ArrowRight';
 import ArrowRightL from './ArrowRightL';
 import Checkmark from './Checkmark';
 import ArrowUp from './ArrowUp';
+import Back from './Back';
 import Close from './Close';
 import CloseS from './CloseS';
 import CloseXS from './CloseXS';
@@ -32,6 +33,7 @@ export {
   ArrowRight,
   ArrowRightL,
   ArrowUp,
+  Back,
   Checkmark,
   Close,
   CloseS,
