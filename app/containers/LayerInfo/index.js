@@ -30,10 +30,11 @@ import FeatureContent from './FeatureContent';
 const ContentWrap = styled(props => (
   <Box
     pad={{
-      top: 'ms',
+      top: '12px',
       horizontal: 'medium',
       bottom: 'xlarge',
     }}
+    responsive={false}
     {...props}
   />
 ))`
@@ -59,7 +60,7 @@ const Styled = styled(props => (
   overflow-y: auto;
   z-index: 4003;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    z-index: 3001;
+    z-index: 2999;
     position: absolute;
     width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
@@ -71,7 +72,7 @@ const ButtonClose = styled(p => (
 ))`
   position: absolute;
   top: 15px;
-  right: 30px;
+  right: 15px;
   padding: 5px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
@@ -81,6 +82,7 @@ const ButtonClose = styled(p => (
   }
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 10px;
+    right: 30px;
   }
 `;
 

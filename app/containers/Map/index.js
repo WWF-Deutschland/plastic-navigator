@@ -208,7 +208,7 @@ export function Map({
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
       center: MAP_OPTIONS.CENTER,
-      zoom: MAP_OPTIONS.ZOOM.INIT,
+      zoom: size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
       minZoom: MAP_OPTIONS.ZOOM.MIN,
       maxZoom: MAP_OPTIONS.ZOOM.MAX,
       attributionControl: false,
@@ -228,6 +228,11 @@ export function Map({
     });
   }, []);
 
+  useEffect(() => {
+    if (size === 'small') {
+      mapRef.current.setZoom(MAP_OPTIONS.ZOOM.MIN);
+    }
+  }, [size]);
   useEffect(() => {
     if (mapRef.current.getZoom() !== zoom) {
       mapRef.current.setZoom(zoom);

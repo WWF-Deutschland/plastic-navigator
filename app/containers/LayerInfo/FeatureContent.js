@@ -12,7 +12,7 @@ import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box, Button } from 'grommet';
-import { ArrowLeftL } from 'components/Icons';
+import { Back } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
@@ -30,19 +30,25 @@ import Title from './Title';
 import LayerContent from './LayerContent';
 import CountryPolicyCommitments from './CountryPolicyCommitments';
 
-const Styled = styled.div``;
+const Styled = styled.div`
+  margin-top: 5px;
+`;
 
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
 `;
 
-const BackButton = styled(p => <Button {...p} />)`
+const BackButton = styled(p => <Button {...p} plain />)`
   padding: 15px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.white};
+  height: 40px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.light};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    height: 50px;
   }
 `;
 
@@ -79,15 +85,14 @@ export function FeatureContent({
     <Styled>
       <Box
         direction="row"
-        align="center"
+        align="top"
         gap="xsmall"
         margin={{ right: 'xxlarge', bottom: 'ml', left: '-10px' }}
-        style={{ minHeight: '50px' }}
       >
         <BackButton
           plain
           onClick={() => onSetLayerInfo(config.id)}
-          icon={<ArrowLeftL />}
+          icon={<Back />}
         />
         <SupTitle
           onClick={() => onSetLayerInfo(config.id)}

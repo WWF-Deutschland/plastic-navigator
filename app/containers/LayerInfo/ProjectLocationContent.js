@@ -12,8 +12,8 @@ import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box, Button, Heading } from 'grommet';
-import { ArrowLeftL } from 'components/Icons';
-// import { ArrowLeftL } from 'components/Icons';
+import { Back } from 'components/Icons';
+// import { Back } from 'components/Icons';
 import Markdown from 'react-remarkable';
 import anchorme from 'anchorme';
 
@@ -25,24 +25,37 @@ import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
 import messages from './messages';
 
-const Styled = styled.div``;
+const Styled = styled.div`
+  margin-top: 5px;
+`;
 
 const SupTitle = styled(p => <Button {...p} plain />)`
   text-transform: uppercase;
   font-weight: bold;
+`;
+
+const BackButton = styled(p => <Button {...p} plain />)`
+  padding: 15px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.white};
+  height: 40px;
   &:hover {
-    color: ${({ theme }) => theme.global.colors['dark-1']};
+    background: ${({ theme }) => theme.global.colors.light};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    height: 50px;
   }
 `;
 
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
-  border-radius: 20px;
-  padding: 8px 20px;
+  border-radius: 99999px;
+  padding: 13px 20px;
   font-family: 'wwfregular';
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
@@ -52,17 +65,7 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   font-weight: bold;
   font-size: 1.8em;
   line-height: 1.2;
-  letter-spacing: 0.05em;
   text-align: center;
-`;
-
-const BackButton = styled(p => <Button {...p} />)`
-  padding: 15px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.white};
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.light};
-  }
 `;
 
 const exists = str => str && str.trim().length > 0;
@@ -96,15 +99,14 @@ export function ProjectLocationContent({
     <Styled>
       <Box
         direction="row"
-        align="center"
+        align="top"
         gap="xsmall"
-        margin={{ right: 'xxlarge', bottom: 'xlarge' }}
-        style={{ minHeight: '50px' }}
+        margin={{ right: 'xlarge', bottom: 'xlarge', left: '-12px' }}
       >
         <BackButton
           plain
           onClick={() => onSetLayerInfo(projectId)}
-          icon={<ArrowLeftL />}
+          icon={<Back />}
         />
         <SupTitle
           onClick={() => onSetLayerInfo(projectId)}

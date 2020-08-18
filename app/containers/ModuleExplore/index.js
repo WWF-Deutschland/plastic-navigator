@@ -46,19 +46,20 @@ const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
 const ShowButton = styled(p => <Button plain reverse {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
+  line-height: 16px;
   background: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'white' : 'brand']};
   color: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'black' : 'white']};
   border-radius: 20px;
-  padding: 2px 12px;
+  padding: 2px 13px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     background: ${({ theme, projects }) =>
     theme.global.colors[projects ? 'lightHover' : 'brandDark']};
   }
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 5px 15px;
+    padding: 5px 15px 5px 21px;
   }
 `;
 

@@ -70,6 +70,8 @@ const ToggleWrap = styled(p => (
   />
 ))`
   width: 40px;
+  position: relative;
+  z-index: 3;
 `;
 const ButtonToggle = styled(p => <Button {...p} plain fill />)`
   background: ${({ theme }) => theme.global.colors.black};
@@ -83,6 +85,7 @@ const ContentWrap = styled(p => (
   <Box {...p} direction="row" gap="hair" fill="horizontal" />
 ))`
   position: relative;
+  z-index: 2;
 `;
 const Content = styled(p => (
   <Box
@@ -105,15 +108,15 @@ const Content = styled(p => (
 //
 // const TitleWrap = styled(Box)``;
 const Title = styled(Text)`
-  font-size: 21px;
-  line-height: 24px;
+  font-size: 22px;
+  line-height: 23px;
   margin: 0;
   margin-bottom: 5px;
   font-family: 'wwfregular';
   font-weight: normal;
   text-transform: uppercase;
   @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    font-size: 24px;
+    font-size: 26px;
     line-height: 27px;
   }
 `;
@@ -129,9 +132,6 @@ const ButtonNext = styled(p => <Button {...p} reverse plain />)`
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
   padding: 2px 12px;
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-size: 16px;
   height: 25px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
@@ -147,6 +147,12 @@ const ButtonPrevious = styled(p => <ButtonNext {...p} />)`
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 5px 15px;
   }
+`;
+const LabelWrap = styled(p => <Box {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 1;
 `;
 
 const Description = styled(Text)`
@@ -166,7 +172,7 @@ const LayerTitleWrap = styled(p => (
   <Box {...p} direction="row" align="center" />
 ))``;
 const LayerTitle = styled(Text)`
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 `;
 
@@ -331,9 +337,11 @@ export function PanelChapter({
                   <ButtonNext
                     icon={<ArrowRight color="white" />}
                     label={
-                      <Box margin={{ top: size === 'small' ? '-3px' : '-4px' }}>
+                      <LabelWrap
+                        margin={{ top: size === 'small' ? '-3px' : '-4px' }}
+                      >
                         <FormattedMessage {...messages.next} />
-                      </Box>
+                      </LabelWrap>
                     }
                     gap={size === 'small' ? 'xsmall' : 'small'}
                     onClick={() => {
@@ -358,9 +366,9 @@ export function PanelChapter({
                 {isLast && (!isMaxSize(size, MAX_FOLD) || step > 0) && (
                   <ButtonNext
                     label={
-                      <Box margin={{ top: '-4px' }}>
+                      <LabelWrap margin={{ top: '-4px' }}>
                         <FormattedMessage {...messages.exploreAll} />
-                      </Box>
+                      </LabelWrap>
                     }
                     onClick={() => {
                       navModule('explore');

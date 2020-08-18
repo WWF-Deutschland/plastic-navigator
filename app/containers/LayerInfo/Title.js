@@ -6,8 +6,8 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   font-family: 'wwfregular';
   font-weight: normal;
   font-size: 32px;
-  line-height: 40px;
-  letter-spacing: 0.5px;
+  line-height: 1;
+  letter-spacing: 0.1px;
   text-align: center;
   margin-top: 0px;
   margin-left: auto;

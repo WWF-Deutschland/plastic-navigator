@@ -41,6 +41,7 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   text-decoration: none;
   text-transform: uppercase;
   font-size: 20px;
+  line-height: 1;
   opacity: 1;
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'black' : 'white']};
@@ -76,6 +77,7 @@ const Secondary = styled(props => <Button {...props} plain />)`
     text-transform: uppercase;
     font-size: 20px;
     font-family: 'wwfregular';
+    line-height: 1;
     padding: 0 ${({ theme }) => theme.global.edgeSize.small};
     padding-right: ${({ theme, last }) =>
     last ? 0 : theme.global.edgeSize.small};
@@ -89,7 +91,8 @@ const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   max-width: 85px;
   padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
   color: ${({ theme }) => theme.global.colors.white};
-  font-size: ${({ theme }) => theme.text.small.size};
+  font-size: 16px;
+  line-height: 1;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     max-width: 120px;
     font-size: 20px;

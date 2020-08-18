@@ -34,21 +34,23 @@ const Styled = styled(p => (
   <Box flex={false} margin={{ bottom: 'large' }} {...p} />
 ))``;
 
+const TitleWrap = styled(p => (
+  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
+))``;
+
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
-  border-radius: 20px;
-  padding: 8px 20px;
+  border-radius: 99999px;
+  padding: 13px 20px;
   font-family: 'wwfregular';
   text-transform: uppercase;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1;
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
 `;
-const TitleWrap = styled(p => (
-  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
-))``;
 
 const exists = str => str && str.trim().length > 0;
 

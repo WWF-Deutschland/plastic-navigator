@@ -44,6 +44,15 @@ const IconImg = styled.img`
 const SectionTitle = styled(p => <Heading level="5" {...p} />)`
   font-weight: 600;
   margin-top: 0;
+  margin-bottom: 8px;
+`;
+
+const BorderBottomWrap = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.global.colors['light-4']};
+  margin-bottom: 20px;
+`;
+
+const MultipleWrap = styled.div`
   margin-bottom: 10px;
 `;
 
@@ -113,23 +122,23 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
     config.icon.datauri &&
     (config.icon.datauri.default || config.icon.datauri);
   const iconsize = { x: 50, y: 50 };
-  // console.log(config, feature)
-  // console.log(getVectorGridStyle(feature.properties, config))
-  // const square =
+
   // prettier-ignore
   return (
     <Styled>
       {positions.length > 1 && (
-        <Text size="small">
-          <FormattedMessage {...messages.multiplePositions} />
-        </Text>
+        <MultipleWrap>
+          <Text size="small">
+            <FormattedMessage {...messages.multiplePositions} />
+          </Text>
+        </MultipleWrap>
       )}
       {sorted.map(position => {
         const icon = iconuri && iconuri[position.position_id];
         const square = getSquareStyle(config, position);
         return (
           <div key={`${position.position_id}${position.source_id}`}>
-            <hr />
+            {positions.length > 1 && <BorderBottomWrap />}
             {position.position && (
               <Section>
                 <SectionTitle>

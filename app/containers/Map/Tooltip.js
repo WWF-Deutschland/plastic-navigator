@@ -17,7 +17,7 @@ import { getPropertyByLocale } from './utils';
 
 const Root = styled.div`
   position: absolute;
-  bottom: 35px;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 2501;
@@ -67,13 +67,16 @@ const Anchor = styled.div`
 // border-right-color: ${({ dirLeft }) => (!dirLeft ? 'white' : 'transparent')};
 
 const Main = styled.div`
-  min-height: 200px;
+  height: 235px;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.2);
   display: block;
   background: white;
   width: 100%;
   overflow: auto;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    min-height: 200px;
+    max-height: 300px;
+    height: auto;
     overflow: visible;
     min-height: 100px;
     position: absolute;
@@ -87,9 +90,9 @@ const Main = styled.div`
 const Title = styled.div`
   font-family: 'wwfregular';
   font-weight: normal;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1px;
   font-size: 30px;
-  line-height: 36px;
+  line-height: 1;
   margin-bottom: 20px;
 `;
 const SupTitle = styled.div`
@@ -102,7 +105,7 @@ const CloseWrap = styled.div`
   width: 30px;
   height: 30px;
   position: absolute;
-  right: 10px;
+  right: 12px;
   top: 10px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     right: -10px;
@@ -121,18 +124,24 @@ const CloseButton = styled(Button)`
 
 const ButtonWrap = styled.div`
   position: absolute;
-  bottom: 0;
-  right: ${({ theme }) => theme.global.edgeSize.small};
-  transform: translateY(50%);
+  bottom: 10px;
+  right: 12px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    right: ${({ theme }) => theme.global.edgeSize.small};
+    bottom: 0;
+    transform: translateY(50%);
+  }
 `;
 const ButtonMore = styled(p => <Button {...p} plain />)`
   background: ${({ theme }) => theme.global.colors.brand};
   color: ${({ theme }) => theme.global.colors.white};
   border-radius: 20px;
-  padding: 5px 20px;
+  padding: 8px 20px;
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-size: 16px;
+  line-height: 1;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     background: ${({ theme }) => theme.global.colors.brandDark};
   }
@@ -231,7 +240,7 @@ const Tooltip = ({
           dirLeft={direction.x === 'left'}
           w={WIDTH}
         >
-          <Box margin="small">
+          <Box margin="small" responsive={false}>
             {tooltip.supTitle && (
               <SupTitle>{getSupTitle(feature, config, layer, locale)}</SupTitle>
             )}

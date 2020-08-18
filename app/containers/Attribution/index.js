@@ -17,6 +17,7 @@ import { navigatePage } from 'containers/App/actions';
 import { PAGES } from 'config';
 
 import { isMinSize } from 'utils/responsive';
+import { Close } from 'components/Icons';
 
 import messages from './messages';
 
@@ -34,16 +35,34 @@ const StyledButton = styled(Button)`
 
 const StyledHeading = styled(Heading)`
   margin: 0;
+  font-size: 15px;
 `;
 const Title = styled(Heading)`
   font-family: 'wwfregular';
+  line-height: 1;
   text-transform: uppercase;
-  margin: 0;
+  margin: 5px 0 10px;
+  font-weight: 400;
 `;
 
 const Label = styled(p => <Text size="xxsmall" {...p} />)``;
 const Para = styled(p => <Paragraph size="xsmall" {...p} />)`
   margin: 5px 0 10px;
+`;
+
+const ButtonClose = styled(p => (
+  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
+))`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.black};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.dark};
+  }
 `;
 
 export function Attribution({ map, intl, onNavAbout }) {
@@ -107,8 +126,10 @@ export function Attribution({ map, intl, onNavAbout }) {
                 background="white"
                 elevation="small"
                 width={{ max: 'medium' }}
+                responsive={false}
               >
-                <Title level={4}>
+                <ButtonClose onClick={() => setShowAttribution(false)} />
+                <Title level={2}>
                   <FormattedMessage {...messages.mapAttributionLabel} />
                 </Title>
                 <Box margin={{ top: 'small' }}>

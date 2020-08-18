@@ -38,7 +38,7 @@ export const dimensions = {
   header: {
     // by breakpoint
     height: [50, 50, 60, 60, 60],
-    zIndex: 1200,
+    zIndex: 3000,
   },
   // layer select
   aside: {
@@ -63,7 +63,7 @@ export const colors = {
   'black-trans': 'rgba(0, 0, 0, 0.6)',
   dark: '#282A2C',
   white: '#ffffff',
-  'white-trans': 'rgba(255, 255, 255, 0.8)',
+  'white-trans': 'rgba(255, 255, 255, 0.85)',
   // active: '#ffffff',
   brand: '#00728F',
   brandDark: '#08586C',

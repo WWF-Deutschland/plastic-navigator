@@ -90,6 +90,8 @@ const ToggleWrap = styled(p => (
 ))`
   width: 40px;
   overflow: hidden;
+  position: relative;
+  z-index: 3;
 `;
 const ButtonToggleWrap = styled.div`
   height: 40px;
@@ -150,6 +152,7 @@ const Content = styled(p => (
     {...p}
   />
 ))`
+  z-index: 1;
   width: 350px;
   max-width: 100%;
   overflow: hidden;
@@ -160,6 +163,7 @@ const Content = styled(p => (
 
 const Description = styled(Text)`
   font-size: 13px;
+  line-height: 18px;
   @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
     font-size: 15px;
   }
@@ -169,18 +173,14 @@ const LayerTitleWrap = styled(p => (
   <Box
     {...p}
     direction="row"
-    align="center"
-    margin={{ bottom: 'xxsmall' }}
+    align="start"
+    margin={{ bottom: 'xsmall', top: 'small' }}
     responsive={false}
   />
-))`
-  min-height: 42px;
-`;
+))``;
 
-const LayerTitle = styled(Text)`
-  font-size: 14px;
+const LayerTitle = styled(p => <Text size="xsmall" {...p} />)`
   font-weight: 700;
-  line-height: 17px;
 `;
 
 const TabLabel = styled(p => <Text size="xxsmall" {...p} />)`
@@ -192,6 +192,7 @@ const LayerButtonInfo = styled(p => <Button plain {...p} />)`
   padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
   border-radius: 9999px;
   margin-left: auto;
+  margin-top: -9px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.lightHover};
   }
@@ -360,7 +361,9 @@ export function PanelKey({
                   top: isMaxSize(size, MAX_FOLD) ? 'xsmall' : 'small',
                   bottom: 'small',
                   horizontal: 'small',
-                }}>
+                }}
+                style={{ zIndex: 2 }}
+              >
                 {isMaxSize(size, MAX_FOLD) && (
                   <Box direction="row" gap="xsmall" flex={false}>
                     <ButtonTab

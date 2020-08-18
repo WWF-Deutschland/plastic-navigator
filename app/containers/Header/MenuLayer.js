@@ -27,13 +27,25 @@ const Primary = styled(props => <Button {...props} plain />)`
   background: transparent !important;
   font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
   padding: ${({ theme }) => theme.global.edgeSize.small} 0;
+  border-top: 1px solid;
+  border-color: ${({ theme }) => theme.global.colors.dark};
+  &:last-child {
+    border-bottom: 1px solid;
+    border-color: ${({ theme }) => theme.global.colors.dark};
+  }
 }`;
 
 // prettier-ignore
-const Secondary = styled(props => <Button {...props} plain />)`
+const Secondary = styled(props => <Button {...props} plain fill="horizontal" />)`
   padding: ${({ theme }) => theme.global.edgeSize.small} 0;
   color: ${({ theme }) => theme.global.colors.white};
   background: transparent;
+  border-top: 1px solid;
+  border-color: ${({ theme }) => theme.global.colors.dark};
+  &:last-child {
+    border-bottom: 1px solid;
+    border-color: ${({ theme }) => theme.global.colors.dark};
+  }
 `;
 const ButtonClose = styled(p => (
   <Button icon={<Close color="white" />} plain {...p} />

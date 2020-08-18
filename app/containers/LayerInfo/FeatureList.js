@@ -17,10 +17,11 @@ import { setLayerInfo } from 'containers/App/actions';
 
 const ListTitle = styled(p => <Heading level={2} {...p} />)`
   font-family: 'wwfregular';
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1px;
   font-size: 24px;
+  line-height: 1;
   font-weight: normal;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const FeatureListWrap = styled(Box)``;
@@ -31,6 +32,9 @@ const FeatureButton = styled(p => (
   border-top: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   &:hover {
     background: ${({ theme }) => theme.global.colors.light};
+  }
+  &:last-child {
+    border-bottom: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   }
 `;
 
@@ -51,6 +55,7 @@ export function FeatureList({ title, items, layerId, onSetLayerInfo }) {
               justify="between"
               pad={{ vertical: 'small', right: 'small', left: 'small' }}
               align="center"
+              responsive={false}
             >
               <Text>{item.label}</Text>
               <ArrowRightL />

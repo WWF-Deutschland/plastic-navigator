@@ -62,14 +62,23 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
 `;
 
 const PanelHeader = styled(p => (
-  <Box background="brand" justify="between" {...p} elevation="small" />
+  <Box
+    background="brand"
+    justify="between"
+    {...p}
+    elevation="small"
+    responsive={false}
+  />
 ))`
   position: absolute;
   right: 0;
   left: 0;
   top: 0;
   width: 100%;
-  height: 150px;
+  height: 140px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    height: 150px;
+  }
 `;
 const PanelBody = styled(p => (
   <Box {...p} pad={{ top: 'small', bottom: 'large', horizontal: 'small' }} />
@@ -83,11 +92,12 @@ const PanelBody = styled(p => (
   overflow-y: scroll;
 `;
 const TitleWrap = styled(p => (
-  <Box margin={{ top: 'medium' }} {...p} align="center" />
+  <Box margin={{ top: 'medium' }} {...p} align="center" responsive={false} />
 ))``;
 const Title = styled(Text)`
   font-family: 'wwfregular';
   text-transform: uppercase;
+  line-height: 1;
   margin-top: 3px;
 `;
 const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
@@ -99,6 +109,7 @@ const TabLink = styled(p => <Button plain {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-weight: normal;
+  line-height: 1;
   padding: 0 ${({ theme }) => theme.global.edgeSize.ms};
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'white' : 'brandLight']};
@@ -117,9 +128,9 @@ const TitleGroup = styled(p => <Heading {...p} level={3} />)`
   font-family: 'wwfregular';
   font-weight: normal;
   margin-bottom: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1px;
   font-size: 28px;
-  line-height: 32px;
+  line-height: 29px;
 `;
 const DescriptionGroup = styled(Paragraph)`
   margin-bottom: 8px;

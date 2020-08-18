@@ -362,6 +362,13 @@
       "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
       "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
     },
+    "attribution": {
+      "author": {
+        "en": "Various sources, please refer to the individual countries for details.",
+        "de": ""
+      },
+      "year": "2020"
+    },
     "file": "layers/country-areas-topo.json",
     "properties": {
       "featuresWithoutProperties": "true",
@@ -512,6 +519,13 @@
     "about": {
       "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
       "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
+    },
+    "attribution": {
+      "author": {
+        "en": "Various sources, please refer to the individual countries for details.",
+        "de": ""
+      },
+      "year": "2020"
     },
     "data": {
       "type": "location",

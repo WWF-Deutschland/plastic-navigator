@@ -70,11 +70,12 @@ const ListBodyCellCenter = styled(ListBodyCell)`
 const InfoButton = styled(p => <Button {...p} plain />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
+  line-height: 16px;
   background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   padding: 0 ${({ theme }) => theme.global.edgeSize.small};
   border-radius: 50px;
-  height: 25px;
+  height: 24px;
   &:hover {
     background: ${({ theme }) => theme.global.colors.dark};
   }

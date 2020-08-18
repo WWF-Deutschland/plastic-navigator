@@ -14,6 +14,7 @@ const GlobalStyle = createGlobalStyle`
     url(${WWFFontTTF}) format('truetype');
     font-weight: 300;
     font-style: normal;
+    line-height: 1;
 }
 
   html {
@@ -59,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   }
   .mpx-figcaption {
     text-align: right;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 16px;
     color: #606367;
     padding-top: 4px;
@@ -77,8 +78,11 @@ const GlobalStyle = createGlobalStyle`
   .mpx-content h4 {
     font-family: 'wwfregular';
     font-weight: normal;
-    letter-spacing: 0.5px;
+    line-height: 1;
+    letter-spacing: 0.1px;
     font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 14px;
   }
   .mpx-content h1 {
     letter-spacing: 0.9px;
@@ -112,7 +116,10 @@ const GlobalStyle = createGlobalStyle`
   }
   .mpx-wrap-markdown-description p {
     margin: 0;
-    line-height: 20px
+    line-height: 18px
+    @media (min-width: 721px}) {
+      line-height: 20px
+    }
   }
   .mpx-reference {
     color: #606367;

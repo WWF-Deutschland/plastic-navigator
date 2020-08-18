@@ -16,7 +16,16 @@ const TooltipProjectContent = ({ location, project, intl }) => {
       location[`image_attribution_${DEFAULT_LOCALE}`]
     : project[`image_attribution_${locale}`] ||
       project[`image_attribution_${DEFAULT_LOCALE}`];
-  const imageURL = hasLocationImage ? location.image_url : project.image_url;
+  let imageURL = hasLocationImage ? location.image_url : project.image_url;
+  const imageURLcomponents = imageURL && imageURL.split('.');
+  imageURL =
+    imageURLcomponents &&
+    imageURLcomponents.reduce((m, str, i) => {
+      if (i === imageURLcomponents.length - 1) {
+        return `${m}_small.${str}`;
+      }
+      return m ? `${m}.${str}` : str;
+    }, null);
   return (
     <Styled>
       {exists(imageURL) && (

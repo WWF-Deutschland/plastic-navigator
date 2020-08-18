@@ -24,6 +24,7 @@ const StyledDropButton = styled(DropButton)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   font-size: ${({ theme }) => theme.text.large.size};
+  line-height: 1;
   text-decoration: none;
   padding: 0 0 0 6px;
   color: ${({ theme }) => theme.global.colors.white} !important;
