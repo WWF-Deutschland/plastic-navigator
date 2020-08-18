@@ -85,9 +85,8 @@ export function FeatureContent({
     <Styled>
       <Box
         direction="row"
-        align="top"
-        gap="xsmall"
-        margin={{ right: 'xxlarge', bottom: 'ml', left: '-10px' }}
+        gap="xxsmall"
+        margin={{ right: 'xlarge', bottom: 'ml', left: '-10px' }}
       >
         <BackButton
           plain
