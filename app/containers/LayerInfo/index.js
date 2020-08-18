@@ -99,12 +99,18 @@ export function LayerInfo({ id, onClose, config }) {
               <FeatureContent featureId={featureId} config={config} />
             )}
             {!featureId && !isProjectInfo && config && (
-              <LayerContent config={config} />
-            )}
-            {!featureId &&
-              config &&
-              POLICY_LAYERS.indexOf(config.id) > -1 && (
-              <LayerFeatures config={config} />
+              <LayerContent
+                config={config}
+                inject={
+                  !featureId &&
+                  config &&
+                  POLICY_LAYERS.indexOf(config.id) > -1
+                    ? [{
+                      tag: '[COUNTRIES]',
+                      el: (<LayerFeatures config={config} />)
+                    }]
+                    : null
+                } />
             )}
           </ContentWrap>
           <ButtonClose onClick={() => onClose()} />

@@ -56,6 +56,7 @@ export function LayerContent({
   isActive,
   layerData,
   onLoadLayer,
+  inject = [],
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -112,6 +113,7 @@ export function LayerContent({
                 </Box>
               ),
             },
+            ...inject || [],
           ]}
         />
       )}
@@ -127,6 +129,7 @@ LayerContent.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
   layerData: PropTypes.object,
+  inject: PropTypes.array,
   locale: PropTypes.string,
   isActive: PropTypes.bool,
 };
