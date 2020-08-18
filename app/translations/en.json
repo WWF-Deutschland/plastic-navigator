@@ -48,7 +48,7 @@
   "app.containers.PanelExplore.showProjectsShort": "Show Projects",
   "app.containers.PanelExplore.title": "Explore map layers",
   "app.containers.PanelKey.keyProjectsAbout": "WWF projects around the world work together with local communities, politics and companies on solutions to reduce marine plastic pollution: from reducing or replacing packaging, establishing waste management systems or collections of marine litter.",
-  "app.containers.PanelKey.keyProjectsTitle": "WWF Projects",
+  "app.containers.PanelKey.keyProjectsTitle": "WWF projects to stop marine plastic pollution",
   "app.containers.PanelKey.keyTabAbout": "Annotation",
   "app.containers.PanelKey.keyTabKey": "Key"
 }
