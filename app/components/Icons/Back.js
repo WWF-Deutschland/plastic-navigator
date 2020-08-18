@@ -3,12 +3,7 @@ import StyledIcon from './StyledIcon';
 
 function Back(props) {
   return (
-    <StyledIcon
-      size="16px"
-      viewBox="0 0 16 16"
-      a11yTitle="Back"
-      {...props}
-    >
+    <StyledIcon size="16px" viewBox="0 0 16 16" a11yTitle="Back" {...props}>
       <g>
         <path
           fill="inherit"
