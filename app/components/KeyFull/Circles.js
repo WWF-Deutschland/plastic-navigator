@@ -53,7 +53,6 @@ export function Circles({ config, simple, intl, range }) {
     maxRadius = parseFloat(render.max);
   }
 
-  console.log(config, range);
   return (
     <Styled
       exceeds={!simple && range && render && render.min}

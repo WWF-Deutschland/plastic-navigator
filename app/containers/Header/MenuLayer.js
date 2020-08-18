@@ -50,7 +50,7 @@ function MenuLayer({ navPage, onClose, pagesArray, modulesArray, nav, route }) {
   return (
     <ResponsiveContext.Consumer>
       {size => (
-        <Layer>
+        <Layer full>
           <Box
             background="black"
             fill
