@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -80,15 +80,14 @@ const PanelHeader = styled(p => (
     height: 150px;
   }
 `;
-const PanelBody = styled(p => (
-  <Box {...p} pad={{ top: 'small', bottom: 'large', horizontal: 'small' }} />
-))`
+const PanelBody = styled.div`
   position: absolute;
   right: 0;
   left: 0;
   top: 150px;
   width: 100%;
   bottom: 0;
+  padding: 12px 12px 48px;
   overflow-y: scroll;
 `;
 const TitleWrap = styled(p => (
@@ -174,6 +173,11 @@ export function PanelExplore({
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
 
+  const cRef = useRef();
+  useEffect(() => {
+    cRef.current.scrollTop = 0;
+  }, [uiState]);
+
   const activeCategory = exploreConfig && exploreConfig[tab];
 
   // console.log(activeLayers, layersConfig, activeCategory)
@@ -235,7 +239,7 @@ export function PanelExplore({
                   })}
               </Tabs>
             </PanelHeader>
-            <PanelBody>
+            <PanelBody ref={cRef}>
               {layersConfig &&
                 activeCategory &&
                 activeCategory.groups &&

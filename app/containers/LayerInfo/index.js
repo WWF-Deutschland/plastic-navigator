@@ -4,13 +4,13 @@
  *
  */
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box, ResponsiveContext } from 'grommet';
+import { Button, ResponsiveContext } from 'grommet';
 import { Close } from 'components/Icons';
 
 import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
@@ -27,17 +27,7 @@ import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 // import messages from './messages';
 
-const ContentWrap = styled(props => (
-  <Box
-    pad={{
-      top: '12px',
-      horizontal: 'medium',
-      bottom: 'xlarge',
-    }}
-    responsive={false}
-    {...props}
-  />
-))`
+const ContentWrap = styled.div`
   position: absolute;
   right: 0;
   left: 0;
@@ -45,11 +35,10 @@ const ContentWrap = styled(props => (
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
+  padding: 12px 24px 64px;
 `;
 
-const Styled = styled(props => (
-  <Box {...props} background="white" elevation="medium" />
-))`
+const Styled = styled.div`
   position: fixed;
   right: 0;
   top: 0;
@@ -59,6 +48,8 @@ const Styled = styled(props => (
   pointer-events: all;
   overflow-y: auto;
   z-index: 4003;
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     z-index: 2999;
     position: absolute;
@@ -89,11 +80,18 @@ const ButtonClose = styled(p => (
 export function LayerInfo({ id, onClose, config }) {
   const [layerId, featureId] = getLayerFeatureIds(id);
   const isProjectInfo = startsWith(layerId, `${PROJECT_CONFIG.id}-`);
+
+  const cRef = useRef();
+  useEffect(() => {
+    cRef.current.scrollTop = 0;
+  }, [id]);
+
+  // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
-          <ContentWrap isProjectInfo={isProjectInfo}>
+          <ContentWrap isProjectInfo={isProjectInfo} ref={cRef}>
             {isProjectInfo && (
               <ProjectContent id={layerId} location={featureId} />
             )}
@@ -103,7 +101,9 @@ export function LayerInfo({ id, onClose, config }) {
             {!featureId && !isProjectInfo && config && (
               <LayerContent config={config} />
             )}
-            {!featureId && config && POLICY_LAYERS.indexOf(config.id) > -1 && (
+            {!featureId &&
+              config &&
+              POLICY_LAYERS.indexOf(config.id) > -1 && (
               <LayerFeatures config={config} />
             )}
           </ContentWrap>
