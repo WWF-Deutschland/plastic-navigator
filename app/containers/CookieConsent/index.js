@@ -89,7 +89,7 @@ export function CookieConsent({
     <Styled>
       {(show || (checked && consentUnset)) && (
         <Layer
-          position="top-right"
+          position="bottom-right"
           plain
           responsive={false}
           modal={false}
@@ -98,10 +98,11 @@ export function CookieConsent({
           style={{ zIndex: 3001 }}
         >
           <Box
-            pad={{ vertical: 'small', horizontal: 'medium' }}
+            pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}
             background="white"
             style={{ maxWidth: '100%', width: '360px' }}
             elevation="large"
+            responsive={false}
           >
             <Title level={2}>
               <FormattedMessage {...messages.title} />
