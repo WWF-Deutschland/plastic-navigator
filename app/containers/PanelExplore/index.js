@@ -20,9 +20,9 @@ import {
   ResponsiveContext,
 } from 'grommet';
 import { Close, ExploreS as Layer } from 'components/Icons';
-
+import { deburr } from 'lodash/string';
 import { getAsideWidth } from 'utils/responsive';
-import { startsWith } from 'utils/string';
+import { lowerCase, startsWith } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -272,7 +272,17 @@ export function PanelExplore({
                       activeCategory.id === PROJECT_CATEGORY && (
                       <GroupLayers
                         group={activeCategory.id}
-                        layersConfig={projects}
+                        layersConfig={
+                          projects.sort((a, b) => {
+                            const titleA =
+                              a[`project_title_${locale}`] ||
+                              a[`project_title_${DEFAULT_LOCALE}`];
+                            const titleB =
+                              b[`project_title_${locale}`] ||
+                              b[`project_title_${DEFAULT_LOCALE}`];
+                            return deburr(lowerCase(titleA)) > deburr(lowerCase(titleB)) ? 1 : -1;
+                          })
+                        }
                         projects
                         locale={locale}
                         activeLayers={activeLayers}

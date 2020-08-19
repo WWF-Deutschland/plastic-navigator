@@ -1,6 +1,6 @@
 {
   "app.common.appTitle": "Global Plastic Navigator",
-  "app.common.countries": "Countries",
+  "app.common.countries": "Explore level of support for {count} countries",
   "app.common.locations": "Locations",
   "app.common.module_explore": "Explore",
   "app.common.module_explore_metaTitle": "Explore",

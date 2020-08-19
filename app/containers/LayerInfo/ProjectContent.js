@@ -13,8 +13,8 @@ import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Box } from 'grommet';
 import Markdown from 'react-remarkable';
-
-import { prepMarkdown } from 'utils/string';
+import { deburr } from 'lodash/string';
+import { lowerCase, prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
@@ -134,12 +134,18 @@ export function ProjectContent({
               layerId={`${PROJECT_CONFIG.id}-${
                 project[PROJECT_CONFIG.data['layer-id']]
               }`}
-              items={projectLocations.map(l => ({
-                id: l.f_id,
-                label:
-                  l[`location_title_${locale}`] ||
-                  l[`location_title_${DEFAULT_LOCALE}`],
-              }))}
+              items={projectLocations
+                .map(l => ({
+                  id: l.f_id,
+                  label:
+                    l[`location_title_${locale}`] ||
+                    l[`location_title_${DEFAULT_LOCALE}`],
+                }))
+                .sort((a, b) =>
+                  deburr(lowerCase(a.label)) > deburr(lowerCase(b.label))
+                    ? 1
+                    : -1,
+                )}
             />
           )}
           {exists(projectLink) && (
