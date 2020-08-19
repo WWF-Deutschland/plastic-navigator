@@ -38,6 +38,7 @@ import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
 import LayerInfo from 'containers/LayerInfo';
+import CookieConsent from 'containers/CookieConsent';
 
 import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
@@ -130,6 +131,7 @@ function App({
             <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
           )}
         </Content>
+        <CookieConsent />
         {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
       </AppWrapper>

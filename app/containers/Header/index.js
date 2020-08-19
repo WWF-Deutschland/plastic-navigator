@@ -132,7 +132,7 @@ function Header({ nav, navPage, path, navHome }) {
 
   const paths = path.split('/');
   const route = path[0] === '/' ? paths[2] : paths[1];
-  const pagesArray = toArray(PAGES);
+  const pagesArray = toArray(PAGES).filter(p => p.header);
   return (
     <ResponsiveContext.Consumer>
       {size => (

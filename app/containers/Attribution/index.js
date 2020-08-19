@@ -19,6 +19,7 @@ import { PAGES } from 'config';
 import { isMinSize } from 'utils/responsive';
 import { Close } from 'components/Icons';
 
+import commonMessages from 'messages';
 import messages from './messages';
 
 const Styled = styled(Box)`
@@ -54,8 +55,8 @@ const ButtonClose = styled(p => (
   <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
 ))`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   padding: 5px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
@@ -65,7 +66,7 @@ const ButtonClose = styled(p => (
   }
 `;
 
-export function Attribution({ map, intl, onNavAbout }) {
+export function Attribution({ map, intl, onNav }) {
   const attributionButtonRef = useRef(null);
   const [showAttribution, setShowAttribution] = useState(false);
   return (
@@ -79,10 +80,20 @@ export function Attribution({ map, intl, onNavAbout }) {
         >
           <StyledButton
             plain
-            onClick={() => onNavAbout()}
+            onClick={() => onNav(PAGES.about.path)}
             label={
               <Label>
                 <FormattedMessage {...messages.copyright} />
+              </Label>
+            }
+          />
+          <Label>|</Label>
+          <StyledButton
+            plain
+            onClick={() => onNav(PAGES.privacy.path)}
+            label={
+              <Label>
+                <FormattedMessage {...commonMessages.page_privacy} />
               </Label>
             }
           />
@@ -121,11 +132,11 @@ export function Attribution({ map, intl, onNavAbout }) {
               onClickOutside={() => setShowAttribution(false)}
             >
               <Box
-                pad="small"
+                pad={{ vertical: 'small', horizontal: 'medium' }}
                 margin={{ bottom: 'xsmall' }}
                 background="white"
-                elevation="small"
-                width={{ max: 'medium' }}
+                elevation="large"
+                style={{ maxWidth: '100%', width: '360px' }}
                 responsive={false}
               >
                 <ButtonClose onClick={() => setShowAttribution(false)} />
@@ -159,13 +170,13 @@ export function Attribution({ map, intl, onNavAbout }) {
 
 Attribution.propTypes = {
   map: PropTypes.bool,
-  onNavAbout: PropTypes.func,
+  onNav: PropTypes.func,
   intl: intlShape.isRequired,
 };
 
 export function mapDispatchToProps(dispatch) {
   return {
-    onNavAbout: () => dispatch(navigatePage(PAGES.about.path)),
+    onNav: path => dispatch(navigatePage(path)),
   };
 }
 

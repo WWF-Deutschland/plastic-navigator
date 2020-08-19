@@ -11,6 +11,11 @@ export const ROUTES = {
 export const PAGES = {
   about: {
     path: 'about',
+    header: true,
+  },
+  privacy: {
+    path: 'privacy',
+    footer: true,
   },
 };
 export const MODULES = {

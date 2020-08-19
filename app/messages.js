@@ -32,6 +32,10 @@ export default defineMessages({
     id: `${scope}.page_about`,
     defaultMessage: 'About',
   },
+  page_privacy: {
+    id: `${scope}.page_privacy`,
+    defaultMessage: 'Privacy',
+  },
   page_glossary: {
     id: `${scope}.page_glossary`,
     defaultMessage: 'Glossary',
