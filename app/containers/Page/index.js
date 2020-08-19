@@ -21,7 +21,11 @@ import { loadContent } from 'containers/App/actions';
 import HTMLWrapper from 'components/HTMLWrapper';
 
 const ContentWrap = styled(props => (
-  <Box pad="medium" {...props} responsive={false} />
+  <Box
+    pad={{ vertical: 'ml', horizontal: 'medium' }}
+    responsive={false}
+    {...props}
+  />
 ))`
   overflow-y: auto;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
@@ -30,14 +34,17 @@ const ContentWrap = styled(props => (
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     width: 720px;
   }
+  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
+    width: 820px;
+  }
 `;
 
 const ButtonClose = styled(p => (
   <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
 ))`
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 30px;
+  right: 30px;
   padding: 10px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
