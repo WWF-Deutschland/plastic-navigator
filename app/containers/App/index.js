@@ -131,7 +131,7 @@ function App({
             <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
           )}
         </Content>
-        <CookieConsent />
+        {!window.wwfMpxInsideIframe && <CookieConsent />}
         {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
       </AppWrapper>

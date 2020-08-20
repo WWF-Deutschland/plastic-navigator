@@ -87,16 +87,20 @@ export function Attribution({ map, intl, onNav }) {
               </Label>
             }
           />
-          <Label>|</Label>
-          <StyledButton
-            plain
-            onClick={() => onNav(PAGES.privacy.path)}
-            label={
-              <Label>
-                <FormattedMessage {...commonMessages.page_privacy} />
-              </Label>
-            }
-          />
+          {!window.wwfMpxInsideIframe && (
+            <>
+              <Label>|</Label>
+              <StyledButton
+                plain
+                onClick={() => onNav(PAGES.privacy.path)}
+                label={
+                  <Label>
+                    <FormattedMessage {...commonMessages.page_privacy} />
+                  </Label>
+                }
+              />
+            </>
+          )}
           {(isMinSize(size, 'medium') || map) && <Label>|</Label>}
           {map && (
             <StyledButton
