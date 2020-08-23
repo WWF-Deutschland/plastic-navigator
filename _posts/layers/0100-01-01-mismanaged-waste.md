@@ -7,7 +7,7 @@ title: Mismanaged plastic waste
 image_file_name: mismanaged-plastic-waster_layer.jpg
 image_caption: Yunaidi Joepoet / WWF
 fact_lead: >-
-  Mismanaged plastic waste entering our environment is a growing global concern. Wind and rain carry it into our rivers and out to sea where it endangers wildlife and can accumulate in the food chain.
+  Mismanaged plastic waste entering our environment is a growing global concern. Wind and rain carry it into our rivers and out to sea where it endangers wildlife and can enter the food chain.
 ---
 
 Plastic waste escaping into the environment can be the result of personal littering, illegal dumping, as well as poorly designed waste management systems and is assumed to be highest in areas of poor waste management and high population densities.
@@ -32,6 +32,6 @@ The estimates shown were produced as part of a recent study considering multiple
 * high-resolution distributions of **population**,
 * high-resolution distributions of **gross domestic product (GDP)**.
 
-The country-level data on waste management include per capita municipal waste generation (available for 160 countries), the estimated percentage of plastic waste (105 countries), and the estimated percentage of mismanaged waste (95 countries), all taken from the “Waste Atlas” ([atlas.d-waste.com](http://www.atlas.d-waste.com/)) where they were submitted by individual experts. Incomplete data were estimated based on statistically significant correlations with GDP (higher GDP correlates with higher waste generation and with lower percentage of mismanaged waste). Global averages were used for countries where no data were available.
+The country-level data on waste management include per capita municipal waste generation (available for 160 countries), the estimated percentage of plastic waste (105 countries), and the estimated percentage of mismanaged waste (95 countries), all taken from the “Waste Atlas” ([atlas.d-waste.com](http://www.atlas.d-waste.com/)) that is a collection of publicly available data and data submitted by individual experts. Incomplete data were estimated based on statistically significant correlations with GDP (higher GDP correlates with higher waste generation and with lower percentage of mismanaged waste). Global averages were used for countries where no data were available.
 
 **Globally, the study estimates that about 80 million metric tonnes or 47% of the global annual municipal waste were inadequately disposed of.**

@@ -18,6 +18,7 @@ While much of the debris stays in coastal waters and ends up stranded on beaches
 
 The map layer shows the **estimated concentration of floating plastic** by weight and per km<sup>2</sup>, specifically for plastic items measuring 0.33 mm and more. The darker the colour, the higher is the estimated concentration of floating plastic.
 
+
 [KEY]
 
 #### Please beware
@@ -30,14 +31,14 @@ The map layer shows the **estimated concentration of floating plastic** by weigh
 
 ### About the study
 
-The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using 30 years of ocean current and wind data for multiple input scenarios.
+The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using historic data representing 30 years of ocean circulation.
 
-**The study estimated a global total of 5.25 trillion floating plastic pieces together weighing over 268,000 tons.**
-
-The model results were calibrated using survey data from 24 expeditions that collected data for four different size classes:
+The results of the simulation were calibrated using survey data from 24 expeditions that collected data for four different size classes:
 * microplastics with a size between 0.33 and 1 mm
 * microplastics with a size between 1 and 4.75 mm
 * mesoplastics with a size between 4.75 and 200 mm
 * macroplastics larger than 200 mm.
 
-You can further explore the survey data in the interactive [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/).
+**The study estimated a global total of 5.25 trillion floating plastic pieces together weighing over 268,000 tons.**
+
+You can further explore the survey data of the 24 expeditions in the interactive [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/).
