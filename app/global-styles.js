@@ -95,6 +95,8 @@ const GlobalStyle = createGlobalStyle`
     font-size: 20px;
   }
   .mpx-content a {
+    color: #000000;
+    text-decoration-color: #000000;
     &:visited{
       color: #000000;
     }
