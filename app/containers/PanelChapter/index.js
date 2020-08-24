@@ -173,7 +173,9 @@ const LayerTitleWrap = styled(p => (
 ))``;
 const LayerTitle = styled(Text)`
   font-size: 13px;
+  line-height: 16px;
   font-weight: 600;
+  margin-bottom: 6px;
 `;
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
