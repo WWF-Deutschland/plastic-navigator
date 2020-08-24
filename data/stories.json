@@ -5,11 +5,11 @@
       {
         "title": {
           "en": "Plastic has been detected on the surface of all oceans",
-          "de": "Plastik wurde in allen Ozeanen gefunden"
+          "de": "Plastik wurde an der Oberfläche aller Ozeanen festgestellt"
         },
         "description": {
-          "en": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris.",
-          "de": "Plastic in the ocean is a threat to marine wildlife and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris."
+          "en": "Plastic in the ocean is a threat to marine ecosystems and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris.",
+          "de": "Plastik im Meer ist eine Bedrohung für die marinen Ökosysteme und kann auch in die Nahrungskette gelangen. Diese Karte zeigt die modellierte Plastikkonzentration auf Basis von Messdaten aus 24 Expeditionen. Dunkle Farben bedeuten eine höhere Konzentration."
         },
         "layers": ["surface-concentration"],
         "layersFocus": ["surface-concentration"]
@@ -17,11 +17,11 @@
       {
         "title": {
           "en": "Poor waste management is a major source of plastic debris",
-          "de": "Poor waste management is a major source of plastic debris"
+          "de": "Mangelhaftes Müllmanagement ist eine bedeutende Quelle für Plastik im Meer"
         },
         "description": {
           "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
-          "de": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, that were derived using GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment."
+          "de": "Diese Kartenebene zeigt die geschätzte Mengen an mangelhaft entsorgtem Plastikmüll pro km², der in die Umwelt gelangen kann, berechnet auf Basis von Bevölkerungsdaten und BIP. Dunklere Farben bedeuten ein höheres Müllaufkommen."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
@@ -29,11 +29,11 @@
       {
         "title": {
           "en": "Rivers carry plastic from land to sea",
-          "de": "Rivers carry plastic from land to sea"
+          "de": "Flüsse spülen Plastik vom Land ins Meer"
         },
         "description": {
           "en": "Wind and rain carry plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans for the 122 most polluting rivers. Larger circles indicate more emissions.",
-          "de": "Wind and rain carry plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans for the 122 most polluting rivers."
+          "de": "Wind und Regen befördern Plastikmüll in unsere Flüsse, die ihn weiter in unsere Meere spülen. Diese Ebene zeigt die geschätzte Menge an Plastikmüll für die 122 am meisten verschmutzenden Flüsse. Größere Kreise stehen für höhere Einträge."
         },
         "layers": [
           "surface-concentration",
@@ -44,12 +44,12 @@
       },
       {
         "title": {
-          "en": "Currents concentrate floating debris",
-          "de": "Currents concentrate floating debris"
+          "en": "Currents transport floating debris",
+          "de": "Strömungen transportieren den treibenden Müll"
         },
         "description": {
-          "en": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres.",
-          "de": "Plastic and other floating debris are moved by winds and ocean currents und eventually accumulate at the center of large current systems called gyres."
+          "en": "Floating plastic and other debris are moved by winds and ocean currents and eventually accumulate at the center of large current systems called gyres.",
+          "de": "Treibendes Plastik und anderer Unrat werden durch Wind und Strömungen bewegt und sammeln sich schließlich um die Zentren der großen Meereswirbel."
         },
         "layers": [
           "surface-concentration",
