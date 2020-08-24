@@ -27,7 +27,7 @@ The estimated level of support by each country is based on WWF’s assessment of
 [COUNTRIES]
 
 <div class="mpx-reference">
-  <h4>References</h4>
+  <h4>Quellenangaben</h4>
   <ul>
     <li>
       African Ministerial Congress on the Environment (AMCEN). Durban Declaration on taking action for environmental sustainability and prosperity in Africa (<a href="https://wedocs.unep.org/bitstream/handle/20.500.11822/30786/AMCEN_17L1.pdf?sequence=1&isAllowed=y" target="_blank">AMCEN2019</a>)
