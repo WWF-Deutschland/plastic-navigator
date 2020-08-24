@@ -52,8 +52,8 @@
         "de": "g/km<sup>2</sup>"
       },
       "unit-additional": {
-        "en": "items measuring 0.33mm and more",
-        "de": "items measuring 0.33mm and more"
+        "en": "items measuring 0.33 mm and more",
+        "de": "Mindestgröße der Teile: 0,33 mm"
       }
     },
     "key": {
@@ -114,12 +114,12 @@
     "data": {
       "type": "weight",
       "unit": {
-        "en": "kg per year and km<sup>2</sup>",
-        "de": "kg pro Jahr und km<sup>2</sup>"
+        "en": "kg per year and km²",
+        "de": "kg pro Jahr und km²"
       },
       "unit-short": {
-        "en": "kg/yr/km<sup>2</sup>",
-        "de": "kg/Jahr/km<sup>2</sup>"
+        "en": "kg/yr/km²",
+        "de": "kg/Jahr/km²"
       }
     },
     "key": {
@@ -282,7 +282,7 @@
     },
     "about": {
       "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers.",
-      "de": "Ungefähres Zentrum des Meereswirbels"
+      "de": "Die Markierungen zeigen die ungefähre Zentren der 5 großen Meereswirbel, die einen Großteil des treibenden Plastiks mitnehmen und in Richtung Mitte befördern."
     },
     "attribution": {
       "author": {
@@ -420,15 +420,15 @@
       "title": {
         "1": {
           "en": "Officially called for new agreement",
-          "de": "positions.position.position_short_en"
+          "de": "Officially called for new agreement"
         },
         "2": {
           "en": "Willingness to explore option of agreement",
-          "de": "positions.position.position_short_en"
+          "de": "Willingness to explore option of agreement"
         },
         "0": {
           "en": "No statement or commitment recorded",
-          "de": "positions.position.position_short_en"
+          "de": "No statement or commitment recorded"
         }
       }
     },
@@ -548,11 +548,11 @@
         "full": {
           "1": {
             "en": "Officially called for new agreement",
-            "de": "positions.position.position_short_en"
+            "de": "Officially called for new agreement"
           },
           "2": {
             "en": "Willingness to explore option of agreement",
-            "de": "positions.position.position_short_en"
+            "de": "Willingness to explore option of agreement"
           }
         }
       }
