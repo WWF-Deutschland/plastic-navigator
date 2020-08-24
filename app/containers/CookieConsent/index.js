@@ -108,7 +108,20 @@ export function CookieConsent({
               <FormattedMessage {...messages.title} />
             </Title>
             <Paragraph margin={{ bottom: 'medium' }} size="medium">
-              <FormattedMessage {...messages.info} />
+              <FormattedMessage
+                {...messages.info}
+                values={{
+                  link: (
+                    <StyledButtonText
+                      alignSelf="end"
+                      onClick={() => navPrivacy()}
+                      label={
+                        <FormattedMessage {...messages.linkPrivacyPolicy} />
+                      }
+                    />
+                  ),
+                }}
+              />
             </Paragraph>
             <ButtonWrap gap="xsmall" margin={{ bottom: 'medium' }}>
               <StyledButton
@@ -119,11 +132,6 @@ export function CookieConsent({
                 <FormattedMessage {...messages.buttonAccept} />
               </StyledButton>
             </ButtonWrap>
-            <StyledButtonText
-              alignSelf="end"
-              onClick={() => navPrivacy()}
-              label={<FormattedMessage {...messages.linkPrivacyPolicy} />}
-            />
           </Box>
         </Layer>
       )}

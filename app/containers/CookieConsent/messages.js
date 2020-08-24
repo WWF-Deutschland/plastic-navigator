@@ -22,10 +22,6 @@ export default defineMessages({
     id: `${scope}.buttonAccept`,
     defaultMessage: 'Agreed',
   },
-  buttonReject: {
-    id: `${scope}.buttonReject`,
-    defaultMessage: 'Decline',
-  },
   linkPrivacyPolicy: {
     id: `${scope}.linkPrivacyPolicy`,
     defaultMessage: 'Our privacy policy',
