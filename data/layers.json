@@ -28,11 +28,11 @@
     "tileset": "tmfrnz.2jlttq2f",
     "title": {
       "en": "Floating plastic concentration",
-      "de": "Konzentration von treibendem Plastik"
+      "de": "Konzentration von treibendem Plastik an der Meeresoberfläche"
     },
     "about": {
       "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic debris.",
-      "de": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic debris."
+      "de": "Die Karte stellt die geschätzte Konzentration von an der Meeresoberfläche treibendem Plastik nach Gewicht dar. Je dunkler die Farbe, desto höher die Konzentration."
     },
     "attribution": {
       "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
@@ -98,11 +98,11 @@
     "tileset": "tmfrnz.2aall5rr",
     "title": {
       "en": "Mismanaged plastic waste",
-      "de": "Schlechte Handhabung von Plastikmüll"
+      "de": "Mangelhafte Entsorgung von Plastikmüll"
     },
     "about": {
       "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher is the estimated amount of mismanaged waste.",
-      "de": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher is the estimated amount of mismanaged waste."
+      "de": "Die Karte zeigt die geschätzte Menge von mangelhaft entsorgtem Plastikmüll pro km². Je dunkler die Farbe, desto höher das Müllaufkommen und die mögliche Verschmutzung der Umwelt."
     },
     "attribution": {
       "author": "Lebreton LCM, Andrady A",
@@ -163,7 +163,7 @@
     "file": "layers/river-emissions-122.json",
     "title": {
       "en": "River plastic emissions (top 122)",
-      "de": "Plastikeinträge der Top 122 Flüsse"
+      "de": "Plastikeinträge durch Flüsse ins Meer (Top 122)"
     },
     "title-short": {
       "en": "River emissions",
@@ -171,7 +171,7 @@
     },
     "about": {
       "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers. Larger circles represent rivers estimated to contribute larger amounts of plastic.",
-      "de": "Die 1000 Flüsse mit den meisten geschätzten Plastikeinträgen in die Weltmeere"
+      "de": "Die Kreise zeigen die geschätzten jährlichen Plastikeinträge der 122 am meisten verschmutzenden Flüsse. Je höher der jeweilige Eintrag, desto größer der Kreis"
     },
     "attribution": {
       "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
@@ -241,11 +241,11 @@
     },
     "title-short": {
       "en": "Currents",
-      "de": "Strömungen"
+      "de": "Oberflächenströmungen der Meere"
     },
     "about": {
       "en": "The arrows indicate the direction of our oceans' predominant currents. They play a major role in determining the movements and fate of marine plastic pollution.",
-      "de": "Vorherrschende Strömungen auf unseren Meeren"
+      "de": "Die Pfeile zeigen Richtung und Lage der vorherrschenden Oberflächenströmungen."
     },
     "style": {
       "opacity": "0.3"
@@ -274,15 +274,15 @@
     "file": "layers/gyres.json",
     "title": {
       "en": "The 5 principal gyres",
-      "de": "Die 5 hauptsächlichen Meeresstrudel"
+      "de": "Die 5 großen Meereswirbel"
     },
     "title-short": {
       "en": "Gyres",
-      "de": "Meeresstrudel"
+      "de": "Meereswirbel"
     },
     "about": {
       "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers.",
-      "de": "Short text about principal gyres"
+      "de": "Ungefähres Zentrum des Meereswirbels"
     },
     "attribution": {
       "author": {
