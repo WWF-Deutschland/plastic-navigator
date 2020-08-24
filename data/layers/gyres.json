@@ -10,7 +10,7 @@
       "type": "Feature",
       "properties": {
         "name_en": "North Pacific gyre",
-        "name_de": "Nordpazifik-Wirbel"
+        "name_de": "Nordpazifikwirbel"
       },
       "geometry": {
         "type": "Point",
@@ -21,7 +21,7 @@
       "type": "Feature",
       "properties": {
         "name_en": "North Atlantic gyre",
-        "name_de": "Nordatlantik"
+        "name_de": "Nordatlantikwirbel"
       },
       "geometry": {
         "type": "Point",
@@ -32,7 +32,7 @@
       "type": "Feature",
       "properties": {
         "name_en": "South Atlantic gyre",
-        "name_de": "Südatlantik-Wirbel"
+        "name_de": "Südatlantikwirbel"
       },
       "geometry": {
         "type": "Point",
@@ -43,7 +43,7 @@
       "type": "Feature",
       "properties": {
         "name_en": "South Pacific gyre",
-        "name_de": "Südpazifik-Wirbel"
+        "name_de": "Südpazifikwirbel"
       },
       "geometry": {
         "type": "Point",
