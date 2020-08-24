@@ -90,6 +90,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 46px;
     margin-top: 0;
     margin-bottom: 30px;
+    margin-right: 40px; 
   }
   .mpx-content h4 {
     font-size: 20px;
