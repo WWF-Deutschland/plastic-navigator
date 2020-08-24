@@ -4,7 +4,7 @@ published: true
 permalink: /content/de/layers/surface-concentration/
 lang: de
 title: Konzentration von treibendem Plastik an der Meeresoberfläche
-image_file_name: surface-concentration.png
+image_file_name: floating-plastic-concentration_layer.jpg
 image_caption: Troy Mayne / WWF
 fact_lead: >-
   Im Meer treibendes Plastik ist eine erhebliche Bedrohung für unsere marinen Ökosysteme. Seevögel, Fische und Meeressäuger können sich im schwimmenden Plastikmüll verfangen oder diesen mit Nahrung verwechseln und aufnehmen. Giftstoffe können so in die Nahrungsketten gelangen und sich dort anreichern. Das Plastik stellt aber nicht nur eine Gefahr für unsere Umwelt dar, sondern kann auch negative Auswirkungen auf unsere Wirtschaft haben, insbesondere die Tourismus- und Fischereisektoren.

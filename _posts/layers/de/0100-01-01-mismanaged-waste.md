@@ -4,7 +4,7 @@ published: true
 permalink: /content/de/layers/mismanaged-waste/
 lang: de
 title: Mangelhafte Entsorgung von Plastikmüll
-image_file_name: mismanaged-waste.png
+image_file_name: mismanaged-plastic-waster_layer.jpg
 image_caption: Yunaidi Joepoet / WWF
 fact_lead: >-
   Die mangelhafte Entsorgung von Plastikmüll und der damit verbundene Eintrag in unsere Umwelt ist ein wachsendes globales Problem. Wind und Regen sorgen dafür, dass der Plastikmüll in unsere Flüsse und damit ins Meer gelangt, wo er die dort lebenden Tiere gefährdet und in die Nahrungskette gelangen kann.

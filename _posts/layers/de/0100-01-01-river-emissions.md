@@ -4,7 +4,7 @@ published: true
 permalink: /content/de/layers/river-emissions/
 lang: de
 title: Plastikeinträge durch Flüsse ins Meer (Top 122)
-image_file_name: river-emissions.png
+image_file_name: river-emissions-plastic_layer.jpg
 image_caption: Sam Hobson / WWF-UK
 fact_lead: >-
   Wind und Regen befördern einen großen Anteil des unangemessen entsorgten Plastikmülls in unsere Flüsse, die als eine der größten Quellen für den Plastikmüll in unseren Ozeanen gelten.
