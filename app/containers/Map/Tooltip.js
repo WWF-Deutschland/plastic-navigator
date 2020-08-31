@@ -75,10 +75,9 @@ const Main = styled.div`
   overflow: auto;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     min-height: 200px;
-    max-height: 300px;
+    max-height: 350px;
     height: auto;
     overflow: visible;
-    min-height: 100px;
     position: absolute;
     top: -40px;
     left: ${({ dirLeft }) => (dirLeft ? -10 : 10)}px;
