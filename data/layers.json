@@ -31,7 +31,7 @@
       "de": "Konzentration von treibendem Plastik an der Meeresoberfläche"
     },
     "about": {
-      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher is the estimated concentration of floating plastic debris.",
+      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher the estimated concentration of floating plastic debris is.",
       "de": "Die Karte stellt die geschätzte Konzentration von an der Meeresoberfläche treibendem Plastik nach Gewicht dar. Je dunkler die Farbe, desto höher die Konzentration."
     },
     "attribution": {
@@ -52,7 +52,7 @@
         "de": "g/km<sup>2</sup>"
       },
       "unit-additional": {
-        "en": "items measuring 0.33 mm and more",
+        "en": "Items measuring 0.33 mm and more",
         "de": "Mindestgröße der Teile: 0,33 mm"
       }
     },
@@ -101,7 +101,7 @@
       "de": "Mangelhafte Entsorgung von Plastikmüll"
     },
     "about": {
-      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher is the estimated amount of mismanaged waste.",
+      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher the estimated amount of mismanaged waste is.",
       "de": "Die Karte zeigt die geschätzte Menge von mangelhaft entsorgtem Plastikmüll pro km². Je dunkler die Farbe, desto höher das Müllaufkommen und die mögliche Verschmutzung der Umwelt."
     },
     "attribution": {
@@ -170,7 +170,7 @@
       "de": "Flusseinträge"
     },
     "about": {
-      "en": "The circles visualise the estimated plastic emissions for the 122 most polluting rivers. Larger circles represent rivers estimated to contribute larger amounts of plastic.",
+      "en": "The circles visualise the estimated annual plastic emissions for the 122 most polluting rivers. Larger circles represent rivers estimated to contribute larger amounts of plastic.",
       "de": "Die Kreise zeigen die geschätzten jährlichen Plastikeinträge der 122 am meisten verschmutzenden Flüsse. Je höher der jeweilige Eintrag, desto größer der Kreis."
     },
     "attribution": {
@@ -200,7 +200,7 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Estimated plastic emission",
+        "en": "Estimated plastic emissions",
         "de": "Geschätzter Plastikeintrag"
       },
       "title": {
@@ -217,7 +217,7 @@
     },
     "key": {
       "title": {
-        "en": "Annual emissions",
+        "en": "Annual emissions (by weight)",
         "de": "Jährlicher Eintrag"
       },
       "values": [100000],
@@ -236,15 +236,15 @@
     "type": "raster-tiles",
     "tileset": "tmfrnz.15xjhx6u",
     "title": {
-      "en": "Ocean currents",
+      "en": "Ocean surface currents",
       "de": "Meeresströmungen"
     },
     "title-short": {
-      "en": "Currents",
+      "en": "Surface currents",
       "de": "Oberflächenströmungen der Meere"
     },
     "about": {
-      "en": "The arrows indicate the direction of our oceans' predominant currents. They play a major role in determining the movements and fate of marine plastic pollution.",
+      "en": "The arrows show the direction of our ocean's prevailing predominant currents. They play a major role in determining the movements and fate of marine plastic pollution.",
       "de": "Die Pfeile zeigen Richtung und Lage der vorherrschenden Oberflächenströmungen."
     },
     "style": {
@@ -281,12 +281,12 @@
       "de": "Meereswirbel"
     },
     "about": {
-      "en": "The icons show the approximate centers of the 5 major rotating current systems, that trap much of the floating plastic and push it towards their centers.",
+      "en": "The icons show the approximate centres of the 5 major rotating current systems that trap much of the floating plastic and push it towards their centres.",
       "de": "Die Markierungen zeigen die ungefähren Zentren der 5 großen Meereswirbel, die einen Großteil des treibenden Plastiks mitnehmen und in Richtung Mitte befördern."
     },
     "attribution": {
       "author": {
-        "en": "Own representation",
+        "en": "Author’s own graphic",
         "de": "Eigene Darstellung"
       },
       "year": "2020"
@@ -312,11 +312,11 @@
     },
     "key": {
       "title": {
-        "en": "Approximate center of gyre",
+        "en": "Approximate centre of gyre",
         "de": "Ungefähres Zentrum des Strudels"
       },
       "title-short": {
-        "en": "Center of gyre",
+        "en": "Centre of gyre",
         "de": "Strudel"
       }
     },
@@ -352,7 +352,7 @@
       "de": "Country’s level of support"
     },
     "about": {
-      "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
+      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
       "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
     },
     "file": "layers/country-areas-topo.json",
@@ -503,7 +503,7 @@
       "de": "Country’s level of support for treaty (shown as markers)"
     },
     "about": {
-      "en": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources.",
+      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
       "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
     },
     "data": {
