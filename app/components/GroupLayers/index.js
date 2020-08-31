@@ -25,6 +25,7 @@ const Styled = styled.div`
   table-layout: fixed;
   margin-top: 12px;
   margin-bottom: 20px;
+  width: 100%;
 `;
 const ListHeader = styled.div`
   display: table-header-group;
