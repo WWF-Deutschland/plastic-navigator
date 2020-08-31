@@ -103,6 +103,7 @@ module.exports = require('./webpack.base.babel')({
       theme_color: '#282A2C',
       inject: true,
       ios: true,
+      publicPath: '/build/',
       icons: [
         {
           src: path.resolve('app/images/android-chrome-512x512.png'),
