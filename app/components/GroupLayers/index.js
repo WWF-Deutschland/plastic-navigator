@@ -39,11 +39,11 @@ const ListHeaderCell = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   vertical-align: middle;
   color: ${({ theme }) => theme.global.colors['dark-4']};
+  white-space: nowrap;
 `;
 const ListHeaderKey = styled(ListHeaderCell)`
   width: 45px;
   text-align: center;
-  white-space: nowrap;
 `;
 const ListHeaderInfo = styled(ListHeaderCell)`
   width: 65px;
