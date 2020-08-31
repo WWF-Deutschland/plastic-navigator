@@ -11,10 +11,17 @@
   <link rel="icon" href="./favicon.ico" />
   <title>Global Plastic Navigator</title>
   <script>
-    // test if we are running in an iframe
+    // test if we are running in an iframe embedded on a wwf website
     function testIFrame() {
       if (window.self !== window.top) {
         window.wwfMpxInsideIframe = true;
+        if (
+          window.top &&
+          window.top.location &&
+          window.top.location.origin &&
+          window.top.location.origin.indexOf('.wwf.') > -1) {
+            window.wwfMpxInsideWWFIframe = true;
+        }
       } else {
         window.wwfMpxInsideIframe = false;
       }
