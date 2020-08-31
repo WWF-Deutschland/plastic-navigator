@@ -126,8 +126,9 @@ export const MAX_LOAD_ATTEMPTS = 5;
 // map config
 
 export const MAPBOX = {
-  TOKEN: 'pk.eyJ1IjoidG1mcm56IiwiYSI6IkRNZURKUHcifQ._ljgPcF75Yig1Of8adL93A',
-  USER: 'tmfrnz',
+  TOKEN:
+    'pk.eyJ1Ijoid3dmZGV1dHNjaGxhbmQiLCJhIjoiY2tlaXJyaDZoMGM1azJ4cGltZTFtdXlwcyJ9.uGjcVZhB69LLbtIWu73L0w',
+  USER: 'wwfdeutschland',
   RASTER_URL_TEMPLATE:
     'https://api.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}',
   STYLE_URL_TEMPLATE:

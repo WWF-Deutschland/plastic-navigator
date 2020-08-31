@@ -4,7 +4,7 @@
     "z-index": "0",
     "source": "mapbox",
     "type": "vector-tiles",
-    "style-id": "ckcj705j23qyg1imq6pdytkmm",
+    "style-id": "ckeirl16751xx19lz4pmf7ow8",
     "title": {
       "en": "Basemap",
       "de": "Basiskarte"
@@ -25,7 +25,7 @@
     "group": "destination",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.2jlttq2f",
+    "tileset": "wwfdeutschland.6z31vvpw",
     "title": {
       "en": "Floating plastic concentration",
       "de": "Konzentration von treibendem Plastik an der Meeresoberfläche"
@@ -95,7 +95,7 @@
     "group": "source",
     "source": "mapbox",
     "type": "raster-tiles",
-    "tileset": "tmfrnz.2aall5rr",
+    "tileset": "wwfdeutschland.cqel1laq",
     "title": {
       "en": "Mismanaged plastic waste",
       "de": "Mangelhafte Entsorgung von Plastikmüll"
