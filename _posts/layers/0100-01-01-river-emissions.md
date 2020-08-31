@@ -18,8 +18,6 @@ It is estimated that **all rivers combined emit between 1.2 and 2.4 million tonn
 
 The map layer shows the estimated **top 122 polluting rivers** where each river is represented by a circle that is proportionate to its annual rate of plastic emissions. Larger circles thus represent rivers estimated to contribute larger amounts of plastic.
 
-Please (zoom in and) click on the individual circles to see each rivers’ estimated annual contribution
-
 [KEY]
 
 #### Please keep in mind
@@ -39,3 +37,5 @@ The estimates shown are the results of a 2017 study that modelled monthly river 
 Calibrated against real-world measurements, **the study estimates an annual contribution between 1.15 and 2.41 million tonnes**.
 
 Further, looking at seasonal distributions, it is estimated that more than 75% of all plastic emissions to rivers occur between the months of May and October, largely driven by the East Asian monsoon.
+
+*The availability of data on marine plastic pollution is still limited and needs significantly more funding in scientific research to improve the knowledge and therefore the search for solutions.*
