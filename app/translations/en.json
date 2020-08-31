@@ -29,6 +29,8 @@
   "app.containers.Attribution.appByLabel": "Interactive by",
   "app.containers.Attribution.appByURL": "//dumpark.com",
   "app.containers.Attribution.copyright": "© WWF / dumpark",
+  "app.containers.Attribution.imprintLabel": "Imprint",
+  "app.containers.Attribution.imprintURL": "//www.wwf.de/impressum",
   "app.containers.Attribution.mapAttributionBasemapInfo": "Landmass data by Natural Earth (naturalearthdata.com)",
   "app.containers.Attribution.mapAttributionBasemapTitle": "Basemap",
   "app.containers.Attribution.mapAttributionLabel": "Map attribution",

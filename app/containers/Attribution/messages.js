@@ -24,6 +24,14 @@ export default defineMessages({
     id: `${scope}.appByURL`,
     defaultMessage: '//dumpark.com',
   },
+  imprintLabel: {
+    id: `${scope}.imprintLabel`,
+    defaultMessage: 'Imprint',
+  },
+  imprintURL: {
+    id: `${scope}.imprintURL`,
+    defaultMessage: '//www.wwf.de/impressum',
+  },
   mapAttributionLabel: {
     id: `${scope}.mapAttributionLabel`,
     defaultMessage: 'Map attribution',

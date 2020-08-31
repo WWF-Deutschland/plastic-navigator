@@ -87,19 +87,34 @@ export function Attribution({ map, intl, onNav }) {
               </Label>
             }
           />
-          {!window.wwfMpxInsideIframe && (
-            <>
-              <Label>|</Label>
-              <StyledButton
-                plain
-                onClick={() => onNav(PAGES.privacy.path)}
-                label={
-                  <Label>
-                    <FormattedMessage {...commonMessages.page_privacy} />
-                  </Label>
-                }
-              />
-            </>
+          {!window.wwfMpxInsideIframe && !window.wwfMpxInsideWWFIframe && (
+            <Label>|</Label>
+          )}
+          {!window.wwfMpxInsideIframe && !window.wwfMpxInsideWWFIframe && (
+            <StyledButton
+              plain
+              onClick={() => onNav(PAGES.privacy.path)}
+              label={
+                <Label>
+                  <FormattedMessage {...commonMessages.page_privacy} />
+                </Label>
+              }
+            />
+          )}
+          {!window.wwfMpxInsideIframe && !window.wwfMpxInsideWWFIframe && (
+            <Label>|</Label>
+          )}
+          {!window.wwfMpxInsideIframe && !window.wwfMpxInsideWWFIframe && (
+            <StyledButton
+              plain
+              as="a"
+              target="_blank"
+              href={intl.formatMessage(messages.imprintURL)}
+            >
+              <Label>
+                <FormattedMessage {...messages.imprintLabel} />
+              </Label>
+            </StyledButton>
           )}
           {(isMinSize(size, 'medium') || map) && <Label>|</Label>}
           {map && (
