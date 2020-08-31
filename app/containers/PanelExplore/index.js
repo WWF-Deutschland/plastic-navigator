@@ -87,7 +87,7 @@ const PanelBody = styled.div`
   top: 150px;
   width: 100%;
   bottom: 0;
-  padding: 12px 12px 48px;
+  padding: 12px 12px 96px;
   overflow-y: scroll;
 `;
 const TitleWrap = styled(p => (
