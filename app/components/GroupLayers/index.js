@@ -43,6 +43,7 @@ const ListHeaderCell = styled.div`
 const ListHeaderKey = styled(ListHeaderCell)`
   width: 45px;
   text-align: center;
+  white-space: nowrap;
 `;
 const ListHeaderInfo = styled(ListHeaderCell)`
   width: 65px;
