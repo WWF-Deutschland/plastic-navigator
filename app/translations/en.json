@@ -20,7 +20,7 @@
   "app.components.KeyFull.and-less": "(and less)",
   "app.components.KeyFull.and-more": "(and more)",
   "app.components.KeyFull.by-weight": "(by weight)",
-  "app.components.KeyFull.clickMarkerHint": "Click marker for details",
+  "app.components.KeyFull.clickMarkerHint": "Click marker for more details",
   "app.components.KeyFull.hoverAreaHint": "Hover map for details",
   "app.components.KeyFull.in-unit": "in",
   "app.components.KeyFull.less": "Less",
