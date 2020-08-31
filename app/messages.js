@@ -12,6 +12,14 @@ export default defineMessages({
     id: `${scope}.appTitle`,
     defaultMessage: 'Marine Plastic Explorer',
   },
+  brandLink: {
+    id: `${scope}.brandLink`,
+    defaultMessage: '//wwf.de',
+  },
+  brandLinkTitle: {
+    id: `${scope}.brandLinkTitle`,
+    defaultMessage: 'WWF Germany',
+  },
   module_explore: {
     id: `${scope}.module_explore`,
     defaultMessage: 'Explore',

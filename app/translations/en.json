@@ -1,5 +1,7 @@
 {
   "app.common.appTitle": "Global Plastic Navigator",
+  "app.common.brandLink": "//wwf.de",
+  "app.common.brandLinkTitle": "WWF Germany",
   "app.common.countries": "Explore level of support for {count} countries",
   "app.common.locations": "Locations",
   "app.common.module_explore": "Explore",
@@ -19,6 +21,7 @@
   "app.components.KeyFull.and-more": "(and more)",
   "app.components.KeyFull.by-weight": "(by weight)",
   "app.components.KeyFull.clickMarkerHint": "Click marker for details",
+  "app.components.KeyFull.hoverAreaHint": "Hover map for details",
   "app.components.KeyFull.in-unit": "in",
   "app.components.KeyFull.less": "Less",
   "app.components.KeyFull.more": "More",
@@ -33,6 +36,7 @@
   "app.containers.Attribution.mapAttributionLayersTitle": "Map layers",
   "app.containers.CookieConsent.buttonAccept": "Agreed",
   "app.containers.CookieConsent.info": "This website uses cookies and may process personal data to ensure its functionality. To find out more please read {link}",
+  "app.containers.CookieConsent.linkDialogue": "Privacy Settings",
   "app.containers.CookieConsent.linkPrivacyPolicy": "our privacy policy",
   "app.containers.CookieConsent.title": "Privacy notice",
   "app.containers.Header.navSectionLanguages": "Languages",

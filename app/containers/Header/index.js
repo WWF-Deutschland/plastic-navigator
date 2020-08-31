@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
 
 import { Button, Box, ResponsiveContext } from 'grommet';
@@ -127,7 +127,7 @@ const toArray = obj =>
     ...obj[key],
   }));
 
-function Header({ nav, navPage, path, navHome }) {
+function Header({ nav, navPage, path, navHome, intl }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const paths = path.split('/');
@@ -154,9 +154,14 @@ function Header({ nav, navPage, path, navHome }) {
               gap="small"
               justify={isMinSize(size, 'medium') ? 'start' : 'between'}
             >
-              {!window.wwfMpxInsideIframe && (
+              {!window.wwfMpxInsideIframe && !window.wwfMpxInsideWWFIframe && (
                 <BrandWWFWrap>
-                  <BrandWWF as="a" target="_blank" href="//wwf.de">
+                  <BrandWWF
+                    as="a"
+                    target="_blank"
+                    href={intl.formatMessage(commonMessages.brandLink)}
+                    title={intl.formatMessage(commonMessages.brandLinkTitle)}
+                  >
                     <WWFLogoHeader
                       color="black"
                       size={isMaxSize(size, 'medium') ? '60px' : '72px'}
@@ -262,6 +267,7 @@ Header.propTypes = {
   navPage: PropTypes.func,
   navHome: PropTypes.func,
   path: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -279,4 +285,4 @@ export function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Header);
+)(injectIntl(Header));
