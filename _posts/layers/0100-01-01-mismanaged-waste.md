@@ -35,3 +35,5 @@ The estimates shown were produced as part of a recent study that looks at multip
 The country-level data on waste management includes per capita municipal waste generation (available for 160 countries), the estimated percentage of plastic waste (105 countries) and the estimated percentage of mismanaged waste (95 countries), all taken from the “Waste Atlas” ([atlas.d-waste.com](http://www.atlas.d-waste.com/)) that is a collection of publicly available data and data submitted by individual experts. Incomplete data was estimated based on statistically significant correlations with GDP (higher GDP correlates with higher waste generation and with lower percentage of mismanaged waste). Global averages were used for countries where no data was available.
 
 **Globally, the study estimates that about 80 million metric tonnes, or 47% of the global annual municipal waste, were inadequately disposed of.**
+
+*The availability of data on marine plastic pollution is still limited and needs significantly more funding in scientific research to improve the knowledge and therefore the search for solutions.*

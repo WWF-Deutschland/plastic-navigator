@@ -16,7 +16,7 @@ While much of the debris stays in coastal waters and ends up ashore on beaches a
 
 ### How to read the data
 
-TThe map layer shows the **estimated concentration of floating plastic** by weight and per km<sup>2</sup>, specifically for plastic items measuring 0.33 mm or more. The darker the colour, the higher the estimated concentration of floating plastic is.
+The map layer shows the **estimated concentration of floating plastic** by weight and per km<sup>2</sup>, specifically for plastic items measuring 0.33 mm or more. The darker the colour, the higher the estimated concentration of floating plastic is.
 
 
 [KEY]
@@ -31,9 +31,9 @@ TThe map layer shows the **estimated concentration of floating plastic** by weig
 
 ### About the study
 
-The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles using historic data representing 30 years of ocean circulation.
+The plastic concentration estimates are based on numerical modelling that simulated and tracked virtual particles for multiple input scenarios using historic data representing 30 years of ocean currents.
 
-The results of the simulation were calibrated using survey data from 24 expeditions that collected data for four different size classes:
+The model results were calibrated using survey data from 24 expeditions that collected data for four different size classes:
 * microplastics between 0.33 and 1 mm in size
 * microplastics between 1 and 4.75 mm in size
 * mesoplastics between 4.75 and 200 mm in size
@@ -42,3 +42,5 @@ The results of the simulation were calibrated using survey data from 24 expediti
 **The study estimated a global total of 5.25 trillion floating plastic pieces which together weigh over 268,000 tonnes.**
 
 You can further explore the survey data of the 24 expeditions in the interactive [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/).
+
+*The availability of data on marine plastic pollution is still limited and needs significantly more funding in scientific research to improve the knowledge and therefore the search for solutions.*
