@@ -39,11 +39,11 @@
       {
         "id": "policy",
         "title": {
-          "en": "What are the countries’ level of support for a new global agreement on marine plastic pollution?",
+          "en": "What are the countries’ levels of support for a new global agreement on marine plastic pollution?",
           "de": "What are the countries’ level of support for a new global agreement on marine plastic pollution?"
         },
         "description": {
-          "en": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'.",
+          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans. For small countries, select ‘shown as markers’.",
           "de": "Learn about the countries level of support to negotiate a new international legally binding agreement to reduce the amount of plastic entering our oceans. For small countries best select 'shown as markers'."
         }
       }
@@ -63,7 +63,7 @@
           "de": "Which WWF projects target plastic pollution?"
         },
         "description": {
-          "en": "WWF follows the vision to stop discharge of plastic into the ocean with its engagement for a new globally binding agreement, the work we do with the economy and with pilot projects all around the world. WWF is one of the world’s largest and most experienced independent conservation organizations with a global network active in more than 100 countries.",
+          "en": "WWF pursues the vision of stopping the discharge of plastic into the ocean with its dedication to a new globally binding agreement, the work we do with the economy and with pilot projects all around the world. WWF is one of the world’s largest and most experienced independent conservation organisations with a global network active in more than 100 countries.",
           "de": "WWF follows the vision to stop discharge of plastic into the ocean with its engagement for a new globally binding agreement, the work we do with the economy and with pilot projects all around the world. WWF is one of the world’s largest and most experienced independent conservation organizations with a global network active in more than 100 countries."
         }
       }
