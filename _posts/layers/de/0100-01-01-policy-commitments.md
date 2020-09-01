@@ -3,27 +3,29 @@ layout: layer
 published: true
 permalink: /content/de/layers/policy-commitments/
 lang: de
-title: Policy commitments
+title: Engagement der einzelnen Länder (als Marker)
 image_file_name: policy_layer.jpg
 image_caption: Markus Winkler / WWF
 fact_lead: >-
-  Marine plastic pollution has reached crisis levels. It is estimated that more than eight million tonnes of plastic waste enters the world’s oceans every year, threatening marine life, coastal livelihoods and potentially even human health. It is a global problem that urgently requires a global response: It is time to begin negotiations on a new global legally binding agreement.
+  Die Plastikverschmutzung der Weltmeere hat Krisenniveau erreicht. Schätzungen zufolge gelangen jährlich über acht Millionen Tonnen Plastikmüll in die Ozeane der Welt und bedrohen damit marine Lebewesen, Küstenlebensräume und potentiell auch die menschliche Gesundheit. Die Vermüllung der Meere ist ein globales Problem, das dringend eine globale Antwort erfordert. Es ist an der Zeit, mit den Verhandlungen für ein neues, global verbindliches Abkommen gegen den Eintrag von Plastikmüll in die Weltmeere zu beginnen!
 ---
 
-As of today, there is no international treaty in place dedicated to fully tackling this issue. The existing legal framework covering marine plastic pollution is fragmented and ineffective, and does not provide the tools necessary for an effective global response to the problem. This issue cannot be solved on a national or regional level, or through non-binding, voluntary measures alone. It requires coordinated international action, shared responsibility and a common approach.
+Bis heute gibt es kein globales Abkommen, um das Problem der marinen Plastikverschmutzung wirksam zu bekämpfen. Die bestehenden rechtlichen Regelungen in diesem Bereich sind lückenhaft, inneffektiv und bieten keine Grundlage für eine wirksame globale Antwort auf die Problematik. Über nationalstaatliche oder regionale Maßnahmen und nicht verbindliche, freiwillige Initiativen allein ist das Plastikproblem nicht zu lösen. Vielmehr erfordert dies ein koordiniertes Handeln auf internationaler Ebene, die gemeinsame Übernahme von Verantwortung und eine verbindliche gemeinsame Herangehensweise.
 
-Discussions on how the international community should respond to the problem have already started, including under the auspices of the United Nations Environment Program. WWF is calling on states to use this opportunity to begin negotiations, as soon as possible, on a new international legally binding agreement to tackle marine plastic pollution.
+Es wird bereits diskutiert, wie die internationale Gemeinschaft auf die Problematik reagieren kann, etwa im Rahmen der Umweltvollversammlung der Vereinten Nationen (UNEA). Der WWF ruft alle Staaten dazu auf, spätestens die UNEA5 Anfang nächsten Jahres zu nutzen, um mit den Verhandlungen für ein international verbindliches Plastikmüll-Abkommen zu beginnen.
 
-## How to read the data
+## Wie die Karte zu lesen ist
 
-The visualization shows the level of publicly expressed support by United Nations members states for a new global agreement to address marine plastic pollution. Darker green indicates countries that have officially called for a new agreement and lighter green shows countries that have expressed — including through regional declarations or decisions — a willingness to explore option of a new global agreement. By click on the markers a short information on the country level of support is shown and click on “About” detailed information and their source is shown.
+Die Darstellung zeigt, in welchem Maße sich die einzelnen UN-Mitgliedstaaten öffentlich für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik ausgesprochen haben. Länder, die sich offiziell für ein solches Abkommen stark gemacht haben, sind dunkelgrün markiert; die hellgrünen Bereiche zeigen Länder, die – auch in Form regionaler Erklärungen oder Entscheidungen – ihre Bereitschaft bekundet haben, die Option eines globalen Plastik-Abkommens zu prüfen; die grau markierten Bereiche zeigen schließlich die Länder, für die bisher keine öffentlichen Erklärungen oder Zusagen zur Unterstützung (eines neuen globalen Abkommens) vorliegen.
+
+Bei Anklicken des Markers erhalten Sie nähere Informationen dazu, in welcher Weise sich das entsprechende Land für ein globales Abkommen ausgesprochen hat. Mit einem Klick auf „Mehr“ erhalten Sie weitere Informationen zum Projekt und entsprechende Quellenangaben.
 
 
 [KEY]
 
-### About the data
+### Über die Studie
 
-The estimated level of support by each country is based on WWF’s assessment of publicly available documents, including regional declarations and decisions (Africa, EU, Caribbean, Nordic countries), regional action plans (Pacific Islands), as well as the Terms of Reference for the Group of Friends in New York. [All references are listed below.]
+Aussagen dazu, inwieweit die einzelnen Länder ein Abkommen befürworten, basieren auf der Auswertung öffentlich zugänglicher Dokumente durch den WWF, einschließlich regionaler Erklärungen und Beschlüsse (Afrika, EU, Karibik, skandinavische Länder), regionaler Aktionspläne (Pazifikinseln) sowie der Aufgaben- bzw. Leistungsbeschreibung für die Group of Friends in New York. (Alle Referenzdokumente sind nachstehend aufgelistet.)
 
 [COUNTRIES]
 
