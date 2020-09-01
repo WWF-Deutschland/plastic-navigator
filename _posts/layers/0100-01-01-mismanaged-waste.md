@@ -21,7 +21,7 @@ The visualisation shows the global **estimated annual mismanaged plastic waste g
 #### Please keep in mind
 
 * The underlying data on waste generation comes from a variety of sources using different methods. The study used estimates where country-level data was incomplete or not available (see below).
-* Combining the country-level data with population densities, the **estimates** shown here can **vary considerably within each country**. As a result, the apparent lack of estimated mismanaged waste – as can, for example, be seen in vast parts of Australia and the world’s deserts – is not an indication of the absence of data but rather the absence of people.
+* Combining the country-level data with population densities, the **estimates** shown here can **vary considerably within each country**. As a result, the apparent lack of estimated mismanaged waste — as can, for example, be seen in vast parts of Australia and the world’s deserts — is not an indication of the absence of data but rather the absence of people.
 * The model estimates were provided in kg per cell (30 by 30 arc-second grid) where the size of each cell varies with latitude (cells are largest at the equator (~ 0.85 km<sup>2</sup>) and become smaller towards the poles). To account for these differences and the resulting distortion, the data shown in this visualisation has been converted to kg per km<sup>2</sup>.
 
 ## About the study
