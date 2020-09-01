@@ -36,6 +36,6 @@ The estimates shown are the results of a 2017 study that modelled monthly river 
 
 Calibrated against real-world measurements, **the study estimates an annual contribution between 1.15 and 2.41 million tonnes**.
 
-Further, looking at seasonal distributions, it is estimated that more than 75% of all plastic emissions to rivers occur between the months of May and October, largely driven by the East Asian monsoon.
+Further, looking at seasonal distributions, it is estimated that more than 75% of all river plastic inputs occur between the months of May and October, largely driven by the East Asian monsoon.
 
 *The availability of data on marine plastic pollution is still limited and needs significantly more funding in scientific research to improve the knowledge and therefore the search for solutions.*
