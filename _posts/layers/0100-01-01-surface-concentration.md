@@ -37,7 +37,7 @@ The model results were calibrated using survey data from 24 expeditions that col
 * microplastics between 0.33 and 1 mm in size
 * microplastics between 1 and 4.75 mm in size
 * mesoplastics between 4.75 and 200 mm in size
-* macroplastics larger than 200 mm.
+* macroplastics larger than 200 mm
 
 **The study estimated a global total of 5.25 trillion floating plastic pieces which together weigh over 268,000 tonnes.**
 
