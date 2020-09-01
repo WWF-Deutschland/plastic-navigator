@@ -28,9 +28,9 @@ The visualisation shows the global **estimated annual mismanaged plastic waste g
 
 The estimates shown were produced as part of a recent study that looks at multiple future scenarios of plastic waste generation. The estimates were generated at local level by combining:
 
-* country-level data on **waste management**,
-* high-resolution distributions of **population**,
-* high-resolution distributions of **gross domestic product (GDP)**.
+* country-level data on **waste management**
+* high-resolution distributions of **population**
+* high-resolution distributions of **gross domestic product (GDP)**
 
 The country-level data on waste management includes per capita municipal waste generation (available for 160 countries), the estimated percentage of plastic waste (105 countries) and the estimated percentage of mismanaged waste (95 countries), all taken from the “Waste Atlas” ([atlas.d-waste.com](http://www.atlas.d-waste.com/)) that is a collection of publicly available data and data submitted by individual experts. Incomplete data was estimated based on statistically significant correlations with GDP (higher GDP correlates with higher waste generation and with lower percentage of mismanaged waste). Global averages were used for countries where no data was available.
 
