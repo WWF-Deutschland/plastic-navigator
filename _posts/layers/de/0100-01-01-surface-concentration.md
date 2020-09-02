@@ -36,7 +36,7 @@ Schließlich wurden die Ergebnisse der Simulation mithilfe von Felddaten aus 24 
 
 * Mikroplastik mit einer Größe zwischen 0.33 und 1 mm
 * Mikroplastik mit einer Größe zwischen 1 and 4.75 mm
-* Mesoplastik mit einer Größe zwischen 4.75 mm and 20 cm
+* Mesoplastik mit einer Größe zwischen 4.75 mm und 20 cm
 * Makroplastik mit einer Größe über 20 cm.
 
 **Die Studie kommt zu einer Gesamtschätzung, dass auf den Meeren insgesamt 5,25 Billionen Plastikteile verschiedener Größen treiben, die zusammen über 269.000 Tonnen wiegen.**
