@@ -42,3 +42,5 @@ Schließlich wurden die Ergebnisse der Simulation mithilfe von Felddaten aus 24 
 **Die Studie kommt zu einer Gesamtschätzung, dass auf den Meeren insgesamt 5,25 Billionen Plastikteile verschiedener Größen treiben, die zusammen über 269.000 Tonnen wiegen.**
 
 Die gesamten Felddaten der 24 Expeditionen können Sie sich auf der interaktiven Karte [Sailing Seas of Plastic](http://app.dumpark.com/seas-of-plastic-2/) ansehen.
+
+*Die Verfügbarkeit von Daten zur Plastikverschmutzung der Meere ist nach wie vor begrenzt. Es braucht eine signifikant höhere, finanzielle Unterstützung der Forschung, um das Wissen und damit die Lösungsfindung voranzutreiben.*
