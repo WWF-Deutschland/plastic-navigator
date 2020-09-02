@@ -219,10 +219,12 @@ export function PanelChapter({
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (chapter) {
+    if (chapter && layersConfig) {
+      console.log('Chpater: activate chapter layers: ', chapter.layers);
+      console.log('Chapter: layers config present ', !!layersConfig);
       onSetLayers(chapter.layers || []);
     }
-  }, [chapter]);
+  }, [chapter, layersConfig]);
 
   const configsFocus =
     chapter &&
