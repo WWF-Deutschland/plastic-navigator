@@ -40,7 +40,7 @@
       "properties": {
         "code": "ALB",
         "name_en": "Albania",
-        "name_de": "Albania"
+        "name_de": "Albanien"
       },
       "geometry": { "type": "Point", "coordinates": [20.04983396, 41.14244989] }
     },
@@ -63,7 +63,7 @@
       "properties": {
         "code": "ARE",
         "name_en": "United Arab Emirates",
-        "name_de": "United Arab Emirates"
+        "name_de": "Vereinigte Arabische Emirate"
       },
       "geometry": { "type": "Point", "coordinates": [54.3001671, 23.90528188] }
     },
@@ -72,7 +72,7 @@
       "properties": {
         "code": "ARG",
         "name_en": "Argentina",
-        "name_de": "Argentina"
+        "name_de": "Argentinien"
       },
       "geometry": {
         "type": "Point",
@@ -84,7 +84,7 @@
       "properties": {
         "code": "ARM",
         "name_en": "Armenia",
-        "name_de": "Armenia"
+        "name_de": "Armenien"
       },
       "geometry": { "type": "Point", "coordinates": [44.92993276, 40.28952569] }
     },
@@ -93,7 +93,7 @@
       "properties": {
         "code": "ASM",
         "name_en": "American Samoa",
-        "name_de": "American Samoa"
+        "name_de": "Amerikanisch-Samoa"
       },
       "geometry": {
         "type": "Point",
@@ -105,7 +105,7 @@
       "properties": {
         "code": "ATA",
         "name_en": "Antarctica",
-        "name_de": "Antarctica"
+        "name_de": "Antarktika"
       },
       "geometry": {
         "type": "Point",
@@ -117,7 +117,7 @@
       "properties": {
         "code": "ATC",
         "name_en": "Ashmore and Cartier Islands",
-        "name_de": "Ashmore and Cartier Islands"
+        "name_de": "Ashmore- und Cartierinseln"
       },
       "geometry": {
         "type": "Point",
@@ -129,7 +129,7 @@
       "properties": {
         "code": "ATF",
         "name_en": "French Southern and Antarctic Lands",
-        "name_de": "French Southern and Antarctic Lands"
+        "name_de": "Französische Süd- und Antarktisgebiete"
       },
       "geometry": {
         "type": "Point",
@@ -141,7 +141,7 @@
       "properties": {
         "code": "ATG",
         "name_en": "Antigua and Barbuda",
-        "name_de": "Antigua and Barbuda"
+        "name_de": "Antigua und Barbuda"
       },
       "geometry": { "type": "Point", "coordinates": [-61.79469343, 17.2774996] }
     },
@@ -150,7 +150,7 @@
       "properties": {
         "code": "AUS",
         "name_en": "Australia",
-        "name_de": "Australia"
+        "name_de": "Australien"
       },
       "geometry": {
         "type": "Point",
@@ -162,7 +162,7 @@
       "properties": {
         "code": "AUT",
         "name_en": "Austria",
-        "name_de": "Austria"
+        "name_de": "Österreich"
       },
       "geometry": { "type": "Point", "coordinates": [14.1264761, 47.58549439] }
     },
@@ -171,7 +171,7 @@
       "properties": {
         "code": "AZE",
         "name_en": "Azerbaijan",
-        "name_de": "Azerbaijan"
+        "name_de": "Aserbaidschan"
       },
       "geometry": { "type": "Point", "coordinates": [47.54599879, 40.28827235] }
     },
@@ -192,7 +192,7 @@
       "properties": {
         "code": "BEL",
         "name_en": "Belgium",
-        "name_de": "Belgium"
+        "name_de": "Belgien"
       },
       "geometry": { "type": "Point", "coordinates": [4.640651139, 50.63981576] }
     },
@@ -218,7 +218,7 @@
       "properties": {
         "code": "BGD",
         "name_en": "Bangladesh",
-        "name_de": "Bangladesh"
+        "name_de": "Bangladesch"
       },
       "geometry": { "type": "Point", "coordinates": [90.23812743, 23.86731158] }
     },
@@ -227,7 +227,7 @@
       "properties": {
         "code": "BGR",
         "name_en": "Bulgaria",
-        "name_de": "Bulgaria"
+        "name_de": "Bulgarien"
       },
       "geometry": { "type": "Point", "coordinates": [25.21552909, 42.76890318] }
     },
@@ -242,7 +242,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "CAN", "name_en": "Canada", "name_de": "Canada" },
+      "properties": { "code": "CAN", "name_en": "Canada", "name_de": "Kanada" },
       "geometry": {
         "type": "Point",
         "coordinates": [-98.30777028, 61.36206324]
@@ -253,7 +253,7 @@
       "properties": {
         "code": "BHS",
         "name_en": "The Bahamas",
-        "name_de": "The Bahamas"
+        "name_de": "Bahamas"
       },
       "geometry": {
         "type": "Point",
@@ -265,7 +265,7 @@
       "properties": {
         "code": "BIH",
         "name_en": "Bosnia and Herzegovina",
-        "name_de": "Bosnia and Herzegovina"
+        "name_de": "Bosnien und Herzegowina"
       },
       "geometry": { "type": "Point", "coordinates": [17.76876733, 44.17450125] }
     },
@@ -286,7 +286,7 @@
       "properties": {
         "code": "BLR",
         "name_en": "Belarus",
-        "name_de": "Belarus"
+        "name_de": "Weißrussland"
       },
       "geometry": { "type": "Point", "coordinates": [28.03209307, 53.53131377] }
     },
@@ -312,7 +312,7 @@
       "properties": {
         "code": "BOL",
         "name_en": "Bolivia",
-        "name_de": "Bolivia"
+        "name_de": "Bolivien"
       },
       "geometry": {
         "type": "Point",
@@ -321,7 +321,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "BRA", "name_en": "Brazil", "name_de": "Brazil" },
+      "properties": { "code": "BRA", "name_en": "Brazil", "name_de": "Brasilien" },
       "geometry": {
         "type": "Point",
         "coordinates": [-53.09783113, -10.78777702]
@@ -363,7 +363,7 @@
       "properties": {
         "code": "CAF",
         "name_en": "Central African Republic",
-        "name_de": "Central African Republic"
+        "name_de": "Zentralafrikanische Republik"
       },
       "geometry": { "type": "Point", "coordinates": [20.46826831, 6.56823297] }
     },
@@ -372,7 +372,7 @@
       "properties": {
         "code": "CHE",
         "name_en": "Switzerland",
-        "name_de": "Switzerland"
+        "name_de": "Schweiz"
       },
       "geometry": { "type": "Point", "coordinates": [8.208674706, 46.79785878] }
     },
@@ -394,7 +394,7 @@
       "properties": {
         "code": "CIV",
         "name_en": "Ivory Coast",
-        "name_de": "Ivory Coast"
+        "name_de": "Elfenbeinküste"
       },
       "geometry": { "type": "Point", "coordinates": [-5.5692157, 7.628426202] }
     },
@@ -403,7 +403,7 @@
       "properties": {
         "code": "CMR",
         "name_en": "Cameroon",
-        "name_de": "Cameroon"
+        "name_de": "Kamerun"
       },
       "geometry": { "type": "Point", "coordinates": [12.73964156, 5.69109849] }
     },
@@ -412,7 +412,7 @@
       "properties": {
         "code": "COD",
         "name_en": "Democratic Republic of the Congo",
-        "name_de": "Democratic Republic of the Congo"
+        "name_de": "Demokratische Republik Kongo"
       },
       "geometry": { "type": "Point", "coordinates": [23.64396107, -2.87746289] }
     },
@@ -433,7 +433,7 @@
       "properties": {
         "code": "COK",
         "name_en": "Cook Islands",
-        "name_de": "Cook Islands"
+        "name_de": "Cookinseln"
       },
       "geometry": {
         "type": "Point",
@@ -445,7 +445,7 @@
       "properties": {
         "code": "COL",
         "name_en": "Colombia",
-        "name_de": "Colombia"
+        "name_de": "Kolumbien"
       },
       "geometry": {
         "type": "Point",
@@ -457,7 +457,7 @@
       "properties": {
         "code": "COM",
         "name_en": "Comoros",
-        "name_de": "Comoros"
+        "name_de": "Komoren"
       },
       "geometry": {
         "type": "Point",
@@ -469,7 +469,7 @@
       "properties": {
         "code": "CPV",
         "name_en": "Cape Verde",
-        "name_de": "Cape Verde"
+        "name_de": "Kap Verde"
       },
       "geometry": { "type": "Point", "coordinates": [-23.9598882, 15.95523324] }
     },
@@ -487,7 +487,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "CUB", "name_en": "Cuba", "name_de": "Cuba" },
+      "properties": { "code": "CUB", "name_en": "Cuba", "name_de": "Kuba" },
       "geometry": {
         "type": "Point",
         "coordinates": [-79.01605384, 21.62289528]
@@ -536,7 +536,7 @@
       "properties": {
         "code": "CZE",
         "name_en": "Czech Republic",
-        "name_de": "Czech Republic"
+        "name_de": "Tschechien"
       },
       "geometry": { "type": "Point", "coordinates": [15.31240163, 49.73341233] }
     },
@@ -545,7 +545,7 @@
       "properties": {
         "code": "DEU",
         "name_en": "Germany",
-        "name_de": "Germany"
+        "name_de": "Deutschland"
       },
       "geometry": { "type": "Point", "coordinates": [10.38578051, 51.10698181] }
     },
@@ -554,7 +554,7 @@
       "properties": {
         "code": "DJI",
         "name_en": "Djibouti",
-        "name_de": "Djibouti"
+        "name_de": "Dschibuti"
       },
       "geometry": { "type": "Point", "coordinates": [42.5606754, 11.74871806] }
     },
@@ -572,7 +572,7 @@
       "properties": {
         "code": "DNK",
         "name_en": "Denmark",
-        "name_de": "Denmark"
+        "name_de": "Dänemark"
       },
       "geometry": { "type": "Point", "coordinates": [10.02800992, 55.98125296] }
     },
@@ -581,7 +581,7 @@
       "properties": {
         "code": "DOM",
         "name_en": "Dominican Republic",
-        "name_de": "Dominican Republic"
+        "name_de": "Dominikanische Republik"
       },
       "geometry": {
         "type": "Point",
@@ -593,7 +593,7 @@
       "properties": {
         "code": "ALG",
         "name_en": "Algeria",
-        "name_de": "Algeria"
+        "name_de": "Algerien"
       },
       "geometry": { "type": "Point", "coordinates": [2.617323009, 28.15893849] }
     },
@@ -611,7 +611,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "EGY", "name_en": "Egypt", "name_de": "Egypt" },
+      "properties": { "code": "EGY", "name_en": "Egypt", "name_de": "Ägypten" },
       "geometry": { "type": "Point", "coordinates": [29.86190099, 26.49593311] }
     },
     {
@@ -625,7 +625,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "ESP", "name_en": "Spain", "name_de": "Spain" },
+      "properties": { "code": "ESP", "name_en": "Spain", "name_de": "Spanien" },
       "geometry": {
         "type": "Point",
         "coordinates": [-3.647550473, 40.24448698]
@@ -636,7 +636,7 @@
       "properties": {
         "code": "EST",
         "name_en": "Estonia",
-        "name_de": "Estonia"
+        "name_de": "Estland"
       },
       "geometry": { "type": "Point", "coordinates": [25.54248537, 58.67192972] }
     },
@@ -645,7 +645,7 @@
       "properties": {
         "code": "ETH",
         "name_en": "Ethiopia",
-        "name_de": "Ethiopia"
+        "name_de": "Äthiopien"
       },
       "geometry": { "type": "Point", "coordinates": [39.60080098, 8.622786793] }
     },
@@ -654,13 +654,13 @@
       "properties": {
         "code": "FIN",
         "name_en": "Finland",
-        "name_de": "Finland"
+        "name_de": "Finnland"
       },
       "geometry": { "type": "Point", "coordinates": [26.2746656, 64.49884603] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "FJI", "name_en": "Fiji", "name_de": "Fiji" },
+      "properties": { "code": "FJI", "name_en": "Fiji", "name_de": "Fidschi" },
       "geometry": {
         "type": "Point",
         "coordinates": [178.5717773, -17.41354611]
@@ -671,7 +671,7 @@
       "properties": {
         "code": "FLK",
         "name_en": "Falkland Islands",
-        "name_de": "Falkland Islands"
+        "name_de": "Falklandinseln"
       },
       "geometry": {
         "type": "Point",
@@ -680,7 +680,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "FRA", "name_en": "France", "name_de": "France" },
+      "properties": { "code": "FRA", "name_en": "France", "name_de": "Frankreich" },
       "geometry": { "type": "Point", "coordinates": [1.960291597, 47.0687625] }
     },
     {
@@ -688,7 +688,7 @@
       "properties": {
         "code": "FRO",
         "name_en": "Faroe Islands",
-        "name_de": "Faroe Islands"
+        "name_de": "Färöer"
       },
       "geometry": {
         "type": "Point",
@@ -700,13 +700,13 @@
       "properties": {
         "code": "FSM",
         "name_en": "Federated States of Micronesia",
-        "name_de": "Federated States of Micronesia"
+        "name_de": "Mikronesien"
       },
       "geometry": { "type": "Point", "coordinates": [158.158889, 6.917222] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "GAB", "name_en": "Gabon", "name_de": "Gabon" },
+      "properties": { "code": "GAB", "name_en": "Gabon", "name_de": "Gabun" },
       "geometry": { "type": "Point", "coordinates": [11.7886287, -0.58660025] }
     },
     {
@@ -714,7 +714,7 @@
       "properties": {
         "code": "GBR",
         "name_en": "United Kingdom",
-        "name_de": "United Kingdom"
+        "name_de": "Vereinigtes Königreich"
       },
       "geometry": {
         "type": "Point",
@@ -726,7 +726,7 @@
       "properties": {
         "code": "GEO",
         "name_en": "Georgia",
-        "name_de": "Georgia"
+        "name_de": "Georgien"
       },
       "geometry": { "type": "Point", "coordinates": [43.50780252, 42.16855755] }
     },
@@ -783,7 +783,7 @@
       "properties": {
         "code": "GNQ",
         "name_en": "Equatorial Guinea",
-        "name_de": "Equatorial Guinea"
+        "name_de": "Äquatorialguinea"
       },
       "geometry": { "type": "Point", "coordinates": [10.34137924, 1.705551355] }
     },
@@ -809,7 +809,7 @@
       "properties": {
         "code": "GRL",
         "name_en": "Greenland",
-        "name_de": "Greenland"
+        "name_de": "Grönland"
       },
       "geometry": {
         "type": "Point",
@@ -852,7 +852,7 @@
       "properties": {
         "code": "HMD",
         "name_en": "Heard Island and McDonald Islands",
-        "name_de": "Heard Island and McDonald Islands"
+        "name_de": "Heard und McDonaldinseln"
       },
       "geometry": { "type": "Point", "coordinates": [73.5205171, -53.08724656] }
     },
@@ -870,7 +870,7 @@
       "properties": {
         "code": "HRV",
         "name_en": "Croatia",
-        "name_de": "Croatia"
+        "name_de": "Kroatien"
       },
       "geometry": { "type": "Point", "coordinates": [16.40412899, 45.08047631] }
     },
@@ -887,7 +887,7 @@
       "properties": {
         "code": "HUN",
         "name_en": "Hungary",
-        "name_de": "Hungary"
+        "name_de": "Ungarn"
       },
       "geometry": { "type": "Point", "coordinates": [19.39559116, 47.16277506] }
     },
@@ -896,7 +896,7 @@
       "properties": {
         "code": "IDN",
         "name_en": "Indonesia",
-        "name_de": "Indonesia"
+        "name_de": "Indonesien"
       },
       "geometry": {
         "type": "Point",
@@ -917,7 +917,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "IND", "name_en": "India", "name_de": "India" },
+      "properties": { "code": "IND", "name_en": "India", "name_de": "Indien" },
       "geometry": { "type": "Point", "coordinates": [79.6119761, 22.88578212] }
     },
     {
@@ -934,7 +934,7 @@
       "properties": {
         "code": "IOT",
         "name_en": "British Indian Ocean Territory",
-        "name_de": "British Indian Ocean Territory"
+        "name_de": "Britisches Territorium im Indischen Ozean"
       },
       "geometry": {
         "type": "Point",
@@ -946,7 +946,7 @@
       "properties": {
         "code": "IRL",
         "name_en": "Ireland",
-        "name_de": "Ireland"
+        "name_de": "Irland"
       },
       "geometry": { "type": "Point", "coordinates": [-8.137935687, 53.1754487] }
     },
@@ -957,7 +957,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "IRQ", "name_en": "Iraq", "name_de": "Iraq" },
+      "properties": { "code": "IRQ", "name_en": "Iraq", "name_de": "Irak" },
       "geometry": { "type": "Point", "coordinates": [43.74353149, 33.03970582] }
     },
     {
@@ -965,7 +965,7 @@
       "properties": {
         "code": "ISL",
         "name_en": "Iceland",
-        "name_de": "Iceland"
+        "name_de": "Island"
       },
       "geometry": {
         "type": "Point",
@@ -979,7 +979,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "ITA", "name_en": "Italy", "name_de": "Italy" },
+      "properties": { "code": "ITA", "name_en": "Italy", "name_de": "Italien" },
       "geometry": { "type": "Point", "coordinates": [12.07001339, 42.79662641] }
     },
     {
@@ -987,7 +987,7 @@
       "properties": {
         "code": "JAM",
         "name_en": "Jamaica",
-        "name_de": "Jamaica"
+        "name_de": "Jamaika"
       },
       "geometry": {
         "type": "Point",
@@ -1004,7 +1004,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "JOR", "name_en": "Jordan", "name_de": "Jordan" },
+      "properties": { "code": "JOR", "name_en": "Jordan", "name_de": "Jordanien" },
       "geometry": { "type": "Point", "coordinates": [36.77136104, 31.24579091] }
     },
     {
@@ -1017,7 +1017,7 @@
       "properties": {
         "code": "KAS",
         "name_en": "Siachen Glacier",
-        "name_de": "Siachen Glacier"
+        "name_de": "Siachen-Gletscher"
       },
       "geometry": { "type": "Point", "coordinates": [77.18011865, 35.39236325] }
     },
@@ -1026,13 +1026,13 @@
       "properties": {
         "code": "KAZ",
         "name_en": "Kazakhstan",
-        "name_de": "Kazakhstan"
+        "name_de": "Kasachstan"
       },
       "geometry": { "type": "Point", "coordinates": [67.29149357, 48.15688067] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "KEN", "name_en": "Kenya", "name_de": "Kenya" },
+      "properties": { "code": "KEN", "name_en": "Kenya", "name_de": "Kenia" },
       "geometry": { "type": "Point", "coordinates": [37.79593973, 0.599880215] }
     },
     {
@@ -1040,7 +1040,7 @@
       "properties": {
         "code": "KGZ",
         "name_en": "Kyrgyzstan",
-        "name_de": "Kyrgyzstan"
+        "name_de": "Kirgisistan"
       },
       "geometry": { "type": "Point", "coordinates": [74.54165513, 41.46221943] }
     },
@@ -1049,7 +1049,7 @@
       "properties": {
         "code": "KHM",
         "name_en": "Cambodia",
-        "name_de": "Cambodia"
+        "name_de": "Kambodscha"
       },
       "geometry": { "type": "Point", "coordinates": [104.9069432, 12.72004786] }
     },
@@ -1067,7 +1067,7 @@
       "properties": {
         "code": "KNA",
         "name_en": "Saint Kitts and Nevis",
-        "name_de": "Saint Kitts and Nevis"
+        "name_de": "St. Kitts und Nevis"
       },
       "geometry": { "type": "Point", "coordinates": [-62.68755265, 17.2645995] }
     },
@@ -1076,7 +1076,7 @@
       "properties": {
         "code": "KOR",
         "name_en": "South Korea",
-        "name_de": "South Korea"
+        "name_de": "Südkorea"
       },
       "geometry": { "type": "Point", "coordinates": [127.8391609, 36.38523983] }
     },
@@ -1100,7 +1100,7 @@
       "properties": {
         "code": "LBN",
         "name_en": "Lebanon",
-        "name_de": "Lebanon"
+        "name_de": "Libanon"
       },
       "geometry": { "type": "Point", "coordinates": [35.88016072, 33.92306631] }
     },
@@ -1118,7 +1118,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "LBY", "name_en": "Libya", "name_de": "Libya" },
+      "properties": { "code": "LBY", "name_en": "Libya", "name_de": "Libyen" },
       "geometry": { "type": "Point", "coordinates": [18.00866169, 27.03094495] }
     },
     {
@@ -1126,7 +1126,7 @@
       "properties": {
         "code": "LCA",
         "name_en": "Saint Lucia",
-        "name_de": "Saint Lucia"
+        "name_de": "St. Lucia"
       },
       "geometry": {
         "type": "Point",
@@ -1168,7 +1168,7 @@
       "properties": {
         "code": "LTU",
         "name_en": "Lithuania",
-        "name_de": "Lithuania"
+        "name_de": "Litauen"
       },
       "geometry": { "type": "Point", "coordinates": [23.88719355, 55.32610984] }
     },
@@ -1177,13 +1177,13 @@
       "properties": {
         "code": "LUX",
         "name_en": "Luxembourg",
-        "name_de": "Luxembourg"
+        "name_de": "Luxemburg"
       },
       "geometry": { "type": "Point", "coordinates": [6.071822011, 49.76725361] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "LVA", "name_en": "Latvia", "name_de": "Latvia" },
+      "properties": { "code": "LVA", "name_en": "Latvia", "name_de": "Lettland" },
       "geometry": { "type": "Point", "coordinates": [24.91235983, 56.85085163] }
     },
     {
@@ -1200,7 +1200,7 @@
       "properties": {
         "code": "MAF",
         "name_en": "Saint Martin",
-        "name_de": "Saint Martin"
+        "name_de": "Saint-Martin"
       },
       "geometry": {
         "type": "Point",
@@ -1212,7 +1212,7 @@
       "properties": {
         "code": "MAR",
         "name_en": "Morocco",
-        "name_de": "Morocco"
+        "name_de": "Marokko"
       },
       "geometry": {
         "type": "Point",
@@ -1229,7 +1229,7 @@
       "properties": {
         "code": "MDA",
         "name_en": "Moldova",
-        "name_de": "Moldova"
+        "name_de": "Republik Moldau"
       },
       "geometry": { "type": "Point", "coordinates": [28.45673372, 47.19498804] }
     },
@@ -1238,7 +1238,7 @@
       "properties": {
         "code": "MDG",
         "name_en": "Madagascar",
-        "name_de": "Madagascar"
+        "name_de": "Madagaskar"
       },
       "geometry": {
         "type": "Point",
@@ -1250,13 +1250,13 @@
       "properties": {
         "code": "MDV",
         "name_en": "Maldives",
-        "name_de": "Maldives"
+        "name_de": "Malediven"
       },
       "geometry": { "type": "Point", "coordinates": [73.45713004, 3.7287092] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "MEX", "name_en": "Mexico", "name_de": "Mexico" },
+      "properties": { "code": "MEX", "name_en": "Mexico", "name_de": "Mexiko" },
       "geometry": {
         "type": "Point",
         "coordinates": [-102.5234517, 23.94753724]
@@ -1267,7 +1267,7 @@
       "properties": {
         "code": "MHL",
         "name_en": "Marshall Islands",
-        "name_de": "Marshall Islands"
+        "name_de": "Marshallinseln"
       },
       "geometry": { "type": "Point", "coordinates": [171.066667, 7.116667] }
     },
@@ -1316,7 +1316,7 @@
       "properties": {
         "code": "MNG",
         "name_en": "Mongolia",
-        "name_de": "Mongolia"
+        "name_de": "Mongolei"
       },
       "geometry": { "type": "Point", "coordinates": [103.0529976, 46.82681544] }
     },
@@ -1325,7 +1325,7 @@
       "properties": {
         "code": "MNP",
         "name_en": "Northern Mariana Islands",
-        "name_de": "Northern Mariana Islands"
+        "name_de": "Nördliche Marianen"
       },
       "geometry": { "type": "Point", "coordinates": [145.6196965, 15.82927563] }
     },
@@ -1334,7 +1334,7 @@
       "properties": {
         "code": "MOZ",
         "name_en": "Mozambique",
-        "name_de": "Mozambique"
+        "name_de": "Mosambik"
       },
       "geometry": {
         "type": "Point",
@@ -1346,7 +1346,7 @@
       "properties": {
         "code": "MRT",
         "name_en": "Mauritania",
-        "name_de": "Mauritania"
+        "name_de": "Mauretanien"
       },
       "geometry": {
         "type": "Point",
@@ -1411,7 +1411,7 @@
       "properties": {
         "code": "NCL",
         "name_en": "New Caledonia",
-        "name_de": "New Caledonia"
+        "name_de": "Neukaledonien"
       },
       "geometry": {
         "type": "Point",
@@ -1463,13 +1463,13 @@
       "properties": {
         "code": "NLD",
         "name_en": "Netherlands",
-        "name_de": "Netherlands"
+        "name_de": "Niederlande"
       },
       "geometry": { "type": "Point", "coordinates": [5.28144793, 52.1007899] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "NOR", "name_en": "Norway", "name_de": "Norway" },
+      "properties": { "code": "NOR", "name_en": "Norway", "name_de": "Norwegen" },
       "geometry": { "type": "Point", "coordinates": [15.34834656, 68.75015572] }
     },
     {
@@ -1487,7 +1487,7 @@
       "properties": {
         "code": "NZL",
         "name_en": "New Zealand",
-        "name_de": "New Zealand"
+        "name_de": "Neuseeland"
       },
       "geometry": { "type": "Point", "coordinates": [173.3059537, -41.4906106] }
     },
@@ -1518,7 +1518,7 @@
       "properties": {
         "code": "PCN",
         "name_en": "Pitcairn Islands",
-        "name_de": "Pitcairn Islands"
+        "name_de": "Pitcairninseln"
       },
       "geometry": {
         "type": "Point",
@@ -1538,7 +1538,7 @@
       "properties": {
         "code": "PHL",
         "name_en": "Philippines",
-        "name_de": "Philippines"
+        "name_de": "Philippinen"
       },
       "geometry": { "type": "Point", "coordinates": [122.8839325, 11.77536778] }
     },
@@ -1552,7 +1552,7 @@
       "properties": {
         "code": "PNG",
         "name_en": "Papua New Guinea",
-        "name_de": "Papua New Guinea"
+        "name_de": "Papua-Neuguinea"
       },
       "geometry": {
         "type": "Point",
@@ -1561,7 +1561,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "POL", "name_en": "Poland", "name_de": "Poland" },
+      "properties": { "code": "POL", "name_en": "Poland", "name_de": "Polen" },
       "geometry": { "type": "Point", "coordinates": [19.39012835, 52.12759564] }
     },
     {
@@ -1581,7 +1581,7 @@
       "properties": {
         "code": "PRK",
         "name_en": "North Korea",
-        "name_de": "North Korea"
+        "name_de": "Nordkorea"
       },
       "geometry": { "type": "Point", "coordinates": [127.1924797, 40.15350311] }
     },
@@ -1614,7 +1614,7 @@
       "properties": {
         "code": "PSX",
         "name_en": "Palestine",
-        "name_de": "Palestine"
+        "name_de": "Palästina"
       },
       "geometry": { "type": "Point", "coordinates": [35.19628705, 31.91613893] }
     },
@@ -1623,7 +1623,7 @@
       "properties": {
         "code": "PYF",
         "name_en": "French Polynesia",
-        "name_de": "French Polynesia"
+        "name_de": "Französisch-Polynesien"
       },
       "geometry": {
         "type": "Point",
@@ -1632,7 +1632,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "QAT", "name_en": "Qatar", "name_de": "Qatar" },
+      "properties": { "code": "QAT", "name_en": "Qatar", "name_de": "Katar" },
       "geometry": { "type": "Point", "coordinates": [51.18479632, 25.30601188] }
     },
     {
@@ -1640,18 +1640,18 @@
       "properties": {
         "code": "ROU",
         "name_en": "Romania",
-        "name_de": "Romania"
+        "name_de": "Rumänien"
       },
       "geometry": { "type": "Point", "coordinates": [24.97293039, 45.85243127] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "RUS", "name_en": "Russia", "name_de": "Russia" },
+      "properties": { "code": "RUS", "name_en": "Russia", "name_de": "Russland" },
       "geometry": { "type": "Point", "coordinates": [96.68656112, 61.98052209] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "RWA", "name_en": "Rwanda", "name_de": "Rwanda" },
+      "properties": { "code": "RWA", "name_en": "Rwanda", "name_de": "Ruanda" },
       "geometry": {
         "type": "Point",
         "coordinates": [29.91988515, -1.990338317]
@@ -1662,7 +1662,7 @@
       "properties": {
         "code": "SAH",
         "name_en": "Western Sahara",
-        "name_de": "Western Sahara"
+        "name_de": "Westsahara"
       },
       "geometry": {
         "type": "Point",
@@ -1674,7 +1674,7 @@
       "properties": {
         "code": "SAU",
         "name_en": "Saudi Arabia",
-        "name_de": "Saudi Arabia"
+        "name_de": "Saudi-Arabien"
       },
       "geometry": { "type": "Point", "coordinates": [44.53686271, 24.12245841] }
     },
@@ -1688,7 +1688,7 @@
       "properties": {
         "code": "SDS",
         "name_en": "South Sudan",
-        "name_de": "South Sudan"
+        "name_de": "Südsudan"
       },
       "geometry": { "type": "Point", "coordinates": [30.24790002, 7.308779449] }
     },
@@ -1706,7 +1706,7 @@
       "properties": {
         "code": "SGP",
         "name_en": "Singapore",
-        "name_de": "Singapore"
+        "name_de": "Singapur"
       },
       "geometry": { "type": "Point", "coordinates": [103.8172559, 1.358760871] }
     },
@@ -1727,7 +1727,7 @@
       "properties": {
         "code": "SHN",
         "name_en": "Saint Helena",
-        "name_de": "Saint Helena"
+        "name_de": "St. Helena"
       },
       "geometry": {
         "type": "Point",
@@ -1739,7 +1739,7 @@
       "properties": {
         "code": "SLB",
         "name_en": "Solomon Islands",
-        "name_de": "Solomon Islands"
+        "name_de": "Salomonen"
       },
       "geometry": {
         "type": "Point",
@@ -1799,7 +1799,7 @@
       "properties": {
         "code": "SPM",
         "name_en": "Saint Pierre and Miquelon",
-        "name_de": "Saint Pierre and Miquelon"
+        "name_de": "Saint-Pierre und Miquelon"
       },
       "geometry": {
         "type": "Point",
@@ -1838,7 +1838,7 @@
       "properties": {
         "code": "SVK",
         "name_en": "Slovakia",
-        "name_de": "Slovakia"
+        "name_de": "Slowakei"
       },
       "geometry": { "type": "Point", "coordinates": [19.47905218, 48.70547528] }
     },
@@ -1847,13 +1847,13 @@
       "properties": {
         "code": "SVN",
         "name_en": "Slovenia",
-        "name_de": "Slovenia"
+        "name_de": "Slowenien"
       },
       "geometry": { "type": "Point", "coordinates": [14.80444238, 46.11554772] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "SWE", "name_en": "Sweden", "name_de": "Sweden" },
+      "properties": { "code": "SWE", "name_en": "Sweden", "name_de": "Schweden" },
       "geometry": { "type": "Point", "coordinates": [16.74558049, 62.77966519] }
     },
     {
@@ -1882,7 +1882,7 @@
       "properties": {
         "code": "SYC",
         "name_en": "Seychelles",
-        "name_de": "Seychelles"
+        "name_de": "Seychellen"
       },
       "geometry": {
         "type": "Point",
@@ -1891,7 +1891,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "SYR", "name_en": "Syria", "name_de": "Syria" },
+      "properties": { "code": "SYR", "name_en": "Syria", "name_de": "Syrien" },
       "geometry": { "type": "Point", "coordinates": [38.50788204, 35.02547389] }
     },
     {
@@ -1899,7 +1899,7 @@
       "properties": {
         "code": "TCA",
         "name_en": "Turks and Caicos Islands",
-        "name_de": "Turks and Caicos Islands"
+        "name_de": "Turks- und Caicosinseln"
       },
       "geometry": {
         "type": "Point",
@@ -1908,7 +1908,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "TCD", "name_en": "Chad", "name_de": "Chad" },
+      "properties": { "code": "TCD", "name_en": "Chad", "name_de": "Tschad" },
       "geometry": { "type": "Point", "coordinates": [18.64492513, 15.33333759] }
     },
     {
@@ -1930,7 +1930,7 @@
       "properties": {
         "code": "TJK",
         "name_en": "Tajikistan",
-        "name_de": "Tajikistan"
+        "name_de": "Tadschikistan"
       },
       "geometry": { "type": "Point", "coordinates": [71.01362631, 38.5304539] }
     },
@@ -1948,7 +1948,7 @@
       "properties": {
         "code": "TLS",
         "name_en": "East Timor",
-        "name_de": "East Timor"
+        "name_de": "Osttimor"
       },
       "geometry": { "type": "Point", "coordinates": [125.8443898, -8.82889162] }
     },
@@ -1965,7 +1965,7 @@
       "properties": {
         "code": "TTO",
         "name_en": "Trinidad and Tobago",
-        "name_de": "Trinidad and Tobago"
+        "name_de": "Trinidad und Tobago"
       },
       "geometry": {
         "type": "Point",
@@ -1977,13 +1977,13 @@
       "properties": {
         "code": "TUN",
         "name_en": "Tunisia",
-        "name_de": "Tunisia"
+        "name_de": "Tunesien"
       },
       "geometry": { "type": "Point", "coordinates": [9.552883589, 34.11956246] }
     },
     {
       "type": "Feature",
-      "properties": { "code": "TUR", "name_en": "Turkey", "name_de": "Turkey" },
+      "properties": { "code": "TUR", "name_en": "Turkey", "name_de": "Türkei" },
       "geometry": { "type": "Point", "coordinates": [35.16895346, 39.0616029] }
     },
     {
@@ -2051,7 +2051,7 @@
       "properties": {
         "code": "UZB",
         "name_en": "Uzbekistan",
-        "name_de": "Uzbekistan"
+        "name_de": "Usbekistan"
       },
       "geometry": { "type": "Point", "coordinates": [63.14001528, 41.75554225] }
     },
@@ -2069,7 +2069,7 @@
       "properties": {
         "code": "VCT",
         "name_en": "Saint Vincent and the Grenadines",
-        "name_de": "Saint Vincent and the Grenadines"
+        "name_de": "St. Vincent und die Grenadinen"
       },
       "geometry": {
         "type": "Point",
@@ -2093,7 +2093,7 @@
       "properties": {
         "code": "VGB",
         "name_en": "British Virgin Islands",
-        "name_de": "British Virgin Islands"
+        "name_de": "Britische Jungferninseln"
       },
       "geometry": {
         "type": "Point",
@@ -2105,7 +2105,7 @@
       "properties": {
         "code": "VIR",
         "name_en": "United States Virgin Islands",
-        "name_de": "United States Virgin Islands"
+        "name_de": "Amerikanische Jungferninseln"
       },
       "geometry": {
         "type": "Point",
@@ -2138,7 +2138,7 @@
       "properties": {
         "code": "WLF",
         "name_en": "Wallis and Futuna",
-        "name_de": "Wallis and Futuna"
+        "name_de": "Wallis und Futuna"
       },
       "geometry": {
         "type": "Point",
@@ -2155,7 +2155,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "YEM", "name_en": "Yemen", "name_de": "Yemen" },
+      "properties": { "code": "YEM", "name_en": "Yemen", "name_de": "Jemen" },
       "geometry": { "type": "Point", "coordinates": [47.58676189, 15.90928005] }
     },
     {
@@ -2163,7 +2163,7 @@
       "properties": {
         "code": "ZAF",
         "name_en": "South Africa",
-        "name_de": "South Africa"
+        "name_de": "Südafrika"
       },
       "geometry": {
         "type": "Point",
@@ -2172,7 +2172,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "ZMB", "name_en": "Zambia", "name_de": "Zambia" },
+      "properties": { "code": "ZMB", "name_en": "Zambia", "name_de": "Sambia" },
       "geometry": {
         "type": "Point",
         "coordinates": [27.77475946, -13.45824152]
@@ -2183,7 +2183,7 @@
       "properties": {
         "code": "ZWE",
         "name_en": "Zimbabwe",
-        "name_de": "Zimbabwe"
+        "name_de": "Simbabwe"
       },
       "geometry": { "type": "Point", "coordinates": [29.8514412, -19.00420419] }
     },
@@ -2192,7 +2192,7 @@
       "properties": {
         "code": "EU",
         "name_en": "European Union",
-        "name_de": "European Union"
+        "name_de": "Europäische Union"
       },
       "geometry": { "type": "Point", "coordinates": [4.3517, 50.8503] }
     }
