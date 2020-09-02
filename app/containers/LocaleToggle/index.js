@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import styled from 'styled-components';
-import { DropButton, Box } from 'grommet';
+import { DropButton, Box, Button } from 'grommet';
 import { DropdownDown, DropdownUp } from 'components/Icons';
 
 import { appLocales, appLocaleLabels } from 'i18n';
@@ -36,14 +36,29 @@ const StyledDropButton = styled(DropButton)`
   }
 `;
 
+const ListItem = styled(props => <Button {...props} plain fill="horizontal" />)`
+  padding: ${({ theme }) => theme.global.edgeSize.small} 0;
+  color: ${({ theme }) => theme.global.colors.white} !important;
+  background: transparent;
+  border-top: 1px solid;
+  border-color: ${({ theme }) => theme.global.colors.dark};
+  opacity: 1;
+  &:last-child {
+    border-bottom: 1px solid;
+    border-color: ${({ theme }) => theme.global.colors.dark};
+  }
+  font-weight: ${({ active }) => (active ? 600 : 400)};
+`;
+
 const DropContent = ({ active, options, onSelect, localeLabels, list }) => (
   <Box
     pad="none"
     margin={{ top: 'hair' }}
     background={list ? 'transparent' : 'white'}
-    elevation="small"
+    elevation={list ? 'none' : 'small'}
   >
-    {options &&
+    {!list &&
+      options &&
       options.map(option => (
         <DropOption
           key={option}
@@ -54,6 +69,18 @@ const DropContent = ({ active, options, onSelect, localeLabels, list }) => (
         >
           {(localeLabels && localeLabels[option]) || option}
         </DropOption>
+      ))}
+    {list &&
+      options &&
+      options.map(option => (
+        <ListItem
+          key={option}
+          onClick={() => onSelect(option)}
+          active={active === option}
+          disabled={active === option}
+        >
+          {(localeLabels && localeLabels[option]) || option}
+        </ListItem>
       ))}
   </Box>
 );

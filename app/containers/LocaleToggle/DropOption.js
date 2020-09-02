@@ -10,7 +10,7 @@ export default styled(p => <Button plain {...p} />)`
   width: 100%;
   font-weight: ${({ active }) => (active ? 600 : 400)};
   opacity: 1;
-  color: ${({ theme, list }) => theme.global.colors[list ? 'white' : 'black'] };
+  color: ${({ theme }) => theme.global.colors.black };
   border-top: 1px solid ${({ theme }) => theme.global.colors.border.light };
   border-left: 4px solid transparent;
   font-size: ${({ theme }) => theme.text.xsmall.size};
