@@ -28,7 +28,7 @@ Die Karte zeigt, wie viel Plastik **schätzungsweise** durch **mangelhafte Entso
 
 ## Über die Studie
 
-Die dargestellten Schätzungen wurden im Rahmen einer kürzlich durchgeführten Studie vorgenommen, bei der verschiedene Szenarien zur zukünftigen Entwicklung des Müllaufkommens betrachtet wurden. Zur Berechnung des lokalen Plastikmüllaufkommens wurden dabei folgende Daten kombiniert:
+Die dargestellten Schätzungen wurden im Rahmen einer kürzlich durchgeführten Studie vorgenommen, bei der verschiedene Szenarien zur zukünftigen Entwicklung des Plastikmüllaufkommens betrachtet wurden. Zur Berechnung des lokalen Aufkommens wurden dabei folgende Daten kombiniert:
 
 * Länderspezifische Daten zur **Abfallwirtschaft**
 * Hochaufgelöste Daten zur **Bevölkerungsdichte**

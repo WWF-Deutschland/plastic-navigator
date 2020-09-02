@@ -273,8 +273,8 @@
       "type": "Feature",
       "properties": {
         "code": "BLM",
-        "name_en": "Saint Barthelemy",
-        "name_de": "Saint Barthelemy"
+        "name_en": "Saint-Barthélemy",
+        "name_de": "Saint-Barthélemy"
       },
       "geometry": {
         "type": "Point",
@@ -421,7 +421,7 @@
       "properties": {
         "code": "COG",
         "name_en": "Republic of Congo",
-        "name_de": "Republic of Congo"
+        "name_de": "Republik Kongo"
       },
       "geometry": {
         "type": "Point",
@@ -497,8 +497,8 @@
       "type": "Feature",
       "properties": {
         "code": "CUW",
-        "name_en": "CuraÃ§ao",
-        "name_de": "CuraÃ§ao"
+        "name_en": "Curaçao",
+        "name_de": "Curaçao"
       },
       "geometry": {
         "type": "Point",
@@ -528,7 +528,7 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "CYP", "name_en": "Cyprus", "name_de": "Cyprus" },
+      "properties": { "code": "CYP", "name_en": "Cyprus", "name_de": "Republik Zypern" },
       "geometry": { "type": "Point", "coordinates": [33.0060022, 34.91667211] }
     },
     {
@@ -770,8 +770,8 @@
       "type": "Feature",
       "properties": {
         "code": "GNB",
-        "name_en": "Guinea Bissau",
-        "name_de": "Guinea Bissau"
+        "name_en": "Guinea-Bissau",
+        "name_de": "Guinea-Bissau"
       },
       "geometry": {
         "type": "Point",
@@ -1714,8 +1714,8 @@
       "type": "Feature",
       "properties": {
         "code": "SGS",
-        "name_en": "South Georgia and South Sandwich Islands",
-        "name_de": "South Georgia and South Sandwich Islands"
+        "name_en": "South Georgia and the South Sandwich Islands",
+        "name_de": "Südgeorgien und die Südlichen Sandwichinseln"
       },
       "geometry": {
         "type": "Point",
