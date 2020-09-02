@@ -16,7 +16,7 @@
       window.wwfMpxInsideIframe = false;
       window.wwfMpxInsideWWFIframe = false;
       if (window.self !== window.top) {
-        console.log('Running inside an iframe')
+        console.log('Running inside an iframe', window.top)
         window.wwfMpxInsideIframe = true;
         try {
           if (
@@ -30,7 +30,7 @@
             console.log('Not running inside an iframe on a WWF domain')
           }
         } catch (err) {
-          console.log('Presumably not running inside an iframe on a WWF domain')
+          console.log('Presumably not running inside an iframe on a WWF domain', err)
         }
       }
     }
