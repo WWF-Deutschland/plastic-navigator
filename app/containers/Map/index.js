@@ -622,7 +622,10 @@ export function Map({
         </LoadingWrap>
       )}
       {size !== 'small' && (
-        <MapControls position="left" hasBrand={!window.wwfMpxInsideIframe}>
+        <MapControls
+          position="left"
+          hasBrand={!window.wwfMpxInsideIframe || !window.wwfMpxInsideWWFIframe}
+        >
           <MapControl
             disabled={MAP_OPTIONS.ZOOM.MAX === zoom}
             icon={
