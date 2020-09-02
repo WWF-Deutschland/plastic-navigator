@@ -262,11 +262,10 @@ export function PanelChapter({
                         <LayerFocus
                           key={config.id}
                           fill={configsFocus.length === 1 && 'horizontal'}
-                          basis={
-                            configsFocus.length > 1
-                              ? `${1 / configsFocus.length}`
-                              : '1'
-                          }
+                          style={{
+                            width: configsFocus.length > 1 ? '50%' : '100%',
+                          }}
+                          flex={false}
                         >
                           <LayerTitleWrap
                             fill={configsFocus.length === 1 && 'horizontal'}
