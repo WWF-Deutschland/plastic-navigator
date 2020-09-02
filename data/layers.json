@@ -420,15 +420,15 @@
       "title": {
         "1": {
           "en": "Officially called for new agreement",
-          "de": "Officially called for new agreement"
+          "de": "Öffentlich für ein neues Abkommen ausgesprochen"
         },
         "2": {
           "en": "Willingness to explore option of agreement",
-          "de": "Willingness to explore option of agreement"
+          "de": "Bereitschaft, Option eines Abkommens zu prüfen"
         },
         "0": {
           "en": "No statement or commitment recorded",
-          "de": "No statement or commitment recorded"
+          "de": "Kein Statement für ein neues Abkommen bekannt"
         }
       }
     },
@@ -504,7 +504,7 @@
     },
     "about": {
       "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
-      "de": "The visualization shows the countries position to a global legally binding agreement based on own research and various sources."
+      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
     },
     "data": {
       "type": "location",
@@ -516,7 +516,7 @@
     "tooltip": {
       "supTitle": {
         "en": "Country’s level of support",
-        "de": "Country’s level of support"
+        "de": "Grad an Engagement nach Ländern"
       },
       "title": {
         "propertyByLocale": {
@@ -548,11 +548,11 @@
         "full": {
           "1": {
             "en": "Officially called for new agreement",
-            "de": "Officially called for new agreement"
+            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
           },
           "2": {
             "en": "Willingness to explore option of agreement",
-            "de": "Willingness to explore option of agreement"
+            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
           }
         }
       }
