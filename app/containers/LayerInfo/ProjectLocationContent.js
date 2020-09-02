@@ -99,7 +99,7 @@ export function ProjectLocationContent({
     <Styled>
       <Box
         direction="row"
-        align="top"
+        align="start"
         gap="xsmall"
         margin={{ right: 'xlarge', bottom: 'xlarge', left: '-12px' }}
       >
