@@ -345,7 +345,7 @@
     "type": "topojson",
     "title": {
       "en": "Country’s level of support for treaty (shown as area)",
-      "de": "Positionierungen für ein Abkommen nach Ländern (als Länder angezeigt)"
+      "de": "Positionierungen für ein Abkommen nach Ländern (als Flächen gezeigt)"
     },
     "title-short": {
       "en": "Country’s level of support",
@@ -419,16 +419,16 @@
       "values": ["1", "2", "0"],
       "title": {
         "1": {
-          "en": "Officially called for new agreement",
-          "de": "Öffentlich für ein neues Abkommen ausgesprochen"
+          "en": "Publicly called for new agreement",
+          "de": "Öffentlich für Abkommen ausgesprochen"
         },
         "2": {
-          "en": "Willingness to explore option of agreement",
-          "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+          "en": "Agreed to consider option of agreement",
+          "de": "Bereitschaft, Abkommen zu prüfen"
         },
         "0": {
-          "en": "No statement or commitment recorded",
-          "de": "Kein Statement für ein neues Abkommen bekannt"
+          "en": "No public statement of support recorded",
+          "de": "Kein Statement für Abkommen bekannt"
         }
       }
     },
@@ -500,7 +500,7 @@
     },
     "title": {
       "en": "Country’s level of support for treaty (shown as markers)",
-      "de": "Positionierungen für ein Abkommen nach Ländern (als Marker angezeigt)"
+      "de": "Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)"
     },
     "about": {
       "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
@@ -547,12 +547,12 @@
         },
         "full": {
           "1": {
-            "en": "Officially called for new agreement",
-            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+            "en": "Publicly called for new agreement",
+            "de": "Öffentlich für Abkommen ausgesprochen"
           },
           "2": {
-            "en": "Willingness to explore option of agreement",
-            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+            "en": "Agreed to consider option of agreement",
+            "de": "Bereitschaft, Abkommen zu prüfen"
           }
         }
       }

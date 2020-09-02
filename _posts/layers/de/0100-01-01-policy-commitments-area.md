@@ -3,7 +3,7 @@ layout: layer
 published: true
 permalink: /content/de/layers/policy-commitments-area/
 lang: de
-title: Engagement der einzelnen Länder (als Länder)
+title: Positionierungen für ein Abkommen nach Ländern (als Flächen gezeigt)
 image_file_name: policy_layer.jpg
 image_caption: Markus Winkler / WWF
 fact_lead: >-

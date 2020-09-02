@@ -36,3 +36,5 @@ Die dargestellten Schätzungen sind das Ergebnis einer im Jahr 2017 veröffentli
 **Das mit Messungen tatsächlicher Einträge kalibrierte Modell kommt zu dem Ergebnis, dass der jährliche Beitrag aller Flüsse insgesamt zwischen 1,15 und 2,41 Millionen Tonnen liegt.**
 
 Im Hinblick auf die saisonale Verteilung konnte zudem festgestellt werden, dass schätzungsweise 75% aller Plastikeinträge in den Monaten Mai bis Oktober erfolgen, was weitgehend auf den warmen und niederschlagsreichen ostasiatischen Sommermonsun zurückzuführen ist.
+
+*Die Verfügbarkeit von Daten zur Plastikverschmutzung der Meere ist nach wie vor begrenzt. Es braucht eine signifikant höhere, finanzielle Unterstützung der Forschung, um das Wissen und damit die Lösungsfindung voranzutreiben.*
