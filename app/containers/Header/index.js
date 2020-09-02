@@ -158,22 +158,22 @@ function Header({ nav, navPage, path, navHome, intl }) {
               gap="small"
               justify={isMinSize(size, 'medium') ? 'start' : 'between'}
             >
-              {!window.wwfMpxInsideIframe ||
-                (!window.wwfMpxInsideWWFIframe && (
-                  <BrandWWFWrap>
-                    <BrandWWF
-                      as="a"
-                      target="_blank"
-                      href={intl.formatMessage(commonMessages.brandLink)}
-                      title={intl.formatMessage(commonMessages.brandLinkTitle)}
-                    >
-                      <WWFLogoHeader
-                        color="black"
-                        size={isMaxSize(size, 'medium') ? '60px' : '72px'}
-                      />
-                    </BrandWWF>
-                  </BrandWWFWrap>
-                ))}
+              {(!window.wwfMpxInsideIframe ||
+                !window.wwfMpxInsideWWFIframe) && (
+                <BrandWWFWrap>
+                  <BrandWWF
+                    as="a"
+                    target="_blank"
+                    href={intl.formatMessage(commonMessages.brandLink)}
+                    title={intl.formatMessage(commonMessages.brandLinkTitle)}
+                  >
+                    <WWFLogoHeader
+                      color="black"
+                      size={isMaxSize(size, 'medium') ? '60px' : '72px'}
+                    />
+                  </BrandWWF>
+                </BrandWWFWrap>
+              )}
               <Brand
                 onClick={() => navHome()}
                 label={<FormattedMessage {...commonMessages.appTitle} />}
