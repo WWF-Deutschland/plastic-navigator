@@ -7,7 +7,7 @@ title: Plastikeinträge durch Flüsse ins Meer (Top 122)
 image_file_name: river-emissions-plastic_layer.jpg
 image_caption: Sam Hobson / WWF-UK
 fact_lead: >-
-  Wind und Regen befördern einen großen Anteil des unangemessen entsorgten Plastikmülls in unsere Flüsse, die als Quellen für den Plastikmüll in unseren Ozeanen gelten.
+  Wind und Regen befördern einen großen Anteil des unangemessen entsorgten Plastikmülls in unsere Flüsse, die als bedeutende Quellen für den Plastikmüll in unseren Ozeanen gelten.
 ---
 
 Neben der Größe der Einzugsgebiete der einzelnen Flüsse werden als weitere Faktoren für die Menge der Plastikeinträge Bevölkerungsdichte, Urbanisierungs- und Industrialisierungsgrad, Niederschlagsmengen sowie das Vorhandensein künstlicher Barrieren wie Dämme vermutet.
