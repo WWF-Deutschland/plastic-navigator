@@ -21,9 +21,9 @@ import DropOption from './DropOption';
 const Styled = styled(Box)``;
 // prettier-ignore
 const StyledDropButton = styled(DropButton)`
-  font-family: 'wwfregular';
   text-transform: uppercase;
-  font-size: ${({ theme }) => theme.text.large.size};
+  font-size: 20px;
+  font-family: 'wwfregular';
   line-height: 1;
   text-decoration: none;
   padding: 0 0 0 6px;
@@ -39,7 +39,7 @@ const StyledDropButton = styled(DropButton)`
 const DropContent = ({ active, options, onSelect, localeLabels, list }) => (
   <Box
     pad="none"
-    margin={{ top: 'xxsmall' }}
+    margin={{ top: 'hair' }}
     background={list ? 'transparent' : 'white'}
     elevation="small"
   >
