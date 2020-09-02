@@ -170,12 +170,13 @@ const LayersFocusWrap = styled(p => (
 const LayerFocus = styled(p => <Box {...p} />)``;
 const LayerTitleWrap = styled(p => (
   <Box {...p} direction="row" align="center" />
-))``;
+))`
+  margin-bottom: 6px;
+`;
 const LayerTitle = styled(Text)`
   font-size: 13px;
   line-height: 16px;
   font-weight: 600;
-  margin-bottom: 6px;
 `;
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
