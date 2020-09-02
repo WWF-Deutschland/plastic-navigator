@@ -136,7 +136,7 @@ function Header({ nav, navPage, path, navHome, intl }) {
 
   // Logo should show
   // if not in iframe: !window.wwfMpxInsideIframe
-  // or if iframe not wwf iframe: window.wwfMpxInsideIframe &&
+  // or if iframe not wwf iframe: !window.wwfMpxInsideIframe
   return (
     <ResponsiveContext.Consumer>
       {size => (

@@ -13,9 +13,11 @@
   <script>
     // test if we are running in an iframe embedded on a wwf website
     function testIFrame() {
+      window.wwfMpxInsideIframe = false;
+      window.wwfMpxInsideWWFIframe = false;
       if (window.self !== window.top) {
-        window.wwfMpxInsideIframe = true;
         console.log('Running inside an iframe')
+        window.wwfMpxInsideIframe = true;
         if (
           window.top &&
           window.top.location &&
@@ -24,12 +26,13 @@
             console.log('Running inside an iframe on a WWF domain')
             window.wwfMpxInsideWWFIframe = true;
         }
-      } else {
-        window.wwfMpxInsideIframe = false;
-        window.wwfMpxInsideWWFIframe = false;
       }
     }
-    testIFrame();
+    try {
+      testIFrame();
+    } catch (err) {
+      console.log('Error accessing parent window: ', err);
+    }
   </script>
 </head>
 
