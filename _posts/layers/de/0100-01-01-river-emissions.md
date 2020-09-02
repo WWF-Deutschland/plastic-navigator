@@ -19,14 +19,11 @@ Es wird geschätzt, dass **alle Flüsse jedes Jahr insgesamt zwischen 1,2 und 2,
 
 Die Karte zeigt die gemäß Schätzungen **122 am meisten verschmutzenden Flüsse**, wobei jeder Fluss durch einen Kreis dargestellt wird, dessen Größe sich nach dem jeweiligen jährlichen Plastikeintrag richtet. Größere Kreise repräsentieren daher Flüsse, die größere Plastikmengen ins Meer befördern.
 
-Um die Eintragsraten der einzelnen Flüsse zu sehen, können Sie auf die einzelnen Kreise klicken (gegebenenfalls nachdem Sie die Karte herangezoomt haben).
-
-
 [KEY]
 
 #### Hinweis
 
-* Zusätzlich zu den Flüssen gelten als andere Quellen für landseitige Plastikeinträge das achtlose oder rechtswidrige Wegwerfen von Müll an unseren Küsten (von wo ihn Wind und Gezeiten in die Meere tragen können) sowie vereinzelte Naturkatastrophen wie etwa Tsunamis, die große Mengen an Unrat in die Meere spülen können. Zusammen sind alle **landseitigen Quellen schätzungsweise für bis zu 80 % des Plastikmülls in unseren Meeren verantwortlich**, während der Rest aus maritimen Tätigkeiten stammt, wie der Fischerei, Schifffahrt und Kreuzfahrten
+* Zusätzlich zu den Flüssen gelten als andere Quellen für landseitige Plastikeinträge das achtlose oder rechtswidrige Wegwerfen von Müll an unseren Küsten (von wo ihn Wind und Gezeiten in die Meere tragen können) sowie vereinzelte Naturkatastrophen wie etwa Tsunamis, die große Mengen an Unrat in die Meere spülen können. Zusammen sind alle **landseitigen Quellen schätzungsweise für bis zu 80 % des Plastikmülls in unseren Meeren verantwortlich**, während der Rest aus maritimen Tätigkeiten stammt, wie der Fischerei, Schifffahrt und Kreuzfahrten.
 
 ## Über die Studie
 
