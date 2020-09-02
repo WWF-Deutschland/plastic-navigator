@@ -1,5 +1,4 @@
 import { toLower } from 'lodash/string';
-import anchorme from 'anchorme';
 
 export const lowerCase = str => toLower(str);
 export const upperCaseFirst = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -35,20 +34,8 @@ export const injectMarkdownParagraph = str =>
     .map(i => i.trim())
     .join('\n ');
 
-export const prepMarkdown = (str, { anchor, para }) => {
+export const prepMarkdown = (str, { para }) => {
   let res = str;
-  if (anchor) {
-    res = anchorme({
-      input: res,
-      options: {
-        truncate: 40,
-        attributes: {
-          target: '_blank',
-          class: 'mpx-content-link',
-        },
-      },
-    });
-  }
   if (para) {
     res = injectMarkdownParagraph(res);
   }

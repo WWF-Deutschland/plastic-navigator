@@ -15,7 +15,8 @@ import { Text, Box, Button, Heading } from 'grommet';
 import { Back } from 'components/Icons';
 // import { Back } from 'components/Icons';
 import Markdown from 'react-remarkable';
-import anchorme from 'anchorme';
+// import anchorme from 'anchorme';
+import { prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -137,19 +138,7 @@ export function ProjectLocationContent({
           options={{
             html: true,
           }}
-          source={anchorme({
-            input: locationInfo,
-            options: {
-              truncate: 40,
-              attributes: {
-                target: '_blank',
-                class: 'mpx-content-link',
-              },
-            },
-          })
-            .split(' __ ')
-            .map(i => i.trim())
-            .join('\n\n ')}
+          source={prepMarkdown(locationInfo, { para: true })}
         />
       </div>
       {exists(projectLink) && (

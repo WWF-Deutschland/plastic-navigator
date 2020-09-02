@@ -125,7 +125,7 @@ export function ProjectContent({
               options={{
                 html: true,
               }}
-              source={prepMarkdown(projectInfo, { anchor: true, para: true })}
+              source={prepMarkdown(projectInfo, { para: true })}
             />
           </div>
           {projectLocations && projectLocations.length > 1 && (
