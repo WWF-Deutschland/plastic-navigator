@@ -5,7 +5,7 @@
       {
         "title": {
           "en": "Plastic has been found on the surface of all oceans",
-          "de": "Plastik wurde an der Oberfläche aller Ozeanen festgestellt"
+          "de": "Plastik wurde an der Oberfläche aller Ozeane festgestellt"
         },
         "description": {
           "en": "Plastic in the ocean is a threat to marine ecosystems and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris.",
@@ -21,7 +21,7 @@
         },
         "description": {
           "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, calculated on the basis of GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
-          "de": "Diese Kartenebene zeigt die geschätzte Mengen an mangelhaft entsorgtem Plastikmüll pro km², der in die Umwelt gelangen kann, berechnet auf Basis von Bevölkerungsdaten und BIP. Dunklere Farben bedeuten ein höheres Müllaufkommen."
+          "de": "Diese Kartenebene zeigt die geschätzte Menge an mangelhaft entsorgtem Plastikmüll pro km², der in die Umwelt gelangen kann, berechnet auf Basis von Bevölkerungsdaten und BIP. Dunklere Farben bedeuten ein höheres Müllaufkommen."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
