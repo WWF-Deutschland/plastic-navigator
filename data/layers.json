@@ -419,16 +419,16 @@
       "values": ["1", "2", "0"],
       "title": {
         "1": {
-          "en": "Officially called for new agreement",
-          "de": "Öffentlich für ein neues Abkommen ausgesprochen"
+          "en": "Publicly called for new agreement",
+          "de": "Öffentlich für Abkommen ausgesprochen"
         },
         "2": {
-          "en": "Willingness to explore option of agreement",
-          "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+          "en": "Agreed to consider option of agreement",
+          "de": "Bereitschaft, Abkommen zu prüfen"
         },
         "0": {
-          "en": "No statement or commitment recorded",
-          "de": "Kein Statement für ein neues Abkommen bekannt"
+          "en": "No public statement of support recorded",
+          "de": "Kein Statement für Abkommen bekannt"
         }
       }
     },
@@ -547,12 +547,12 @@
         },
         "full": {
           "1": {
-            "en": "Officially called for new agreement",
-            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+            "en": "Publicly called for new agreement",
+            "de": "Öffentlich für Abkommen ausgesprochen"
           },
           "2": {
-            "en": "Willingness to explore option of agreement",
-            "de": "Bereitschaft, Option eines Abkommens zu prüfen"
+            "en": "Agreed to consider option of agreement",
+            "de": "Bereitschaft, Abkommen zu prüfen"
           }
         }
       }
