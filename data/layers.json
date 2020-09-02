@@ -301,7 +301,7 @@
     "tooltip": {
       "supTitle": {
         "en": "Gyre",
-        "de": "Meeresstrudel"
+        "de": "Meereswirbel"
       },
       "title": {
         "propertyByLocale": {
@@ -313,11 +313,11 @@
     "key": {
       "title": {
         "en": "Approximate centre of gyre",
-        "de": "Ungefähres Zentrum des Strudels"
+        "de": "Ungefähres Zentrum des Meereswirbels"
       },
       "title-short": {
         "en": "Centre of gyre",
-        "de": "Strudel"
+        "de": "Meereswirbel"
       }
     },
     "icon": {
