@@ -18,21 +18,23 @@
       if (window.self !== window.top) {
         console.log('Running inside an iframe')
         window.wwfMpxInsideIframe = true;
-        if (
-          window.top &&
-          window.top.location &&
-          window.top.location.origin &&
-          window.top.location.origin.indexOf('.wwf.') > -1) {
-            console.log('Running inside an iframe on a WWF domain')
-            window.wwfMpxInsideWWFIframe = true;
+        try {
+          if (
+            window.top &&
+            window.top.location &&
+            window.top.location.origin &&
+            window.top.location.origin.indexOf('.wwf.') > -1) {
+              console.log('Running inside an iframe on a WWF domain')
+              window.wwfMpxInsideWWFIframe = true;
+          } else {
+            console.log('Not running inside an iframe on a WWF domain')
+          }
+        } catch (err) {
+          console.log('Presumably not running inside an iframe on a WWF domain')
         }
       }
     }
-    try {
       testIFrame();
-    } catch (err) {
-      console.log('Error accessing parent window: ', err);
-    }
   </script>
 </head>
 
