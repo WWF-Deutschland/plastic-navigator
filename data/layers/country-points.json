@@ -321,7 +321,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "BRA", "name_en": "Brazil", "name_de": "Brasilien" },
+      "properties": {
+        "code": "BRA",
+        "name_en": "Brazil",
+        "name_de": "Brasilien"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [-53.09783113, -10.78777702]
@@ -528,7 +532,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "CYP", "name_en": "Cyprus", "name_de": "Republik Zypern" },
+      "properties": {
+        "code": "CYP",
+        "name_en": "Cyprus",
+        "name_de": "Republik Zypern"
+      },
       "geometry": { "type": "Point", "coordinates": [33.0060022, 34.91667211] }
     },
     {
@@ -680,7 +688,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "FRA", "name_en": "France", "name_de": "Frankreich" },
+      "properties": {
+        "code": "FRA",
+        "name_en": "France",
+        "name_de": "Frankreich"
+      },
       "geometry": { "type": "Point", "coordinates": [1.960291597, 47.0687625] }
     },
     {
@@ -808,8 +820,8 @@
       "type": "Feature",
       "properties": {
         "code": "GRL",
-        "name_en": "Greenland",
-        "name_de": "Grönland"
+        "name_en": "Greenland (Denmark)",
+        "name_de": "Grönland (Dänemark)"
       },
       "geometry": {
         "type": "Point",
@@ -1004,7 +1016,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "JOR", "name_en": "Jordan", "name_de": "Jordanien" },
+      "properties": {
+        "code": "JOR",
+        "name_en": "Jordan",
+        "name_de": "Jordanien"
+      },
       "geometry": { "type": "Point", "coordinates": [36.77136104, 31.24579091] }
     },
     {
@@ -1183,7 +1199,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "LVA", "name_en": "Latvia", "name_de": "Lettland" },
+      "properties": {
+        "code": "LVA",
+        "name_en": "Latvia",
+        "name_de": "Lettland"
+      },
       "geometry": { "type": "Point", "coordinates": [24.91235983, 56.85085163] }
     },
     {
@@ -1469,7 +1489,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "NOR", "name_en": "Norway", "name_de": "Norwegen" },
+      "properties": {
+        "code": "NOR",
+        "name_en": "Norway",
+        "name_de": "Norwegen"
+      },
       "geometry": { "type": "Point", "coordinates": [15.34834656, 68.75015572] }
     },
     {
@@ -1646,7 +1670,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "RUS", "name_en": "Russia", "name_de": "Russland" },
+      "properties": {
+        "code": "RUS",
+        "name_en": "Russia",
+        "name_de": "Russland"
+      },
       "geometry": { "type": "Point", "coordinates": [96.68656112, 61.98052209] }
     },
     {
@@ -1853,7 +1881,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "SWE", "name_en": "Sweden", "name_de": "Schweden" },
+      "properties": {
+        "code": "SWE",
+        "name_en": "Sweden",
+        "name_de": "Schweden"
+      },
       "geometry": { "type": "Point", "coordinates": [16.74558049, 62.77966519] }
     },
     {
