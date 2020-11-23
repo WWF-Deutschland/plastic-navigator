@@ -2,8 +2,8 @@ country_code,country_en,country_de,position_id,source_id
 AGO,Angola,,2,AMCEN2019
 ALG,Algeria,,2,AMCEN2019
 ARG,Argentina,,2,GOF2020
-ATG,Antigua and Barbuda,,1,CARICOM2019
 ATG,Antigua and Barbuda,,2,GOF2020
+ATG,Antigua and Barbuda,,1,CARICOM2019
 AUT,Austria,,2,EUCCOS2019
 AUT,Austria,,1,EUCCOS2020
 BDI,Burundi,,2,AMCEN2019
@@ -16,8 +16,8 @@ BGD,Bangladesh,,1,GOF2020b
 BGR,Bulgaria,,2,EUCCOS2019
 BGR,Bulgaria,,1,EUCCOS2020
 BHS,Bahamas,,1,CARICOM2019
-BLZ,Belize,,1,CARICOM2019
 BLZ,Belize,,2,GOF2020
+BLZ,Belize,,1,CARICOM2019
 BRB,Barbados,,1,CARICOM2019
 BWA,Botswana,,2,AMCEN2019
 CAF,Central African Republic,,2,AMCEN2019
@@ -70,6 +70,7 @@ FSM,Micronesia,,2,GOF2020
 FSM,Micronesia,,1,MAP2018
 GAB,Gabon,,2,AMCEN2019
 GBR,United Kingdom,,2,GOF2020
+GBR,United Kingdom,,1,UK2020
 GHA,Ghana,,2,AMCEN2019
 GIN,Guinea,,2,AMCEN2019
 GMB,Gambia,,2,AMCEN2019
@@ -77,8 +78,8 @@ GNB,Guinea-Bissau,,2,AMCEN2019
 GNQ,Equatorial Guinea,,2,AMCEN2019
 GRC,Greece,,2,EUCCOS2019
 GRC,Greece,,1,EUCCOS2020
-GRD,Grenada,,1,CARICOM2019
 GRD,Grenada,,2,GOF2020
+GRD,Grenada,,1,CARICOM2019
 GRL,Greenland (Denmark),,2,EUCCOS2019
 GRL,Greenland (Denmark),,1,HELCOM2020
 GRL,Greenland (Denmark),,1,NORDIC2019
@@ -148,6 +149,7 @@ NOR,Norway,,1,NORDIC2019
 NRU,Nauru,,2,GOF2020
 NRU,Nauru,,1,MAP2018
 PER,Peru,,2,GOF2020
+PER,Peru,,1,PERU2020
 PHL,Philippines,,2,GOF2020
 PHL,Philippines,,1,GOF2020d
 PLW,Palau,,1,MAP2018
@@ -169,8 +171,8 @@ SLE,Sierra Leone,,2,AMCEN2019
 SOM,Somalia,,2,AMCEN2019
 SSD,South Sudan,,2,AMCEN2019
 STP,Sao Tome and Principe,,2,AMCEN2019
-SUR,Suriname,,1,CARICOM2019
 SUR,Suriname,,2,GOF2020
+SUR,Suriname,,1,CARICOM2019
 SVK,Slovakia,,2,EUCCOS2019
 SVK,Slovakia,,1,EUCCOS2020
 SVN,Slovenia,,2,EUCCOS2019
