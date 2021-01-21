@@ -180,7 +180,6 @@ export function PanelExplore({
 
   const activeCategory = exploreConfig && exploreConfig[tab];
 
-  // console.log(activeLayers, layersConfig, activeCategory)
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -273,7 +272,7 @@ export function PanelExplore({
                       <GroupLayers
                         group={activeCategory.id}
                         layersConfig={
-                          projects.sort((a, b) => {
+                          projects.slice().sort((a, b) => {
                             const titleA =
                               a[`project_title_${locale}`] ||
                               a[`project_title_${DEFAULT_LOCALE}`];
