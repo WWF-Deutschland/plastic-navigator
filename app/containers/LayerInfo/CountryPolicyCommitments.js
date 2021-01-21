@@ -97,7 +97,7 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
   const { locale } = intl;
   const { positions } = feature.properties;
   if (!positions || positions.length < 0) return null;
-  const sorted = positions
+  const sorted = [...positions]
     .sort((a, b) => {
       const aDate = a.source && a.source.date && new Date(a.source.date);
       const bDate = b.source && b.source.date && new Date(b.source.date);
