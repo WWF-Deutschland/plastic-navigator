@@ -24,6 +24,10 @@ const appLocales = [
   'en',
   'de',
 ];
+const appLocaleLabels = {
+  en: 'English',
+  de: 'Deutsch',
+};
 
 const formatTranslationMessages = (locale, messages) => {
   const defaultFormattedMessages =
@@ -46,6 +50,7 @@ const translationMessages = {
 };
 
 exports.appLocales = appLocales;
+exports.appLocaleLabels = appLocaleLabels;
 exports.formatTranslationMessages = formatTranslationMessages;
 exports.translationMessages = translationMessages;
 exports.DEFAULT_LOCALE = DEFAULT_LOCALE;

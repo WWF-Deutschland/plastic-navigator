@@ -62,22 +62,16 @@ export const getAsideWidth = size => {
     ? dimensions.aside.width[bp.index]
     : dimensions.aside.width[0];
 };
-
-export const getTopGraphicHeight = size => {
+export const getAsideInfoWidth = size => {
   const bp = sizes[size];
   return bp && size
-    ? dimensions.topGraphic.height[bp.index]
-    : dimensions.topGraphic.height[0];
+    ? dimensions.asideInfo.width[bp.index]
+    : dimensions.asideInfo.width[0];
 };
+
 export const getContentMaxWidth = size => {
   const bp = sizes[size];
   return bp && size
     ? dimensions.mainContent.maxWidth[bp.index]
     : dimensions.mainContent.maxWidth[0];
-};
-export const getHomeMaxWidth = size => {
-  const bp = sizes[size];
-  return bp && size
-    ? dimensions.home.maxWidth[bp.index]
-    : dimensions.home.maxWidth[0];
 };

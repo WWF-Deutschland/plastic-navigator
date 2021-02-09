@@ -4,26 +4,41 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box } from 'grommet';
-import { Close } from 'grommet-icons';
+import { Button, ResponsiveContext } from 'grommet';
+import { Close } from 'components/Icons';
 
-import { useInjectSaga } from 'utils/injectSaga';
+import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
 
-import saga from 'containers/App/saga';
-import { selectContentByKey } from 'containers/App/selectors';
-import { loadContent } from 'containers/App/actions';
+import { getAsideInfoWidth } from 'utils/responsive';
+import { startsWith } from 'utils/string';
+import { getLayerFeatureIds, getLayerId } from 'utils/layers';
 
-import HTMLWrapper from 'components/HTMLWrapper';
+import { selectSingleLayerConfig } from 'containers/App/selectors';
 
-const ContentWrap = styled(props => <Box pad="medium" {...props} />)``;
+import LayerContent from './LayerContent';
+import LayerFeatures from './LayerFeatures';
+import ProjectContent from './ProjectContent';
+import FeatureContent from './FeatureContent';
+// import messages from './messages';
 
-const Styled = styled(props => <Box {...props} background="white" />)`
+const ContentWrap = styled.div`
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  overflow-y: scroll;
+  padding: 12px 24px 64px;
+`;
+
+const Styled = styled.div`
   position: fixed;
   right: 0;
   top: 0;
@@ -32,64 +47,95 @@ const Styled = styled(props => <Box {...props} background="white" />)`
   width: 100%;
   pointer-events: all;
   overflow-y: auto;
-  z-index: 3001;
+  z-index: 4003;
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    z-index: 2999;
     position: absolute;
-    width: 500px;
+    width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
   }
 `;
 
-// import messages from './messages';
-// import commonMessages from 'messages';
-export function LayerInfo({ id, onLoadContent, content, onClose }) {
-  useInjectSaga({ key: 'default', saga });
+const ButtonClose = styled(p => (
+  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
+))`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 5px;
+  border-radius: 99999px;
+  background: ${({ theme }) => theme.global.colors.black};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.dark};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 10px;
+    right: 30px;
+  }
+`;
+
+export function LayerInfo({ id, onClose, config }) {
+  const [layerId, featureId] = getLayerFeatureIds(id);
+  const isProjectInfo = startsWith(layerId, `${PROJECT_CONFIG.id}-`);
+
+  const cRef = useRef();
   useEffect(() => {
-    // kick off loading of page content
-    onLoadContent(id);
+    cRef.current.scrollTop = 0;
   }, [id]);
 
+  // prettier-ignore
   return (
-    <Styled>
-      <ContentWrap>
-        <Button
-          onClick={() => onClose()}
-          icon={<Close />}
-          plain
-          alignSelf="end"
-        />
-        {content && <HTMLWrapper innerhtml={content} />}
-      </ContentWrap>
-    </Styled>
+    <ResponsiveContext.Consumer>
+      {size => (
+        <Styled panelWidth={getAsideInfoWidth(size)}>
+          <ContentWrap isProjectInfo={isProjectInfo} ref={cRef}>
+            {isProjectInfo && (
+              <ProjectContent id={layerId} location={featureId} />
+            )}
+            {!isProjectInfo && featureId && config && (
+              <FeatureContent featureId={featureId} config={config} />
+            )}
+            {!featureId && !isProjectInfo && config && (
+              <LayerContent
+                config={config}
+                inject={
+                  !featureId &&
+                  config &&
+                  POLICY_LAYERS.indexOf(config.id) > -1
+                    ? [{
+                      tag: '[COUNTRIES]',
+                      el: (<LayerFeatures config={config} />)
+                    }]
+                    : null
+                } />
+            )}
+          </ContentWrap>
+          <ButtonClose onClick={() => onClose()} />
+        </Styled>
+      )}
+    </ResponsiveContext.Consumer>
   );
 }
 
 LayerInfo.propTypes = {
-  onLoadContent: PropTypes.func.isRequired,
-  content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   id: PropTypes.string,
   onClose: PropTypes.func,
+  config: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  content: (state, props) =>
-    selectContentByKey(state, {
-      contentType: 'layers',
-      key: props.id,
-    }),
+  config: (state, { id }) => {
+    const layerId = getLayerId(id);
+    return selectSingleLayerConfig(state, { key: layerId });
+  },
 });
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onLoadContent: id => {
-      dispatch(loadContent('layers', id));
-    },
-  };
-}
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 );
 
 export default compose(withConnect)(LayerInfo);

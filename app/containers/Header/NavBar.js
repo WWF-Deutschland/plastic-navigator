@@ -4,7 +4,7 @@ import { Header } from 'grommet';
 import { getHeaderHeight } from 'utils/responsive';
 
 export default styled(props => (
-  <Header {...props} align="start" pad={{ horizontal: 'medium' }} />
+  <Header align="start" elevation="small" {...props} />
 ))`
   position: absolute;
   top: 0;
@@ -12,7 +12,7 @@ export default styled(props => (
   right: 0;
   width: 100%;
   z-index: ${({ theme }) => theme.dimensions.header.zIndex};
-  background: ${({ theme }) => theme.global.colors.brand};
+  background: ${({ theme }) => theme.global.colors.black};
   color: ${({ theme }) => theme.global.colors.white};
   /* responsive height */
   height: ${getHeaderHeight('small')}px;

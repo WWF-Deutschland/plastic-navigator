@@ -10,7 +10,24 @@ import {
   LAYER_LOAD_SUCCESS,
   LAYER_LOAD_ERROR,
   LAYER_READY,
+  SET_MAP_LAYERS,
+  SET_HIGHLIGHT_FEATURE,
 } from './constants';
+
+export function setHighlightFeature(layer, feature, copy) {
+  return {
+    type: SET_HIGHLIGHT_FEATURE,
+    feature,
+    layer,
+    copy,
+  };
+}
+export function setMapLayers(layers) {
+  return {
+    type: SET_MAP_LAYERS,
+    layers,
+  };
+}
 
 export function loadLayer(key, config) {
   return {

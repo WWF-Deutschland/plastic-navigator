@@ -5,6 +5,19 @@
  */
 import { defineMessages } from 'react-intl';
 
-export const scope = 'rle.containers.Header';
+export const scope = 'app.containers.Header';
 
-export default defineMessages({});
+export default defineMessages({
+  navSectionModules: {
+    id: `${scope}.navSectionModules`,
+    defaultMessage: 'Sections',
+  },
+  navSectionPages: {
+    id: `${scope}.navSectionPages`,
+    defaultMessage: 'Pages',
+  },
+  navSectionLanguages: {
+    id: `${scope}.navSectionLanguages`,
+    defaultMessage: 'Pages',
+  },
+});

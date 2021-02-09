@@ -2,10 +2,10 @@
 layout: default
 ---
 
-{% if page.image and page.image != '' %}
+{% if page.image_file_name and page.image_file_name != '' %}
 <figure class="mpx-figure">
   <div class="mpx-image-wrap">
-    <img class="mpx-img" src="{{site.siteurl}}/{{site.prose.media}}/{{page.image}}" alt="{{page.image_caption}}">
+    <img class="mpx-img" src="{{site.siteurl}}/{{site.prose.media}}/{{page.image_file_name}}" alt="{{page.image_caption}}">
   </div>
   <figcaption class="mpx-figcaption">
     {{page.image_caption}}
@@ -20,8 +20,3 @@ layout: default
   {% endif %}
   {{content}}
 </div>
-{% if page.text_references and page.text_references != '' %}
-<div class="mpx-layer-references">
-  {{page.text_references}}
-</div>
-{% endif %}

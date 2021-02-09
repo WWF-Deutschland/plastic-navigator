@@ -2,36 +2,69 @@
   {
     "id": "plastic",
     "title": {
-      "en": "Plastic"
+      "en": "Plastic",
+      "de": "Plastik"
     },
     "groups": [
       {
         "id": "destination",
         "title": {
-          "en": "Where does plastic waste accumulate in the oceans?"
-        },
-        "description": {
-          "en": "Optional description"
+          "en": "Where does plastic waste accumulate in the oceans?",
+          "de": "Wo treibt und sammelt sich der Plastikmüll in den Ozeanen?"
         }
       },
       {
         "id": "source",
         "title": {
-          "en": "Where does plastic waste come from?"
+          "en": "Where does plastic waste come from?",
+          "de": "Woher kommt der Plastikmüll?"
+        }
+      },
+      {
+        "id": "hydro",
+        "title": {
+          "en": "How does the plastic debris travel?",
+          "de": "Wie bewegt sich der Plastikmüll durchs Meer?"
         }
       }
     ]
   },
   {
-    "id": "other",
+    "id": "policy",
     "title": {
-      "en": "Other"
+      "en": "Policy",
+      "de": "Politik"
     },
     "groups": [
       {
-        "id": "hydro",
+        "id": "policy",
         "title": {
-          "en": "Ocean currents & circulation"
+          "en": "What are the countries’ levels of support for a new global agreement on marine plastic pollution?",
+          "de": "In welchem Maße bekennen sich die einzelnen Länder zu einem neuen globalen Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+        },
+        "description": {
+          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans. For small countries, select ‘shown as markers’.",
+          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die einzelnen Länder dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln. Für kleinere Länder am besten 'als Marker angezeigt' anklicken."
+        }
+      }
+    ]
+  },
+  {
+    "id": "projects",
+    "title": {
+      "en": "WWF projects",
+      "de": "WWF Projekte"
+    },
+    "groups": [
+      {
+        "id": "projects",
+        "title": {
+          "en": "Which WWF projects target plastic pollution?",
+          "de": "Welche WWF Projekte bekämpfen die Plastikverschmutzung?"
+        },
+        "description": {
+          "en": "WWF pursues the vision of stopping the discharge of plastic into the ocean with its dedication to a new globally binding agreement, the work we do with the economy and with pilot projects all around the world. WWF is one of the world’s largest and most experienced independent conservation organisations with a global network active in more than 100 countries.",
+          "de": "Der WWF hat die Vision, die Plastikeinträge ins Meer zu stoppen – durch die Unterstützung eines neuen, global verbindlichen Abkommens, die Zusammenarbeit mit Unternehmen sowie mit Pilotprojekten auf der ganzen Welt. Der WWF ist eine der weltweit größten und erfahrensten, unabhängigen Umweltschutzorganisationen mit einem internationalen Netzwerk, das in über 100 Ländern agiert."
         }
       }
     ]

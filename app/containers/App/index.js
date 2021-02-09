@@ -8,16 +8,15 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
 import appTheme from 'theme';
-import { Grommet, Button } from 'grommet';
+import { Grommet, ResponsiveContext } from 'grommet';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -25,12 +24,7 @@ import { getHeaderHeight } from 'utils/responsive';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
-import {
-  loadConfig,
-  navigateHome,
-  navigate,
-  setLayerInfo,
-} from 'containers/App/actions';
+import { loadConfig, navigate, setLayerInfo } from 'containers/App/actions';
 import {
   selectRouterPath,
   selectPageSearch,
@@ -44,6 +38,7 @@ import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
 import LayerInfo from 'containers/LayerInfo';
+import CookieConsent from 'containers/CookieConsent';
 
 import { ROUTES, CONFIG } from 'config';
 import GlobalStyle from 'global-styles';
@@ -54,6 +49,17 @@ import commonMessages from 'messages';
 const AppWrapper = styled.div`
   width: 100%;
   min-height: 100%;
+`;
+
+const AppIframeShadow = styled.div`
+  pointer-events: none;
+  box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999999;
 `;
 
 const Content = styled.div`
@@ -77,29 +83,14 @@ const Content = styled.div`
   }
 `;
 
-const Brand = styled(props => <Button {...props} plain />)`
-  position: absolute;
-  z-index: 3000;
-  top: 20px;
-  left: 0;
-  max-width: 140px;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
-  font-weight: 600;
-  color: ${({ route, theme }) =>
-    theme.global.colors[route !== ROUTES.INTRO ? 'white' : 'black']};
-  background: ${({ route, theme }) =>
-    theme.global.colors[route === ROUTES.INTRO ? 'white' : 'black']};
-`;
-
 function App({
   onLoadConfig,
-  navHome,
   path,
   page,
   info,
   onClosePage,
   onCloseLayerInfo,
-  locale,
+  intl,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -107,21 +98,23 @@ function App({
     onLoadConfig();
   }, []);
 
+  const { locale } = intl;
+
   // figure out route for Brand element colours
   const paths = path.split('/');
   const route = paths.length > 1 ? paths[2] : '';
+  const title = intl.formatMessage(commonMessages.appTitle);
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
-        <Helmet
-          titleTemplate="%s - Marine Plastic Explorer"
-          defaultTitle="Marine Plastic Explorer"
-        >
+        <Helmet titleTemplate={`%s - ${title}`} defaultTitle={title}>
           <meta name="description" content="" />
         </Helmet>
         <Header route={route} />
         <Content>
-          <Map />
+          <ResponsiveContext.Consumer>
+            {size => <Map size={size} hasKey={route === ROUTES.EXPLORE} />}
+          </ResponsiveContext.Consumer>
           <Switch>
             <Route
               path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
@@ -137,12 +130,9 @@ function App({
           {info !== '' && (
             <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
           )}
-          <Brand
-            onClick={() => navHome()}
-            label={<FormattedMessage {...commonMessages.appTitle} />}
-            route={route}
-          />
         </Content>
+        {!window.wwfMpxInsideIframe && <CookieConsent />}
+        {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
       </AppWrapper>
     </Grommet>
@@ -150,14 +140,13 @@ function App({
 }
 
 App.propTypes = {
-  navHome: PropTypes.func,
   onLoadConfig: PropTypes.func,
   onClosePage: PropTypes.func,
   onCloseLayerInfo: PropTypes.func,
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
-  locale: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -181,7 +170,6 @@ export function mapDispatchToProps(dispatch) {
         }),
       ),
     onCloseLayerInfo: () => dispatch(setLayerInfo()),
-    navHome: () => dispatch(navigateHome()),
   };
 }
 
@@ -190,4 +178,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(App);
+export default compose(withConnect)(injectIntl(App));

@@ -13,4 +13,8 @@ export default defineMessages({
     id: `${scope}.next`,
     defaultMessage: 'Next',
   },
+  exploreAll: {
+    id: `${scope}.exploreAll`,
+    defaultMessage: 'Explore all layers',
+  },
 });

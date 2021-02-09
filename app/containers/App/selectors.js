@@ -4,7 +4,9 @@
 import { createSelector } from 'reselect';
 import { DEFAULT_LOCALE, appLocales } from 'i18n';
 
-import { URL_SEARCH_SEPARATOR } from 'config';
+import { URL_SEARCH_SEPARATOR, PROJECT_CONFIG } from 'config';
+
+import { startsWith } from 'utils/string';
 
 import { initialState } from './reducer';
 
@@ -38,11 +40,11 @@ export const selectInfoSearch = createSelector(
 );
 export const selectChapterSearch = createSelector(
   selectRouterSearchParams,
-  search => search.has('ch') && parseInt(search.get('ch'), 10),
+  search => (search.has('ch') ? parseInt(search.get('ch'), 10) : null),
 );
 export const selectStorySearch = createSelector(
   selectRouterSearchParams,
-  search => search.has('st') && parseInt(search.get('st'), 10),
+  search => (search.has('st') ? parseInt(search.get('st'), 10) : null),
 );
 
 /**
@@ -129,6 +131,30 @@ export const selectStoriesConfig = createSelector(
   selectConfig,
   config => config.stories,
 );
+export const selectSingleLayerConfig = createSelector(
+  (state, { key }) => key,
+  selectLayersConfig,
+  (key, layers) => layers && layers.find(l => l.id === key),
+);
+export const selectSingleLayerCategory = createSelector(
+  selectSingleLayerConfig,
+  selectExploreConfig,
+  (layer, explore) => {
+    if (!layer || !explore) return null;
+    return explore.find(cat => cat.id === layer.category);
+  },
+);
+export const selectSingleLayerGroup = createSelector(
+  selectSingleLayerConfig,
+  selectSingleLayerCategory,
+  (layer, exploreCategory) => {
+    if (!layer || !exploreCategory) return null;
+    return (
+      exploreCategory.groups &&
+      exploreCategory.groups.find(g => g.id === layer.group)
+    );
+  },
+);
 
 export const selectConfigReady = createSelector(
   selectGlobal,
@@ -150,6 +176,17 @@ export const selectConfigRequestedByKey = createSelector(
   (key, config) => config[key],
 );
 
+export const selectSingleProjectConfig = createSelector(
+  (state, { key }) => key,
+  state => selectConfigByKey(state, { key: 'projects' }),
+  (key, projects) => {
+    const pid = startsWith(key, `${PROJECT_CONFIG.id}-`)
+      ? key.replace(`${PROJECT_CONFIG.id}-`, '')
+      : key;
+    return projects && projects.find(p => p.project_id === pid);
+  },
+);
+
 export const selectUIState = createSelector(
   selectGlobal,
   global => global.uiState,
@@ -162,6 +199,16 @@ export const selectUIStateByKey = createSelector(
 
 export const selectActiveLayers = createSelector(
   selectLayersSearch,
-  layerSearch =>
-    layerSearch === '' ? [] : layerSearch.split(URL_SEARCH_SEPARATOR),
+  layersSearch =>
+    layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
+);
+export const selectIsActiveLayer = createSelector(
+  (state, id) => id,
+  selectActiveLayers,
+  (id, activeLayers) => activeLayers.indexOf(id) > -1,
+);
+
+export const selectFirstLanding = createSelector(
+  selectGlobal,
+  global => !global.landing,
 );
