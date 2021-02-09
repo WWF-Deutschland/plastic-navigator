@@ -74,7 +74,7 @@ const Main = styled.div`
   width: 100%;
   overflow: auto;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    min-height: 200px;
+    min-height: 100px;
     max-height: 350px;
     height: auto;
     overflow: visible;
