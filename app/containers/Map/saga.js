@@ -70,19 +70,20 @@ function setFeatureIds(json) {
   return json;
 }
 function extendProperties(properties, config, parsed) {
-  return properties.map(d => {
-    const dx = d;
-    asArray(config.extend).forEach((x, index) => {
-      dx[x.join.as] = parsed[index + 1].data.find(xdata =>
+  return properties.map(d =>
+    asArray(config.extend).reduce((memo, x, index) => {
+      const value = parsed[index + 1].data.find(xdata =>
         quasiEquals(xdata[x.join.self], d[x.join.related]),
       );
-    });
-    return dx;
-  });
+      return {
+        ...memo,
+        [x.join.as]: value,
+      };
+    }, d),
+  );
 }
 function setProperties(json, config, parsed) {
   const properties = parsed[0].data;
-  // console.log('setprops',parsed[0].data, properties);
   const features = json.features.reduce((memo, feature) => {
     let joinProperties = properties.filter(p =>
       quasiEquals(p[config.join.self], feature.properties[config.join.related]),
@@ -94,15 +95,17 @@ function setProperties(json, config, parsed) {
       ) {
         if (config.join.default) {
           joinProperties = asArray(config.join.default);
+          const newProperties = config.extend
+            ? extendProperties(joinProperties, config, parsed)
+            : joinProperties;
+
           return [
             ...memo,
             {
               ...feature,
               properties: {
                 ...feature.properties,
-                [config.join.as]: config.extend
-                  ? extendProperties(joinProperties, config, parsed)
-                  : joinProperties,
+                [config.join.as]: newProperties,
               },
             },
           ];
