@@ -221,8 +221,6 @@ export function PanelChapter({
 
   useEffect(() => {
     if (chapter && layersConfig) {
-      console.log('Chapter: activate chapter layers: ', chapter.layers);
-      console.log('Chapter: layers config present ', !!layersConfig);
       onSetLayers(chapter.layers || []);
     }
   }, [chapter, layersConfig]);
