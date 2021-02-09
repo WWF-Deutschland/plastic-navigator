@@ -4,29 +4,36 @@
     "chapters": [
       {
         "title": {
-          "en": "Plastic has been detected on the surface of all oceans"
+          "en": "Plastic has been found on the surface of all oceans",
+          "de": "Plastik wurde an der Oberfläche aller Ozeane festgestellt"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "Plastic in the ocean is a threat to marine ecosystems and can enter the global food chains. This map shows the modelled plastic concentration based on measurements from 24 expeditions. Darker colours indicate more floating plastic debris.",
+          "de": "Plastik im Meer ist eine Bedrohung für die marinen Ökosysteme und kann auch in die Nahrungskette gelangen. Diese Karte zeigt die modellierte Plastikkonzentration auf Basis von Messdaten aus 24 Expeditionen. Dunkle Farben bedeuten eine höhere Konzentration."
         },
-        "layers": ["surface-concentration"]
+        "layers": ["surface-concentration"],
+        "layersFocus": ["surface-concentration"]
       },
       {
         "title": {
-          "en": "Poor Waste Management is a major source of debris"
+          "en": "Poor waste management is a major source of plastic debris",
+          "de": "Mangelhaftes Müllmanagement ist eine bedeutende Quelle für Plastik im Meer"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "This map layer shows estimates of mismanaged plastic waste per km<sup>2</sup>, calculated on the basis of GDP and population data. Darker colours indicate higher amounts of mismanaged waste that can enter our environment.",
+          "de": "Diese Kartenebene zeigt die geschätzte Menge an mangelhaft entsorgtem Plastikmüll pro km², der in die Umwelt gelangen kann, berechnet auf Basis von Bevölkerungsdaten und BIP. Dunklere Farben bedeuten ein höheres Müllaufkommen."
         },
         "layers": ["surface-concentration", "mismanaged-waste"],
         "layersFocus": ["mismanaged-waste"]
       },
       {
         "title": {
-          "en": "Rivers carry plastic from land to see"
+          "en": "Rivers carry plastic from land into the oceans",
+          "de": "Flüsse spülen Plastik vom Land ins Meer"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "Wind and rain carry plastic waste into our streams and rivers. This layer shows the estimated amount of plastic waste entering our oceans for the 122 most polluting rivers. Larger circles indicate more emissions.",
+          "de": "Wind und Regen befördern Plastikmüll in unsere Flüsse, die ihn weiter in unsere Meere spülen. Diese Ebene zeigt die geschätzte Menge an Plastikmüll für die 122 am meisten verschmutzenden Flüsse. Größere Kreise stehen für höhere Einträge."
         },
         "layers": [
           "surface-concentration",
@@ -37,10 +44,12 @@
       },
       {
         "title": {
-          "en": "Currents concentrate floating debris"
+          "en": "Currents transport the floating debris",
+          "de": "Strömungen transportieren den treibenden Müll"
         },
         "description": {
-          "en": "About this chapter..."
+          "en": "Plastic and other floating debris are moved by winds and ocean currents and eventually accumulate at the centre of large current systems called gyres.",
+          "de": "Treibendes Plastik und anderer Unrat werden durch Wind und Strömungen bewegt und sammeln sich schließlich um die Zentren der großen Meereswirbel."
         },
         "layers": [
           "surface-concentration",
@@ -50,6 +59,22 @@
           "gyres"
         ],
         "layersFocus": ["currents", "gyres"]
+      },
+      {
+        "title": {
+          "en": "Towards a global agreement on marine plastic pollution",
+          "de": "Abkommen zur Bekämpfung der Vermüllung der Meere"
+        },
+        "description": {
+          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans.",
+          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die einzelnen Länder dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln."
+        },
+        "layers": [
+          "surface-concentration",
+          "policy-commitments-area",
+          "policy-commitments"
+        ],
+        "layersFocus": ["policy-commitments-area"]
       }
     ]
   }

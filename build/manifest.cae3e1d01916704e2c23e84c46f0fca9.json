@@ -1,0 +1,67 @@
+{
+  "icons": [
+    {
+      "src": "/build/icon_180x180.79a8ea4350bcc79e92df1cc8cd6bb971.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_167x167.36d2482c20beda40e0ffa195030ca83c.png",
+      "sizes": "167x167",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_152x152.c0bd773e61a7ec210acff819a65b178c.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_120x120.0d02de208b8fd0f6f6f672c3c5b2b87c.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_512x512.ddbd4b2ad1883a1841322d13a71a5abd.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_384x384.d24fe1ca4e267b9907532abb0e9ce896.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_192x192.40a50bf628ebc914d3a9d19d559004a7.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_144x144.58feff341b020b9a7864600b7e4ae60c.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_128x128.00bc4e6910c0dcce4a3be6ccd2deb61b.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_96x96.9410b5f7c9e9933d40ffaa37eaf85e2c.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/build/icon_72x72.20566833665256f2c23f8fc4cdfd7432.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    }
+  ],
+  "name": "Global Plastic Navigator",
+  "short_name": "Global Plastic Navigator",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "description": "Global Plastic Navigator",
+  "background_color": "#ffffff",
+  "theme_color": "#282A2C"
+}

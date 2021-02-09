@@ -1,6 +1,7 @@
 import { takeEvery, takeLatest, select, put, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import extend from 'lodash/extend';
+import Papa from 'papaparse';
 import 'whatwg-fetch';
 import 'url-search-params-polyfill';
 
@@ -41,6 +42,7 @@ import {
   setConfigRequested,
   setConfigLoadError,
   setConfigLoadSuccess,
+  setUIState,
 } from './actions';
 
 /**
@@ -102,7 +104,7 @@ function* loadContentSaga({ key, contentType }) {
       if (contentType === 'layers') {
         url = `${
           RESOURCES.CONTENT
-        }/${currentLocale}/${LAYER_CONTENT_PATH}/${key}`;
+        }/${currentLocale}/${LAYER_CONTENT_PATH}/${key}/`;
       }
       if (url) {
         try {
@@ -157,19 +159,39 @@ function* loadConfigSaga({ key }) {
     });
     // If haven't loaded yet, do so now.
     if (!requestedAt && !ready) {
-      const url = `${RESOURCES.DATA}/${CONFIG[key]}`;
+      const config = CONFIG[key];
+      const url = `${RESOURCES.DATA}/${
+        typeof config === 'string' ? config : config.file
+      }`;
       try {
         // First record that we are requesting
         yield put(setConfigRequested(key, Date.now()));
         const response = yield fetch(url);
         const responseOk = yield response.ok;
-        if (responseOk && typeof response.json === 'function') {
-          const json = yield response.json();
-          if (json) {
-            yield put(setConfigLoadSuccess(key, json, Date.now()));
-          } else {
-            yield put(setConfigRequested(key, false));
-            throw new Error(response.statusText);
+        const type = config.type || 'json';
+        if (responseOk) {
+          if (type === 'json' && typeof response.json === 'function') {
+            const json = yield response.json();
+            if (json) {
+              yield put(setConfigLoadSuccess(key, json, Date.now()));
+            } else {
+              yield put(setConfigRequested(key, false));
+              throw new Error(response.statusText);
+            }
+          }
+          if (type === 'csv' && typeof response.text === 'function') {
+            const text = yield response.text();
+            // console.log(csv)
+            if (text) {
+              const parsed = yield Papa.parse(text, {
+                header: true,
+                skipEmptyLines: true,
+              });
+              yield put(setConfigLoadSuccess(key, parsed.data, Date.now()));
+            } else {
+              yield put(setConfigRequested(key, false));
+              throw new Error(response.statusText);
+            }
           }
         } else {
           yield put(setConfigRequested(key, false));
@@ -194,6 +216,7 @@ function* navigateSaga({ location, args }) {
       needsLocale: true,
       replaceSearch: false, // if location search should fully replace previous
       deleteSearchParams: null, //  a list of specific search params to remove
+      deleteUIState: false, //  a list of specific search params to remove
     },
     args || {},
   );
@@ -302,6 +325,9 @@ function* navigateSaga({ location, args }) {
   if (search !== currentLocation.search || path !== currentLocation.pathname) {
     yield put(push(`${path}${search}`));
   }
+  if (myArgs.deleteUIState) {
+    yield put(setUIState());
+  }
 }
 
 function* changeLocaleSaga({ locale }) {
@@ -319,15 +345,22 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ id }) {
+function* setLayerInfoSaga({ layer, feature, copy }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
   // only update if not already active
-  if (searchParams.get('info') !== id) {
-    if (typeof id === 'undefined' || id === '') {
+  let infoId = layer;
+  if (feature) {
+    infoId = `${layer}|${feature}`;
+    if (copy) {
+      infoId = `${layer}|${feature}|${copy}`;
+    }
+  }
+  if (searchParams.get('info') !== infoId) {
+    if (typeof layer === 'undefined' || layer === '') {
       searchParams.delete('info');
     } else {
-      searchParams.set('info', id);
+      searchParams.set('info', infoId);
     }
     // convert to string and append if necessary
     const newSearch = searchParams.toString();
@@ -373,7 +406,7 @@ function* setLayersSaga({ layers }) {
   const searchParams = new URLSearchParams(currentLocation.search);
   searchParams.delete('layers');
 
-  if (layers.length > 0) {
+  if (layers && layers.length > 0) {
     searchParams.set('layers', layers.join(URL_SEARCH_SEPARATOR));
   }
   const newSearch = searchParams.toString();

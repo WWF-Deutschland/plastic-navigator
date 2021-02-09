@@ -27,3 +27,17 @@ const VOWEL_REGEX =
   '^[aieouAIEOUàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕäëïöüÄËÏÖÜ].*';
 
 export const startsWithVowel = str => !!str.match(VOWEL_REGEX);
+
+export const injectMarkdownParagraph = str =>
+  str
+    .split(' __ ')
+    .map(i => i.trim())
+    .join('\n\n ');
+
+export const prepMarkdown = (str, { para }) => {
+  let res = str;
+  if (para) {
+    res = injectMarkdownParagraph(res);
+  }
+  return res;
+};

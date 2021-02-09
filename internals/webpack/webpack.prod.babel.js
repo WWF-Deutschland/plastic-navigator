@@ -96,24 +96,25 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'Marine Plastic Explorer',
-      short_name: 'Marine Plastic Explorer',
-      description: 'Marine Plastic Explorer',
-      background_color: '#fafafa',
-      theme_color: '#b1624d',
+      name: 'Global Plastic Navigator',
+      short_name: 'Global Plastic Navigator',
+      description: 'Global Plastic Navigator',
+      background_color: '#ffffff',
+      theme_color: '#282A2C',
       inject: true,
       ios: true,
-      // icons: [
-      //   {
-      //     src: path.resolve('app/images/icon-512x512.png'),
-      //     sizes: [72, 96, 128, 144, 192, 384, 512],
-      //   },
-      //   {
-      //     src: path.resolve('app/images/icon-512x512.png'),
-      //     sizes: [120, 152, 167, 180],
-      //     ios: true,
-      //   },
-      // ],
+      publicPath: '/build/',
+      icons: [
+        {
+          src: path.resolve('app/images/android-chrome-512x512.png'),
+          sizes: [72, 96, 128, 144, 192, 384, 512],
+        },
+        {
+          src: path.resolve('app/images/android-chrome-512x512.png'),
+          sizes: [120, 152, 167, 180],
+          ios: true,
+        },
+      ],
     }),
 
     new HashedModuleIdsPlugin({

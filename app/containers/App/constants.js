@@ -31,3 +31,4 @@ export const TOGGLE_LAYER = 'app/App/TOGGLE_LAYER';
 export const SET_LAYERS = 'app/App/SET_LAYERS';
 export const SET_CHAPTER = 'app/App/SET_CHAPTER';
 export const SET_STORY = 'app/App/SET_STORY';
+export const SET_LANDING = 'app/App/SET_LANDING';

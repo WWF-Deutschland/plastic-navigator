@@ -6,12 +6,36 @@
   <meta charset="utf-8">
 
   <!-- Make the page mobile compatible -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-  <meta name="robots" content="noindex">
-
-  <link rel="icon" href="/favicon.ico" />
-  <title>Global Ecosystem Typology</title>
+  <link rel="icon" href="./favicon.ico" />
+  <title>Global Plastic Navigator</title>
+  <script>
+    // test if we are running in an iframe embedded on a wwf website
+    function testIFrame() {
+      window.wwfMpxInsideIframe = false;
+      window.wwfMpxInsideWWFIframe = false;
+      if (window.self !== window.top) {
+        window.wwfMpxInsideIframe = true;
+        console.log('Running inside an iframe');
+        try {
+          if (
+            window.top &&
+            window.top.location &&
+            window.top.location.origin &&
+            window.top.location.origin.indexOf('.wwf.') > -1) {
+              console.log('Running inside an iframe on a WWF domain');
+              window.wwfMpxInsideWWFIframe = true;
+          } else {
+            console.log('Not running inside an iframe on a WWF domain');
+          }
+        } catch (err) {
+          console.log('Presumably not running inside an iframe on a WWF domain', err);
+        }
+      }
+    }
+      testIFrame();
+  </script>
 </head>
 
 <body>
@@ -22,6 +46,8 @@
 
   <!-- The app hooks into this div -->
   <div id="app"></div>
+  <!-- Open Sans Font -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
   <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically injects all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this file. Don't add any assets here! (Check out webpack.dev.babel.js and webpack.prod.babel.js if you want to know more) -->
 </body>
 

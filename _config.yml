@@ -1,11 +1,13 @@
 title: Marine Plastic Explorer
 baseurl: ''
-siteurl: 'https://unfolddata.github.io/marine-plastic-explorer'
+siteurl: 'https://plasticnavigator.wwf.de'
 permalink: /:categories/:title
 markdown: kramdown
 languages: &languages
   - name: 'English'
     value: 'en'
+  - name: 'German'
+    value: 'de'
 exclude:
   - app
   - internals
@@ -13,7 +15,7 @@ exclude:
 prose:
   media: "assets/uploads"
   rooturl: '_posts'
-  siteurl: 'https://unfolddata.github.io/marine-plastic-explorer/'
+  siteurl: 'https://plasticnavigator.wwf.de/'
   metadata:
     _posts:
       - name: "layout"
@@ -59,9 +61,4 @@ prose:
         field:
           element: "textarea"
           label: "Optional fact or lead paragraph"
-          value: ""
-      - name: "text_references"
-        field:
-          element: "textarea"
-          label: "Text references"
           value: ""

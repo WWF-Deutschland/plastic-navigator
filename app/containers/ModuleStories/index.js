@@ -11,20 +11,22 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
+import { injectIntl, intlShape } from 'react-intl';
 
 import {
   selectLayersConfig,
   selectStoriesConfig,
   selectChapterSearch,
   selectStorySearch,
+  selectFirstLanding,
 } from 'containers/App/selectors';
 // import { setUIState, setChapter, setStory } from 'containers/App/actions';
-import { setChapter, setStory } from 'containers/App/actions';
+import { setChapter, setStory, setLanding } from 'containers/App/actions';
 
 import PanelChapter from 'containers/PanelChapter';
 import ModuleWrap from 'components/ModuleWrap';
 
-// import commonMessages from 'messages';
+import commonMessages from 'messages';
 // import messages from './messages';
 
 const Styled = styled.div``;
@@ -38,7 +40,15 @@ export function ModuleStories({
   chapter,
   onSetStory,
   onSetChapter,
+  onSetLanding,
+  firstLanding,
+  intl,
 }) {
+  useEffect(() => {
+    if (firstLanding) {
+      onSetLanding();
+    }
+  }, []);
   useEffect(() => {
     if (!story) {
       onSetStory(0);
@@ -60,8 +70,9 @@ export function ModuleStories({
   return (
     <Styled>
       <Helmet>
-        <title>Module Stories</title>
-        <meta name="description" content="stories" />
+        <title>{`${intl.formatMessage(
+          commonMessages.module_stories_metaTitle,
+        )}`}</title>
       </Helmet>
       <ModuleWrap>
         {layersConfig &&
@@ -75,7 +86,7 @@ export function ModuleStories({
             chapter={chapterConfig}
             isFirst={chapter === 0}
             isLast={chapter === storyConfig.chapters.length - 1}
-            layers={layersConfig.filter(
+            layersConfig={layersConfig.filter(
               layer =>
                 chapterConfig &&
                 chapterConfig.layers &&
@@ -97,6 +108,9 @@ ModuleStories.propTypes = {
   onSetStory: PropTypes.func,
   story: PropTypes.number,
   chapter: PropTypes.number,
+  onSetLanding: PropTypes.func,
+  firstLanding: PropTypes.bool,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -104,6 +118,7 @@ const mapStateToProps = createStructuredSelector({
   storiesConfig: state => selectStoriesConfig(state),
   story: state => selectStorySearch(state),
   chapter: state => selectChapterSearch(state),
+  firstLanding: state => selectFirstLanding(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -112,6 +127,7 @@ function mapDispatchToProps(dispatch) {
     onPrevious: current => dispatch(setChapter(Math.max(current - 1, 0))),
     onSetChapter: chapter => dispatch(setChapter(chapter)),
     onSetStory: chapter => dispatch(setStory(chapter)),
+    onSetLanding: () => dispatch(setLanding()),
   };
 }
 
@@ -120,4 +136,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(ModuleStories);
+export default compose(withConnect)(injectIntl(ModuleStories));

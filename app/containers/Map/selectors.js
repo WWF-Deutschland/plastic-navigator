@@ -49,3 +49,26 @@ export const selectLayerConfig = createSelector(
   state => selectConfigByKey(state, { key: 'layers' }),
   config => config,
 );
+
+export const selectMapLayers = createSelector(
+  selectDomain,
+  domain => domain.mapLayers,
+);
+export const selectHighlightFeature = createSelector(
+  selectDomain,
+  domain => domain.featureHighlight,
+);
+
+export const selectLayersLoading = createSelector(
+  selectLayersReady,
+  selectLayersRequested,
+  (ready, requested) => {
+    if (!ready || !requested) return false;
+    const layersReady = Object.keys(ready).length;
+    const layersRequested = Object.keys(requested).reduce(
+      (sum, id) => (requested[id] ? sum + 1 : sum),
+      0,
+    );
+    return layersReady !== layersRequested;
+  },
+);

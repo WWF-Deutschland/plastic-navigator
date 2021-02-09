@@ -37,17 +37,19 @@ export const sizes = {
 export const dimensions = {
   header: {
     // by breakpoint
-    height: [50, 50, 50, 50, 50],
-    zIndex: 1200,
+    height: [50, 50, 60, 60, 60],
+    zIndex: 3000,
   },
-  layerSelect: {
+  // layer select
+  aside: {
     // by breakpoint
-    width: [0, 0, 350, 420, 550],
+    width: [0, 350, 350, 420, 500],
     zIndex: 1150,
   },
-  layerInfo: {
+  // layer info
+  asideInfo: {
     // by breakpoint
-    width: [0, 0, 350, 420, 550],
+    width: [0, 0, 400, 500, 600],
     zIndex: 1150,
   },
 };
@@ -58,10 +60,18 @@ export const colors = {
   // also see https://github.com/grommet/grommet/wiki/Grommet-v2-theming-documentation
   // and https://github.com/grommet/grommet/blob/master/src/js/themes/base.js
   black: '#000000',
-  dark: '#999999',
+  'black-trans': 'rgba(0, 0, 0, 0.6)',
+  dark: '#282A2C',
   white: '#ffffff',
+  'white-trans': 'rgba(255, 255, 255, 0.85)',
   // active: '#ffffff',
-  brand: '#009191',
+  brand: '#00728F',
+  brandDark: '#08586C',
+  brandDarker: '#074E5F',
+  brandLight: '#AFD3DD',
+  light: '#F0F0F0',
+  'light-trans': 'rgba(243, 243, 243, 0.7)',
+  lightHover: '#E3E3E3',
   focus: '#333333',
   hover: '#AD190F',
   // placeholder: '#ffffff',
@@ -74,12 +84,7 @@ export const colors = {
     light: '#dddddd', // on light background
   },
   // other custom colours (also understood by grommet conmponents)
-  // realms: {
-  //   T: '',
-  //   M: '',
-  //   F: '',
-  //   S: '',
-  // },
+  map: '#fdfdfd',
 };
 
 // grommet text
@@ -87,7 +92,7 @@ const text = {
   xxsmall: { size: '12px', height: '14px', maxWidth: '500px' },
   xsmall: { size: '13px', height: '16px', maxWidth: '600px' },
   small: { size: '14px', height: '18px', maxWidth: '700px' },
-  medium: { size: '16px', height: '21px', maxWidth: '800px' },
+  medium: { size: '15px', height: '20px', maxWidth: '800px' },
   large: { size: '18px', height: '24px', maxWidth: '800px' },
   xlarge: { size: '22px', height: '30px', maxWidth: '800px' },
   xxlarge: { size: '30px', height: '36px', maxWidth: '800px' },
@@ -96,6 +101,7 @@ const text = {
 // grommet paddings and margins
 const edgeSize = {
   hair: '1px',
+  xxxsmall: '3px',
   xxsmall: '3px',
   xsmall: '6px',
   small: '12px',
@@ -140,8 +146,8 @@ const theme = {
     edgeSize,
     font: {
       // family: 'Source Sans Pro',
-      height: '22px',
-      size: '16px',
+      height: '20px',
+      size: '15px',
     },
     colors,
     input: {
@@ -167,7 +173,7 @@ const theme = {
     focus: {
       // shadow or outline are required for accessibility
       border: {
-        color: 'rgba(0, 0, 0, 0.7)',
+        color: 'transparent',
       },
       // not effective?
       outline: { color: 'red', size: '1px' },
@@ -178,16 +184,7 @@ const theme = {
       },
     },
     drop: {
-      zIndex: 1200,
-    },
-  },
-  rangeInput: {
-    thumb: {
-      color: 'black',
-    },
-    track: {
-      color: colors.dark,
-      //   height: '4px',
+      zIndex: 9999,
     },
   },
   checkBox: {
@@ -220,7 +217,7 @@ const theme = {
     overlay: {
       background: 'rgba(0, 0, 0, 0.5)',
     },
-    zIndex: 3000,
+    zIndex: 3002,
   },
 };
 

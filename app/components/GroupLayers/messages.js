@@ -13,6 +13,10 @@ export default defineMessages({
     id: `${scope}.columnLayer`,
     defaultMessage: 'Layer',
   },
+  columnProject: {
+    id: `${scope}.columnProject`,
+    defaultMessage: 'Project',
+  },
   columnKey: {
     id: `${scope}.columnKey`,
     defaultMessage: 'Key',

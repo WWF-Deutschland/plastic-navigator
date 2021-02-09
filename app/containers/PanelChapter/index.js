@@ -11,18 +11,37 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Heading, Box, Button, ResponsiveContext, Text } from 'grommet';
-import { Next, Previous, Menu, CircleInformation } from 'grommet-icons';
-
-import { DEFAULT_LOCALE } from 'i18n';
+import { Box, Button, ResponsiveContext, Text } from 'grommet';
+import Markdown from 'react-remarkable';
 
 import {
-  selectLayersConfig,
+  Expand,
+  Collapse,
+  ArrowRight,
+  ArrowLeft,
+  InfoOutline,
+} from 'components/Icons';
+
+import { prepMarkdown } from 'utils/string';
+
+import { DEFAULT_LOCALE } from 'i18n';
+import { MODULES } from 'config';
+
+import {
   selectExploreConfig,
   selectLocale,
   selectUIStateByKey,
 } from 'containers/App/selectors';
-import { setUIState, setLayerInfo, setLayers } from 'containers/App/actions';
+import {
+  navigate,
+  setUIState,
+  setLayerInfo,
+  setLayers,
+} from 'containers/App/actions';
+
+import KeyFull from 'components/KeyFull';
+
+import { isMinSize, isMaxSize } from 'utils/responsive';
 
 // import commonMessages from 'messages';
 import messages from './messages';
@@ -30,15 +49,11 @@ import messages from './messages';
 const Styled = styled(p => <Box {...p} direction="row" gap="hair" />)`
   position: absolute;
   left: 0;
-  right: 0;
-  bottom: 30px;
-  width: 100%;
+  bottom: 35px;
   height: 200px;
   pointer-events: all;
-  z-index: 4000;
+  z-index: 2500;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    right: auto;
-    width: auto;
     bottom: 40px;
   }
 `;
@@ -48,27 +63,43 @@ const ToggleWrap = styled(p => (
     {...p}
     fill="vertical"
     align="center"
-    pad="small"
-    background="black"
+    elevation="small"
     flex={{ shrink: 0 }}
+    responsive={false}
+    background="black"
   />
 ))`
   width: 40px;
+  position: relative;
+  z-index: 3;
 `;
-const ButtonToggle = styled(p => <Button {...p} plain />)``;
-
-const MenuOpen = styled(Menu)`
-  transform: rotate(90deg);
+const ButtonToggle = styled(p => <Button {...p} plain fill />)`
+  background: ${({ theme }) => theme.global.colors.black};
+  padding: ${({ theme }) => theme.global.edgeSize.small};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.dark};
+  }
 `;
 
 const ContentWrap = styled(p => (
   <Box {...p} direction="row" gap="hair" fill="horizontal" />
 ))`
   position: relative;
+  z-index: 2;
 `;
 const Content = styled(p => (
-  <Box {...p} background="black" pad="small" fill="horizontal" />
+  <Box
+    {...p}
+    background="black"
+    pad={{ horizontal: 'small', top: 'small' }}
+    fill="horizontal"
+    elevation="small"
+    responsive={false}
+    flex={false}
+  />
 ))`
+  max-width: 350px;
+  overflow: hidden;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 300px;
   }
@@ -76,8 +107,18 @@ const Content = styled(p => (
 
 //
 // const TitleWrap = styled(Box)``;
-const Title = styled(p => <Heading {...p} level={4} />)`
-  margin-top: 0;
+const Title = styled(Text)`
+  font-size: 22px;
+  line-height: 23px;
+  margin: 0;
+  margin-bottom: 5px;
+  font-family: 'wwfregular';
+  font-weight: normal;
+  text-transform: uppercase;
+  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
+    font-size: 26px;
+    line-height: 27px;
+  }
 `;
 
 const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`
@@ -86,21 +127,65 @@ const ButtonWrap = styled(p => <Box {...p} direction="row" gap="small" />)`
   right: ${({ theme }) => theme.global.edgeSize.small};
   transform: translateY(50%);
 `;
-const ButtonNext = styled(p => (
-  <Button {...p} reverse color="brand" primary />
-))``;
-const ButtonPrevious = styled(p => <ButtonNext {...p} />)``;
+const ButtonNext = styled(p => <Button {...p} reverse plain />)`
+  background: ${({ theme }) => theme.global.colors.brand};
+  color: ${({ theme }) => theme.global.colors.white};
+  border-radius: 20px;
+  padding: 2px 12px;
+  height: 25px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.brandDark};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 20px;
+    height: 35px;
+    padding: 5px 20px;
+  }
+`;
+const ButtonPrevious = styled(p => <ButtonNext {...p} />)`
+  padding: 2px 12px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 5px 15px;
+  }
+`;
+const LabelWrap = styled(p => <Box {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 1;
+`;
 
-const Description = styled(Text)``;
+const Description = styled(Text)`
+  font-size: 13px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 15px;
+  }
+`;
 
-const LayersFocusWrap = styled(p => <Box {...p} direction="row" />)``;
-const LayerFocus = styled(p => <Box {...p} fill="horizontal" />)``;
+const LayersFocusWrap = styled(p => (
+  <Box {...p} direction="row" gap="small" flex={false} />
+))`
+  width: 100%;
+`;
+const LayerFocus = styled(p => <Box {...p} />)``;
 const LayerTitleWrap = styled(p => (
   <Box {...p} direction="row" align="center" />
-))``;
-const LayerTitle = styled(Text)``;
-const LayerButtonInfo = styled(p => <Button {...p} />)`
+))`
+  margin-bottom: 6px;
+`;
+const LayerTitle = styled(Text)`
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+`;
+
+const LayerButtonInfo = styled(p => <Button plain {...p} />)`
+  padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
   margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
+  border-radius: 9999px;
+  &:hover {
+    background: ${({ theme }) => theme.global.colors['dark-1']};
+  }
 `;
 
 // content is split into 2 sub-chapters on small screens
@@ -111,6 +196,9 @@ const COMPONENT_KEY = 'PanelChapter';
 const DEFAULT_UI_STATE = {
   open: true,
 };
+
+const MIN_EXPAND = 'xlarge';
+const MAX_FOLD = 'large';
 
 export function PanelChapter({
   onPrevious,
@@ -123,7 +211,8 @@ export function PanelChapter({
   uiState,
   onSetOpen,
   onLayerInfo,
-  layers,
+  layersConfig,
+  navModule,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -131,81 +220,106 @@ export function PanelChapter({
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (chapter) {
+    if (chapter && layersConfig) {
+      console.log('Chapter: activate chapter layers: ', chapter.layers);
+      console.log('Chapter: layers config present ', !!layersConfig);
       onSetLayers(chapter.layers || []);
     }
-  }, [chapter]);
+  }, [chapter, layersConfig]);
 
-  const layersFocus =
+  const configsFocus =
     chapter &&
     chapter.layersFocus &&
-    layers &&
-    layers.filter(l => chapter.layersFocus.slice(0, 2).indexOf(l.id) > -1);
+    layersConfig &&
+    layersConfig.filter(
+      l => chapter.layersFocus.slice(0, 2).indexOf(l.id) > -1,
+    );
   return (
     <ResponsiveContext.Consumer>
       {size => (
         <Styled>
           <ToggleWrap>
             <ButtonToggle
-              icon={open ? <MenuOpen /> : <Menu />}
+              icon={
+                <Box fill justify="start">
+                  {open ? <Collapse /> : <Expand />}
+                </Box>
+              }
               onClick={() => onSetOpen(!open)}
             />
           </ToggleWrap>
           {open && (
             <ContentWrap>
-              {(size !== 'small' || step === 0) && (
+              {(isMinSize(size, MIN_EXPAND) || step === 0) && (
                 <Content>
                   {chapter && locale && (
                     <Title>
                       {chapter.title[locale] || chapter.title[DEFAULT_LOCALE]}
                     </Title>
                   )}
-                  {layersFocus && layersFocus.length > 0 && (
-                    <LayersFocusWrap>
-                      {layersFocus.map(layer => (
-                        <LayerFocus key={layer.id}>
+                  {configsFocus && configsFocus.length > 0 && (
+                    <LayersFocusWrap fill>
+                      {configsFocus.map(config => (
+                        <LayerFocus
+                          key={config.id}
+                          fill={configsFocus.length === 1 && 'horizontal'}
+                          style={{
+                            width: configsFocus.length > 1 ? '50%' : '100%',
+                          }}
+                          flex={false}
+                        >
                           <LayerTitleWrap
-                            fill={layersFocus.length === 1 && 'horizontal'}
+                            fill={configsFocus.length === 1 && 'horizontal'}
                           >
                             {locale && (
                               <LayerTitle>
-                                {layer['title-short'] &&
-                                  (layer['title-short'][locale] ||
-                                    layer['title-short'][DEFAULT_LOCALE])}
-                                {!layer['title-short'] &&
-                                  (layer.title[locale] ||
-                                    layer.title[DEFAULT_LOCALE])}
+                                {config['title-short'] &&
+                                  (config['title-short'][locale] ||
+                                    config['title-short'][DEFAULT_LOCALE])}
+                                {!config['title-short'] &&
+                                  (config.title[locale] ||
+                                    config.title[DEFAULT_LOCALE])}
                               </LayerTitle>
                             )}
                             <LayerButtonInfo
-                              onClick={() => onLayerInfo(layer.id)}
-                              icon={<CircleInformation />}
-                              stretch={layersFocus.length === 1}
+                              onClick={() =>
+                                onLayerInfo(config['content-id'] || config.id)
+                              }
+                              icon={<InfoOutline />}
+                              stretch={configsFocus.length === 1}
                             />
                           </LayerTitleWrap>
-                          TODO: KEY
+                          <KeyFull config={config} simple dark />
                         </LayerFocus>
                       ))}
                     </LayersFocusWrap>
                   )}
                 </Content>
               )}
-              {(size !== 'small' || step === 1) && (
+              {(isMinSize(size, MIN_EXPAND) || step === 1) && (
                 <Content>
                   {chapter && locale && (
-                    <Description>
-                      {chapter.description[locale] ||
-                        chapter.description[DEFAULT_LOCALE]}
+                    <Description className="mpx-wrap-markdown-description">
+                      <Markdown
+                        options={{
+                          html: true,
+                        }}
+                        source={prepMarkdown(
+                          chapter.description[locale] ||
+                            chapter.description[DEFAULT_LOCALE],
+                          { para: true },
+                        )}
+                      />
                     </Description>
                   )}
                 </Content>
               )}
               <ButtonWrap>
-                {(!isFirst || (size === 'small' && step > 0)) && (
+                {(!isFirst || (isMaxSize(size, MAX_FOLD) && step > 0)) && (
                   <ButtonPrevious
-                    icon={<Previous color="white" />}
+                    icon={<ArrowLeft color="white" />}
                     onClick={() => {
-                      if (size === 'small') {
+                      if (isMaxSize(size, MAX_FOLD)) {
                         if (step > 0) {
                           setStep(step - 1);
                         }
@@ -213,33 +327,58 @@ export function PanelChapter({
                           if (!isFirst) {
                             setStep(STEPS - 1);
                           }
+                          onLayerInfo();
                           onPrevious();
                         }
                       } else {
+                        onLayerInfo();
                         onPrevious();
                       }
                     }}
                   />
                 )}
-                <ButtonNext
-                  icon={<Next color="white" />}
-                  label={<FormattedMessage {...messages.next} />}
-                  onClick={() => {
-                    if (size === 'small') {
-                      if (step < STEPS - 1) {
-                        setStep(step + 1);
-                      }
-                      if (step === STEPS - 1) {
-                        if (!isLast) {
-                          setStep(0);
+                {(!isLast || (isMaxSize(size, MAX_FOLD) && step === 0)) && (
+                  <ButtonNext
+                    icon={<ArrowRight color="white" />}
+                    label={
+                      <LabelWrap
+                        margin={{ top: size === 'small' ? '-3px' : '-4px' }}
+                      >
+                        <FormattedMessage {...messages.next} />
+                      </LabelWrap>
+                    }
+                    gap={size === 'small' ? 'xsmall' : 'small'}
+                    onClick={() => {
+                      if (isMaxSize(size, MAX_FOLD)) {
+                        if (step < STEPS - 1) {
+                          setStep(step + 1);
                         }
+                        if (step === STEPS - 1) {
+                          if (!isLast) {
+                            setStep(0);
+                          }
+                          onLayerInfo();
+                          onNext();
+                        }
+                      } else {
+                        onLayerInfo();
                         onNext();
                       }
-                    } else {
-                      onNext();
+                    }}
+                  />
+                )}
+                {isLast && (!isMaxSize(size, MAX_FOLD) || step > 0) && (
+                  <ButtonNext
+                    label={
+                      <LabelWrap margin={{ top: '-4px' }}>
+                        <FormattedMessage {...messages.exploreAll} />
+                      </LabelWrap>
                     }
-                  }}
-                />
+                    onClick={() => {
+                      navModule('explore');
+                    }}
+                  />
+                )}
               </ButtonWrap>
             </ContentWrap>
           )}
@@ -255,16 +394,16 @@ PanelChapter.propTypes = {
   onPrevious: PropTypes.func,
   onSetOpen: PropTypes.func,
   onLayerInfo: PropTypes.func,
-  layers: PropTypes.array,
+  layersConfig: PropTypes.array,
   locale: PropTypes.string,
   chapter: PropTypes.object,
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
   uiState: PropTypes.object,
+  navModule: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  layersConfig: state => selectLayersConfig(state),
   exploreConfig: state => selectExploreConfig(state),
   locale: state => selectLocale(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
@@ -281,6 +420,7 @@ function mapDispatchToProps(dispatch) {
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onSetLayers: layers => dispatch(setLayers(layers)),
+    navModule: id => MODULES[id] && dispatch(navigate(MODULES[id].path)),
   };
 }
 

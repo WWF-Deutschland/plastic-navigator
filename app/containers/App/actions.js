@@ -36,6 +36,7 @@ import {
   SET_LAYERS,
   SET_STORY,
   SET_CHAPTER,
+  SET_LANDING,
 } from './constants';
 
 export function setLocale(locale) {
@@ -75,7 +76,10 @@ export function navigatePage(id, args) {
 
 // proxy action: navigate home, optionally resetting all search params
 export function navigateHome(reset = true) {
-  return navigate(ROUTES.INTRO, reset ? { deleteSearchParams: true } : {});
+  return navigate(
+    ROUTES.INTRO,
+    reset ? { deleteSearchParams: true, deleteUIState: true } : {},
+  );
 }
 
 export function loadContent(contentType, key) {
@@ -166,6 +170,7 @@ export function setConfigReady(key, time) {
     time,
   };
 }
+
 export function setUIState(component, state) {
   return {
     type: SET_UI_STATE,
@@ -173,10 +178,12 @@ export function setUIState(component, state) {
     state,
   };
 }
-export function setLayerInfo(id) {
+export function setLayerInfo(layer, feature, copy) {
   return {
     type: SET_LAYER_INFO,
-    id,
+    layer,
+    feature,
+    copy,
   };
 }
 export function toggleLayer(id) {
@@ -201,5 +208,10 @@ export function setStory(index) {
   return {
     type: SET_STORY,
     index,
+  };
+}
+export function setLanding() {
+  return {
+    type: SET_LANDING,
   };
 }
