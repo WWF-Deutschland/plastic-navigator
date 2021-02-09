@@ -264,8 +264,8 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    console.log('Map: active layer ids: ', activeLayerIds);
-    console.log('Map: layers config present ', !!layersConfig);
+    // console.log('Map: active layer ids: ', activeLayerIds);
+    // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
       // remove layers no longer active
