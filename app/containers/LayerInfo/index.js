@@ -22,7 +22,7 @@ import { getLayerFeatureIds, getLayerId } from 'utils/layers';
 import { selectSingleLayerConfig } from 'containers/App/selectors';
 
 import LayerContent from './LayerContent';
-import LayerFeatures from './LayerFeatures';
+import CountryList from './CountryList';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 // import messages from './messages';
@@ -107,7 +107,7 @@ export function LayerInfo({ id, onClose, config }) {
                   POLICY_LAYERS.indexOf(config.id) > -1
                     ? [{
                       tag: '[COUNTRIES]',
-                      el: (<LayerFeatures config={config} />)
+                      el: (<CountryList config={config} />)
                     }]
                     : null
                 } />

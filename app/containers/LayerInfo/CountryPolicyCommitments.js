@@ -11,6 +11,11 @@ import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import { KeyArea } from 'components/KeyArea';
+import {
+  sortPositions,
+  getPositionIcon,
+  getPositionSquareStyle,
+} from './utils';
 
 import messages from './messages';
 
@@ -56,71 +61,15 @@ const MultipleWrap = styled.div`
   margin-bottom: 10px;
 `;
 
-const getSquareStyle = (config, position) => {
-  if (
-    config.render &&
-    config.render.type === 'area' &&
-    config.featureStyle &&
-    config.featureStyle.property
-  ) {
-    const ps = config.featureStyle.property.split('.');
-    const positionValue = position[ps[1]];
-    const style = Object.keys(config.featureStyle.style).reduce(
-      (styleMemo, attr) => {
-        const attrObject = config.featureStyle.style[attr];
-        // prettier-ignore
-        const attrValue =
-          attrObject[positionValue] ||
-          attrObject.default ||
-          attrObject.none ||
-          attrObject.without ||
-          attrObject['0'];
-        return {
-          ...styleMemo,
-          [attr]: attrValue,
-        };
-      },
-      {},
-    );
-    return {
-      stroke: true,
-      weight: 1,
-      fill: true,
-      fillOpacity: 0.4,
-      ...style,
-    };
-  }
-  return null;
-};
-
 const CountryPolicyCommitments = ({ config, feature, intl }) => {
   const { locale } = intl;
   const { positions } = feature.properties;
-  if (!positions || positions.length < 0) return null;
-  const sorted = [...positions]
-    .sort((a, b) => {
-      const aDate = a.source && a.source.date && new Date(a.source.date);
-      const bDate = b.source && b.source.date && new Date(b.source.date);
-      if (aDate && !bDate) return -1;
-      if (!aDate && bDate) return 1;
-      if (aDate > bDate) return -1;
-      return 1;
-    })
-    .sort((a, b) => {
-      if (config.key && config.key.values) {
-        const aIndex =
-          a.position_id && config.key.values.indexOf(a.position_id);
-        const bIndex =
-          b.position_id && config.key.values.indexOf(b.position_id);
-        if (aIndex < bIndex) return -1;
-        return 1;
-      }
-      return 1;
-    });
-  const iconuri =
-    config.icon &&
-    config.icon.datauri &&
-    (config.icon.datauri.default || config.icon.datauri);
+  if (!positions || positions.length < 1) return null;
+  const sorted = sortPositions(positions, config);
+  // const iconuri =
+  //   config.icon &&
+  //   config.icon.datauri &&
+  //   (config.icon.datauri.default || config.icon.datauri);
   const iconsize = { x: 50, y: 50 };
 
   // prettier-ignore
@@ -134,8 +83,12 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
         </MultipleWrap>
       )}
       {sorted.map(position => {
-        const icon = iconuri && iconuri[position.position_id];
-        const square = getSquareStyle(config, position);
+        const icon = config.icon
+          && config.icon.datauri
+          && getPositionIcon(position, config);
+        const square = config.render
+          && config.render.type === 'area'
+          && getPositionSquareStyle(position, config);
         return (
           <div key={`${position.position_id}${position.source_id}`}>
             {positions.length > 1 && <BorderBottomWrap />}
@@ -150,7 +103,7 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
                       <IconImg src={icon} />
                     </IconImgWrap>
                   )}
-                  {square && (
+                  {!icon && square && (
                     <AreaWrap>
                       <KeyArea areaStyles={[square]} />
                     </AreaWrap>

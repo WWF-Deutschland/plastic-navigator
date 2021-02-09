@@ -11,6 +11,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
 
+import { KeyArea } from 'components/KeyArea';
 import { ArrowRightL, ArrowDown, ArrowUp } from 'components/Icons';
 
 import { setLayerInfo } from 'containers/App/actions';
@@ -53,6 +54,10 @@ const IconWrap = styled(p => <Box {...p} responsive={false} />)`
   border-radius: 9999px;
   background: ${({ theme, over }) =>
     over ? theme.global.colors.light : 'transparent'};
+`;
+
+const AreaWrap = styled(p => <Box {...p} />)`
+  position: relative;
 `;
 
 export function FeatureList({
@@ -107,7 +112,14 @@ export function FeatureList({
                   align="center"
                   responsive={false}
                 >
-                  <Text>{item.label}</Text>
+                  <Box direction="row" justify="start" gap="small">
+                    {item.square && (
+                      <AreaWrap>
+                        <KeyArea areaStyles={[item.square]} />
+                      </AreaWrap>
+                    )}
+                    <Text>{item.label}</Text>
+                  </Box>
                   <ArrowRightL />
                 </Box>
               }
