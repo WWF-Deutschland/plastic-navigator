@@ -231,7 +231,6 @@
     "id": "currents",
     "category": "plastic",
     "group": "hydro",
-    "source": "data",
     "source": "mapbox",
     "type": "raster-tiles",
     "tileset": "wwfdeutschland.241dtqaj",
