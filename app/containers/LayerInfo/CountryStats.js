@@ -13,7 +13,7 @@ import { Box, Text } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 import quasiEquals from 'utils/quasi-equals';
 import { startsWith } from 'utils/string';
-import { getPositionSquareStyle } from './utils';
+import { getPositionSquareStyle, hexToRgba } from './utils';
 
 const StackedBarWrapper = styled.div`
   display: block;
@@ -47,17 +47,6 @@ const Count = styled(p => <Text size="large" {...p} weight="bold" />)``;
 const Label = styled(p => <Text size="small" {...p} />)`
   max-width: 150px;
 `;
-
-const hexToRgba = (hex, opacity) => {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  // prettier-ignore
-  return result
-    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
-      result[3],
-      16,
-    )}, ${opacity || 1})`
-    : null;
-};
 
 const getTitle = (value, config, locale) => {
   if (config.key && config.key.title && config.key.title[value]) {
