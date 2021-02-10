@@ -11,10 +11,10 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
 
-import { KeyArea } from 'components/KeyArea';
 import { ArrowRightL, ArrowDown, ArrowUp } from 'components/Icons';
 
 import { setLayerInfo } from 'containers/App/actions';
+import CountryPositionSymbol from './CountryPositionSymbol';
 
 const ListTitle = styled(p => <Heading level={2} {...p} />)`
   font-family: 'wwfregular';
@@ -54,10 +54,6 @@ const IconWrap = styled(p => <Box {...p} responsive={false} />)`
   border-radius: 9999px;
   background: ${({ theme, over }) =>
     over ? theme.global.colors.light : 'transparent'};
-`;
-
-const AreaWrap = styled(p => <Box {...p} />)`
-  position: relative;
 `;
 
 export function FeatureList({
@@ -113,10 +109,11 @@ export function FeatureList({
                   responsive={false}
                 >
                   <Box direction="row" justify="start" gap="small">
-                    {item.square && (
-                      <AreaWrap>
-                        <KeyArea areaStyles={[item.square]} />
-                      </AreaWrap>
+                    {(item.icon || item.square) && (
+                      <CountryPositionSymbol
+                        icon={item.icon}
+                        square={item.square}
+                      />
                     )}
                     <Text>{item.label}</Text>
                   </Box>

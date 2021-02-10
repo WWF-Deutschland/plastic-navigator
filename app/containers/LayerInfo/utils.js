@@ -13,11 +13,21 @@ export const sortPositions = (positions, config) =>
       return 1;
     })
     .sort((a, b) => {
+      // area layer
       if (config.key && config.key.values) {
         const aIndex =
           a.position_id && config.key.values.indexOf(a.position_id);
         const bIndex =
           b.position_id && config.key.values.indexOf(b.position_id);
+        if (aIndex < bIndex) return -1;
+        return 1;
+      }
+      // point layer
+      if (config.key && config.key.iconValue && config.key.iconValue.full) {
+        const aIndex =
+          a.position_id && config.key.iconValue.full.indexOf(a.position_id);
+        const bIndex =
+          b.position_id && config.key.iconValue.full.indexOf(b.position_id);
         if (aIndex < bIndex) return -1;
         return 1;
       }
@@ -31,8 +41,11 @@ export const getStrongestPosition = (positions, config) => {
 };
 
 export const getPositionIcon = (position, config) => {
-  const iconuri = config.icon.datauri.default || config.icon.datauri;
-  return iconuri ? iconuri[position.position_id] : null;
+  if (config.icon && config.icon.datauri) {
+    const iconuri = config.icon.datauri.default || config.icon.datauri;
+    return iconuri ? iconuri[position.position_id] : null;
+  }
+  return null;
 };
 
 export const getPositionSquareStyle = (position, config) => {
