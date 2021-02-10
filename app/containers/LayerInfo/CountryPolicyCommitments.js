@@ -10,12 +10,8 @@ import {
 import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
-import { KeyArea } from 'components/KeyArea';
-import {
-  sortPositions,
-  getPositionIcon,
-  getPositionSquareStyle,
-} from './utils';
+import { sortPositions } from './utils';
+import CountryPositionSymbol from './CountryPositionSymbol';
 
 import messages from './messages';
 
@@ -34,17 +30,6 @@ const P = styled.p`
   margin-bottom: 0;
 `;
 const Quote = styled(P)``;
-
-const IconImgWrap = styled.div`
-  width: ${({ size }) => size.x}px;
-`;
-const AreaWrap = styled(p => <Box {...p} />)`
-  position: relative;
-`;
-
-const IconImg = styled.img`
-  width: 100%;
-`;
 
 const SectionTitle = styled(p => <Heading level="5" {...p} />)`
   font-weight: 600;
@@ -66,11 +51,6 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
   const { positions } = feature.properties;
   if (!positions || positions.length < 1) return null;
   const sorted = sortPositions(positions, config);
-  // const iconuri =
-  //   config.icon &&
-  //   config.icon.datauri &&
-  //   (config.icon.datauri.default || config.icon.datauri);
-  const iconsize = { x: 50, y: 50 };
 
   // prettier-ignore
   return (
@@ -82,93 +62,81 @@ const CountryPolicyCommitments = ({ config, feature, intl }) => {
           </Text>
         </MultipleWrap>
       )}
-      {sorted.map(position => {
-        const icon = config.icon
-          && config.icon.datauri
-          && getPositionIcon(position, config);
-        const square = config.render
-          && config.render.type === 'area'
-          && getPositionSquareStyle(position, config);
-        return (
-          <div key={`${position.position_id}${position.source_id}`}>
-            {positions.length > 1 && <BorderBottomWrap />}
-            {position.position && (
-              <Section>
-                <SectionTitle>
-                  <FormattedMessage {...messages.position} />
-                </SectionTitle>
-                <Box direction="row" gap="medium" margin={{ bottom: 'medium' }} align="center">
-                  {icon && (
-                    <IconImgWrap size={iconsize}>
-                      <IconImg src={icon} />
-                    </IconImgWrap>
-                  )}
-                  {!icon && square && (
-                    <AreaWrap>
-                      <KeyArea areaStyles={[square]} />
-                    </AreaWrap>
-                  )}
-                  <Text size="small">
-                    {position.position[`position_${locale}`] ||
-                      position.position[`position_${DEFAULT_LOCALE}`]}
+      {sorted.map(position => (
+        <div key={`${position.position_id}${position.source_id}`}>
+          {positions.length > 1 && <BorderBottomWrap />}
+          {position.position && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.position} />
+              </SectionTitle>
+              <Box direction="row" gap="small" margin={{ bottom: 'medium' }} align="center">
+                {position && config && (
+                  <CountryPositionSymbol
+                    position={position}
+                    config={config}
+                  />
+                )}
+                <Text size="small">
+                  {position.position[`position_${locale}`] ||
+                    position.position[`position_${DEFAULT_LOCALE}`]}
+                </Text>
+              </Box>
+            </Section>
+          )}
+          {position.source &&
+            (position.source[`quote_${locale}`] ||
+              position.source[`quote_${DEFAULT_LOCALE}`]) && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.quote} />
+              </SectionTitle>
+              <Quote>
+                {position.source[`quote_${locale}`] ||
+                  position.source[`quote_${DEFAULT_LOCALE}`]}
+              </Quote>
+              {position.source.date && (
+                <P>
+                  <Text size="xsmall">
+                    (<FormattedDate value={new Date(position.source.date)} />)
                   </Text>
-                </Box>
-              </Section>
-            )}
-            {position.source &&
-              (position.source[`quote_${locale}`] ||
-                position.source[`quote_${DEFAULT_LOCALE}`]) && (
-              <Section>
-                <SectionTitle>
-                  <FormattedMessage {...messages.quote} />
-                </SectionTitle>
-                <Quote>
-                  {position.source[`quote_${locale}`] ||
-                    position.source[`quote_${DEFAULT_LOCALE}`]}
-                </Quote>
-                {position.source.date && (
-                  <P>
-                    <Text size="xsmall">
-                      (<FormattedDate value={new Date(position.source.date)} />)
-                    </Text>
-                  </P>
-                )}
-              </Section>
-            )}
-            {position.source &&
-              (position.source[`source_${locale}`] ||
-                position.source[`source_${DEFAULT_LOCALE}`]
-              ) && (
-              <Section>
-                <SectionTitle>
-                  <FormattedMessage {...messages.source} />
-                </SectionTitle>
-                {position.source.url && (
-                  <P>
-                    <StyledButton
-                      href={position.source.url}
-                      label={
-                        <Text>
-                          {position.source[`source_${locale}`] ||
-                          position.source[`source_${DEFAULT_LOCALE}`]}
-                        </Text>
-                      }
-                    />
-                  </P>
-                )}
-                {!position.source.url && (
-                  <P>
-                    <Text>
-                      {position.source[`source_${locale}`] ||
-                      position.source[`source_${DEFAULT_LOCALE}`]}
-                    </Text>
-                  </P>
-                )}
-              </Section>
-            )}
-          </div>
-        );
-      })}
+                </P>
+              )}
+            </Section>
+          )}
+          {position.source &&
+            (position.source[`source_${locale}`] ||
+              position.source[`source_${DEFAULT_LOCALE}`]
+            ) && (
+            <Section>
+              <SectionTitle>
+                <FormattedMessage {...messages.source} />
+              </SectionTitle>
+              {position.source.url && (
+                <P>
+                  <StyledButton
+                    href={position.source.url}
+                    label={
+                      <Text>
+                        {position.source[`source_${locale}`] ||
+                        position.source[`source_${DEFAULT_LOCALE}`]}
+                      </Text>
+                    }
+                  />
+                </P>
+              )}
+              {!position.source.url && (
+                <P>
+                  <Text>
+                    {position.source[`source_${locale}`] ||
+                    position.source[`source_${DEFAULT_LOCALE}`]}
+                  </Text>
+                </P>
+              )}
+            </Section>
+          )}
+        </div>
+      ))}
     </Styled>
   );
 };

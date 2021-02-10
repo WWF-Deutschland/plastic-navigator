@@ -12,6 +12,7 @@ import Gradient from './Gradient';
 import Circles from './Circles';
 import Areas from './Areas';
 import Icon from './Icon';
+import IconAlt from './IconAlt';
 import SubTitle from './SubTitle';
 
 import messages from './messages';
@@ -34,6 +35,7 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
+  const isIconAlt = isIcon && key.style;
   /* eslint-disable react/no-danger */
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
@@ -63,8 +65,21 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
           )}
         </SubTitleWrap>
       )}
-      {isIcon && (
+      {isIcon && !isIconAlt && (
         <Icon
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          title={
+            myId === PROJECT_CONFIG.id
+              ? intl.formatMessage(coreMessages.projectLocation)
+              : null
+          }
+        />
+      )}
+      {isIconAlt && (
+        <IconAlt
           id={myId}
           config={config}
           simple={simple}

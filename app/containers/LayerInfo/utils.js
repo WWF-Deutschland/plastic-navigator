@@ -48,13 +48,61 @@ export const getPositionIcon = (position, config) => {
   return null;
 };
 
-export const getPositionSquareStyle = (position, config) => {
-  if (config.featureStyle && config.featureStyle.property) {
-    const ps = config.featureStyle.property.split('.');
-    const positionValue = position[ps[1]];
-    const style = Object.keys(config.featureStyle.style).reduce(
+export const getPositionSquareStyle = (positionOrValue, config) => {
+  let positionStyle;
+  let positionProperty;
+  if (config.featureStyle) {
+    positionProperty = config.featureStyle.property;
+    positionStyle = config.featureStyle.style;
+  } else if (config.key && config.key.style) {
+    positionProperty = config.key.style.property;
+    positionStyle = config.key.style;
+  }
+  const ps = positionProperty && positionProperty.split('.');
+  const positionValue =
+    (ps && ps[1] && positionOrValue[ps[1]]) || positionOrValue;
+  if (positionStyle) {
+    const style = Object.keys(positionStyle).reduce((styleMemo, attr) => {
+      if (attr === 'type' || attr === 'property') return styleMemo;
+      const attrObject = positionStyle[attr];
+      // prettier-ignore
+      const attrValue =
+        attrObject[positionValue] ||
+        attrObject.default ||
+        attrObject.none ||
+        attrObject.without ||
+        attrObject['0'];
+      return {
+        ...styleMemo,
+        [attr]: attrValue,
+      };
+    }, {});
+    return {
+      stroke: config.render && config.render.type === 'area',
+      weight: config.render && config.render.type === 'area' ? 1 : 0,
+      fill: true,
+      fillOpacity: config.render && config.render.type === 'area' ? 0.4 : 1,
+      ...style,
+    };
+  }
+  return null;
+};
+export const getPositionCircleStyle = (positionOrValue, config) => {
+  const { key, render, icon } = config;
+  const isIcon =
+    (key && key.icon && !!key.icon.datauri) ||
+    (render && render.type === 'marker' && !!icon.datauri);
+  const isIconAlt = isIcon && key.style && key.style.type === 'circle';
+  if (isIconAlt) {
+    const positionStyle = key.style;
+    const positionProperty = config.key.style.property;
+    const ps = positionProperty && positionProperty.split('.');
+    const positionValue =
+      (ps && ps[1] && positionOrValue[ps[1]]) || positionOrValue;
+    const style = Object.keys(positionStyle).reduce(
       (styleMemo, attr) => {
-        const attrObject = config.featureStyle.style[attr];
+        if (attr === 'type' || attr === 'property') return styleMemo;
+        const attrObject = positionStyle[attr];
         // prettier-ignore
         const attrValue =
           attrObject[positionValue] ||
@@ -67,14 +115,13 @@ export const getPositionSquareStyle = (position, config) => {
           [attr]: attrValue,
         };
       },
-      {},
+      {
+        weight: '0',
+        fillOpacity: 1,
+      },
     );
     return {
-      stroke: true,
-      weight: 1,
-      fill: true,
-      fillOpacity: 0.4,
-      ...style,
+      style,
     };
   }
   return null;
@@ -83,3 +130,14 @@ export const getPositionSquareStyle = (position, config) => {
 export const getPositionLabel = (position, locale) =>
   (locale && position[`position_${locale}`]) ||
   position[`position_${DEFAULT_LOCALE}`];
+
+export const hexToRgba = (hex, opacity) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  // prettier-ignore
+  return result
+    ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(
+      result[3],
+      16,
+    )}, ${opacity || 1})`
+    : null;
+};

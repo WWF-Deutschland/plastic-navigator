@@ -16,12 +16,12 @@ import { ArrowRightL, ArrowDown, ArrowUp } from 'components/Icons';
 import { setLayerInfo } from 'containers/App/actions';
 import CountryPositionSymbol from './CountryPositionSymbol';
 
-const ListTitle = styled(p => <Heading level={2} {...p} />)`
+const ListTitle = styled(p => <Heading level={4} {...p} />)`
   font-family: 'wwfregular';
   letter-spacing: 0.1px;
   font-size: 24px;
   line-height: 1;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: normal;
 `;
 const ListTitleCollapsable = styled(ListTitle)`
@@ -29,7 +29,7 @@ const ListTitleCollapsable = styled(ListTitle)`
 `;
 
 const FeatureListWrap = styled(Box)`
-  margin-top: 40px;
+  margin-top: 30px;
 `;
 
 const FeatureButton = styled(p => (
@@ -52,8 +52,8 @@ const IconWrap = styled(p => <Box {...p} responsive={false} />)`
   padding: ${({ theme }) => theme.global.edgeSize.small};
   margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
   border-radius: 9999px;
-  background: ${({ theme, over }) =>
-    over ? theme.global.colors.light : 'transparent'};
+  background: ${({ theme, over, expand }) =>
+    over || expand ? theme.global.colors.light : 'transparent'};
 `;
 
 export function FeatureList({
@@ -62,6 +62,7 @@ export function FeatureList({
   layerId,
   onSetLayerInfo,
   collapsable,
+  config,
 }) {
   const [expand, setExpand] = useState(false);
   const [over, setOver] = useState(false);
@@ -81,12 +82,12 @@ export function FeatureList({
             <Box
               justify="between"
               direction="row"
-              pad={{ top: 'small', bottom: 'xsmall', left: 'small' }}
+              pad={{ top: 'small', bottom: 'edge', left: 'xsmall' }}
               align="center"
               responsive={false}
             >
               <ListTitleCollapsable>{title}</ListTitleCollapsable>
-              <IconWrap over={over}>
+              <IconWrap over={over} expand={expand}>
                 {expand ? <ArrowUp /> : <ArrowDown />}
               </IconWrap>
             </Box>
@@ -109,10 +110,10 @@ export function FeatureList({
                   responsive={false}
                 >
                   <Box direction="row" justify="start" gap="small">
-                    {(item.icon || item.square) && (
+                    {item.position && config && (
                       <CountryPositionSymbol
-                        icon={item.icon}
-                        square={item.square}
+                        position={item.position}
+                        config={config}
                       />
                     )}
                     <Text>{item.label}</Text>
@@ -131,6 +132,7 @@ export function FeatureList({
 FeatureList.propTypes = {
   onSetLayerInfo: PropTypes.func.isRequired,
   items: PropTypes.array,
+  config: PropTypes.object,
   layerId: PropTypes.string,
   title: PropTypes.string,
   collapsable: PropTypes.bool,

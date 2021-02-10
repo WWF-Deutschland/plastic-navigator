@@ -48,7 +48,9 @@ export function Areas({ config, intl, title, simple }) {
             ...memo,
             [attr]: featureStyle.style[attr][val],
           }),
-          {},
+          {
+            fillOpacity: 0.4,
+          },
         );
       }
       return {
