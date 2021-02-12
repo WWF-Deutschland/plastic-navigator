@@ -72,6 +72,7 @@ export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
   layers: 'layers.json',
+  transfers: 'transfers.json',
   projects: {
     file: 'projects.csv',
     type: 'csv',

@@ -17,7 +17,8 @@ import {
   // Paragraph,
   ResponsiveContext,
 } from 'grommet';
-import { ExploreS as Layer } from 'components/Icons';
+
+import { ExploreS as LayerIcon } from 'components/Icons';
 import { getAsideWidth } from 'utils/responsive';
 
 import Tabs from 'components/Tabs';
@@ -65,6 +66,7 @@ export function PanelTransfers({
   onSetTab,
   // layersConfig,
   // locale,
+  config,
   uiState,
 }) {
   const { tab } = uiState
@@ -85,36 +87,26 @@ export function PanelTransfers({
             <PanelHeader>
               <ButtonPanelClose onClick={() => onClose()} />
               <PanelTitleWrap>
-                <Layer />
+                <LayerIcon />
                 <PanelTitle>
                   <FormattedMessage {...messages.title} />
                 </PanelTitle>
               </PanelTitleWrap>
               <Tabs>
-                <TabLinkWrapper>
-                  <TabLink
-                    onClick={() => onSetTab('gyres', uiState)}
-                    active={tab === 'gyres'}
-                    disabled={tab === 'gyres'}
-                    label={
-                      <TabLinkAnchor active={tab === 'gyres'}>
-                        <FormattedMessage {...messages.mode_gyres} />
-                      </TabLinkAnchor>
-                    }
-                  />
-                </TabLinkWrapper>
-                <TabLinkWrapper>
-                  <TabLink
-                    onClick={() => onSetTab('countries', uiState)}
-                    active={tab === 'countries'}
-                    disabled={tab === 'countries'}
-                    label={
-                      <TabLinkAnchor active={tab === 'countries'}>
-                        <FormattedMessage {...messages.mode_countries} />
-                      </TabLinkAnchor>
-                    }
-                  />
-                </TabLinkWrapper>
+                {config.map(({ id }) => (
+                  <TabLinkWrapper key={id}>
+                    <TabLink
+                      onClick={() => onSetTab(id, uiState)}
+                      active={tab === id}
+                      disabled={tab === id}
+                      label={
+                        <TabLinkAnchor active={tab === id}>
+                          <FormattedMessage {...messages[`mode_${id}`]} />
+                        </TabLinkAnchor>
+                      }
+                    />
+                  </TabLinkWrapper>
+                ))}
               </Tabs>
             </PanelHeader>
             <PanelBody ref={cRef}>
@@ -133,6 +125,7 @@ PanelTransfers.propTypes = {
   // layersConfig: PropTypes.array,
   // locale: PropTypes.string,
   uiState: PropTypes.object,
+  config: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
