@@ -28,6 +28,7 @@ export const MODULES = {
   },
   explore: {
     path: ROUTES.EXPLORE,
+    showKey: true,
     icon: <Explore color="white" />,
     iconActive: <Explore color="black" />,
     iconS: <Explore color="white" size="26px" />,
@@ -36,11 +37,12 @@ export const MODULES = {
   },
   transfers: {
     path: ROUTES.TRANSFERS,
+    showKey: true,
     icon: <Explore color="white" />,
     iconActive: <Explore color="black" />,
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
-    layers: ['surface-concentration', 'currents'],
+    layers: ['currents', 'surface-concentration'],
   },
 };
 
