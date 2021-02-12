@@ -1,4 +1,5 @@
 import asArray from 'utils/as-array';
+import quasiEquals from 'utils/quasi-equals';
 import { DEFAULT_LOCALE } from 'i18n';
 
 export const sortPositions = (positions, config) =>
@@ -140,4 +141,22 @@ export const hexToRgba = (hex, opacity) => {
       16,
     )}, ${opacity || 1})`
     : null;
+};
+
+export const getPositionStats = (config, countries) => {
+  const values =
+    (config.info && config.info.values) ||
+    (config.key && config.key.iconValue && config.key.iconValue.full);
+  if (values && countries) {
+    return values.map(val => {
+      const positionItems = countries.filter(
+        item => item.position && quasiEquals(item.position.position_id, val),
+      );
+      return {
+        val,
+        count: positionItems.length,
+      };
+    });
+  }
+  return null;
 };

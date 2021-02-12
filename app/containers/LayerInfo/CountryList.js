@@ -17,6 +17,7 @@ import { POLICY_LAYERS } from 'config';
 import { deburr } from 'lodash/string';
 import { lowerCase } from 'utils/string';
 import { useInjectSaga } from 'utils/injectSaga';
+import { getStrongestPosition } from 'utils/positions';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -27,8 +28,6 @@ import messages from './messages';
 
 import FeatureList from './FeatureList';
 import CountryStats from './CountryStats';
-
-import { getStrongestPosition } from './utils';
 
 const Title = styled.h3`
   margin-bottom: 20px !important;

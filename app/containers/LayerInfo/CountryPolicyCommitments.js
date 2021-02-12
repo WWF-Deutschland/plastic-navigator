@@ -10,7 +10,7 @@ import {
 import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
-import { sortPositions } from './utils';
+import { sortPositions } from 'utils/positions';
 import CountryPositionSymbol from './CountryPositionSymbol';
 
 import messages from './messages';

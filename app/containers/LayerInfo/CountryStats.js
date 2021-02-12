@@ -11,9 +11,12 @@ import styled from 'styled-components';
 import { Box, Text } from 'grommet';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import quasiEquals from 'utils/quasi-equals';
 import { startsWith } from 'utils/string';
-import { getPositionSquareStyle, hexToRgba } from './utils';
+import {
+  getPositionSquareStyle,
+  hexToRgba,
+  getPositionStats,
+} from 'utils/positions';
 
 const StackedBarWrapper = styled.div`
   display: block;
@@ -73,24 +76,7 @@ const getTitle = (value, config, locale) => {
 
 export function CountryStats({ config, countries, intl }) {
   const { locale } = intl;
-  const values =
-    (config.info && config.info.values) ||
-    (config.key && config.key.iconValue && config.key.iconValue.full);
-  let stats;
-  // area layer
-  if (values) {
-    stats = values.map(val => {
-      const positionItems = countries.filter(item =>
-        quasiEquals(item.position.position_id, val),
-      );
-      // const position =
-      //   positionItems.length > 0 ? positionItems[0].position : null;
-      return {
-        val,
-        count: positionItems.length,
-      };
-    });
-  }
+  const stats = getPositionStats(config, countries);
   // console.log(stats, config)
   // prettier-ignore
   if (stats &&  stats.length === 2) {

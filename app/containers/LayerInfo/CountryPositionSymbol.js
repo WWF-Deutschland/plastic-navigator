@@ -9,7 +9,7 @@ import {
   getPositionSquareStyle,
   getPositionCircleStyle,
   getPositionIcon,
-} from './utils';
+} from 'utils/positions';
 
 const Styled = styled.div`
   min-width: 30px;
