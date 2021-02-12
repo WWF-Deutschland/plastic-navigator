@@ -19,6 +19,6 @@ export default defineMessages({
   },
   mode_countries: {
     id: `${scope}.mode_countries`,
-    defaultMessage: 'Regions to countries*',
+    defaultMessage: 'Between countries*',
   },
 });

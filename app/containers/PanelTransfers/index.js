@@ -93,7 +93,7 @@ export function PanelTransfers({
                 </PanelTitle>
               </PanelTitleWrap>
               <Tabs>
-                {config.map(({ id }) => (
+                {config && config.map(({ id }) => (
                   <TabLinkWrapper key={id}>
                     <TabLink
                       onClick={() => onSetTab(id, uiState)}

@@ -108,7 +108,7 @@ export function ModuleTransfers({
           </Helmet>
           <ModuleWrap>
             {show && size !== 'small' && (
-              <PanelTransfers onClose={() => setShow(false)} />
+              <PanelTransfers onClose={() => setShow(false)} config={config} />
             )}
             {showSmall && size === 'small' && (
               <Layer full>
