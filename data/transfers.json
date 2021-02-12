@@ -14,6 +14,21 @@
     },
     "transfer": {
       "data": "transfer/regions-to-gyres"
+    },
+    "title": {
+      "en": "Region to gyre transfer",
+      "de": "Transfer von Plastik von Regionen zu Meereswirbeln"
+    },
+    "about": {
+      "en": "about",
+      "de": "about"
+    },
+    "attribution": {
+      "author": "author",
+      "year": "year",
+      "title": "title",
+      "publication": "publication",
+      "url": "url"
     }
   },
   {
@@ -25,6 +40,21 @@
     },
     "transfer": {
       "data": "transfer/eez-to-eez.csv"
+    },
+    "title": {
+      "en": "EEZ to EEZ transfer",
+      "de": "Transfer von Plastik zwischen AWZ"
+    },
+    "about": {
+      "en": "about",
+      "de": "about"
+    },
+    "attribution": {
+      "author": "author",
+      "year": "year",
+      "title": "title",
+      "publication": "publication",
+      "url": "url"
     }
   }
 ]
