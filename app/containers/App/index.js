@@ -34,6 +34,7 @@ import {
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
 import ModuleExplore from 'containers/ModuleExplore/Loadable';
+import ModuleTransfers from 'containers/ModuleTransfers/Loadable';
 import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
@@ -123,6 +124,10 @@ function App({
             <Route
               path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
               component={ModuleExplore}
+            />
+            <Route
+              path={`/:locale(${appLocales.join('|')})/${ROUTES.TRANSFERS}/`}
+              component={ModuleTransfers}
             />
             <Redirect to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
           </Switch>

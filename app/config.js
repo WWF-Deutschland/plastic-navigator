@@ -5,7 +5,7 @@ import React from 'react';
 export const ROUTES = {
   INTRO: 'stories',
   EXPLORE: 'explore',
-  ANALYSE: 'analyse',
+  TRANSFERS: 'transfers',
 };
 
 export const PAGES = {
@@ -33,6 +33,14 @@ export const MODULES = {
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
+  },
+  transfers: {
+    path: ROUTES.TRANSFERS,
+    icon: <Explore color="white" />,
+    iconActive: <Explore color="black" />,
+    iconS: <Explore color="white" size="26px" />,
+    iconActiveS: <Explore color="black" size="26px" />,
+    layers: ['surface-concentration', 'currents'],
   },
 };
 

@@ -11,20 +11,23 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import {
-  Box,
-  Button,
-  Text,
-  Heading,
-  Paragraph,
-  ResponsiveContext,
-} from 'grommet';
-import { Close, ExploreS as Layer } from 'components/Icons';
+import { Box, Heading, Paragraph, ResponsiveContext } from 'grommet';
+import { ExploreS as Layer } from 'components/Icons';
 import { deburr } from 'lodash/string';
 import { getAsideWidth } from 'utils/responsive';
 import { lowerCase, startsWith } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
+
+import Tabs from 'components/Tabs';
+import TabLink from 'components/TabLink';
+import TabLinkWrapper from 'components/TabLinkWrapper';
+import TabLinkAnchor from 'components/TabLinkAnchor';
+import PanelHeader from 'components/PanelHeader';
+import PanelTitle from 'components/PanelTitle';
+import PanelTitleWrap from 'components/PanelTitleWrap';
+import PanelBody from 'components/PanelBody';
+import ButtonPanelClose from 'components/ButtonPanelClose';
 
 import {
   selectLayersConfig,
@@ -61,67 +64,6 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
   }
 `;
 
-const PanelHeader = styled(p => (
-  <Box
-    background="brand"
-    justify="between"
-    {...p}
-    elevation="small"
-    responsive={false}
-  />
-))`
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 140px;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    height: 150px;
-  }
-`;
-const PanelBody = styled.div`
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 150px;
-  width: 100%;
-  bottom: 0;
-  padding: 12px 12px 96px;
-  overflow-y: scroll;
-`;
-const TitleWrap = styled(p => (
-  <Box margin={{ top: 'medium' }} {...p} align="center" responsive={false} />
-))``;
-const Title = styled(Text)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  line-height: 1;
-  margin-top: 3px;
-`;
-const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
-const TabLinkWrapper = styled(p => <Box {...p} margin={{ left: 'xsmall' }} />)`
-  position: relative;
-`;
-
-const TabLink = styled(p => <Button plain {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  font-weight: normal;
-  line-height: 1;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.ms};
-  color: ${({ theme, active }) =>
-    theme.global.colors[active ? 'white' : 'brandLight']};
-  opacity: 1;
-  border-bottom: 4px solid;
-  border-color: ${({ theme, active }) =>
-    active ? theme.global.colors.white : 'transparent'};
-  &:hover {
-    color: ${({ theme }) => theme.global.colors.white};
-  }
-`;
-const TabLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
-
 const SectionLayerGroup = styled(p => <Box flex={{ shrink: 0 }} {...p} />)``;
 const TitleGroup = styled(p => <Heading {...p} level={3} />)`
   font-family: 'wwfregular';
@@ -133,21 +75,6 @@ const TitleGroup = styled(p => <Heading {...p} level={3} />)`
 `;
 const DescriptionGroup = styled(Paragraph)`
   margin-bottom: 8px;
-`;
-
-const ButtonClose = styled(p => (
-  <Button icon={<Close />} plain alignSelf="end" {...p} />
-))`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  padding: 10px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.brandDark};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.brandDarker};
-  }
 `;
 
 const COMPONENT_KEY = 'PanelExplore';
@@ -187,13 +114,13 @@ export function PanelExplore({
         <Styled background="white" panelWidth={getAsideWidth(size)}>
           <div>
             <PanelHeader>
-              <ButtonClose onClick={() => onClose()} />
-              <TitleWrap>
+              <ButtonPanelClose onClick={() => onClose()} />
+              <PanelTitleWrap>
                 <Layer />
-                <Title>
+                <PanelTitle>
                   <FormattedMessage {...messages.title} />
-                </Title>
-              </TitleWrap>
+                </PanelTitle>
+              </PanelTitleWrap>
               <Tabs>
                 {layersConfig &&
                   exploreConfig &&

@@ -28,9 +28,17 @@ export default defineMessages({
     id: `${scope}.module_stories`,
     defaultMessage: 'Intro',
   },
+  module_transfers: {
+    id: `${scope}.module_transfers`,
+    defaultMessage: 'Plastic flows',
+  },
   module_explore_metaTitle: {
     id: `${scope}.module_explore_metaTitle`,
     defaultMessage: 'Explore',
+  },
+  module_transfers_metaTitle: {
+    id: `${scope}.module_transfers_metaTitle`,
+    defaultMessage: 'Plastic flows',
   },
   module_stories_metaTitle: {
     id: `${scope}.module_stories_metaTitle`,
