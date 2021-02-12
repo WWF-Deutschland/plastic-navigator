@@ -25,7 +25,6 @@ import {
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadContent, toggleLayer } from 'containers/App/actions';
 import { loadLayer } from 'containers/Map/actions';
-import { getRange } from 'containers/Map/utils';
 
 import LoadingIndicator from 'components/LoadingIndicator';
 import HTMLWrapper from 'components/HTMLWrapper';
@@ -100,14 +99,7 @@ export function LayerContent({
                   <Box margin={{ left: '30px', }} flex={false}>
                     <KeyFull
                       config={config}
-                      range={
-                        layerData && layerData.data
-                          ? getRange(
-                            layerData.data.features,
-                            config.render.attribute,
-                          )
-                          : null
-                      }
+                      layerData={layerData && layerData.data}
                     />
                   </Box>
                 </Box>

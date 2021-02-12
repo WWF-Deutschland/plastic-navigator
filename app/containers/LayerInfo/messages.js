@@ -37,4 +37,8 @@ export default defineMessages({
     id: `${scope}.projectLinkExternal`,
     defaultMessage: 'Visit project website',
   },
+  countryPositionSelect: {
+    id: `${scope}.countryPositionSelect`,
+    defaultMessage: 'Select a country for details',
+  },
 });

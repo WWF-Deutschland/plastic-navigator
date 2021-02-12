@@ -231,7 +231,6 @@
     "id": "currents",
     "category": "plastic",
     "group": "hydro",
-    "source": "data",
     "source": "mapbox",
     "type": "raster-tiles",
     "tileset": "wwfdeutschland.241dtqaj",
@@ -539,6 +538,14 @@
       "iconValue": {
         "simple": "2",
         "full": ["1", "2"]
+      },
+      "style": {
+        "property": "positions.position_id",
+        "type": "circle",
+        "fillColor": {
+          "1": "#007731",
+          "2": "#8CC63F"
+        }
       },
       "iconTitle": {
         "simple": {

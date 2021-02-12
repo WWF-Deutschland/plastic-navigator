@@ -7,11 +7,14 @@ import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import DEFAULT_LOCALE from 'i18n';
 import { PROJECT_CONFIG } from 'config';
 
+import { getRange } from 'containers/Map/utils';
+
 import coreMessages from 'messages';
 import Gradient from './Gradient';
 import Circles from './Circles';
 import Areas from './Areas';
 import Icon from './Icon';
+import IconAlt from './IconAlt';
 import SubTitle from './SubTitle';
 
 import messages from './messages';
@@ -24,16 +27,23 @@ const SubTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
 
-export function KeyFull({ config, id, simple, intl, dark, range }) {
+export function KeyFull({ config, id, simple, intl, dark, layerData }) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
+  // prettier-ignore
+  const range =
+    isCircle && layerData && layerData.features && render.attribute
+      ? getRange(layerData.features, render.attribute)
+      : null;
+
   const isArea = key && render && render.type === 'area' && !!featureStyle;
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
+  const isIconAlt = isIcon && key.style;
   /* eslint-disable react/no-danger */
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
@@ -63,8 +73,21 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
           )}
         </SubTitleWrap>
       )}
-      {isIcon && (
+      {isIcon && !isIconAlt && (
         <Icon
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          title={
+            myId === PROJECT_CONFIG.id
+              ? intl.formatMessage(coreMessages.projectLocation)
+              : null
+          }
+        />
+      )}
+      {isIconAlt && (
+        <IconAlt
           id={myId}
           config={config}
           simple={simple}
@@ -109,10 +132,10 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
 
 KeyFull.propTypes = {
   config: PropTypes.object,
+  layerData: PropTypes.object,
   id: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
-  range: PropTypes.object,
   intl: intlShape.isRequired,
 };
 

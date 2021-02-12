@@ -1,6 +1,6 @@
 /**
  *
- * LayerInfo
+ * CountryList
  *
  */
 
@@ -9,23 +9,31 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { intlShape, injectIntl } from 'react-intl';
+import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
+import styled from 'styled-components';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 import { deburr } from 'lodash/string';
 import { lowerCase } from 'utils/string';
 import { useInjectSaga } from 'utils/injectSaga';
+import { getStrongestPosition } from 'utils/positions';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 
 import coreMessages from 'messages';
+import messages from './messages';
 
 import FeatureList from './FeatureList';
+import CountryStats from './CountryStats';
 
-export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
+const Title = styled.h3`
+  margin-bottom: 20px !important;
+`;
+
+export function CountryList({ onLoadLayer, config, layer, intl }) {
   useInjectSaga({ key: 'map', saga });
 
   useEffect(() => {
@@ -44,7 +52,7 @@ export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
     return null;
   }
 
-  const items = layer.data.features
+  const countries = layer.data.features
     .filter(f => {
       if (config.info) {
         const ps = config.info.property.split('.');
@@ -57,28 +65,43 @@ export function LayerFeatures({ onLoadLayer, config, layer, intl }) {
       }
       return true;
     })
-    .map(f => ({
-      id: f.properties.f_id,
-      label:
-        f.properties[`name_${locale}`] ||
-        f.properties[`name_${DEFAULT_LOCALE}`],
-    }))
+    .map(f => {
+      const { positions } = f.properties;
+      const position = getStrongestPosition(positions, config);
+      return {
+        id: f.properties.f_id,
+        label:
+          f.properties[`name_${locale}`] ||
+          f.properties[`name_${DEFAULT_LOCALE}`],
+        position,
+      };
+    })
     .sort((a, b) =>
       deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1,
     );
   return (
-    <FeatureList
-      title={intl.formatMessage(coreMessages.countries, {
-        count: items.length,
-      })}
-      layerId={config.id}
-      items={items}
-      collapsable
-    />
+    <div>
+      <Title>
+        <FormattedMessage
+          {...coreMessages.countries}
+          values={{
+            count: countries.length,
+          }}
+        />
+      </Title>
+      <CountryStats config={config} countries={countries} />
+      <FeatureList
+        title={intl.formatMessage(messages.countryPositionSelect)}
+        layerId={config.id}
+        items={countries}
+        config={config}
+        collapsable
+      />
+    </div>
   );
 }
 
-LayerFeatures.propTypes = {
+CountryList.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
   config: PropTypes.object,
   layer: PropTypes.object,
@@ -107,4 +130,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(injectIntl(LayerFeatures));
+export default compose(withConnect)(injectIntl(CountryList));

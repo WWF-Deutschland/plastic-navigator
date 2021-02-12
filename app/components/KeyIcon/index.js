@@ -90,7 +90,9 @@ export function KeyIcon({ config, id }) {
           ...memo,
           [attr]: config.featureStyle.style[attr][val],
         }),
-        {},
+        {
+          fillOpacity: 0.4,
+        },
       ),
     );
   }

@@ -46,7 +46,7 @@ export function KeyArea({ areaStyles }) {
             stroke={r.color}
             strokeWidth="5"
             fill={r.fillColor}
-            fillOpacity="0.4"
+            fillOpacity={r.fillOpacity}
           />
         ))}
       </SVG>

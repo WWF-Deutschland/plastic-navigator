@@ -34,8 +34,6 @@ import { setUIState, setLayerInfo } from 'containers/App/actions';
 import KeyIcon from 'components/KeyIcon';
 import KeyFull from 'components/KeyFull';
 
-import { getRange } from 'containers/Map/utils';
-
 // import commonMessages from 'messages';
 import messages from './messages';
 
@@ -281,11 +279,9 @@ export function PanelKey({
       return pass ? [...memo, cleanId] : memo;
     }, []);
 
-  const jsonLayerActive =
-    config &&
-    config.type === 'geojson' &&
-    config.source === 'data' &&
-    jsonLayers[config.id];
+  const jsonLayerActive = config ? jsonLayers[config.id] : null;
+
+  // console.log(config, jsonLayerActive)
 
   // prettier-ignore
   return (
@@ -414,14 +410,7 @@ export function PanelKey({
                         </LayerTitleWrap>
                         <KeyFull
                           config={config}
-                          range={
-                            (jsonLayerActive && jsonLayerActive.data)
-                              ? getRange(
-                                jsonLayerActive.data.features,
-                                config.render.attribute,
-                              )
-                              : null
-                          }
+                          layerData={jsonLayerActive && jsonLayerActive.data}
                         />
                       </Box>
                     )}
