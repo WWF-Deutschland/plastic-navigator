@@ -75,7 +75,7 @@ export function ModuleTransfers({
   firstLanding,
   onSetLanding,
   intl,
-  config,
+  analysesConfig,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -108,12 +108,15 @@ export function ModuleTransfers({
           </Helmet>
           <ModuleWrap>
             {show && size !== 'small' && (
-              <PanelTransfers onClose={() => setShow(false)} config={config} />
+              <PanelTransfers
+                analysesConfig={analysesConfig}
+                onClose={() => setShow(false)}
+              />
             )}
             {showSmall && size === 'small' && (
               <Layer full>
                 <PanelTransfers
-                  config={config}
+                  analysesConfig={analysesConfig}
                   onClose={() => setShowSmall(false)}
                 />
               </Layer>
@@ -147,7 +150,7 @@ ModuleTransfers.propTypes = {
   uiState: PropTypes.object,
   firstLanding: PropTypes.bool,
   intl: intlShape.isRequired,
-  config: PropTypes.array,
+  analysesConfig: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -155,7 +158,7 @@ const mapStateToProps = createStructuredSelector({
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
   firstLanding: state => selectFirstLanding(state),
-  config: state => selectConfigByKey(state, { key: 'transfers' }),
+  analysesConfig: state => selectConfigByKey(state, { key: 'transfers' }),
 });
 
 function mapDispatchToProps(dispatch) {

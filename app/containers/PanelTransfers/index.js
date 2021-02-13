@@ -18,9 +18,12 @@ import {
   ResponsiveContext,
 } from 'grommet';
 
-import { ExploreS as LayerIcon } from 'components/Icons';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
 import { getAsideWidth } from 'utils/responsive';
+import quasiEquals from 'utils/quasi-equals';
 
+import { ExploreS as LayerIcon } from 'components/Icons';
 import Tabs from 'components/Tabs';
 import TabLink from 'components/TabLink';
 import TabLinkWrapper from 'components/TabLinkWrapper';
@@ -32,15 +35,12 @@ import PanelBody from 'components/PanelBody';
 import ButtonPanelClose from 'components/ButtonPanelClose';
 
 // import { DEFAULT_LOCALE } from 'i18n';
-
-import {
-  // selectLayersConfig,
-  // selectLocale,
-  selectUIStateByKey,
-} from 'containers/App/selectors';
-import { setUIState } from 'containers/App/actions';
-
+import Analysis from './Analysis';
+import reducer from './reducer';
+import saga from './saga';
 import messages from './messages';
+import { setAnalysis } from './actions';
+import { selectAnalysis } from './selectors';
 // import commonMessages from 'messages';
 
 const Styled = styled(props => <Box {...props} elevation="medium" />)`
@@ -55,64 +55,68 @@ const Styled = styled(props => <Box {...props} elevation="medium" />)`
   }
 `;
 
-const COMPONENT_KEY = 'PanelTransfers';
-
-const DEFAULT_UI_STATE = {
-  tab: 'gyres',
-};
-
 export function PanelTransfers({
   onClose,
-  onSetTab,
   // layersConfig,
   // locale,
-  config,
-  uiState,
+  analysesConfig,
+  activeAnalysis,
+  onSetAnalysis,
 }) {
-  const { tab } = uiState
-    ? Object.assign({}, DEFAULT_UI_STATE, uiState)
-    : DEFAULT_UI_STATE;
+  useInjectReducer({ key: 'panelTransfers', reducer });
+  useInjectSaga({ key: 'panelTransfers', saga });
 
   const cRef = useRef();
   useEffect(() => {
     cRef.current.scrollTop = 0;
-  }, [uiState]);
+  }, [activeAnalysis]);
+
+  useEffect(() => {
+    if (!activeAnalysis) {
+      onSetAnalysis('gyres');
+    }
+  }, [activeAnalysis]);
 
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
       {size => (
         <Styled background="white" panelWidth={getAsideWidth(size)}>
-          <div>
-            <PanelHeader>
-              <ButtonPanelClose onClick={() => onClose()} />
-              <PanelTitleWrap>
-                <LayerIcon />
-                <PanelTitle>
-                  <FormattedMessage {...messages.title} />
-                </PanelTitle>
-              </PanelTitleWrap>
-              <Tabs>
-                {config && config.map(({ id }) => (
-                  <TabLinkWrapper key={id}>
-                    <TabLink
-                      onClick={() => onSetTab(id, uiState)}
-                      active={tab === id}
-                      disabled={tab === id}
-                      label={
-                        <TabLinkAnchor active={tab === id}>
-                          <FormattedMessage {...messages[`mode_${id}`]} />
-                        </TabLinkAnchor>
-                      }
-                    />
-                  </TabLinkWrapper>
-                ))}
-              </Tabs>
-            </PanelHeader>
-            <PanelBody ref={cRef}>
-              {tab}
-            </PanelBody>
-          </div>
+          <PanelHeader>
+            <ButtonPanelClose onClick={() => onClose()} />
+            <PanelTitleWrap>
+              <LayerIcon />
+              <PanelTitle>
+                <FormattedMessage {...messages.title} />
+              </PanelTitle>
+            </PanelTitleWrap>
+            <Tabs>
+              {analysesConfig && analysesConfig.map(({ id }) => (
+                <TabLinkWrapper key={id}>
+                  <TabLink
+                    onClick={() => onSetAnalysis(id)}
+                    active={activeAnalysis === id}
+                    disabled={activeAnalysis === id}
+                    label={
+                      <TabLinkAnchor active={activeAnalysis === id}>
+                        <FormattedMessage {...messages[`mode_${id}`]} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                </TabLinkWrapper>
+              ))}
+            </Tabs>
+          </PanelHeader>
+          <PanelBody ref={cRef}>
+            {activeAnalysis && analysesConfig && (
+              <Analysis
+                id={activeAnalysis}
+                analysisConfig={analysesConfig.find(
+                  ({ id }) => quasiEquals(id, activeAnalysis),
+                )}
+              />
+            )}
+          </PanelBody>
         </Styled>
       )}
     </ResponsiveContext.Consumer>
@@ -121,29 +125,23 @@ export function PanelTransfers({
 
 PanelTransfers.propTypes = {
   onClose: PropTypes.func,
-  onSetTab: PropTypes.func,
+  onSetAnalysis: PropTypes.func,
   // layersConfig: PropTypes.array,
   // locale: PropTypes.string,
-  uiState: PropTypes.object,
-  config: PropTypes.array,
+  analysesConfig: PropTypes.array,
+  activeAnalysis: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   // layersConfig: state => selectLayersConfig(state),
   // locale: state => selectLocale(state),
-  uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  activeAnalysis: state => selectAnalysis(state),
   // activeLayers: state => selectActiveLayers(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetTab: (tab, uiState) =>
-      dispatch(
-        setUIState(
-          COMPONENT_KEY,
-          Object.assign({}, DEFAULT_UI_STATE, uiState, { tab }),
-        ),
-      ),
+    onSetAnalysis: id => dispatch(setAnalysis(id)),
   };
 }
 
