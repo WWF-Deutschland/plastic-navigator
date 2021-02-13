@@ -4,16 +4,14 @@
     "dir": "uni",
     "nodes": {
       "from": {
-        "data": "transfer/regions.csv",
-        "as": "regions"
+        "data": "transfer/regions.csv"
       },
       "to": {
-        "data": "transfer/gyres.csv",
-        "as": "gyres"
+        "data": "transfer/gyres.csv"
       }
     },
     "transfer": {
-      "data": "transfer/regions-to-gyres"
+      "data": "transfer/regions-to-gyres.csv"
     },
     "title": {
       "en": "Region to gyre transfer",
@@ -35,8 +33,7 @@
     "id": "countries",
     "dir": "omni",
     "nodes": {
-      "data": "transfer/eez.csv",
-      "as": "eez"
+      "data": "transfer/eez.csv"
     },
     "transfer": {
       "data": "transfer/eez-to-eez.csv"
