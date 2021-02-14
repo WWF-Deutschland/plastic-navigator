@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { Box, Heading, Paragraph, Button, Text, Select } from 'grommet';
 import { deburr } from 'lodash/string';
 import { lowerCase } from 'utils/string';
+import { roundNumber } from 'utils/numbers';
+import quasiEquals from 'utils/quasi-equals';
 // import commonMessages from 'messages';
 
 import { loadData } from './actions';
@@ -82,33 +84,50 @@ const makeOptions = (data, direction, analysisConfig, locale) => {
   }
   return [];
 };
-// const getResults = () => {
-// // const getResults = (data, direction, analysisConfig, locale) => { // , locale) => {
-//   // const { id } = analysisConfig;
-//   // console.log(id, direction, data)
-//   // if (id === 'gyres' && data.nodes && data.nodes[direction] && data.transfer) {
-//   //   return data.nodes[direction]
-//   //     .filter(node => data.transfer.find(row => row[direction] === node.code))
-//   //     .map(node => ({
-//   //       value: node.code,
-//   //       label: node[`name_${locale}`],
-//   //     }));
-//   // }
-//   // if (id === 'countries' && data.nodes) {
-//   //   return data.nodes
-//   //     .filter(node =>
-//   //       data.transfer.find(row => row[direction] === node.MRGID_EEZ),
-//   //     )
-//   //     .sort((a, b) =>
-//   //       deburr(lowerCase(a.UNION)) > deburr(lowerCase(b.UNION)) ? 1 : -1,
-//   //     )
-//   //     .map(node => ({
-//   //       value: node.MRGID_EEZ,
-//   //       label: node.UNION,
-//   //     }));
-//   // }
-//   return [];
-// };
+const getResults = (node, data, direction, analysisConfig, locale) => {
+  const { id } = analysisConfig;
+  const inverse = direction === 'to' ? 'from' : 'to';
+  const results =
+    data.transfer &&
+    data.transfer
+      .filter(row => quasiEquals(row[direction], node))
+      .sort((a, b) => (parseFloat(a.value) > parseFloat(b.value) ? -1 : 1));
+  const total =
+    results && results.reduce((memo, { value }) => memo + parseFloat(value), 0);
+  if (results && id === 'gyres') {
+    return results.map(row => {
+      const theNode =
+        data.nodes &&
+        data.nodes[inverse].find(nodeObject =>
+          quasiEquals(nodeObject.code, row[inverse]),
+        );
+      return {
+        code: row[inverse],
+        label: theNode ? theNode[`name_${locale}`] : row[inverse],
+        value: parseFloat(row.value),
+        ratio: parseFloat(row.value) / total,
+      };
+    });
+  }
+  if (results && id === 'countries') {
+    return results.map(row => {
+      const theNode =
+        data.nodes &&
+        data.nodes.find(nodeObject =>
+          quasiEquals(nodeObject.MRGID_EEZ, row[inverse]),
+        );
+      return {
+        code: row[inverse],
+        label: theNode ? theNode.UNION : row[inverse],
+        value: parseFloat(row.value),
+        ratio: parseFloat(row.value) / total,
+      };
+    });
+  }
+  return [];
+};
+
+const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 5);
 
 export function Analysis({
   id,
@@ -127,8 +146,8 @@ export function Analysis({
   const { locale } = intl;
   const options = makeOptions(data, direction, analysisConfig, locale);
   const nodeValid = !node || !!options.find(o => o.value === node);
-  // const results = getResults(node, data, direction, analysisConfig, locale);
-  // console.log(results)
+  const results =
+    nodeValid && getResults(node, data, direction, analysisConfig, locale);
   return (
     <Styled>
       <Heading level={4}>
@@ -165,7 +184,7 @@ export function Analysis({
           name="select"
           labelKey="label"
           valueKey={{ key: 'value', reduce: true }}
-          value={node || false}
+          value={node || ''}
           options={options}
           placeholder={
             <FormattedMessage
@@ -178,6 +197,15 @@ export function Analysis({
           <Hint>
             <FormattedMessage {...messages.noDataForNode} />
           </Hint>
+        )}
+        {nodeValid && results && results.length > 0 && (
+          <div>
+            {results.map(row => (
+              <div key={row.code}>
+                {`${row.label}: ${formatRatio(row.ratio)}% / ${row.value}`}
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </Styled>

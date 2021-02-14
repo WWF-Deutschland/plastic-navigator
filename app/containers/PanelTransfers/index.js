@@ -83,7 +83,6 @@ export function PanelTransfers({
     } else {
       onSetDirection('from');
     }
-    onSetNode('');
   }, [activeAnalysis]);
   useEffect(() => {
     if (activeAnalysis === 'gyres') {
