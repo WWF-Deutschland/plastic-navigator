@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -58,52 +58,85 @@ const ButtonDirection = styled(props => <Button plain {...props} />)`
   }
 `;
 
-const makeOptions = (data, direction, analysisConfig, locale) => {
+const makeOptions = (
+  activeNode,
+  data,
+  direction,
+  analysisConfig,
+  locale,
+  search,
+) => {
   const { id } = analysisConfig;
   // console.log(id, direction, data)
   if (id === 'gyres' && data.nodes && data.nodes[direction] && data.transfer) {
     return data.nodes[direction]
-      .filter(node => data.transfer.find(row => row[direction] === node.code))
+      .filter(node =>
+        // make sure we have data for it
+        data.transfer.find(row => row[direction] === node.code),
+      )
       .map(node => ({
         value: node.code,
         label: node[`name_${locale}`],
-      }));
+      }))
+      .sort((a, b) => {
+        if (activeNode && quasiEquals(a.value, activeNode)) {
+          return -1;
+        }
+        if (activeNode && quasiEquals(b.value, activeNode)) {
+          return 1;
+        }
+        return 0;
+      });
   }
-  if (id === 'countries' && data.nodes) {
+  if (id === 'countries' && data.nodes && data.transfer) {
+    const exp =
+      search && search.length > 1 && new RegExp(deburr(lowerCase(search)), 'i');
     return data.nodes
-      .filter(node =>
-        data.transfer.find(row => row[direction] === node.MRGID_EEZ),
-      )
-      .sort((a, b) =>
-        deburr(lowerCase(a.UNION)) > deburr(lowerCase(b.UNION)) ? 1 : -1,
+      .filter(
+        node =>
+          // filter by search
+          (!exp ||
+            quasiEquals(activeNode, node.MRGID_EEZ) ||
+            exp.test(deburr(lowerCase(node.UNION)))) &&
+          // make sure we have data for it
+          data.transfer.find(row => row[direction] === node.MRGID_EEZ),
       )
       .map(node => ({
         value: node.MRGID_EEZ,
         label: node.UNION,
-      }));
+      }))
+      .sort((a, b) => {
+        if (activeNode && quasiEquals(a.value, activeNode)) {
+          return -1;
+        }
+        if (activeNode && quasiEquals(b.value, activeNode)) {
+          return 1;
+        }
+        return deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1;
+      });
   }
   return [];
 };
-const getResults = (node, data, direction, analysisConfig, locale) => {
+const getResults = (activeNode, data, direction, analysisConfig, locale) => {
   const { id } = analysisConfig;
   const inverse = direction === 'to' ? 'from' : 'to';
   const results =
     data.transfer &&
     data.transfer
-      .filter(row => quasiEquals(row[direction], node))
+      .filter(row => quasiEquals(row[direction], activeNode))
       .sort((a, b) => (parseFloat(a.value) > parseFloat(b.value) ? -1 : 1));
   const total =
     results && results.reduce((memo, { value }) => memo + parseFloat(value), 0);
   if (results && id === 'gyres') {
     return results.map(row => {
-      const theNode =
+      const node =
         data.nodes &&
         data.nodes[inverse].find(nodeObject =>
           quasiEquals(nodeObject.code, row[inverse]),
         );
       return {
         code: row[inverse],
-        label: theNode ? theNode[`name_${locale}`] : row[inverse],
+        label: node ? node[`name_${locale}`] : row[inverse],
         value: parseFloat(row.value),
         ratio: parseFloat(row.value) / total,
       };
@@ -127,7 +160,7 @@ const getResults = (node, data, direction, analysisConfig, locale) => {
   return [];
 };
 
-const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 5);
+const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 2, true);
 
 export function Analysis({
   id,
@@ -140,11 +173,19 @@ export function Analysis({
   node,
   intl,
 }) {
+  const [search, setSearch] = useState(null);
   useEffect(() => {
     onLoadData(analysisConfig);
   }, [id]);
   const { locale } = intl;
-  const options = makeOptions(data, direction, analysisConfig, locale);
+  const options = makeOptions(
+    node,
+    data,
+    direction,
+    analysisConfig,
+    locale,
+    search,
+  );
   const nodeValid = !node || !!options.find(o => o.value === node);
   const results =
     nodeValid && getResults(node, data, direction, analysisConfig, locale);
@@ -179,33 +220,73 @@ export function Analysis({
         <Label>
           <FormattedMessage {...messages[`select_label_${direction}_${id}`]} />
         </Label>
-        <Select
-          id={`${direction}_${id}`}
-          name="select"
-          labelKey="label"
-          valueKey={{ key: 'value', reduce: true }}
-          value={node || ''}
-          options={options}
-          placeholder={
-            <FormattedMessage
-              {...messages[`select_placeholder_${direction}_${id}`]}
-            />
-          }
-          onChange={({ value: nextValue }) => onSetNode(nextValue)}
-        />
+        {id === 'gyres' && (
+          <Select
+            id={`select-${id}`}
+            name={`select-${id}`}
+            labelKey="label"
+            valueKey={{ key: 'value', reduce: true }}
+            value={node || ''}
+            options={options}
+            placeholder={
+              <FormattedMessage
+                {...messages[`select_placeholder_${direction}_${id}`]}
+              />
+            }
+            onChange={({ value: nextValue }) =>
+              onSetNode(nextValue !== node ? nextValue : null)
+            }
+          />
+        )}
+        {id === 'countries' && (
+          <Select
+            id={`select-${id}`}
+            name={`select-${id}`}
+            labelKey="label"
+            valueKey={{ key: 'value', reduce: true }}
+            value={node || ''}
+            options={options}
+            placeholder={
+              <FormattedMessage
+                {...messages[`select_placeholder_${direction}_${id}`]}
+              />
+            }
+            onOpen={() => setSearch('')}
+            onChange={({ value: nextValue }) =>
+              onSetNode(nextValue !== node ? nextValue : null)
+            }
+            onSearch={text => {
+              // The line below escapes regular expression special characters:
+              // [ \ ^ $ . | ? * + ( )
+              const escapedText = text.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
+              return setSearch(escapedText);
+            }}
+          />
+        )}
         {!nodeValid && (
           <Hint>
             <FormattedMessage {...messages.noDataForNode} />
           </Hint>
         )}
         {nodeValid && results && results.length > 0 && (
-          <div>
-            {results.map(row => (
-              <div key={row.code}>
-                {`${row.label}: ${formatRatio(row.ratio)}% / ${row.value}`}
-              </div>
-            ))}
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'left' }}>Name</th>
+                <th style={{ textAlign: 'right' }}>%</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map(row => (
+                <tr key={row.code}>
+                  <td>{row.label}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    {`${formatRatio(row.ratio)} %`}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
     </Styled>
