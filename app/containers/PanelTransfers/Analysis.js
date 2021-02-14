@@ -9,69 +9,176 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
-// import {
-//   // Box,
-//   // Heading,
-//   // Paragraph,
-// } from 'grommet';
-
-// import { DEFAULT_LOCALE } from 'i18n';
-
-// import {
-//   // selectLayersConfig,
-//   // selectLocale,
-//   // selectUIStateByKey,
-// } from 'containers/App/selectors';
-
-// import messages from './messages';
+import { Box, Heading, Paragraph, Button, Text, Select } from 'grommet';
+import { deburr } from 'lodash/string';
+import { lowerCase } from 'utils/string';
 // import commonMessages from 'messages';
 
 import { loadData } from './actions';
 import { selectDataForAnalysis } from './selectors';
 import { getTransfersKey, getNodesKey } from './utils';
+import messages from './messages';
 
 const Styled = styled.div`
   width: 100%;
 `;
 
-export function Analysis({ id, analysisConfig, onLoadData, data }) {
+const Hint = styled(props => <Paragraph size="xxsmall" {...props} />)`
+  font-style: italic;
+`;
+const Label = styled(props => <Text size="small" {...props} />)`
+  color: ${({ theme }) => theme.global.colors.grey};
+  display: block;
+`;
+
+// prettier-ignore
+const ButtonDirection = styled(props => <Button plain {...props} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  line-height: 16px;
+  background: ${({ theme, active }) =>
+    theme.global.colors[active ? 'brand' : 'light']};
+  color: ${({ theme, active }) =>
+    theme.global.colors[active ? 'white' : 'grey']};
+  border-radius: 5px;
+  padding: 2px 13px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    background: ${({ theme, disabled }) =>
+    theme.global.colors[disabled ? 'brand' : 'brandDark']};
+    color: ${({ theme }) => theme.global.colors.white};
+  }
+  opacity: 1 !important;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 5px 15px;
+  }
+`;
+
+const makeOptions = (data, direction, analysisConfig, locale) => {
+  const { id } = analysisConfig;
+  // console.log(id, direction, data)
+  if (id === 'gyres' && data.nodes && data.nodes[direction] && data.transfer) {
+    return data.nodes[direction]
+      .filter(node => data.transfer.find(row => row[direction] === node.code))
+      .map(node => ({
+        value: node.code,
+        label: node[`name_${locale}`],
+      }));
+  }
+  if (id === 'countries' && data.nodes) {
+    return data.nodes
+      .filter(node =>
+        data.transfer.find(row => row[direction] === node.MRGID_EEZ),
+      )
+      .sort((a, b) =>
+        deburr(lowerCase(a.UNION)) > deburr(lowerCase(b.UNION)) ? 1 : -1,
+      )
+      .map(node => ({
+        value: node.MRGID_EEZ,
+        label: node.UNION,
+      }));
+  }
+  return [];
+};
+// const getResults = () => {
+// // const getResults = (data, direction, analysisConfig, locale) => { // , locale) => {
+//   // const { id } = analysisConfig;
+//   // console.log(id, direction, data)
+//   // if (id === 'gyres' && data.nodes && data.nodes[direction] && data.transfer) {
+//   //   return data.nodes[direction]
+//   //     .filter(node => data.transfer.find(row => row[direction] === node.code))
+//   //     .map(node => ({
+//   //       value: node.code,
+//   //       label: node[`name_${locale}`],
+//   //     }));
+//   // }
+//   // if (id === 'countries' && data.nodes) {
+//   //   return data.nodes
+//   //     .filter(node =>
+//   //       data.transfer.find(row => row[direction] === node.MRGID_EEZ),
+//   //     )
+//   //     .sort((a, b) =>
+//   //       deburr(lowerCase(a.UNION)) > deburr(lowerCase(b.UNION)) ? 1 : -1,
+//   //     )
+//   //     .map(node => ({
+//   //       value: node.MRGID_EEZ,
+//   //       label: node.UNION,
+//   //     }));
+//   // }
+//   return [];
+// };
+
+export function Analysis({
+  id,
+  analysisConfig,
+  onLoadData,
+  data,
+  direction,
+  onSetDirection,
+  onSetNode,
+  node,
+  intl,
+}) {
   useEffect(() => {
     onLoadData(analysisConfig);
   }, [id]);
-  // console.log('analysisConfig', analysisConfig);
-  // console.log('data', data);
-  // prettier-ignore
+  const { locale } = intl;
+  const options = makeOptions(data, direction, analysisConfig, locale);
+  const nodeValid = !node || !!options.find(o => o.value === node);
+  // const results = getResults(node, data, direction, analysisConfig, locale);
+  // console.log(results)
   return (
     <Styled>
-      <h3>
-        {analysisConfig.id}
-      </h3>
+      <Heading level={4}>
+        <FormattedMessage {...messages[`title_${direction}_${id}`]} />
+      </Heading>
+      <Paragraph>
+        <FormattedMessage {...messages[`intro_${direction}_${id}`]} />
+      </Paragraph>
+      {messages[`hint_${id}`] && (
+        <Hint>
+          <FormattedMessage {...messages[`hint_${id}`]} />
+        </Hint>
+      )}
+      <Label>
+        <FormattedMessage {...messages[`label_direction_${id}`]} />
+      </Label>
+      <Box direction="row" gap="xxsmall">
+        {['from', 'to'].map(dir => (
+          <ButtonDirection
+            key={dir}
+            active={direction === dir}
+            disabled={direction === dir}
+            onClick={() => onSetDirection(dir)}
+            label={<FormattedMessage {...messages[`button_${dir}_${id}`]} />}
+          />
+        ))}
+      </Box>
       <div>
-        <h4>Options</h4>
-        {data && data.nodes && data.nodes.from && (
-          <div>
-            <span>Regions: </span>
-            {data && data.nodes && data.nodes.from.length}
-          </div>
+        <Label>
+          <FormattedMessage {...messages[`select_label_${direction}_${id}`]} />
+        </Label>
+        <Select
+          id={`${direction}_${id}`}
+          name="select"
+          labelKey="label"
+          valueKey={{ key: 'value', reduce: true }}
+          value={node || false}
+          options={options}
+          placeholder={
+            <FormattedMessage
+              {...messages[`select_placeholder_${direction}_${id}`]}
+            />
+          }
+          onChange={({ value: nextValue }) => onSetNode(nextValue)}
+        />
+        {!nodeValid && (
+          <Hint>
+            <FormattedMessage {...messages.noDataForNode} />
+          </Hint>
         )}
-        {data && data.nodes && data.nodes.to && (
-          <div>
-            <span>Gyres: </span>
-            {data && data.nodes && data.nodes.to.length}
-          </div>
-        )}
-        {data && data.nodes && !data.nodes.to && !data.nodes.from && (
-          <div>
-            <span>Countries: </span>
-            {data && data.nodes && data.nodes.length}
-          </div>
-        )}
-      </div>
-      <div>
-        <h4>Data points</h4>
-        {data && data.transfer && data.transfer.length}
       </div>
     </Styled>
   );
@@ -79,13 +186,17 @@ export function Analysis({ id, analysisConfig, onLoadData, data }) {
 
 Analysis.propTypes = {
   id: PropTypes.string,
+  direction: PropTypes.string,
   onLoadData: PropTypes.func,
-  // onSetTab: PropTypes.func,
+  onSetDirection: PropTypes.func,
+  onSetNode: PropTypes.func,
   // // layersConfig: PropTypes.array,
   // // locale: PropTypes.string,
   // uiState: PropTypes.object,
   analysisConfig: PropTypes.object,
   data: PropTypes.object,
+  node: PropTypes.string,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -118,5 +229,5 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(Analysis);
+export default compose(withConnect)(injectIntl(Analysis));
 // export default PanelTransfers;

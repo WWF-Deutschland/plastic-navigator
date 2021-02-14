@@ -39,8 +39,8 @@ import Analysis from './Analysis';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { setAnalysis } from './actions';
-import { selectAnalysis } from './selectors';
+import { setAnalysis, setDirection, setNode } from './actions';
+import { selectAnalysis, selectDirection, selectNode } from './selectors';
 // import commonMessages from 'messages';
 
 const Styled = styled(props => <Box {...props} elevation="medium" />)`
@@ -62,6 +62,10 @@ export function PanelTransfers({
   analysesConfig,
   activeAnalysis,
   onSetAnalysis,
+  direction,
+  onSetDirection,
+  onSetNode,
+  node,
 }) {
   useInjectReducer({ key: 'panelTransfers', reducer });
   useInjectSaga({ key: 'panelTransfers', saga });
@@ -74,8 +78,18 @@ export function PanelTransfers({
   useEffect(() => {
     if (!activeAnalysis) {
       onSetAnalysis('gyres');
+    } else if (activeAnalysis === 'gyres') {
+      onSetDirection('to');
+    } else {
+      onSetDirection('from');
     }
+    onSetNode('');
   }, [activeAnalysis]);
+  useEffect(() => {
+    if (activeAnalysis === 'gyres') {
+      onSetNode('');
+    }
+  }, [direction]);
 
   // prettier-ignore
   return (
@@ -111,6 +125,10 @@ export function PanelTransfers({
             {activeAnalysis && analysesConfig && (
               <Analysis
                 id={activeAnalysis}
+                direction={direction}
+                onSetDirection={onSetDirection}
+                node={node}
+                onSetNode={onSetNode}
                 analysisConfig={analysesConfig.find(
                   ({ id }) => quasiEquals(id, activeAnalysis),
                 )}
@@ -126,22 +144,30 @@ export function PanelTransfers({
 PanelTransfers.propTypes = {
   onClose: PropTypes.func,
   onSetAnalysis: PropTypes.func,
+  onSetDirection: PropTypes.func,
+  onSetNode: PropTypes.func,
   // layersConfig: PropTypes.array,
   // locale: PropTypes.string,
   analysesConfig: PropTypes.array,
   activeAnalysis: PropTypes.string,
+  direction: PropTypes.string,
+  node: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   // layersConfig: state => selectLayersConfig(state),
   // locale: state => selectLocale(state),
   activeAnalysis: state => selectAnalysis(state),
+  direction: state => selectDirection(state),
+  node: state => selectNode(state),
   // activeLayers: state => selectActiveLayers(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onSetAnalysis: id => dispatch(setAnalysis(id)),
+    onSetDirection: dir => dispatch(setDirection(dir)),
+    onSetNode: node => dispatch(setNode(node)),
   };
 }
 

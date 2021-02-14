@@ -6,7 +6,7 @@ import 'url-search-params-polyfill';
 
 import { MAX_LOAD_ATTEMPTS, RESOURCES } from 'config';
 import { selectRouterLocation } from 'containers/App/selectors';
-import { LOAD_DATA, SET_ANALYSIS } from './constants';
+import { LOAD_DATA, SET_ANALYSIS, SET_DIRECTION, SET_NODE } from './constants';
 
 import { selectDataReadyByKey, selectDataRequestedByKey } from './selectors';
 
@@ -100,6 +100,34 @@ function* setAnalysisSaga({ id }) {
     yield put(push(`${currentLocation.pathname}${search}`));
   }
 }
+function* setDirectionSaga({ direction }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  searchParams.set('dir', direction);
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
+function* setNodeSaga({ node }) {
+  const currentLocation = yield select(selectRouterLocation);
+  const searchParams = new URLSearchParams(currentLocation.search);
+
+  if (node && node.trim() !== '') {
+    searchParams.set('node', node);
+  } else {
+    searchParams.delete('node');
+  }
+
+  const newSearch = searchParams.toString();
+  const search = newSearch.length > 0 ? `?${newSearch}` : '';
+  if (search !== currentLocation.search) {
+    yield put(push(`${currentLocation.pathname}${search}`));
+  }
+}
 
 export default function* defaultSaga() {
   yield takeEvery(
@@ -107,4 +135,6 @@ export default function* defaultSaga() {
     autoRestart(loadDataSaga, loadDataErrorHandler, MAX_LOAD_ATTEMPTS),
   );
   yield takeLatest(SET_ANALYSIS, setAnalysisSaga);
+  yield takeLatest(SET_DIRECTION, setDirectionSaga);
+  yield takeLatest(SET_NODE, setNodeSaga);
 }

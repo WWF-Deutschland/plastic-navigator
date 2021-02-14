@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { selectRouterSearchParams } from 'containers/App/selectors';
+import quasiEquals from 'utils/quasi-equals';
 import { getTransfersKey, getNodesKey } from './utils';
 
 import { initialState } from './reducer';
@@ -7,6 +8,15 @@ import { initialState } from './reducer';
 export const selectAnalysis = createSelector(
   selectRouterSearchParams,
   search => (search.has('transfer') ? search.get('transfer') : null),
+);
+
+export const selectDirection = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('dir') ? search.get('dir') : null),
+);
+export const selectNode = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('node') ? search.get('node') : null),
 );
 
 /**
@@ -32,7 +42,13 @@ export const selectDataForAnalysis = createSelector(
   selectData,
   (config, data) => {
     if (data && config) {
-      const transfer = data[getTransfersKey(config)];
+      let transfer = data[getTransfersKey(config)];
+      transfer =
+        transfer &&
+        transfer.filter(
+          row =>
+            row.value && row.value.trim() !== '' && !quasiEquals(row.value, 0),
+        );
       let nodes;
       if (config.dir === 'uni') {
         // load 'from' nodes

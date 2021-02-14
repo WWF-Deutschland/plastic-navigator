@@ -62,6 +62,7 @@ export const colors = {
   black: '#000000',
   'black-trans': 'rgba(0, 0, 0, 0.6)',
   dark: '#282A2C',
+  grey: '#6F7676',
   white: '#ffffff',
   'white-trans': 'rgba(255, 255, 255, 0.85)',
   // active: '#ffffff',

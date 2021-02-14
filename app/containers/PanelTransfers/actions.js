@@ -11,6 +11,8 @@ import {
   DATA_LOAD_ERROR,
   DATA_READY,
   SET_ANALYSIS,
+  SET_DIRECTION,
+  SET_NODE,
 } from './constants';
 
 export function loadData(key, path) {
@@ -57,5 +59,17 @@ export function setAnalysis(id) {
   return {
     type: SET_ANALYSIS,
     id,
+  };
+}
+export function setDirection(direction) {
+  return {
+    type: SET_DIRECTION,
+    direction,
+  };
+}
+export function setNode(node) {
+  return {
+    type: SET_NODE,
+    node,
   };
 }
