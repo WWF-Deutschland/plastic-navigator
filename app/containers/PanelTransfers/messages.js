@@ -34,7 +34,7 @@ export default defineMessages({
   title_to_countries: {
     id: `${scope}.title_to_countries`,
     defaultMessage:
-      "Where does the floating debris originate that enters a country's EEZ",
+      "Where does the floating debris originate that enters a country's EEZ?",
   },
   title_from_countries: {
     id: `${scope}.title_from_countries`,
