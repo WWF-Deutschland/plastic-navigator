@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -17,6 +17,8 @@ import { lowerCase } from 'utils/string';
 import { roundNumber } from 'utils/numbers';
 import quasiEquals from 'utils/quasi-equals';
 // import commonMessages from 'messages';
+
+import ChartFlow from 'components/ChartFlow';
 
 import { loadData } from './actions';
 import { selectDataForAnalysis } from './selectors';
@@ -57,6 +59,8 @@ const ButtonDirection = styled(props => <Button plain {...props} />)`
     padding: 5px 15px;
   }
 `;
+
+const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 2, true);
 
 const makeOptions = (
   activeNode,
@@ -160,7 +164,31 @@ const getResults = (activeNode, data, direction, analysisConfig, locale) => {
   return [];
 };
 
-const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 2, true);
+const makeChartNodes = (results, activeOption, direction) => {
+  // first add active node on index 0
+  const nodes = [
+    {
+      name: activeOption.label,
+      valueFormatted: '100%',
+      key: `active-${activeOption.value}`,
+      align: direction === 'from' ? 'end' : 'start',
+    },
+  ];
+  return nodes.concat(
+    results.map(row => ({
+      name: row.label,
+      valueFormatted: `${formatRatio(row.ratio)}%`,
+      key: row.code,
+      align: direction !== 'from' ? 'end' : 'start',
+    })),
+  );
+};
+const makeChartLinks = (results, direction) =>
+  results.map((row, i) => ({
+    source: direction === 'from' ? 0 : i + 1,
+    target: direction === 'from' ? i + 1 : 0,
+    value: row.ratio,
+  }));
 
 export function Analysis({
   id,
@@ -174,9 +202,18 @@ export function Analysis({
   intl,
 }) {
   const [search, setSearch] = useState(null);
+  const [containerWidth, setContainerWidth] = useState(null);
+  const chartContainerRef = useRef(null);
   useEffect(() => {
     onLoadData(analysisConfig);
   }, [id]);
+
+  useEffect(() => {
+    if (!containerWidth && chartContainerRef.current) {
+      setContainerWidth(chartContainerRef.current.offsetWidth);
+    }
+  }, [chartContainerRef]);
+
   const { locale } = intl;
   const options = makeOptions(
     node,
@@ -186,11 +223,12 @@ export function Analysis({
     locale,
     search,
   );
-  const nodeValid = !node || !!options.find(o => o.value === node);
+  const activeOption = !node || options.find(o => o.value === node);
+
   const results =
-    nodeValid && getResults(node, data, direction, analysisConfig, locale);
+    activeOption && getResults(node, data, direction, analysisConfig, locale);
   return (
-    <Styled>
+    <Styled ref={chartContainerRef}>
       <Heading level={4}>
         <FormattedMessage {...messages[`title_${direction}_${id}`]} />
       </Heading>
@@ -263,12 +301,25 @@ export function Analysis({
             }}
           />
         )}
-        {!nodeValid && (
+        {!activeOption && (
           <Hint>
             <FormattedMessage {...messages.noDataForNode} />
           </Hint>
         )}
-        {nodeValid && results && results.length > 0 && (
+        <div style={{ width: '100%' }}>
+          {containerWidth > 0 && activeOption && results && results.length > 0 && (
+            <ChartFlow
+              data={{
+                nodes: makeChartNodes(results, activeOption, direction),
+                links: makeChartLinks(results, direction),
+              }}
+              width={containerWidth || 300}
+              height={200}
+              direction={direction}
+            />
+          )}
+        </div>
+        {activeOption && results && results.length > 0 && (
           <table>
             <thead>
               <tr>
