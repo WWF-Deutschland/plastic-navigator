@@ -144,11 +144,11 @@ export default defineMessages({
   },
   hint_other_from_countries: {
     id: `${scope}.hint_other_from_countries`,
-    defaultMessage: 'Other countries: ',
+    defaultMessage: 'Other receiving countries: ',
   },
   hint_other_to_countries: {
     id: `${scope}.hint_other_to_countries`,
-    defaultMessage: 'Other countries: ',
+    defaultMessage: 'Other emitting countries: ',
   },
   hint_other_from_gyres: {
     id: `${scope}.hint_other_from_gyres`,

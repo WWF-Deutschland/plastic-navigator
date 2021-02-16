@@ -141,18 +141,20 @@ export const makeChartNodes = ({
     {
       name: truncateText(activeOption.label, 24, false),
       valueFormatted: '',
-      key: activeOption.value,
+      code: activeOption.value,
       align: direction === 'from' ? 'end' : 'start',
       type: 'active',
+      nodeType: direction === 'from' ? 'source' : 'target',
     },
   ];
   nodes = nodes.concat(
     namedResults.map(row => ({
       name: truncateText(row.label, 18, false),
       valueFormatted: `${formatRatio(row.ratio)}%`,
-      key: row.code,
+      code: row.code,
       align: direction !== 'from' ? 'end' : 'start',
       type: 'default',
+      nodeType: direction !== 'from' ? 'source' : 'target',
     })),
   );
   if (otherResults.length > 1) {
@@ -162,9 +164,10 @@ export const makeChartNodes = ({
         count: otherResults.length,
       }),
       valueFormatted: `${formatRatio(otherTotal)}%`,
-      key: 'other',
+      code: 'other',
       align: direction !== 'from' ? 'end' : 'start',
       type: 'other',
+      nodeType: direction !== 'from' ? 'source' : 'target',
     });
   }
   return nodes;

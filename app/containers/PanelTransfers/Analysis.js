@@ -44,6 +44,11 @@ const Label = styled(props => <Text size="small" {...props} />)`
   display: block;
 `;
 
+const ButtonInline = styled(props => <Button plain {...props} />)`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 // prettier-ignore
 const ButtonDirection = styled(props => <Button plain {...props} />)`
   font-family: 'wwfregular';
@@ -232,6 +237,15 @@ export function Analysis({
               width={containerWidth || 300}
               height={300}
               direction={direction}
+              onSelectNode={(code, nodeType) => {
+                onSetNode(code);
+                if (nodeType === 'source' && direction === 'to') {
+                  onSetDirection('from');
+                }
+                if (nodeType === 'target' && direction === 'from') {
+                  onSetDirection('to');
+                }
+              }}
             />
           )}
         </div>
@@ -249,7 +263,19 @@ export function Analysis({
               </span>
               {otherResults.map((row, i) => (
                 <span key={row.code}>
-                  <>{`${formatRatio(row.ratio)}% ${row.label}`}</>
+                  <ButtonInline
+                    onClick={() => {
+                      onSetNode(row.code);
+                      if (direction === 'to') {
+                        onSetDirection('from');
+                      }
+                      if (direction === 'from') {
+                        onSetDirection('to');
+                      }
+                    }}
+                  >
+                    {`${formatRatio(row.ratio)}% ${row.label}`}
+                  </ButtonInline>
                   {i + 1 < otherResults.length && <>, </>}
                 </span>
               ))}

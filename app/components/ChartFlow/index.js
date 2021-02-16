@@ -27,7 +27,7 @@ const getLinkColor = link => (link.type === 'other' ? '#999999' : '#F07D00');
 //   return '#F07D00';
 // };
 
-const ChartFlow = ({ data, width, height, direction }) => {
+const ChartFlow = ({ data, width, height, direction, onSelectNode }) => {
   const totalHeight = data.links
     ? height + NODE_PADDING * (data.links.length - 1)
     : height;
@@ -67,6 +67,7 @@ const ChartFlow = ({ data, width, height, direction }) => {
             direction={direction}
             key={node.index}
             color={getNodeColor(node, nodes[0])}
+            onSelectNode={onSelectNode}
           />
         ))}
         {linksUpdated.map(link => (
@@ -82,6 +83,7 @@ ChartFlow.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   direction: PropTypes.string,
+  onSelectNode: PropTypes.func,
 };
 
 export default ChartFlow;

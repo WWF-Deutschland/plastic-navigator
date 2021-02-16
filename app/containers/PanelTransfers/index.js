@@ -84,11 +84,11 @@ export function PanelTransfers({
       onSetDirection('from');
     }
   }, [activeAnalysis]);
-  useEffect(() => {
-    if (activeAnalysis === 'gyres') {
-      onSetNode('');
-    }
-  }, [direction]);
+  // useEffect(() => {
+  //   if (activeAnalysis === 'gyres') {
+  //     onSetNode('');
+  //   }
+  // }, [direction]);
 
   // prettier-ignore
   return (
