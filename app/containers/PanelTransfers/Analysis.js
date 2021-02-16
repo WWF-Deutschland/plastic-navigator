@@ -12,23 +12,30 @@ import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Heading, Paragraph, Button, Text, Select } from 'grommet';
-import { deburr } from 'lodash/string';
-import { lowerCase } from 'utils/string';
-import { roundNumber } from 'utils/numbers';
-import quasiEquals from 'utils/quasi-equals';
 // import commonMessages from 'messages';
 
 import ChartFlow from 'components/ChartFlow';
 
 import { loadData } from './actions';
 import { selectDataForAnalysis } from './selectors';
-import { getTransfersKey, getNodesKey } from './utils';
+import {
+  getTransfersKey,
+  getNodesKey,
+  makeOptions,
+  makeChartLinks,
+  makeChartNodes,
+  getResults,
+  formatRatio,
+} from './utils';
 import messages from './messages';
 
 const Styled = styled.div`
   width: 100%;
 `;
 
+const Title = styled(props => <Heading level={4} {...props} />)`
+  max-width: none;
+`;
 const Hint = styled(props => <Paragraph size="xxsmall" {...props} />)`
   font-style: italic;
 `;
@@ -60,135 +67,7 @@ const ButtonDirection = styled(props => <Button plain {...props} />)`
   }
 `;
 
-const formatRatio = ratio => roundNumber(parseFloat(ratio) * 100, 2, true);
-
-const makeOptions = (
-  activeNode,
-  data,
-  direction,
-  analysisConfig,
-  locale,
-  search,
-) => {
-  const { id } = analysisConfig;
-  // console.log(id, direction, data)
-  if (id === 'gyres' && data.nodes && data.nodes[direction] && data.transfer) {
-    return data.nodes[direction]
-      .filter(node =>
-        // make sure we have data for it
-        data.transfer.find(row => row[direction] === node.code),
-      )
-      .map(node => ({
-        value: node.code,
-        label: node[`name_${locale}`],
-      }))
-      .sort((a, b) => {
-        if (activeNode && quasiEquals(a.value, activeNode)) {
-          return -1;
-        }
-        if (activeNode && quasiEquals(b.value, activeNode)) {
-          return 1;
-        }
-        return 0;
-      });
-  }
-  if (id === 'countries' && data.nodes && data.transfer) {
-    const exp =
-      search && search.length > 1 && new RegExp(deburr(lowerCase(search)), 'i');
-    return data.nodes
-      .filter(
-        node =>
-          // filter by search
-          (!exp ||
-            quasiEquals(activeNode, node.MRGID_EEZ) ||
-            exp.test(deburr(lowerCase(node.UNION)))) &&
-          // make sure we have data for it
-          data.transfer.find(row => row[direction] === node.MRGID_EEZ),
-      )
-      .map(node => ({
-        value: node.MRGID_EEZ,
-        label: node.UNION,
-      }))
-      .sort((a, b) => {
-        if (activeNode && quasiEquals(a.value, activeNode)) {
-          return -1;
-        }
-        if (activeNode && quasiEquals(b.value, activeNode)) {
-          return 1;
-        }
-        return deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1;
-      });
-  }
-  return [];
-};
-const getResults = (activeNode, data, direction, analysisConfig, locale) => {
-  const { id } = analysisConfig;
-  const inverse = direction === 'to' ? 'from' : 'to';
-  const results =
-    data.transfer &&
-    data.transfer
-      .filter(row => quasiEquals(row[direction], activeNode))
-      .sort((a, b) => (parseFloat(a.value) > parseFloat(b.value) ? -1 : 1));
-  const total =
-    results && results.reduce((memo, { value }) => memo + parseFloat(value), 0);
-  if (results && id === 'gyres') {
-    return results.map(row => {
-      const node =
-        data.nodes &&
-        data.nodes[inverse].find(nodeObject =>
-          quasiEquals(nodeObject.code, row[inverse]),
-        );
-      return {
-        code: row[inverse],
-        label: node ? node[`name_${locale}`] : row[inverse],
-        value: parseFloat(row.value),
-        ratio: parseFloat(row.value) / total,
-      };
-    });
-  }
-  if (results && id === 'countries') {
-    return results.map(row => {
-      const theNode =
-        data.nodes &&
-        data.nodes.find(nodeObject =>
-          quasiEquals(nodeObject.MRGID_EEZ, row[inverse]),
-        );
-      return {
-        code: row[inverse],
-        label: theNode ? theNode.UNION : row[inverse],
-        value: parseFloat(row.value),
-        ratio: parseFloat(row.value) / total,
-      };
-    });
-  }
-  return [];
-};
-
-const makeChartNodes = (results, activeOption, direction) => {
-  // first add active node on index 0
-  const nodes = [
-    {
-      name: activeOption.label,
-      valueFormatted: '100%',
-      key: activeOption.value,
-      align: direction === 'from' ? 'end' : 'start',
-    },
-  ];
-  return nodes.concat(
-    results.map(row => ({
-      name: row.label,
-      valueFormatted: `${formatRatio(row.ratio)}%`,
-      key: row.code,
-      align: direction !== 'from' ? 'end' : 'start',
-    })),
-  );
-};
-const makeChartLinks = (results, direction) =>
-  results.map((row, i) => ({
-    source: direction === 'from' ? 0 : i + 1,
-    target: direction === 'from' ? i + 1 : 0,
-    value: row.ratio,
-  }));
+const THRESHOLD_OTHER = 0.0099;
 
 export function Analysis({
   id,
@@ -215,94 +94,114 @@ export function Analysis({
   }, [chartContainerRef]);
 
   const { locale } = intl;
-  const options = makeOptions(
-    node,
+  const options = makeOptions({
+    activeNode: node,
     data,
     direction,
     analysisConfig,
     locale,
     search,
-  );
+  });
   const activeOption = !node || options.find(o => o.value === node);
 
   const results =
-    activeOption && getResults(node, data, direction, analysisConfig, locale);
+    activeOption &&
+    getResults({ activeNode: node, data, direction, analysisConfig, locale });
+
+  const otherResults =
+    results && results.filter(row => row.ratio < THRESHOLD_OTHER);
+
+  const namedResults =
+    results && otherResults.length > 1
+      ? results.filter(row => row.ratio >= THRESHOLD_OTHER)
+      : results;
 
   if (!direction || !id) return null;
   return (
     <Styled ref={chartContainerRef}>
-      <Heading level={4}>
+      <Title>
         <FormattedMessage {...messages[`title_${direction}_${id}`]} />
-      </Heading>
-      <Paragraph>
+      </Title>
+      <Paragraph fill>
         <FormattedMessage {...messages[`intro_${direction}_${id}`]} />
-      </Paragraph>
-      {messages[`hint_${id}`] && (
-        <Hint>
+        {messages[`hint_${id}`] && (
           <FormattedMessage {...messages[`hint_${id}`]} />
-        </Hint>
-      )}
-      <Label>
-        <FormattedMessage {...messages[`label_direction_${id}`]} />
-      </Label>
-      <Box direction="row" gap="xxsmall">
-        {['from', 'to'].map(dir => (
-          <ButtonDirection
-            key={dir}
-            active={direction === dir}
-            disabled={direction === dir}
-            onClick={() => onSetDirection(dir)}
-            label={<FormattedMessage {...messages[`button_${dir}_${id}`]} />}
-          />
-        ))}
+        )}
+      </Paragraph>
+      <Box direction="row" gap="medium" margin={{ bottom: 'large' }}>
+        <Box>
+          <Label>
+            <FormattedMessage
+              {...messages[`select_label_${direction}_${id}`]}
+            />
+          </Label>
+          {id === 'gyres' && (
+            <Select
+              id={`select-${id}`}
+              name={`select-${id}`}
+              labelKey="label"
+              valueKey={{ key: 'value', reduce: true }}
+              value={node || ''}
+              options={options}
+              placeholder={
+                <FormattedMessage
+                  {...messages[`select_placeholder_${direction}_${id}`]}
+                />
+              }
+              onChange={({ value: nextValue }) =>
+                onSetNode(nextValue !== node ? nextValue : null)
+              }
+            />
+          )}
+          {id === 'countries' && (
+            <Select
+              id={`select-${id}`}
+              name={`select-${id}`}
+              labelKey="label"
+              valueKey={{ key: 'value', reduce: true }}
+              value={node || ''}
+              options={options}
+              placeholder={
+                <FormattedMessage
+                  {...messages[`select_placeholder_${direction}_${id}`]}
+                />
+              }
+              onOpen={() => setSearch('')}
+              onChange={({ value: nextValue }) =>
+                onSetNode(nextValue !== node ? nextValue : null)
+              }
+              onSearch={text => {
+                // The line below escapes regular expression special characters:
+                // [ \ ^ $ . | ? * + ( )
+                const escapedText = text.replace(
+                  /[-\\^$*+?.()|[\]{}]/g,
+                  '\\$&',
+                );
+                return setSearch(escapedText);
+              }}
+            />
+          )}
+        </Box>
+        <Box>
+          <Label>
+            <FormattedMessage {...messages[`label_direction_${id}`]} />
+          </Label>
+          <Box direction="row" gap="xsmall">
+            {['from', 'to'].map(dir => (
+              <ButtonDirection
+                key={dir}
+                active={direction === dir}
+                disabled={direction === dir}
+                onClick={() => onSetDirection(dir)}
+                label={
+                  <FormattedMessage {...messages[`button_${dir}_${id}`]} />
+                }
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
       <div>
-        <Label>
-          <FormattedMessage {...messages[`select_label_${direction}_${id}`]} />
-        </Label>
-        {id === 'gyres' && (
-          <Select
-            id={`select-${id}`}
-            name={`select-${id}`}
-            labelKey="label"
-            valueKey={{ key: 'value', reduce: true }}
-            value={node || ''}
-            options={options}
-            placeholder={
-              <FormattedMessage
-                {...messages[`select_placeholder_${direction}_${id}`]}
-              />
-            }
-            onChange={({ value: nextValue }) =>
-              onSetNode(nextValue !== node ? nextValue : null)
-            }
-          />
-        )}
-        {id === 'countries' && (
-          <Select
-            id={`select-${id}`}
-            name={`select-${id}`}
-            labelKey="label"
-            valueKey={{ key: 'value', reduce: true }}
-            value={node || ''}
-            options={options}
-            placeholder={
-              <FormattedMessage
-                {...messages[`select_placeholder_${direction}_${id}`]}
-              />
-            }
-            onOpen={() => setSearch('')}
-            onChange={({ value: nextValue }) =>
-              onSetNode(nextValue !== node ? nextValue : null)
-            }
-            onSearch={text => {
-              // The line below escapes regular expression special characters:
-              // [ \ ^ $ . | ? * + ( )
-              const escapedText = text.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
-              return setSearch(escapedText);
-            }}
-          />
-        )}
         {!activeOption && (
           <Hint>
             <FormattedMessage {...messages.noDataForNode} />
@@ -312,8 +211,23 @@ export function Analysis({
           {containerWidth > 0 && activeOption && results && results.length > 0 && (
             <ChartFlow
               data={{
-                nodes: makeChartNodes(results, activeOption, direction),
-                links: makeChartLinks(results, direction),
+                nodes: makeChartNodes({
+                  namedResults,
+                  otherResults,
+                  direction,
+                  activeOption,
+                  intl,
+                  messages,
+                  id,
+                }),
+                links: makeChartLinks({
+                  namedResults,
+                  otherResults,
+                  direction,
+                  activeOption,
+                  // intl,
+                  // messages,
+                }),
               }}
               width={containerWidth || 300}
               height={300}
@@ -321,25 +235,26 @@ export function Analysis({
             />
           )}
         </div>
-        {activeOption && results && results.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th style={{ textAlign: 'left' }}>Name</th>
-                <th style={{ textAlign: 'right' }}>%</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map(row => (
-                <tr key={row.code}>
-                  <td>{row.label}</td>
-                  <td style={{ textAlign: 'right' }}>
-                    {`${formatRatio(row.ratio)} %`}
-                  </td>
-                </tr>
+        {activeOption && otherResults && otherResults.length > 1 && (
+          <div>
+            <Hint
+              size="xxxsmall"
+              textAlign="center"
+              margin={{ horizontal: 'auto' }}
+            >
+              <span>
+                <FormattedMessage
+                  {...messages[`hint_other_${direction}_${id}`]}
+                />
+              </span>
+              {otherResults.map((row, i) => (
+                <span key={row.code}>
+                  <>{`${formatRatio(row.ratio)}% ${row.label}`}</>
+                  {i + 1 < otherResults.length && <>, </>}
+                </span>
               ))}
-            </tbody>
-          </table>
+            </Hint>
+          </div>
         )}
       </div>
     </Styled>

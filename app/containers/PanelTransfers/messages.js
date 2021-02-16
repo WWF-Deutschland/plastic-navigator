@@ -19,7 +19,7 @@ export default defineMessages({
   },
   mode_countries: {
     id: `${scope}.mode_countries`,
-    defaultMessage: 'Between countries*',
+    defaultMessage: 'Between countries',
   },
   title_to_gyres: {
     id: `${scope}.title_to_gyres`,
@@ -43,32 +43,32 @@ export default defineMessages({
   },
   intro_to_gyres: {
     id: `${scope}.intro_to_gyres`,
-    defaultMessage: 'See relative emissions of marine debris by region*',
+    defaultMessage: 'See relative emissions of marine debris by region. ',
   },
   intro_from_gyres: {
     id: `${scope}.intro_from_gyres`,
     defaultMessage:
-      "See a region's relative contributions to the different gyres*",
+      "See a region's relative contributions to the different gyres. ",
   },
   intro_to_countries: {
     id: `${scope}.intro_to_countries`,
     defaultMessage:
-      'See relative contributions of marine debris from multiple country EEZs',
+      'See relative contributions of marine debris from multiple country Exclusive Economic Zones (EEZ). ',
   },
   intro_from_countries: {
     id: `${scope}.intro_from_countries`,
     defaultMessage:
-      "See a country's relative contributions of marine debris to the different country EEZs",
+      "See a country's relative contributions of marine debris to the different country . ",
   },
   hint_countries: {
     id: `${scope}.hint_countries`,
     defaultMessage:
-      "* In this analysis 'countries' refers to countries' individual Exclusive Economic Zones (EEZ)",
+      "In this analysis 'countries' refer to individual country EEZs. ",
   },
   hint_gyres: {
     id: `${scope}.hint_gyres`,
     defaultMessage:
-      "* In this analysis 'regions' are based on one or more countries' Exclusive Economic Zones (EEZ)",
+      "In this analysis 'gyres' may refer to all identified accumulation zones, including 'marginal seas'. 'Regions' can be based on Exclusive Economic Zones (EEZ) of one or more countries. ",
   },
   label_direction_countries: {
     id: `${scope}.label_direction_countries`,
@@ -102,14 +102,6 @@ export default defineMessages({
     id: `${scope}.select_label_to_countries`,
     defaultMessage: 'Select country EEZ',
   },
-  select_placeholder_from_countries: {
-    id: `${scope}.select_placeholder_from_countries`,
-    defaultMessage: 'Emitting country EEZ',
-  },
-  select_placeholder_to_countries: {
-    id: `${scope}.select_placeholder_to_countries`,
-    defaultMessage: 'Receiving country EEZ',
-  },
   select_label_from_gyres: {
     id: `${scope}.select_label_from_gyres`,
     defaultMessage: 'Select region',
@@ -118,6 +110,14 @@ export default defineMessages({
     id: `${scope}.select_label_to_gyres`,
     defaultMessage: 'Select gyre',
   },
+  select_placeholder_from_countries: {
+    id: `${scope}.select_placeholder_from_countries`,
+    defaultMessage: 'Emitting country EEZ',
+  },
+  select_placeholder_to_countries: {
+    id: `${scope}.select_placeholder_to_countries`,
+    defaultMessage: 'Receiving country EEZ',
+  },
   select_placeholder_from_gyres: {
     id: `${scope}.select_placeholder_from_gyres`,
     defaultMessage: 'Emitting region',
@@ -125,6 +125,38 @@ export default defineMessages({
   select_placeholder_to_gyres: {
     id: `${scope}.select_placeholder_to_gyres`,
     defaultMessage: 'Receiving gyre',
+  },
+  label_other_from_countries: {
+    id: `${scope}.label_other_from_countries`,
+    defaultMessage: '{count} other countries',
+  },
+  label_other_to_countries: {
+    id: `${scope}.label_other_to_countries`,
+    defaultMessage: '{count} other countries',
+  },
+  label_other_from_gyres: {
+    id: `${scope}.label_other_from_gyres`,
+    defaultMessage: '{count} other gyres',
+  },
+  label_other_to_gyres: {
+    id: `${scope}.label_other_to_gyres`,
+    defaultMessage: '{count} other regions',
+  },
+  hint_other_from_countries: {
+    id: `${scope}.hint_other_from_countries`,
+    defaultMessage: 'Other countries: ',
+  },
+  hint_other_to_countries: {
+    id: `${scope}.hint_other_to_countries`,
+    defaultMessage: 'Other countries: ',
+  },
+  hint_other_from_gyres: {
+    id: `${scope}.hint_other_from_gyres`,
+    defaultMessage: 'Other gyres: ',
+  },
+  hint_other_to_gyres: {
+    id: `${scope}.hint_other_to_gyres`,
+    defaultMessage: 'Other regions: ',
   },
   noDataForNode: {
     id: `${scope}.noDataForNode`,

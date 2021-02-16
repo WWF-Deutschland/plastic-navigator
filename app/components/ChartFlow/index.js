@@ -5,13 +5,13 @@ import { sankey } from 'd3-sankey';
 import FlowNode from './FlowNode';
 import FlowLink from './FlowLink';
 
-const NODE_PADDING = 6;
+const NODE_PADDING = 10;
 const NODE_WIDTH = 10;
 const LABEL_WIDTH = 170;
 
-const getNodeColor = () => '#F07D00';
+const getNodeColor = node => (node.type === 'other' ? '#999999' : '#F07D00');
 
-const getLinkColor = () => '#F07D00';
+const getLinkColor = link => (link.type === 'other' ? '#999999' : '#F07D00');
 
 // const getNodeColor = (node, activeNode) => {
 //   // if (node.index !== 0 && node.key === activeNode.key) {
@@ -43,7 +43,7 @@ const ChartFlow = ({ data, width, height, direction }) => {
 
   const singleNodeUpdated = nodes[0];
   const prevY0 = nodes[0].y0;
-  singleNodeUpdated.y0 = (totalHeight - height) / 8;
+  singleNodeUpdated.y0 = (totalHeight - height) / 2;
   singleNodeUpdated.y1 = singleNodeUpdated.y0 + height;
   const diffY0 = singleNodeUpdated.y0 - prevY0;
 
