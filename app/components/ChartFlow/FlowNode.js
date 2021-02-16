@@ -9,27 +9,30 @@ const FlowNode = ({ name, valueFormatted, x0, x1, y0, y1, color, align }) => {
       <rect x={x0} y={y0} width={w} height={h} fill={color}>
         <title>{`${name} (${valueFormatted})`}</title>
       </rect>
-      <text
-        x={align === 'start' ? x0 + w + 4 : x0 - 4}
-        y={h > 6 ? y0 + h / 2 - 2 : y0 + h / 2 + 2}
-        textAnchor={align}
-        fontSize="8"
-      >
-        {name}
-      </text>
-      {h > 6 && (
+      {h > 3 && (
         <text
           x={align === 'start' ? x0 + w + 4 : x0 - 4}
-          y={y0 + h / 2 + 6}
+          y={y0 + h / 2 + 4}
           textAnchor={align}
-          fontSize="8"
+          fontSize="10"
         >
-          {valueFormatted}
+          {`${valueFormatted} ${name}`}
         </text>
       )}
     </g>
   );
 };
+
+// {h > 6 && (
+//   <text
+//     x={align === 'start' ? x0 + w + 4 : x0 - 4}
+//     y={y0 + h / 2 + 6}
+//     textAnchor={align}
+//     fontSize="8"
+//   >
+//     {valueFormatted}
+//   </text>
+// )}
 
 FlowNode.propTypes = {
   name: PropTypes.string,

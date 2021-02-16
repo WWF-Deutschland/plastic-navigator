@@ -170,7 +170,7 @@ const makeChartNodes = (results, activeOption, direction) => {
     {
       name: activeOption.label,
       valueFormatted: '100%',
-      key: `active-${activeOption.value}`,
+      key: activeOption.value,
       align: direction === 'from' ? 'end' : 'start',
     },
   ];
@@ -227,6 +227,8 @@ export function Analysis({
 
   const results =
     activeOption && getResults(node, data, direction, analysisConfig, locale);
+
+  if (!direction || !id) return null;
   return (
     <Styled ref={chartContainerRef}>
       <Heading level={4}>
@@ -314,7 +316,7 @@ export function Analysis({
                 links: makeChartLinks(results, direction),
               }}
               width={containerWidth || 300}
-              height={200}
+              height={300}
               direction={direction}
             />
           )}

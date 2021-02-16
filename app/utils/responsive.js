@@ -68,6 +68,12 @@ export const getAsideInfoWidth = size => {
     ? dimensions.asideInfo.width[bp.index]
     : dimensions.asideInfo.width[0];
 };
+export const getAsideTransferWidth = size => {
+  const bp = sizes[size];
+  return bp && size
+    ? dimensions.asideTransfer.width[bp.index]
+    : dimensions.asideTransfer.width[0];
+};
 
 export const getContentMaxWidth = size => {
   const bp = sizes[size];

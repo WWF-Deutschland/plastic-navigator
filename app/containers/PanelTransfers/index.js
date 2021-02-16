@@ -20,7 +20,7 @@ import {
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { getAsideWidth } from 'utils/responsive';
+import { getAsideTransferWidth } from 'utils/responsive';
 import quasiEquals from 'utils/quasi-equals';
 
 import { ExploreS as LayerIcon } from 'components/Icons';
@@ -94,7 +94,7 @@ export function PanelTransfers({
   return (
     <ResponsiveContext.Consumer>
       {size => (
-        <Styled background="white" panelWidth={getAsideWidth(size)}>
+        <Styled background="white" panelWidth={getAsideTransferWidth(size)}>
           <PanelHeader>
             <ButtonPanelClose onClick={() => onClose()} />
             <PanelTitleWrap>

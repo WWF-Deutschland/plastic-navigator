@@ -7,7 +7,26 @@ import FlowLink from './FlowLink';
 
 const NODE_PADDING = 6;
 const NODE_WIDTH = 10;
-const LABEL_WIDTH = 70;
+const LABEL_WIDTH = 170;
+
+const getNodeColor = () => '#F07D00';
+
+const getLinkColor = () => '#F07D00';
+
+// const getNodeColor = (node, activeNode) => {
+//   // if (node.index !== 0 && node.key === activeNode.key) {
+//   //   return '#00728F';
+//   // }
+//   return '#F07D00';
+// };
+//
+// const getLinkColor = link => {
+//   // if (link.source && link.target && link.source.key === link.target.key) {
+//   //   return '#00728F';
+//   // }
+//   return '#F07D00';
+// };
+
 const ChartFlow = ({ data, width, height, direction }) => {
   const totalHeight = data.links
     ? height + NODE_PADDING * (data.links.length - 1)
@@ -44,14 +63,14 @@ const ChartFlow = ({ data, width, height, direction }) => {
       <g>
         {nodes.map(node => (
           <FlowNode
+            {...node}
             direction={direction}
             key={node.index}
-            color="black"
-            {...node}
+            color={getNodeColor(node, nodes[0])}
           />
         ))}
         {linksUpdated.map(link => (
-          <FlowLink key={link.index} link={link} color="red" />
+          <FlowLink key={link.index} link={link} color={getLinkColor(link)} />
         ))}
       </g>
     </svg>

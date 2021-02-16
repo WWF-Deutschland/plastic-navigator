@@ -52,6 +52,12 @@ export const dimensions = {
     width: [0, 0, 400, 500, 600],
     zIndex: 1150,
   },
+  // layer info
+  asideTransfer: {
+    // by breakpoint
+    width: [0, 0, 500, 700, 700],
+    zIndex: 1150,
+  },
 };
 
 export const colors = {

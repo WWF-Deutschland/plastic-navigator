@@ -8,7 +8,10 @@ const FlowLink = ({ link, color }) => (
     d={sankeyLinkHorizontal()(link)}
     style={{
       fill: 'none',
-      strokeOpacity: '.3',
+      strokeOpacity:
+        link.source && link.target && link.source.key === link.target.key
+          ? '0.6'
+          : '0.4',
       stroke: color,
       strokeWidth: Math.max(1, link.width),
     }}
