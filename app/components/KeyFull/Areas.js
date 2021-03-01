@@ -5,9 +5,11 @@ import { Box } from 'grommet';
 import { intlShape, injectIntl } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
+import { POLICY_LAYERS } from 'config';
 
-// import quasiEquals from 'utils/quasi-equals';
-// import { getPositionStats } from 'utils/positions';
+import quasiEquals from 'utils/quasi-equals';
+import { getPositionStats, featuresToCountries } from 'utils/positions';
+
 import asArray from 'utils/as-array';
 
 import KeyArea from 'components/KeyArea';
@@ -21,20 +23,24 @@ const SquareLabelWrap = styled(p => (
 
 const KeyAreaWrap = styled.div`
   position: relative;
-  height: ${({ simple }) => (simple ? 22 : 30)}px;
-  width: ${({ simple }) => (simple ? 22 : 30)}px;
-  padding: ${({ simple }) => (simple ? 0 : 4)}px;
+  height: 22px;
+  width: 22px;
+  padding: 0px;
 `;
 
 const StyledKeyLabel = styled(KeyLabel)`
   white-space: normal;
 `;
 
-export function Areas({ config, intl, title, simple }) {
+export function Areas({ config, intl, title, simple, layerData }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
   let square = { style: { color: 'black' }, title, id: config.id };
-  // const stats = layerData && getPositionStats(config, layerData.features);
+  const countries =
+    POLICY_LAYERS.indexOf(config.id) > -1 &&
+    layerData &&
+    featuresToCountries(config, layerData.features, locale);
+  const countryStats = countries && getPositionStats(config, countries);
   if (featureStyle.multiple === 'true') {
     square = key.values.map(val => {
       let t;
@@ -56,12 +62,13 @@ export function Areas({ config, intl, title, simple }) {
           },
         );
       }
-      // const stat = stats && stats.find(s => quasiEquals(s.val, val));
+      const stat =
+        countryStats && countryStats.find(s => quasiEquals(s.val, val));
       return {
         id: val,
         style,
         title: t,
-        // count: stat && stat.count,
+        count: stat && stat.count,
       };
     });
   }
@@ -69,20 +76,23 @@ export function Areas({ config, intl, title, simple }) {
     <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
       {asArray(square).map(sq => (
         <SquareLabelWrap key={sq.id}>
-          <KeyAreaWrap simple={simple}>
+          <KeyAreaWrap>
             <KeyArea areaStyles={[sq.style]} />
           </KeyAreaWrap>
-          <StyledKeyLabel>{sq.title}</StyledKeyLabel>
+          <StyledKeyLabel>
+            {!sq.count && sq.title}
+            {!!sq.count && `${sq.title}: `}
+            {!!sq.count && <strong>{sq.count}</strong>}
+          </StyledKeyLabel>
         </SquareLabelWrap>
       ))}
     </Box>
   );
 }
-// {sq.count && `${sq.title} (${sq.count})`}
-// {!sq.count && sq.title}
 
 Areas.propTypes = {
   config: PropTypes.object,
+  layerData: PropTypes.object,
   title: PropTypes.string,
   simple: PropTypes.bool,
   intl: intlShape.isRequired,

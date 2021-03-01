@@ -32,6 +32,7 @@ import {
   selectLocale,
   selectUIStateByKey,
 } from 'containers/App/selectors';
+import { selectLayers } from 'containers/Map/selectors';
 import {
   navigate,
   setUIState,
@@ -163,16 +164,15 @@ const Description = styled(Text)`
 `;
 
 const LayersFocusWrap = styled(p => (
-  <Box {...p} direction="row" gap="small" flex={false} />
-))`
-  width: 100%;
-`;
+  <Box {...p} direction="row" gap="xsmall" flex={false} fill />
+))``;
+
 const LayerFocus = styled(p => <Box {...p} />)``;
+
 const LayerTitleWrap = styled(p => (
-  <Box {...p} direction="row" align="center" />
-))`
-  margin-bottom: 6px;
-`;
+  <Box direction="row" align="center" margin={{ bottom: 'xsmall' }} {...p} />
+))``;
+
 const LayerTitle = styled(Text)`
   font-size: 13px;
   line-height: 16px;
@@ -181,8 +181,8 @@ const LayerTitle = styled(Text)`
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
   padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
-  margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
   border-radius: 9999px;
+  margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
   &:hover {
     background: ${({ theme }) => theme.global.colors['dark-1']};
   }
@@ -213,6 +213,7 @@ export function PanelChapter({
   onLayerInfo,
   layersConfig,
   navModule,
+  jsonLayers,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -232,6 +233,7 @@ export function PanelChapter({
     layersConfig.filter(
       l => chapter.layersFocus.slice(0, 2).indexOf(l.id) > -1,
     );
+
   return (
     <ResponsiveContext.Consumer>
       {size => (
@@ -256,19 +258,12 @@ export function PanelChapter({
                     </Title>
                   )}
                   {configsFocus && configsFocus.length > 0 && (
-                    <LayersFocusWrap fill>
+                    <LayersFocusWrap
+                      basis={configsFocus.length > 1 ? '1/2' : 'auto'}
+                    >
                       {configsFocus.map(config => (
-                        <LayerFocus
-                          key={config.id}
-                          fill={configsFocus.length === 1 && 'horizontal'}
-                          style={{
-                            width: configsFocus.length > 1 ? '50%' : '100%',
-                          }}
-                          flex={false}
-                        >
-                          <LayerTitleWrap
-                            fill={configsFocus.length === 1 && 'horizontal'}
-                          >
+                        <LayerFocus key={config.id} fill="horizontal">
+                          <LayerTitleWrap fill="horizontal">
                             {locale && (
                               <LayerTitle>
                                 {config['title-short'] &&
@@ -284,10 +279,19 @@ export function PanelChapter({
                                 onLayerInfo(config['content-id'] || config.id)
                               }
                               icon={<InfoOutline />}
-                              stretch={configsFocus.length === 1}
+                              stretch
                             />
                           </LayerTitleWrap>
-                          <KeyFull config={config} simple dark />
+                          <KeyFull
+                            config={config}
+                            simple
+                            dark
+                            layerData={
+                              config && jsonLayers[config.id]
+                                ? jsonLayers[config.id].data
+                                : null
+                            }
+                          />
                         </LayerFocus>
                       ))}
                     </LayersFocusWrap>
@@ -399,12 +403,14 @@ PanelChapter.propTypes = {
   isLast: PropTypes.bool,
   uiState: PropTypes.object,
   navModule: PropTypes.func,
+  jsonLayers: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   exploreConfig: state => selectExploreConfig(state),
   locale: state => selectLocale(state),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  jsonLayers: state => selectLayers(state),
 });
 
 function mapDispatchToProps(dispatch) {

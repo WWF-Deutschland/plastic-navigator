@@ -6,15 +6,14 @@ import { Box } from 'grommet';
 import { intlShape, injectIntl } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
+import { POLICY_LAYERS } from 'config';
+
+import { getPositionStats, featuresToCountries } from 'utils/positions';
+import quasiEquals from 'utils/quasi-equals';
 
 import KeyCircle from 'components/KeyCircle';
+
 import KeyLabel from './KeyLabel';
-// import messages from './messages';
-//
-// const Hint = styled(p => <Text size="xsmall" {...p} />)`
-//   font-style: italic;
-//   margin-top: 10px;
-// `;
 
 const IconLabelWrap = styled(p => (
   <Box direction="row" align="center" gap="xsmall" {...p} />
@@ -38,10 +37,15 @@ const StyledKeyLabel = styled(KeyLabel)`
   white-space: normal;
 `;
 
-export function IconAlt({ config, intl, dark }) {
+export function IconAlt({ config, intl, dark, layerData }) {
   const { key } = config;
   const { locale } = intl;
   let circles;
+  const countries =
+    POLICY_LAYERS.indexOf(config.id) > -1 &&
+    layerData &&
+    featuresToCountries(config, layerData.features, locale);
+  const countryStats = countries && getPositionStats(config, countries);
   if (key.style && key.style.type === 'circle') {
     circles = key.iconValue.full.map(val => {
       let t;
@@ -79,10 +83,13 @@ export function IconAlt({ config, intl, dark }) {
           fillOpacity: 1,
         },
       );
+      const stat =
+        countryStats && countryStats.find(s => quasiEquals(s.val, val));
       return {
         val,
         title: t,
         style,
+        count: stat && stat.count,
       };
     });
   }
@@ -96,7 +103,11 @@ export function IconAlt({ config, intl, dark }) {
           <IconWrap backgroundColor={backgroundColor} flex={{ shrink: 0 }}>
             <KeyCircle circleStyle={circle.style} radius={8} />
           </IconWrap>
-          <StyledKeyLabel>{circle.title}</StyledKeyLabel>
+          <StyledKeyLabel>
+            {!circle.count && circle.title}
+            {!!circle.count && `${circle.title}: `}
+            {!!circle.count && <strong>{circle.count}</strong>}
+          </StyledKeyLabel>
         </IconLabelWrap>
       ))}
     </Box>
@@ -106,6 +117,7 @@ export function IconAlt({ config, intl, dark }) {
 IconAlt.propTypes = {
   // data: PropTypes.object,
   config: PropTypes.object,
+  layerData: PropTypes.object,
   // title: PropTypes.string,
   // simple: PropTypes.bool,
   dark: PropTypes.bool,

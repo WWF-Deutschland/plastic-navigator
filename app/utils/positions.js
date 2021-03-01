@@ -1,3 +1,5 @@
+import { deburr } from 'lodash/string';
+import { lowerCase } from 'utils/string';
 import asArray from 'utils/as-array';
 import quasiEquals from 'utils/quasi-equals';
 import { DEFAULT_LOCALE } from 'i18n';
@@ -160,3 +162,32 @@ export const getPositionStats = (config, countries) => {
   }
   return null;
 };
+
+export const featuresToCountries = (config, features, locale) =>
+  features
+    .filter(f => {
+      if (config.info) {
+        const ps = config.info.property.split('.');
+        const propertyArray = f.properties[ps[0]];
+        const otherProps = ps.slice(1);
+        return propertyArray.find(prop => {
+          const propDeep = otherProps.reduce((memo, p) => memo[p], prop);
+          return config.info.values.indexOf(propDeep) > -1;
+        });
+      }
+      return true;
+    })
+    .map(f => {
+      const { positions } = f.properties;
+      const position = getStrongestPosition(positions, config);
+      return {
+        id: f.properties.f_id,
+        label:
+          f.properties[`name_${locale}`] ||
+          f.properties[`name_${DEFAULT_LOCALE}`],
+        position,
+      };
+    })
+    .sort((a, b) =>
+      deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1,
+    );
