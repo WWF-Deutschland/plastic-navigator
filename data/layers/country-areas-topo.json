@@ -84517,9 +84517,9 @@
           "arcs": [[440, 441, 442, 443]],
           "type": "Polygon",
           "properties": {
-            "code": "-99",
-            "name_de": "Somaliland",
-            "name_en": "Somaliland"
+            "code": "SOM",
+            "name_de": "Somalia",
+            "name_en": "Somalia"
           }
         },
         {
