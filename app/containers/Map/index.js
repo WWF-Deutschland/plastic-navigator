@@ -19,6 +19,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { getLayerFeatureIds } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
+import { roundNumber } from 'utils/numbers';
 // import commonMessages from 'messages';
 //
 import {
@@ -53,8 +54,14 @@ import {
   selectMapLayers,
   selectHighlightFeature,
   selectLayersLoading,
+  selectMapPosition,
 } from './selectors';
-import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
+import {
+  loadLayer,
+  setMapLayers,
+  setHighlightFeature,
+  setMapPosition,
+} from './actions';
 
 const Styled = styled.div`
   background: ${({ theme }) => theme.global.colors.white};
@@ -87,6 +94,24 @@ const LoadingWrap = styled(MapContainer)`
   background: none;
 `;
 
+const getNWSE = map => {
+  const bounds = map.getBounds();
+  const nw = bounds.getNorthWest();
+  const se = bounds.getSouthEast();
+  const n = roundNumber(nw.lat, 5);
+  const w = roundNumber(nw.lng, 5);
+  const s = roundNumber(se.lat, 5);
+  const e = roundNumber(se.lng, 5);
+  return `${n}|${w}|${s}|${e}`;
+};
+const getLLBounds = nwse => {
+  const split = nwse.split('|');
+  if (split.length === 4) {
+    return [[split[0], split[1]], [split[2], split[3]]];
+  }
+  return null;
+};
+
 export function Map({
   layersConfig,
   activeLayerIds,
@@ -102,6 +127,8 @@ export function Map({
   highlightFeature,
   hasKey,
   loading,
+  onMapMove,
+  mview,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -190,14 +217,14 @@ export function Map({
       // console.log('movestart')
       setTooltip(null);
     },
-    layeradd: () => {
-      // console.log('layerAdd', layer)
-      // setTooltip(null)
-    },
-    layerremove: () => {
-      // console.log('layerremove', layer)
-      // setTooltip(null)
-    },
+    // layeradd: () => {
+    //   // console.log('layerAdd', layer)
+    //   // setTooltip(null)
+    // },
+    // layerremove: () => {
+    //   // console.log('layerremove', layer)
+    //   // setTooltip(null)
+    // },
   };
   // move active marker into view
   useEffect(() => {
@@ -207,17 +234,18 @@ export function Map({
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
-      center: MAP_OPTIONS.CENTER,
-      zoom: size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+      // center: MAP_OPTIONS.CENTER,
+      // zoom: size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+      zoomControl: false,
       minZoom: MAP_OPTIONS.ZOOM.MIN,
       maxZoom: MAP_OPTIONS.ZOOM.MAX,
-      attributionControl: false,
-      zoomControl: false,
       maxBounds: [
         [MAP_OPTIONS.BOUNDS.N, MAP_OPTIONS.BOUNDS.W],
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
       ],
+      attributionControl: false,
     }).on(mapEvents);
+    //
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
@@ -226,6 +254,13 @@ export function Map({
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
+    mapRef.current.on('moveend', () => {
+      onMapMove(getNWSE(mapRef.current));
+    });
+    mapRef.current.setView(
+      MAP_OPTIONS.CENTER,
+      size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+    );
   }, []);
 
   useEffect(() => {
@@ -238,6 +273,14 @@ export function Map({
       mapRef.current.setZoom(zoom);
     }
   }, [zoom]);
+  useEffect(() => {
+    if (mapRef.current && getNWSE(mapRef.current) !== mview) {
+      const llbounds = getLLBounds(mview);
+      if (llbounds) {
+        mapRef.current.fitBounds(llbounds);
+      }
+    }
+  }, [mview]);
 
   // add basemap
   useEffect(() => {
@@ -662,8 +705,10 @@ Map.propTypes = {
   onLoadLayer: PropTypes.func,
   onFeatureClick: PropTypes.func,
   onFeatureHighlight: PropTypes.func,
+  onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
   info: PropTypes.string,
+  mview: PropTypes.string,
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
@@ -679,6 +724,7 @@ const mapStateToProps = createStructuredSelector({
   info: state => selectInfoSearch(state),
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
+  mview: state => selectMapPosition(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -697,6 +743,9 @@ function mapDispatchToProps(dispatch) {
       const feature = args ? args.feature : null;
       const copy = args ? args.copy : null;
       dispatch(setHighlightFeature(layer, feature, copy));
+    },
+    onMapMove: position => {
+      dispatch(setMapPosition(position));
     },
   };
 }

@@ -12,6 +12,7 @@ import {
   LAYER_READY,
   SET_MAP_LAYERS,
   SET_HIGHLIGHT_FEATURE,
+  SET_MAP_POSITION,
 } from './constants';
 
 export function setHighlightFeature(layer, feature, copy) {
@@ -68,5 +69,11 @@ export function setLayerReady(key, time) {
     type: LAYER_READY,
     key,
     time,
+  };
+}
+export function setMapPosition(position) {
+  return {
+    type: SET_MAP_POSITION,
+    position,
   };
 }
