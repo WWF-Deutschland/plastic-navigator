@@ -521,7 +521,6 @@ export function Map({
                 ),
               },
             };
-            console.log('hover', jsonLayerFiltered);
             const highlightLayer = getVectorLayer({
               jsonLayer: jsonLayerFiltered,
               config,
@@ -530,7 +529,6 @@ export function Map({
                 click: markerEvents.click,
               },
             });
-            console.log('hover', highlightLayer);
             // shouldn't really be any layers present but just in case
             areaHighlightRef.current.clearLayers();
             areaHighlightRef.current.addLayer(highlightLayer);
@@ -545,7 +543,6 @@ export function Map({
   // update feature area when info active
   useEffect(() => {
     if (mapLayers && layersConfig) {
-      console.log(infoFeatureId, infoLayerId);
       if (infoFeatureId) {
         Object.keys(mapLayers).forEach(key => {
           const mapLayer = mapLayers[key];
@@ -556,7 +553,6 @@ export function Map({
             mapLayer.config.id === infoLayerId &&
             jsonLayers[mapLayer.config.id]
           ) {
-            console.log(mapLayer.config.id);
             const { config } = mapLayer;
             const jsonLayer = jsonLayers[config.id];
             const jsonLayerFiltered = {
@@ -570,7 +566,6 @@ export function Map({
                 ),
               },
             };
-            console.log('info', jsonLayerFiltered);
             const infoLayer = getVectorLayer({
               jsonLayer: jsonLayerFiltered,
               config,
@@ -579,7 +574,6 @@ export function Map({
                 click: markerEvents.click,
               },
             });
-            console.log('info', infoLayer);
             // shouldn't really be any layers present but just in case
             areaInfoRef.current.clearLayers();
             areaInfoRef.current.addLayer(infoLayer);
