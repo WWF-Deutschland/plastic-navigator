@@ -112,11 +112,12 @@ export function Map({
   const mapRef = useRef(null);
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
-  const [layerId, featureId, copy] = getLayerFeatureIds(info);
+  const areaInfoRef = useRef(null);
+  const [infoLayerId, infoFeatureId, infoCopy] = getLayerFeatureIds(info);
   const [
-    layerHighlightId,
-    featureHighlightId,
-    copyHighlight,
+    highlightLayerId,
+    highlightFeatureId,
+    highlightCopy,
   ] = getLayerFeatureIds(highlightFeature);
 
   const showTooltip = (e, config) => {
@@ -221,8 +222,10 @@ export function Map({
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
+    areaInfoRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
+    areaInfoRef.current.addTo(mapRef.current);
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
@@ -372,7 +375,7 @@ export function Map({
     }
   }, [activeLayerIds, layersConfig, jsonLayers, projects]);
 
-  // update icon states
+  // update icon/marker states for mouse over, tooltip and info panel
   useEffect(() => {
     if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
@@ -387,22 +390,25 @@ export function Map({
                 let icon;
                 const fid = marker.feature.properties.f_id;
                 const mcopy = marker.options.copy;
-                const layerActive = key === layerId;
+                const infoLayerActive = key === infoLayerId;
                 const tooltipOpen =
                   tooltip &&
                   key === tooltip.layerId &&
                   fid === tooltip.featureId &&
                   ((!mcopy && !tooltip.options.copy) ||
                     mcopy === tooltip.options.copy);
+                // tooltip or info open
                 const active =
                   tooltipOpen ||
-                  (layerActive && (layerCount === 1 || fid === featureId));
+                  (infoLayerActive &&
+                    (layerCount === 1 || fid === infoFeatureId));
+                // mouse over
                 const highlight =
                   !active &&
-                  key === layerHighlightId &&
-                  fid === featureHighlightId &&
-                  ((!mcopy && !copyHighlight) || mcopy === copyHighlight);
-                if (active || layerActive || highlight) {
+                  key === highlightLayerId &&
+                  fid === highlightFeatureId &&
+                  ((!mcopy && !highlightCopy) || mcopy === highlightCopy);
+                if (active || infoLayerActive || highlight) {
                   if (highlight) {
                     icon = getIcon(config.icon, {
                       feature: marker.feature,
@@ -415,7 +421,7 @@ export function Map({
                       latlng: marker.getLatLng(),
                       state: 'active',
                     });
-                  } else if (layerActive) {
+                  } else if (infoLayerActive) {
                     icon = getIcon(config.icon, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
@@ -439,7 +445,7 @@ export function Map({
       });
     }
   }, [
-    info,
+    info, // infoLayerId, infoFeatureId
     layersConfig,
     projects,
     mapLayers,
@@ -448,7 +454,7 @@ export function Map({
     tooltip,
   ]);
 
-  // update tooltip highlight area layers
+  // update feature area when tooltip active (click)
   useEffect(() => {
     if (mapLayers && layersConfig) {
       if (tooltip) {
@@ -489,17 +495,17 @@ export function Map({
     }
   }, [layersConfig, mapLayers, tooltip]);
 
-  // update feature highlight area layers
+  // update feature area when highlighted (mouse over)
   useEffect(() => {
     if (mapLayers && layersConfig) {
-      if (featureHighlightId) {
+      if (highlightFeatureId) {
         Object.keys(mapLayers).forEach(key => {
           const mapLayer = mapLayers[key];
           if (
             mapLayer &&
             mapLayer.config.render &&
             mapLayer.config.render.type === 'area' &&
-            mapLayer.config.id === layerHighlightId &&
+            mapLayer.config.id === highlightLayerId &&
             jsonLayers[mapLayer.config.id]
           ) {
             const { config } = mapLayer;
@@ -510,11 +516,12 @@ export function Map({
                 type: jsonLayer.data.type,
                 features: jsonLayer.data.features.filter(
                   feature =>
-                    feature.properties.f_id === featureHighlightId &&
+                    feature.properties.f_id === highlightFeatureId &&
                     (!tooltip || tooltip.featureId !== feature.properties.f_id),
                 ),
               },
             };
+            console.log('hover', jsonLayerFiltered);
             const highlightLayer = getVectorLayer({
               jsonLayer: jsonLayerFiltered,
               config,
@@ -523,6 +530,7 @@ export function Map({
                 click: markerEvents.click,
               },
             });
+            console.log('hover', highlightLayer);
             // shouldn't really be any layers present but just in case
             areaHighlightRef.current.clearLayers();
             areaHighlightRef.current.addLayer(highlightLayer);
@@ -534,19 +542,54 @@ export function Map({
     }
   }, [layersConfig, mapLayers, highlightFeature]);
 
-  // useEffect(() => {
-  //   if (mapLayers && layersConfig) {
-  //     if (highlightFeature) {
-  //       Object.keys(mapLayers).forEach(key => {
-  //         const mapLayer = mapLayers[key];
-  //         const { config } = mapLayer;
-  //         if (config.render && config.render.type === 'scaledCircle') {
-  //           console.log('c', featureHighlightId, layerHighlightId, mapLayer)
-  //         }
-  //       });
-  //     }
-  //   }
-  // }, [highlightFeature]);
+  // update feature area when info active
+  useEffect(() => {
+    if (mapLayers && layersConfig) {
+      console.log(infoFeatureId, infoLayerId);
+      if (infoFeatureId) {
+        Object.keys(mapLayers).forEach(key => {
+          const mapLayer = mapLayers[key];
+          if (
+            mapLayer &&
+            mapLayer.config.render &&
+            mapLayer.config.render.type === 'area' &&
+            mapLayer.config.id === infoLayerId &&
+            jsonLayers[mapLayer.config.id]
+          ) {
+            console.log(mapLayer.config.id);
+            const { config } = mapLayer;
+            const jsonLayer = jsonLayers[config.id];
+            const jsonLayerFiltered = {
+              config,
+              data: {
+                type: jsonLayer.data.type,
+                features: jsonLayer.data.features.filter(
+                  feature =>
+                    feature.properties.f_id === infoFeatureId &&
+                    (!tooltip || tooltip.featureId !== feature.properties.f_id),
+                ),
+              },
+            };
+            console.log('info', jsonLayerFiltered);
+            const infoLayer = getVectorLayer({
+              jsonLayer: jsonLayerFiltered,
+              config,
+              state: 'info',
+              markerEvents: {
+                click: markerEvents.click,
+              },
+            });
+            console.log('info', infoLayer);
+            // shouldn't really be any layers present but just in case
+            areaInfoRef.current.clearLayers();
+            areaInfoRef.current.addLayer(infoLayer);
+          }
+        });
+      } else {
+        areaInfoRef.current.clearLayers();
+      }
+    }
+  }, [layersConfig, mapLayers, info]);
 
   // move active marker into view
   useEffect(() => {
@@ -563,9 +606,9 @@ export function Map({
                 const fid = marker.feature.properties.f_id;
                 const mcopy = marker.options.copy;
                 const active =
-                  key === layerId &&
-                  (layerCount === 1 || fid === featureId) &&
-                  ((!mcopy && !copy) || mcopy === copy);
+                  key === infoLayerId &&
+                  (layerCount === 1 || fid === infoFeatureId) &&
+                  ((!mcopy && !infoCopy) || mcopy === infoCopy);
                 if (active) {
                   const latlng = marker.getLatLng();
                   const aside = getAsideInfoWidth(size);
@@ -591,8 +634,6 @@ export function Map({
     }
   }, [info, layersConfig, projects, mapLayers, size]);
 
-  // move active marker into view
-
   return (
     <Styled>
       <MapContainer id="ll-map" />
@@ -612,7 +653,10 @@ export function Map({
           config={tooltip.config}
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
-          onFeatureClick={onFeatureClick}
+          onFeatureClick={args => {
+            setTooltip(null);
+            onFeatureClick(args);
+          }}
         />
       )}
       <AttributionWrap>
