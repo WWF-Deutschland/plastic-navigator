@@ -106,7 +106,7 @@ export function CountryStats({ config, countries, intl }) {
         </StackedBarWrapper>
         <AllLabelsWrapper>
           {stats.map(({ val, count }, index) => (
-            <LabelWrapper align={index === 0 ? 'left' : 'right'}>
+            <LabelWrapper align={index === 0 ? 'start' : 'end'} key={val}>
               <Count>{count}</Count>
               <Label>{getTitle(val, config, locale)}</Label>
             </LabelWrapper>
@@ -120,7 +120,7 @@ export function CountryStats({ config, countries, intl }) {
 
 CountryStats.propTypes = {
   config: PropTypes.object,
-  countries: PropTypes.object,
+  countries: PropTypes.array,
   intl: PropTypes.object,
 };
 

@@ -219,6 +219,9 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
     featureStyle.fillOpacity = 0.2;
+  } else if (state === 'info') {
+    featureStyle.fillOpacity = 0.2;
+    featureStyle.color = '#000';
   } else {
     featureStyle.fillOpacity = 0.4;
   }
