@@ -77,7 +77,7 @@ const ButtonClose = styled(p => (
   }
 `;
 
-export function LayerInfo({ id, onClose, config }) {
+export function LayerInfo({ id, onClose, config, featured }) {
   const [layerId, featureId] = getLayerFeatureIds(id);
   const isProjectInfo = startsWith(layerId, `${PROJECT_CONFIG.id}-`);
 
@@ -101,6 +101,7 @@ export function LayerInfo({ id, onClose, config }) {
             {!featureId && !isProjectInfo && config && (
               <LayerContent
                 config={config}
+                featured={featured}
                 inject={
                   !featureId &&
                   config &&
@@ -124,6 +125,7 @@ LayerInfo.propTypes = {
   id: PropTypes.string,
   onClose: PropTypes.func,
   config: PropTypes.object,
+  featured: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

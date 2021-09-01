@@ -6,7 +6,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.PanelExplore';
+export const scope = 'app.containers.ModuleExplore';
 
 export default defineMessages({
   showLayerPanel: {

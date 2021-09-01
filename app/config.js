@@ -5,7 +5,7 @@ import React from 'react';
 export const ROUTES = {
   INTRO: 'stories',
   EXPLORE: 'explore',
-  ANALYSE: 'analyse',
+  POLICY: 'policy',
 };
 
 export const PAGES = {
@@ -33,6 +33,17 @@ export const MODULES = {
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
+    hasKey: true,
+  },
+  policy: {
+    path: ROUTES.POLICY,
+    featuredLayer: 'policy-commitments-area',
+    icon: <Explore color="white" />,
+    iconActive: <Explore color="black" />,
+    iconS: <Explore color="white" size="26px" />,
+    iconActiveS: <Explore color="black" size="26px" />,
+    layers: ['surface-concentration', 'policy-commitments-area'],
+    hasKey: true,
   },
 };
 

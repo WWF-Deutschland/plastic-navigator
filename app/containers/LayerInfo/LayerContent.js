@@ -56,6 +56,7 @@ export function LayerContent({
   layerData,
   onLoadLayer,
   inject = [],
+  featured,
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -69,9 +70,12 @@ export function LayerContent({
       onLoadLayer(config.id, config);
     }
   }, [layerData]);
-  const title = config
-    ? config.title[locale] || config.title[DEFAULT_LOCALE]
-    : 'loading';
+  let title = 'loading';
+  if (featured && featured.title) {
+    ({ title } = featured);
+  } else if (config) {
+    title = config.title[locale] || config.title[DEFAULT_LOCALE];
+  }
 
   // prettier-ignore
   return (
@@ -121,6 +125,7 @@ LayerContent.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
   layerData: PropTypes.object,
+  featured: PropTypes.object,
   inject: PropTypes.array,
   locale: PropTypes.string,
   isActive: PropTypes.bool,
