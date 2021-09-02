@@ -27,7 +27,15 @@ const SubTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
 
-export function KeyFull({ config, id, simple, intl, dark, layerData }) {
+export function KeyFull({
+  config,
+  id,
+  simple,
+  intl,
+  dark,
+  layerData,
+  excludeEmpty,
+}) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
@@ -118,6 +126,7 @@ export function KeyFull({ config, id, simple, intl, dark, layerData }) {
           simple={simple}
           dark={dark}
           layerData={layerData}
+          excludeEmpty={excludeEmpty}
         />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
@@ -142,6 +151,7 @@ KeyFull.propTypes = {
   id: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
+  excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

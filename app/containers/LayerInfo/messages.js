@@ -41,4 +41,8 @@ export default defineMessages({
     id: `${scope}.countryPositionSelect`,
     defaultMessage: 'Select a country for details',
   },
+  countryChartTitle: {
+    id: `${scope}.countryChartTitle`,
+    defaultMessage: 'Number of countries by policy position (with sources)',
+  },
 });

@@ -19,10 +19,10 @@ import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
 import { getLayerFeatureIds, getLayerId } from 'utils/layers';
 
-import { selectSingleLayerConfig } from 'containers/App/selectors';
+import { selectSingleLayerContentConfig } from 'containers/App/selectors';
 
 import LayerContent from './LayerContent';
-import CountryList from './CountryList';
+import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 // import messages from './messages';
@@ -79,7 +79,21 @@ const ButtonClose = styled(p => (
 
 export function LayerInfo({ id, onClose, config, featured }) {
   const [layerId, featureId] = getLayerFeatureIds(id);
-  const isProjectInfo = startsWith(layerId, `${PROJECT_CONFIG.id}-`);
+
+  let type;
+  if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
+    type = 'project';
+  } else if (featureId && featureId === 'flist') {
+    type = 'featureList';
+  } else if (featureId && startsWith(featureId, 'plist')) {
+    type = 'propertyList';
+  } else if (featureId && startsWith(featureId, 'p-')) {
+    type = 'property';
+  } else if (config && featureId) {
+    type = 'feature';
+  } else if (config) {
+    type = 'layer';
+  }
 
   const cRef = useRef();
   useEffect(() => {
@@ -91,14 +105,14 @@ export function LayerInfo({ id, onClose, config, featured }) {
     <ResponsiveContext.Consumer>
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
-          <ContentWrap isProjectInfo={isProjectInfo} ref={cRef}>
-            {isProjectInfo && (
+          <ContentWrap ref={cRef}>
+            {type === 'project' && (
               <ProjectContent id={layerId} location={featureId} />
             )}
-            {!isProjectInfo && featureId && config && (
+            {type === 'feature' && (
               <FeatureContent featureId={featureId} config={config} />
             )}
-            {!featureId && !isProjectInfo && config && (
+            {type === 'layer' && (
               <LayerContent
                 config={config}
                 featured={featured}
@@ -107,8 +121,12 @@ export function LayerInfo({ id, onClose, config, featured }) {
                   config &&
                   POLICY_LAYERS.indexOf(config.id) > -1
                     ? [{
-                      tag: '[COUNTRIES]',
-                      el: (<CountryList config={config} />)
+                      tag: '[CHART]',
+                      el: (<CountryChart config={config} />)
+                    },
+                    {
+                      tag: '[LAYERS-ALTERNATE]',
+                      el: (<div>Alternate Layer Selection</div>)
                     }]
                     : null
                 } />
@@ -131,7 +149,7 @@ LayerInfo.propTypes = {
 const mapStateToProps = createStructuredSelector({
   config: (state, { id }) => {
     const layerId = getLayerId(id);
-    return selectSingleLayerConfig(state, { key: layerId });
+    return selectSingleLayerContentConfig(state, { key: layerId });
   },
 });
 

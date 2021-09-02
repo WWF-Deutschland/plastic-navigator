@@ -23,8 +23,8 @@ const SquareLabelWrap = styled(p => (
 
 const KeyAreaWrap = styled.div`
   position: relative;
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
   padding: 0px;
 `;
 
@@ -32,7 +32,14 @@ const StyledKeyLabel = styled(KeyLabel)`
   white-space: normal;
 `;
 
-export function Areas({ config, intl, title, simple, layerData }) {
+export function Areas({
+  config,
+  intl,
+  title,
+  simple,
+  layerData,
+  excludeEmpty,
+}) {
   const { key, featureStyle } = config;
   const { locale } = intl;
   let square = { style: { color: 'black' }, title, id: config.id };
@@ -41,8 +48,9 @@ export function Areas({ config, intl, title, simple, layerData }) {
     layerData &&
     featuresToCountries(config, layerData.features, locale);
   const countryStats = countries && getPositionStats(config, countries);
+
   if (featureStyle.multiple === 'true') {
-    square = key.values.map(val => {
+    square = key.values.reduce((memo, val) => {
       let t;
       if (key.title && key.title[val]) {
         t =
@@ -53,8 +61,8 @@ export function Areas({ config, intl, title, simple, layerData }) {
       let style;
       if (featureStyle && featureStyle.style) {
         style = Object.keys(featureStyle.style).reduce(
-          (memo, attr) => ({
-            ...memo,
+          (memo2, attr) => ({
+            ...memo2,
             [attr]: featureStyle.style[attr][val],
           }),
           {
@@ -64,14 +72,21 @@ export function Areas({ config, intl, title, simple, layerData }) {
       }
       const stat =
         countryStats && countryStats.find(s => quasiEquals(s.val, val));
-      return {
-        id: val,
-        style,
-        title: t,
-        count: stat && stat.count,
-      };
-    });
+      if (excludeEmpty && !stat) {
+        return memo;
+      }
+      return [
+        ...memo,
+        {
+          id: val,
+          style,
+          title: t,
+          count: stat && stat.count,
+        },
+      ];
+    }, []);
   }
+
   return (
     <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
       {asArray(square).map(sq => (
@@ -95,6 +110,7 @@ Areas.propTypes = {
   layerData: PropTypes.object,
   title: PropTypes.string,
   simple: PropTypes.bool,
+  excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 
