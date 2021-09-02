@@ -465,6 +465,7 @@
   {
     "id": "policy-commitments",
     "content-id": "policy-commitments-dev",
+    "content-default": "policy-commitments-area",
     "category": "policy",
     "group": "policy",
     "source": "data",
