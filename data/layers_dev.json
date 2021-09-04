@@ -453,8 +453,8 @@
         "multiplePriority": ["1", "2"],
         "property": "positions.position_id",
         "propertyByLocale": {
-          "en": "positions.position.position_en",
-          "de": "positions.position.position_en"
+          "en": "positions.source.position.position_en",
+          "de": "positions.source.position.position_de"
         }
       },
       "more": "true"
