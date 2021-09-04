@@ -163,7 +163,11 @@ export const getPositionStats = (config, countries) => {
   return null;
 };
 
-export const featuresToCountries = (config, features, locale) =>
+export const featuresToCountriesWithStrongestPosition = (
+  config,
+  features,
+  locale,
+) =>
   features
     .filter(f => {
       if (config.info) {

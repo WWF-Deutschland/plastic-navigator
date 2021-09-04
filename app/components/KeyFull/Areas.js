@@ -8,7 +8,10 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import quasiEquals from 'utils/quasi-equals';
-import { getPositionStats, featuresToCountries } from 'utils/positions';
+import {
+  getPositionStats,
+  featuresToCountriesWithStrongestPosition,
+} from 'utils/positions';
 
 import asArray from 'utils/as-array';
 
@@ -46,7 +49,11 @@ export function Areas({
   const countries =
     POLICY_LAYERS.indexOf(config.id) > -1 &&
     layerData &&
-    featuresToCountries(config, layerData.features, locale);
+    featuresToCountriesWithStrongestPosition(
+      config,
+      layerData.features,
+      locale,
+    );
   const countryStats = countries && getPositionStats(config, countries);
 
   if (featureStyle.multiple === 'true') {

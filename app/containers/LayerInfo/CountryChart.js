@@ -21,7 +21,10 @@ import { loadLayer } from 'containers/Map/actions';
 import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
-import { getPositionStats, featuresToCountries } from 'utils/positions';
+import {
+  getPositionStats,
+  featuresToCountriesWithStrongestPosition,
+} from 'utils/positions';
 import quasiEquals from 'utils/quasi-equals';
 
 import KeyArea from 'components/KeyArea';
@@ -70,7 +73,11 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
     return null;
   }
   // console.log(layer.data)
-  const countries = featuresToCountries(config, layer.data.features, locale);
+  const countries = featuresToCountriesWithStrongestPosition(
+    config,
+    layer.data.features,
+    locale,
+  );
   const countryStats = getPositionStats(config, countries);
   // console.log(countries, countryStats, config, key)
 
@@ -121,7 +128,7 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
         </Box>
         <Box responsive={false}>
           {statsForKey.map(stat => (
-            <SquareLabelWrap key={stat.val}>
+            <SquareLabelWrap key={stat.id}>
               <KeyAreaWrap>
                 <KeyArea areaStyles={[stat.style]} />
               </KeyAreaWrap>

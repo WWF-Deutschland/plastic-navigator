@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
-import { featuresToCountries } from 'utils/positions';
+import { featuresToCountriesWithStrongestPosition } from 'utils/positions';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -49,7 +49,11 @@ export function CountryList({ onLoadLayer, config, layer, intl }) {
     return null;
   }
 
-  const countries = featuresToCountries(config, layer.data.features, locale);
+  const countries = featuresToCountriesWithStrongestPosition(
+    config,
+    layer.data.features,
+    locale,
+  );
 
   return (
     <div>

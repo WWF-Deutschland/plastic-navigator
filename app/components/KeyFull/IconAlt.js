@@ -8,7 +8,10 @@ import { intlShape, injectIntl } from 'react-intl';
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
-import { getPositionStats, featuresToCountries } from 'utils/positions';
+import {
+  getPositionStats,
+  featuresToCountriesWithStrongestPosition,
+} from 'utils/positions';
 import quasiEquals from 'utils/quasi-equals';
 
 import KeyCircle from 'components/KeyCircle';
@@ -44,7 +47,11 @@ export function IconAlt({ config, intl, dark, layerData }) {
   const countries =
     POLICY_LAYERS.indexOf(config.id) > -1 &&
     layerData &&
-    featuresToCountries(config, layerData.features, locale);
+    featuresToCountriesWithStrongestPosition(
+      config,
+      layerData.features,
+      locale,
+    );
   const countryStats = countries && getPositionStats(config, countries);
   if (key.style && key.style.type === 'circle') {
     circles = key.iconValue.full.map(val => {
