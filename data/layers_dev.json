@@ -373,24 +373,22 @@
       },
       "extend": [
         {
+          "file": "layers/policy/positions.csv",
+          "type": "csv",
+          "join": {
+            "as": "position",
+            "self": "id",
+            "related": "position_id"
+          }
+        },
+        {
           "file": "layers/policy/sources.csv",
           "type": "csv",
           "join": {
             "as": "source",
             "self": "id",
             "related": "source_id"
-          },
-          "extend": [
-            {
-              "file": "layers/policy/positions.csv",
-              "type": "csv",
-              "join": {
-                "as": "position",
-                "self": "id",
-                "related": "position_id"
-              }
-            }
-          ]
+          }
         }
       ]
     },
@@ -484,24 +482,22 @@
       },
       "extend": [
         {
+          "file": "layers/policy/positions.csv",
+          "type": "csv",
+          "join": {
+            "as": "position",
+            "self": "id",
+            "related": "position_id"
+          }
+        },
+        {
           "file": "layers/policy/sources.csv",
           "type": "csv",
           "join": {
             "as": "source",
             "self": "id",
             "related": "source_id"
-          },
-          "extend": [
-            {
-              "file": "layers/policy/positions.csv",
-              "type": "csv",
-              "join": {
-                "as": "position",
-                "self": "id",
-                "related": "position_id"
-              }
-            }
-          ]
+          }
         }
       ]
     },
