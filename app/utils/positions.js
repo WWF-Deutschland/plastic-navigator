@@ -195,3 +195,40 @@ export const featuresToCountriesWithStrongestPosition = (
     .sort((a, b) =>
       deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1,
     );
+
+export const getSourcesFromCountryFeatures = (config, features) => {
+  const sources = features.reduce((memo, f) => {
+    const { code } = f.properties;
+    if (
+      config.properties &&
+      config.properties.join &&
+      config.properties.join.as &&
+      f.properties[config.properties.join.as]
+    ) {
+      // get country-positions from feature
+      const fPositions = f.properties[config.properties.join.as];
+      // check each position for the source and remember source in new list m2
+      return fPositions.reduce((m2, p) => {
+        const { source, position } = p;
+        if (source && source.id) {
+          // if new source, remember source with current country code
+          if (!m2[source.id]) {
+            const sx = Object.assign({}, source, {
+              position,
+              countries: [code],
+            });
+            return Object.assign(m2, { [source.id]: sx });
+          }
+          // if known source, add current feature's country code
+          const sx = Object.assign({}, source, {
+            countries: [...m2[source.id].countries, code],
+          });
+          return Object.assign(m2, { [source.id]: sx });
+        }
+        return m2;
+      }, memo);
+    }
+    return memo;
+  }, {});
+  return sources;
+};

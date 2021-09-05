@@ -11,7 +11,8 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Text } from 'grommet';
+import { Box, Text, Heading, Button } from 'grommet';
+import { ArrowRightL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
@@ -24,6 +25,7 @@ import { useInjectSaga } from 'utils/injectSaga';
 import {
   getPositionStats,
   featuresToCountriesWithStrongestPosition,
+  getSourcesFromCountryFeatures,
 } from 'utils/positions';
 import quasiEquals from 'utils/quasi-equals';
 
@@ -52,6 +54,25 @@ const Title = styled(Text)`
   text-transform: uppercase;
 `;
 
+const ListTitle = styled(p => <Heading level={4} {...p} />)`
+  font-family: 'wwfregular';
+  letter-spacing: 0.1px;
+  line-height: 1;
+  margin-bottom: 15px;
+  margin-top: 15px !important;
+  font-weight: normal;
+`;
+
+const IconWrap = styled(p => <Box {...p} responsive={false} />)`
+  padding: ${({ theme }) => theme.global.edgeSize.small};
+  margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
+  border-radius: 9999px;
+`;
+
+const TitleButton = styled(Button)`
+  border-bottom: 1px solid ${({ theme }) => theme.global.colors.dark};
+`;
+
 export function CountryChart({ config, intl, onLoadLayer, layer }) {
   useInjectSaga({ key: 'map', saga });
   useEffect(() => {
@@ -72,7 +93,9 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
   ) {
     return null;
   }
-  // console.log(layer.data)
+  // console.log(layer.data.features)
+  const sources = getSourcesFromCountryFeatures(config, layer.data.features);
+  // console.log(sources)
   const countries = featuresToCountriesWithStrongestPosition(
     config,
     layer.data.features,
@@ -116,16 +139,18 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
       },
     ];
   }, []);
+
+  // console.log(countries, countryStats)
   //   const { key, featureStyle } = config;
   // prettier-ignore
-  if (countryStats && countryStats.length > 1) {
-    return (
-      <div>
-        <Box>
-          <Title>
-            <FormattedMessage {...messages.countryChartTitle} />
-          </Title>
-        </Box>
+  return (
+    <div>
+      <Box>
+        <Title>
+          <FormattedMessage {...messages.countryChartTitle} />
+        </Title>
+      </Box>
+      {(countryStats && countryStats.length > 1) && (
         <Box responsive={false}>
           {statsForKey.map(stat => (
             <SquareLabelWrap key={stat.id}>
@@ -140,10 +165,61 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
             </SquareLabelWrap>
           ))}
         </Box>
-      </div>
-    )
-  }
-  return null;
+      )}
+      {(countries || sources) && (
+        <Box pad={{ top: 'medium' }}>
+          {countries && (
+            <Box>
+              <TitleButton
+                plain
+                reverse
+                label={
+                  <Box
+                    justify="between"
+                    direction="row"
+                    pad={{ top: 'edge', bottom: 'edge', left: 'xsmall' }}
+                    align="center"
+                    responsive={false}
+                  >
+                    <ListTitle>
+                      {`Explore ${countries.length} countries`}
+                    </ListTitle>
+                    <IconWrap>
+                      <ArrowRightL />
+                    </IconWrap>
+                  </Box>
+                }
+              />
+            </Box>
+          )}
+          {sources && (
+            <Box>
+              <TitleButton
+                plain
+                reverse
+                label={
+                  <Box
+                    justify="between"
+                    direction="row"
+                    pad={{ top: 'edge', bottom: 'edge', left: 'xsmall' }}
+                    align="center"
+                    responsive={false}
+                  >
+                    <ListTitle>
+                      {`Explore ${Object.keys(sources).length} sources`}
+                    </ListTitle>
+                    <IconWrap>
+                      <ArrowRightL />
+                    </IconWrap>
+                  </Box>
+                }
+              />
+            </Box>
+          )}
+        </Box>
+      )}
+    </div>
+  );
 }
 
 CountryChart.propTypes = {
