@@ -66,6 +66,10 @@ export default defineMessages({
   },
   countries: {
     id: `${scope}.countries`,
-    defaultMessage: 'Countries',
+    defaultMessage: '{count} countries',
+  },
+  sources: {
+    id: `${scope}.sources`,
+    defaultMessage: '{count} statements',
   },
 });

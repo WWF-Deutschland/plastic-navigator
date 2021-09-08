@@ -22,6 +22,8 @@ import { getLayerFeatureIds, getLayerId } from 'utils/layers';
 import { selectSingleLayerContentConfig } from 'containers/App/selectors';
 
 import LayerContent from './LayerContent';
+import CountryList from './CountryList';
+import SourceList from './SourceList';
 import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
@@ -83,10 +85,10 @@ export function LayerInfo({ id, onClose, config, featured }) {
   let type;
   if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
     type = 'project';
-  } else if (featureId && featureId === 'flist') {
-    type = 'featureList';
-  } else if (featureId && startsWith(featureId, 'plist')) {
-    type = 'propertyList';
+  } else if (featureId && featureId === 'countries') {
+    type = 'countryList';
+  } else if (featureId && startsWith(featureId, 'sources')) {
+    type = 'sourceList';
   } else if (featureId && startsWith(featureId, 'p-')) {
     type = 'property';
   } else if (config && featureId) {
@@ -112,6 +114,12 @@ export function LayerInfo({ id, onClose, config, featured }) {
             {type === 'feature' && (
               <FeatureContent featureId={featureId} config={config} />
             )}
+            {type === 'countryList' && (
+              <CountryList config={config} />
+            )}
+            {type === 'sourceList' && (
+              <SourceList config={config} />
+            )}
             {type === 'layer' && (
               <LayerContent
                 config={config}
@@ -126,7 +134,7 @@ export function LayerInfo({ id, onClose, config, featured }) {
                     },
                     {
                       tag: '[LAYERS-ALTERNATE]',
-                      el: (<div>Alternate Layer Selection</div>)
+                      el: (<div>TODO: Alternate Layer Selection</div>)
                     }]
                     : null
                 } />

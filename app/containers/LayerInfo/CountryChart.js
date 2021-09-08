@@ -17,8 +17,9 @@ import { ArrowRightL } from 'components/Icons';
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
-import { selectLayerByKey } from 'containers/Map/selectors';
+import { setLayerInfo } from 'containers/App/actions';
 import { loadLayer } from 'containers/Map/actions';
+import { selectLayerByKey } from 'containers/Map/selectors';
 import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -32,6 +33,7 @@ import quasiEquals from 'utils/quasi-equals';
 import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
 
+import coreMessages from 'messages';
 import messages from './messages';
 
 const SquareLabelWrap = styled(p => (
@@ -58,22 +60,31 @@ const ListTitle = styled(p => <Heading level={4} {...p} />)`
   font-family: 'wwfregular';
   letter-spacing: 0.1px;
   line-height: 1;
-  margin-bottom: 15px;
-  margin-top: 15px !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
   font-weight: normal;
 `;
 
-const IconWrap = styled(p => <Box {...p} responsive={false} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.small};
-  margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
-  border-radius: 9999px;
+// prettier-ignore
+const TitleButton = styled(p => (
+  <Button {...p} plain fill="horizontal" alignSelf="start" />
+))`
+  border-top: 1px solid ${({ theme }) => theme.global.colors['light-4']};
+  border-bottom: 1px solid
+    ${({ last, theme }) =>
+    last ? theme.global.colors['light-4'] : 'transparent'};
+  &:hover {
+    background: ${({ theme }) => theme.global.colors.light};
+  }
 `;
 
-const TitleButton = styled(Button)`
-  border-bottom: 1px solid ${({ theme }) => theme.global.colors.dark};
-`;
-
-export function CountryChart({ config, intl, onLoadLayer, layer }) {
+export function CountryChart({
+  config,
+  intl,
+  onLoadLayer,
+  layer,
+  onClickLayerList,
+}) {
   useInjectSaga({ key: 'map', saga });
   useEffect(() => {
     // kick off loading of page content
@@ -95,7 +106,7 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
   }
   // console.log(layer.data.features)
   const sources = getSourcesFromCountryFeatures(config, layer.data.features);
-  // console.log(sources)
+
   const countries = featuresToCountriesWithStrongestPosition(
     config,
     layer.data.features,
@@ -171,22 +182,22 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
           {countries && (
             <Box>
               <TitleButton
-                plain
-                reverse
+                onClick={() => onClickLayerList(config.id, 'countries')}
                 label={
                   <Box
-                    justify="between"
                     direction="row"
-                    pad={{ top: 'edge', bottom: 'edge', left: 'xsmall' }}
+                    justify="between"
+                    pad={{ vertical: 'small', right: 'small', left: 'small' }}
                     align="center"
                     responsive={false}
                   >
                     <ListTitle>
-                      {`Explore ${countries.length} countries`}
+                      <FormattedMessage
+                        {...coreMessages.countries}
+                        values={{count: countries.length}}
+                      />
                     </ListTitle>
-                    <IconWrap>
-                      <ArrowRightL />
-                    </IconWrap>
+                    <ArrowRightL />
                   </Box>
                 }
               />
@@ -195,22 +206,23 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
           {sources && (
             <Box>
               <TitleButton
-                plain
-                reverse
+                last
+                onClick={() => onClickLayerList(config.id, 'sources')}
                 label={
                   <Box
-                    justify="between"
                     direction="row"
-                    pad={{ top: 'edge', bottom: 'edge', left: 'xsmall' }}
+                    justify="between"
+                    pad={{ vertical: 'small', right: 'small', left: 'small' }}
                     align="center"
                     responsive={false}
                   >
                     <ListTitle>
-                      {`Explore ${Object.keys(sources).length} sources`}
+                      <FormattedMessage
+                        {...coreMessages.sources}
+                        values={{count: Object.keys(sources).length}}
+                      />
                     </ListTitle>
-                    <IconWrap>
-                      <ArrowRightL />
-                    </IconWrap>
+                    <ArrowRightL />
                   </Box>
                 }
               />
@@ -224,6 +236,7 @@ export function CountryChart({ config, intl, onLoadLayer, layer }) {
 
 CountryChart.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
+  onClickLayerList: PropTypes.func,
   config: PropTypes.object,
   layer: PropTypes.object,
   intl: intlShape.isRequired,
@@ -242,6 +255,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadLayer: (id, config) => {
       dispatch(loadLayer(id, config));
+    },
+    onClickLayerList: (id, type) => {
+      dispatch(setLayerInfo(id, type));
     },
   };
 }

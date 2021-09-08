@@ -142,6 +142,7 @@ export const selectSingleLayerContentConfig = createSelector(
   (key, layers) => {
     if (!layers) return null;
     const layerConfig = layers.find(l => l.id === key);
+    if (!layerConfig) return null;
     if (layerConfig['content-default']) {
       const layerConfigDefault = layers.find(
         l => l.id === layerConfig['content-default'],

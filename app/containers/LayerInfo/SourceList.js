@@ -1,6 +1,6 @@
 /**
  *
- * CountryList
+ * SourceList
  *
  */
 
@@ -13,7 +13,7 @@ import { intlShape, injectIntl } from 'react-intl';
 
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
-import { featuresToCountriesWithStrongestPosition } from 'utils/positions';
+import { getSourcesFromCountryFeaturesWithPosition } from 'utils/positions';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -23,7 +23,7 @@ import coreMessages from 'messages';
 
 import FeatureList from './FeatureList';
 
-export function CountryList({ onLoadLayer, config, layer, intl }) {
+export function SourceList({ onLoadLayer, config, layer, intl }) {
   useInjectSaga({ key: 'map', saga });
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function CountryList({ onLoadLayer, config, layer, intl }) {
     }
   }, [config]);
 
-  const { locale } = intl;
+  // const { locale } = intl;
 
   if (
     !config ||
@@ -45,25 +45,25 @@ export function CountryList({ onLoadLayer, config, layer, intl }) {
     return null;
   }
 
-  const countries = featuresToCountriesWithStrongestPosition(
+  const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
     layer.data.features,
-    locale,
   );
-  return countries ? (
+
+  return sources ? (
     <FeatureList
-      title={intl.formatMessage(coreMessages.countries, {
-        count: countries.length,
+      title={intl.formatMessage(coreMessages.sources, {
+        count: Object.keys(sources).length,
       })}
       layerId={config.id}
-      items={countries}
+      items={Object.values(sources)}
       config={config}
       searchable
     />
   ) : null;
 }
 
-CountryList.propTypes = {
+SourceList.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
   config: PropTypes.object,
   layer: PropTypes.object,
@@ -92,4 +92,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(injectIntl(CountryList));
+export default compose(withConnect)(injectIntl(SourceList));
