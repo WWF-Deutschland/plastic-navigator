@@ -17,8 +17,8 @@ import {
 export function setHighlightFeature(layer, feature, copy) {
   return {
     type: SET_HIGHLIGHT_FEATURE,
-    feature,
     layer,
+    feature,
     copy,
   };
 }

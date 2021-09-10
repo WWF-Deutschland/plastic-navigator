@@ -110,11 +110,8 @@ function App({
 
   // do not show info panel for
   // prettier-ignore
-  const showInfo = info !== '' && !(
-    currentModule &&
-    currentModule.featuredLayer &&
-    currentModule.featuredLayer === info
-  );
+  const showInfo = info !== '';
+
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -124,7 +121,9 @@ function App({
         <Header route={route} />
         <Content>
           <ResponsiveContext.Consumer>
-            {size => <Map size={size} hasKey={hasKey} />}
+            {size => (
+              <Map size={size} hasKey={hasKey} currentModule={currentModule} />
+            )}
           </ResponsiveContext.Consumer>
           <Switch>
             <Route
@@ -143,7 +142,11 @@ function App({
           </Switch>
           {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
           {showInfo && (
-            <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
+            <LayerInfo
+              view={info}
+              onClose={() => onCloseLayerInfo()}
+              currentModule={currentModule}
+            />
           )}
         </Content>
         {!window.wwfMpxInsideIframe && <CookieConsent />}

@@ -3,7 +3,6 @@
  * LayerInfo
  *
  */
-
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,15 +10,20 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, ResponsiveContext } from 'grommet';
-import { Close } from 'components/Icons';
 
 import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
 
 import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
-import { getLayerFeatureIds, getLayerId } from 'utils/layers';
+import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 
-import { selectSingleLayerContentConfig } from 'containers/App/selectors';
+import {
+  selectSingleLayerContentConfig,
+  selectLayerPanelHidden,
+} from 'containers/App/selectors';
+import { setLayerInfoHidden } from 'containers/App/actions';
+
+import { Close } from 'components/Icons';
 
 import LayerContent from './LayerContent';
 import CountryList from './CountryList';
@@ -27,7 +31,6 @@ import SourceList from './SourceList';
 import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
-// import messages from './messages';
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -79,91 +82,132 @@ const ButtonClose = styled(p => (
   }
 `;
 
-export function LayerInfo({ id, onClose, config, featured }) {
-  const [layerId, featureId] = getLayerFeatureIds(id);
+export function LayerInfo({
+  view,
+  config,
+  featured,
+  currentModule,
+  onClose,
+  hidden,
+  onHideLayerPanel,
+  // onShowLayerPanel,
+}) {
+  const [layerId, layerView] = decodeInfoView(view);
+
+  const cRef = useRef();
+  useEffect(() => {
+    if (cRef && cRef.current) cRef.current.scrollTop = 0;
+  }, [view]);
+  // useEffect(() => {
+  //   setOpen(true);
+  // }, [view]);
 
   let type;
   if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
     type = 'project';
-  } else if (featureId && featureId === 'countries') {
+  } else if (layerView && layerView === 'countries') {
     type = 'countryList';
-  } else if (featureId && startsWith(featureId, 'sources')) {
+  } else if (layerView && startsWith(layerView, 'sources')) {
     type = 'sourceList';
-  } else if (featureId && startsWith(featureId, 'p-')) {
-    type = 'property';
-  } else if (config && featureId) {
+  } else if (layerView && startsWith(layerView, 'source-')) {
+    type = 'source';
+  } else if (config && layerView) {
     type = 'feature';
   } else if (config) {
     type = 'layer';
   }
 
-  const cRef = useRef();
-  useEffect(() => {
-    cRef.current.scrollTop = 0;
-  }, [id]);
+  const isModule =
+    currentModule &&
+    currentModule.featuredLayer &&
+    currentModule.featuredLayer === layerId;
 
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
       {size => (
-        <Styled panelWidth={getAsideInfoWidth(size)}>
-          <ContentWrap ref={cRef}>
-            {type === 'project' && (
-              <ProjectContent id={layerId} location={featureId} />
-            )}
-            {type === 'feature' && (
-              <FeatureContent featureId={featureId} config={config} />
-            )}
-            {type === 'countryList' && (
-              <CountryList config={config} />
-            )}
-            {type === 'sourceList' && (
-              <SourceList config={config} />
-            )}
-            {type === 'layer' && (
-              <LayerContent
-                config={config}
-                featured={featured}
-                inject={
-                  !featureId &&
-                  config &&
-                  POLICY_LAYERS.indexOf(config.id) > -1
-                    ? [{
-                      tag: '[CHART]',
-                      el: (<CountryChart config={config} />)
-                    },
-                    {
-                      tag: '[LAYERS-ALTERNATE]',
-                      el: (<div>TODO: Alternate Layer Selection</div>)
-                    }]
-                    : null
-                } />
-            )}
-          </ContentWrap>
-          <ButtonClose onClick={() => onClose()} />
-        </Styled>
+        <div>
+          {(!isModule || !hidden) && (
+            <Styled panelWidth={getAsideInfoWidth(size)}>
+              <ContentWrap ref={cRef}>
+                {type === 'project' && (
+                  <ProjectContent id={layerId} location={layerView} />
+                )}
+                {type === 'feature' && (
+                  <FeatureContent featureId={layerView} config={config} />
+                )}
+                {type === 'countryList' && (
+                  <CountryList config={config} />
+                )}
+                {type === 'sourceList' && (
+                  <SourceList config={config} />
+                )}
+                {type === 'layer' && (
+                  <LayerContent
+                    config={config}
+                    featured={featured}
+                    inject={
+                      !layerView &&
+                      config &&
+                      POLICY_LAYERS.indexOf(config.id) > -1
+                        ? [{
+                          tag: '[CHART]',
+                          el: (<CountryChart config={config} />)
+                        },
+                        {
+                          tag: '[LAYERS-ALTERNATE]',
+                          el: (<div>TODO: Alternate Layer Selection</div>)
+                        }]
+                        : null
+                    } />
+                )}
+              </ContentWrap>
+              <ButtonClose
+                onClick={() => {
+                  if (isModule) {
+                    onHideLayerPanel();
+                  } else {
+                    onClose();
+                  }
+                }}
+              />
+            </Styled>
+          )}
+        </div>
       )}
     </ResponsiveContext.Consumer>
   );
 }
 
 LayerInfo.propTypes = {
-  id: PropTypes.string,
+  view: PropTypes.string,
   onClose: PropTypes.func,
+  // onShowLayerPanel: PropTypes.func,
+  onHideLayerPanel: PropTypes.func,
   config: PropTypes.object,
   featured: PropTypes.object,
+  currentModule: PropTypes.object,
+  hidden: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
-  config: (state, { id }) => {
-    const layerId = getLayerId(id);
+  config: (state, { view }) => {
+    const layerId = getLayerIdFromView(view);
     return selectSingleLayerContentConfig(state, { key: layerId });
   },
+  hidden: state => selectLayerPanelHidden(state),
 });
+
+function mapDispatchToProps(dispatch) {
+  return {
+    // onShowLayerPanel: () => dispatch(setLayerInfoHidden(false)),
+    onHideLayerPanel: () => dispatch(setLayerInfoHidden(true)),
+  };
+}
 
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export default compose(withConnect)(LayerInfo);

@@ -17,7 +17,7 @@ import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { getLayerFeatureIds } from 'utils/layers';
+import { decodeInfoView } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 // import commonMessages from 'messages';
 //
@@ -102,6 +102,7 @@ export function Map({
   highlightFeature,
   hasKey,
   loading,
+  currentModule,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -113,12 +114,10 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
-  const [infoLayerId, infoFeatureId, infoCopy] = getLayerFeatureIds(info);
-  const [
-    highlightLayerId,
-    highlightFeatureId,
-    highlightCopy,
-  ] = getLayerFeatureIds(highlightFeature);
+  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(info);
+  const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
+    highlightFeature,
+  );
 
   const showTooltip = (e, config) => {
     // console.log('click', e, config, tooltip);
@@ -602,7 +601,7 @@ export function Map({
                 const active =
                   key === infoLayerId &&
                   (layerCount === 1 || fid === infoFeatureId) &&
-                  ((!mcopy && !infoCopy) || mcopy === infoCopy);
+                  ((!mcopy && !infoCopy) || mcopy === infoCopy); // TODO check use of infoCopy
                 if (active) {
                   const latlng = marker.getLatLng();
                   const aside = getAsideInfoWidth(size);
@@ -637,6 +636,7 @@ export function Map({
           layersConfig={layersConfig}
           onLayerInfo={onFeatureClick}
           jsonLayers={jsonLayers}
+          currentModule={currentModule}
         />
       )}
       {tooltip && (
@@ -696,6 +696,7 @@ Map.propTypes = {
   activeLayerIds: PropTypes.array,
   mapLayers: PropTypes.object,
   jsonLayers: PropTypes.object,
+  currentModule: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
   onFeatureClick: PropTypes.func,
@@ -727,7 +728,7 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onFeatureClick: ({ feature, layer, copy }) => {
+    onFeatureClick: ({ layer, feature, copy }) => {
       dispatch(setLayerInfo(layer, feature, copy));
     },
     onFeatureHighlight: args => {

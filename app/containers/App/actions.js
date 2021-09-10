@@ -32,6 +32,7 @@ import {
   CONFIG_READY,
   SET_UI_STATE,
   SET_LAYER_INFO,
+  SET_LAYER_INFO_HIDDEN,
   TOGGLE_LAYER,
   SET_LAYERS,
   SET_STORY,
@@ -178,12 +179,18 @@ export function setUIState(component, state) {
     state,
   };
 }
-export function setLayerInfo(layer, feature, copy) {
+export function setLayerInfo(layer, view, copy) {
   return {
     type: SET_LAYER_INFO,
     layer,
-    feature,
+    view,
     copy,
+  };
+}
+export function setLayerInfoHidden(hidden) {
+  return {
+    type: SET_LAYER_INFO_HIDDEN,
+    hidden,
   };
 }
 export function toggleLayer(id) {

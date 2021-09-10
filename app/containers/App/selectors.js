@@ -228,3 +228,7 @@ export const selectFirstLanding = createSelector(
   selectGlobal,
   global => !global.landing,
 );
+export const selectLayerPanelHidden = createSelector(
+  selectGlobal,
+  global => global.layerPanelHidden,
+);

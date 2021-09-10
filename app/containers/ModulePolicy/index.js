@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,13 +13,12 @@ import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import styled from 'styled-components';
-import { Box, Button, ResponsiveContext, Layer } from 'grommet';
+// import { Box, Button, ResponsiveContext } from 'grommet';
+import { Box, Button } from 'grommet';
 // import { getAsideWidth, isMaxSize } from 'utils/responsive';
 
 import { MODULES } from 'config';
 
-// import PanelFeaturedLayer from 'containers/PanelFeaturedLayer';
-import LayerInfo from 'containers/LayerInfo';
 import ModuleWrap from 'components/ModuleWrap';
 import { ExploreS } from 'components/Icons';
 
@@ -34,6 +33,7 @@ import {
   setUIState,
   setLanding,
   setLayerInfo,
+  setLayerInfoHidden,
 } from 'containers/App/actions';
 
 import commonMessages from 'messages';
@@ -81,8 +81,9 @@ export function ModulePolicy({
   firstLanding,
   onSetLanding,
   intl,
+  onSetLayerInfo,
+  onShowLayerInfo,
   info,
-  onCloseLayerInfo,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -101,68 +102,52 @@ export function ModulePolicy({
     onMemoLayers(activeLayers, uiState);
   }, [activeLayers]);
 
-  const [show, setShow] = useState(true);
-  const [showSmall, setShowSmall] = useState(true);
+  // open feature layer info
+  useEffect(() => {
+    if (info === '') {
+      onSetLayerInfo(MODULES.policy.featuredLayer);
+    }
+  }, [info]);
+  // open feature layer info
+  useEffect(() => {
+    if (info === '') {
+      onShowLayerInfo();
+    }
+  }, []);
 
-  // also show panel when info set for featured layer
-  const showPanel = show || info === MODULES.policy.featuredLayer;
-  const showPanelSmall = showSmall || info === MODULES.policy.featuredLayer;
+  // const [show, setShow] = useState(true);
+  // const [showSmall, setShowSmall] = useState(true);
+  //
+  // // also show panel when info set for featured layer
+  // const showPanel = show || info === MODULES.policy.featuredLayer;
+  // const showPanelSmall = showSmall || info === MODULES.policy.featuredLayer;
 
+  // <ResponsiveContext.Consumer>
+  // {size => (
   return (
-    <ResponsiveContext.Consumer>
-      {size => (
-        <div>
-          <Helmet>
-            <title>{`${intl.formatMessage(
-              commonMessages.module_explore_metaTitle,
-            )}`}</title>
-          </Helmet>
-          <ModuleWrap>
-            {showPanel && size !== 'small' && (
-              <LayerInfo
-                id={MODULES.policy.featuredLayer}
-                onClose={() => {
-                  setShow(false);
-                  onCloseLayerInfo();
-                }}
-                featured={{
-                  title: intl.formatMessage(messages.title),
-                }}
-              />
-            )}
-            {showPanelSmall && size === 'small' && (
-              <Layer full>
-                <LayerInfo
-                  id={MODULES.policy.featuredLayer}
-                  onClose={() => {
-                    setShow(false);
-                    onCloseLayerInfo();
-                  }}
-                  featured={{
-                    title: intl.formatMessage(messages.title),
-                  }}
-                />
-              </Layer>
-            )}
-            {((!showPanel && size !== 'small') ||
-              (!showPanelSmall && size === 'small')) && (
-              <Buttons>
-                <ShowButton
-                  onClick={() => {
-                    setShow(true);
-                    setShowSmall(true);
-                  }}
-                  icon={<ExploreS color="white" />}
-                  label={<FormattedMessage {...messages.showLayerPanel} />}
-                />
-              </Buttons>
-            )}
-          </ModuleWrap>
-        </div>
-      )}
-    </ResponsiveContext.Consumer>
+    <div>
+      <Helmet>
+        <title>{`${intl.formatMessage(
+          commonMessages.module_explore_metaTitle,
+        )}`}</title>
+      </Helmet>
+      <ModuleWrap>
+        <Buttons>
+          <ShowButton
+            onClick={() => {
+              onSetLayerInfo(MODULES.policy.featuredLayer);
+              onShowLayerInfo();
+            }}
+            icon={<ExploreS color="white" />}
+            label={<FormattedMessage {...messages.showLayerPanel} />}
+          />
+        </Buttons>
+      </ModuleWrap>
+    </div>
   );
 }
+// )}
+// </ResponsiveContext.Consumer>
 
 ModulePolicy.propTypes = {
   layerIds: PropTypes.array,
@@ -173,7 +158,8 @@ ModulePolicy.propTypes = {
   uiState: PropTypes.object,
   firstLanding: PropTypes.bool,
   info: PropTypes.string,
-  onCloseLayerInfo: PropTypes.func,
+  onSetLayerInfo: PropTypes.func,
+  onShowLayerInfo: PropTypes.func,
   intl: intlShape.isRequired,
 };
 
@@ -189,7 +175,12 @@ function mapDispatchToProps(dispatch) {
   return {
     onSetLanding: () => dispatch(setLanding()),
     onSetLayers: layers => dispatch(setLayers(layers)),
-    onCloseLayerInfo: () => dispatch(setLayerInfo()),
+    onSetLayerInfo: id => {
+      dispatch(setLayerInfo(id));
+    },
+    onShowLayerInfo: () => {
+      dispatch(setLayerInfoHidden(false));
+    },
     onMemoLayers: (layers, uiState) =>
       dispatch(
         setUIState(

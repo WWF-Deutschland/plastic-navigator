@@ -29,7 +29,11 @@ import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
 
 import { selectUIStateByKey } from 'containers/App/selectors';
-import { setUIState, setLayerInfo } from 'containers/App/actions';
+import {
+  setUIState,
+  setLayerInfo,
+  setLayerInfoHidden,
+} from 'containers/App/actions';
 
 import KeyIcon from 'components/KeyIcon';
 import KeyFull from 'components/KeyFull';
@@ -234,6 +238,8 @@ export function PanelKey({
   jsonLayers,
   uiState,
   onSetOpen,
+  onShowLayerInfo,
+  currentModule,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -279,8 +285,6 @@ export function PanelKey({
     }, []);
 
   const jsonLayerActive = config ? jsonLayers[config.id] : null;
-
-  // console.log(config, jsonLayerActive)
 
   // prettier-ignore
   return (
@@ -400,9 +404,16 @@ export function PanelKey({
                           </LayerTitle>
                           {!isActiveProject && (
                             <LayerButtonInfo
-                              onClick={() =>
-                                onLayerInfo(config.id)
-                              }
+                              onClick={() => {
+                                onLayerInfo(config.id);
+                                if (
+                                  currentModule &&
+                                  currentModule.featuredLayer &&
+                                  currentModule.featuredLayer === config.id
+                                ) {
+                                  onShowLayerInfo();
+                                }
+                              }}
                               icon={<Info />}
                             />
                           )}
@@ -429,9 +440,16 @@ export function PanelKey({
                           </LayerTitle>
                           {!isActiveProject && (
                             <LayerButtonInfo
-                              onClick={() =>
-                                onLayerInfo(config.id)
-                              }
+                              onClick={() => {
+                                onLayerInfo(config.id);
+                                if (
+                                  currentModule &&
+                                  currentModule.featuredLayer &&
+                                  currentModule.featuredLayer === config.id
+                                ) {
+                                  onShowLayerInfo();
+                                }
+                              }}
                               icon={<Info />}
                             />
                           )}
@@ -491,7 +509,9 @@ PanelKey.propTypes = {
   jsonLayers: PropTypes.object,
   intl: intlShape.isRequired,
   uiState: PropTypes.object,
+  currentModule: PropTypes.object,
   onSetOpen: PropTypes.func,
+  onShowLayerInfo: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -508,6 +528,9 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onShowLayerInfo: () => {
+      dispatch(setLayerInfoHidden(false));
+    },
   };
 }
 

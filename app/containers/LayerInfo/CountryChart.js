@@ -256,8 +256,8 @@ function mapDispatchToProps(dispatch) {
     onLoadLayer: (id, config) => {
       dispatch(loadLayer(id, config));
     },
-    onClickLayerList: (id, type) => {
-      dispatch(setLayerInfo(id, type));
+    onClickLayerList: (id, view) => {
+      dispatch(setLayerInfo(id, view));
     },
   };
 }

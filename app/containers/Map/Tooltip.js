@@ -262,11 +262,11 @@ const Tooltip = ({
                   }
                   onClick={() => {
                     onFeatureClick({
-                      feature: feature.properties.f_id,
-                      copy: layerOptions ? layerOptions.copy : null,
                       layer: layer && config.data['layer-id']
                         ? `${config.id}-${layer[config.data['layer-id']]}`
                         : config.id,
+                      feature: feature.properties.f_id,
+                      copy: layerOptions ? layerOptions.copy : null,
                     });
                   }}
                 />

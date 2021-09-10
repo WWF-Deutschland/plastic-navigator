@@ -345,15 +345,16 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ layer, feature, copy }) {
+function* setLayerInfoSaga({ layer, view, copy }) {
   const currentLocation = yield select(selectRouterLocation);
   const searchParams = new URLSearchParams(currentLocation.search);
   // only update if not already active
   let infoId = layer;
-  if (feature) {
-    infoId = `${layer}|${feature}`;
+  if (view) {
+    infoId = `${layer}|${view}`;
     if (copy) {
-      infoId = `${layer}|${feature}|${copy}`;
+      console.log('COPY INFO', layer, view, copy);
+      infoId = `${layer}|${view}|${copy}`;
     }
   }
   if (searchParams.get('info') !== infoId) {
