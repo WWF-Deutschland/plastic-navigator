@@ -405,13 +405,14 @@ export function PanelKey({
                           {!isActiveProject && (
                             <LayerButtonInfo
                               onClick={() => {
-                                onLayerInfo(config.id);
                                 if (
                                   currentModule &&
                                   currentModule.featuredLayer &&
                                   currentModule.featuredLayer === config.id
                                 ) {
                                   onShowLayerInfo();
+                                } else {
+                                  onLayerInfo(config.id);
                                 }
                               }}
                               icon={<Info />}
@@ -441,13 +442,14 @@ export function PanelKey({
                           {!isActiveProject && (
                             <LayerButtonInfo
                               onClick={() => {
-                                onLayerInfo(config.id);
                                 if (
                                   currentModule &&
                                   currentModule.featuredLayer &&
                                   currentModule.featuredLayer === config.id
                                 ) {
                                   onShowLayerInfo();
+                                } else {
+                                  onLayerInfo(config.id);
                                 }
                               }}
                               icon={<Info />}

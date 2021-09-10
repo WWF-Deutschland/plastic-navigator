@@ -36,6 +36,8 @@ import {
   setLayerInfoHidden,
 } from 'containers/App/actions';
 
+import { getLayerIdFromView } from 'utils/layers';
+
 import commonMessages from 'messages';
 import messages from './messages';
 
@@ -71,12 +73,13 @@ const COMPONENT_KEY = 'ModulePolicy';
 
 const DEFAULT_UI_STATE = {
   layersMemo: null,
+  viewMemo: null,
 };
 
 export function ModulePolicy({
   onSetLayers,
   uiState,
-  onMemoLayers,
+  onMemo,
   activeLayers,
   firstLanding,
   onSetLanding,
@@ -85,7 +88,8 @@ export function ModulePolicy({
   onShowLayerInfo,
   info,
 }) {
-  const { layersMemo } = uiState
+  const layerId = getLayerIdFromView(info);
+  const { layersMemo, viewMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
   useEffect(() => {
@@ -98,22 +102,32 @@ export function ModulePolicy({
       onSetLanding();
     }
   }, []);
-  useEffect(() => {
-    onMemoLayers(activeLayers, uiState);
-  }, [activeLayers]);
 
-  // open feature layer info
-  useEffect(() => {
-    if (info === '') {
-      onSetLayerInfo(MODULES.policy.featuredLayer);
-    }
-  }, [info]);
-  // open feature layer info
+  // unhide layer info
   useEffect(() => {
     if (info === '') {
       onShowLayerInfo();
     }
   }, []);
+
+  // set feature layer info if unset (ie after closing other layerinfo)
+  useEffect(() => {
+    if (info === '') {
+      onSetLayerInfo(viewMemo || MODULES.policy.featuredLayer);
+    }
+  }, [info]);
+
+  // remember active layers and current info view (featured layer only)
+  useEffect(() => {
+    let newUIState = {};
+    if (layerId === MODULES.policy.featuredLayer) {
+      newUIState = Object.assign({}, { viewMemo: info });
+    }
+    newUIState = Object.assign({}, newUIState, {
+      layersMemo: activeLayers,
+    });
+    onMemo(newUIState, uiState);
+  }, [activeLayers, info]);
 
   // const [show, setShow] = useState(true);
   // const [showSmall, setShowSmall] = useState(true);
@@ -135,7 +149,6 @@ export function ModulePolicy({
         <Buttons>
           <ShowButton
             onClick={() => {
-              onSetLayerInfo(MODULES.policy.featuredLayer);
               onShowLayerInfo();
             }}
             icon={<ExploreS color="white" />}
@@ -152,7 +165,7 @@ export function ModulePolicy({
 ModulePolicy.propTypes = {
   layerIds: PropTypes.array,
   onSetLayers: PropTypes.func,
-  onMemoLayers: PropTypes.func,
+  onMemo: PropTypes.func,
   onSetLanding: PropTypes.func,
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
@@ -181,13 +194,19 @@ function mapDispatchToProps(dispatch) {
     onShowLayerInfo: () => {
       dispatch(setLayerInfoHidden(false));
     },
-    onMemoLayers: (layers, uiState) =>
+    onMemo: (newUIState, uiState) => {
+      console.log('onMemo', newUIState, uiState);
+      console.log(
+        'onMemo dispatch',
+        Object.assign({}, DEFAULT_UI_STATE, uiState, newUIState),
+      );
       dispatch(
         setUIState(
           COMPONENT_KEY,
-          Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
+          Object.assign({}, DEFAULT_UI_STATE, uiState, newUIState),
         ),
-      ),
+      );
+    },
   };
 }
 
