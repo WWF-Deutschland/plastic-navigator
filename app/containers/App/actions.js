@@ -32,7 +32,7 @@ import {
   CONFIG_READY,
   SET_UI_STATE,
   SET_LAYER_INFO,
-  SET_LAYER_INFO_HIDDEN,
+  SHOW_LAYER_INFO_MODULE,
   TOGGLE_LAYER,
   SET_LAYERS,
   SET_STORY,
@@ -187,10 +187,10 @@ export function setLayerInfo(layer, view, copy) {
     copy,
   };
 }
-export function setLayerInfoHidden(hidden) {
+export function showLayerInfoModule(visible = true) {
   return {
-    type: SET_LAYER_INFO_HIDDEN,
-    hidden,
+    type: SHOW_LAYER_INFO_MODULE,
+    visible,
   };
 }
 export function toggleLayer(id) {

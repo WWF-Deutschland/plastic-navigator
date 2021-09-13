@@ -32,7 +32,7 @@ import { selectUIStateByKey } from 'containers/App/selectors';
 import {
   setUIState,
   setLayerInfo,
-  setLayerInfoHidden,
+  showLayerInfoModule,
 } from 'containers/App/actions';
 
 import KeyIcon from 'components/KeyIcon';
@@ -238,7 +238,7 @@ export function PanelKey({
   jsonLayers,
   uiState,
   onSetOpen,
-  onShowLayerInfo,
+  onShowLayerInfoModule,
   currentModule,
 }) {
   const { open } = uiState
@@ -410,7 +410,8 @@ export function PanelKey({
                                   currentModule.featuredLayer &&
                                   currentModule.featuredLayer === config.id
                                 ) {
-                                  onShowLayerInfo();
+                                  onLayerInfo();
+                                  onShowLayerInfoModule();
                                 } else {
                                   onLayerInfo(config.id);
                                 }
@@ -447,7 +448,8 @@ export function PanelKey({
                                   currentModule.featuredLayer &&
                                   currentModule.featuredLayer === config.id
                                 ) {
-                                  onShowLayerInfo();
+                                  onLayerInfo();
+                                  onShowLayerInfoModule();
                                 } else {
                                   onLayerInfo(config.id);
                                 }
@@ -513,7 +515,7 @@ PanelKey.propTypes = {
   uiState: PropTypes.object,
   currentModule: PropTypes.object,
   onSetOpen: PropTypes.func,
-  onShowLayerInfo: PropTypes.func,
+  onShowLayerInfoModule: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -530,8 +532,8 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
-    onShowLayerInfo: () => {
-      dispatch(setLayerInfoHidden(false));
+    onShowLayerInfoModule: () => {
+      dispatch(showLayerInfoModule());
     },
   };
 }

@@ -19,9 +19,9 @@ import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 
 import {
   selectSingleLayerContentConfig,
-  selectLayerPanelHidden,
+  selectLayerModuleVisible,
 } from 'containers/App/selectors';
-import { setLayerInfoHidden } from 'containers/App/actions';
+import { showLayerInfoModule } from 'containers/App/actions';
 
 import { Close } from 'components/Icons';
 
@@ -88,7 +88,7 @@ export function LayerInfo({
   featured,
   currentModule,
   onClose,
-  hidden,
+  visible,
   onHideLayerPanel,
   // onShowLayerPanel,
 }) {
@@ -118,16 +118,16 @@ export function LayerInfo({
   }
 
   const isModule =
-    currentModule &&
-    currentModule.featuredLayer &&
+    !!currentModule &&
+    !!currentModule.featuredLayer &&
     currentModule.featuredLayer === layerId;
-
+  console.log('isModule', isModule);
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
       {size => (
         <div>
-          {(!isModule || !hidden) && (
+          {(!isModule || visible) && (
             <Styled panelWidth={getAsideInfoWidth(size)}>
               <ContentWrap ref={cRef}>
                 {type === 'project' && (
@@ -187,7 +187,7 @@ LayerInfo.propTypes = {
   config: PropTypes.object,
   featured: PropTypes.object,
   currentModule: PropTypes.object,
-  hidden: PropTypes.bool,
+  visible: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -195,13 +195,13 @@ const mapStateToProps = createStructuredSelector({
     const layerId = getLayerIdFromView(view);
     return selectSingleLayerContentConfig(state, { key: layerId });
   },
-  hidden: state => selectLayerPanelHidden(state),
+  visible: state => selectLayerModuleVisible(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    // onShowLayerPanel: () => dispatch(setLayerInfoHidden(false)),
-    onHideLayerPanel: () => dispatch(setLayerInfoHidden(true)),
+    // onShowLayerPanel: () => dispatch(showLayerInfoModule(false)),
+    onHideLayerPanel: () => dispatch(showLayerInfoModule(false)),
   };
 }
 

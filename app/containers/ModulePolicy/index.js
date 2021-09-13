@@ -33,7 +33,7 @@ import {
   setUIState,
   setLanding,
   setLayerInfo,
-  setLayerInfoHidden,
+  showLayerInfoModule,
 } from 'containers/App/actions';
 
 import { getLayerIdFromView } from 'utils/layers';
@@ -192,14 +192,14 @@ function mapDispatchToProps(dispatch) {
       dispatch(setLayerInfo(id));
     },
     onShowLayerInfo: () => {
-      dispatch(setLayerInfoHidden(false));
+      dispatch(showLayerInfoModule(true));
     },
     onMemo: (newUIState, uiState) => {
-      console.log('onMemo', newUIState, uiState);
-      console.log(
-        'onMemo dispatch',
-        Object.assign({}, DEFAULT_UI_STATE, uiState, newUIState),
-      );
+      // console.log('onMemo', newUIState, uiState);
+      // console.log(
+      //   'onMemo dispatch',
+      //   Object.assign({}, DEFAULT_UI_STATE, uiState, newUIState),
+      // );
       dispatch(
         setUIState(
           COMPONENT_KEY,

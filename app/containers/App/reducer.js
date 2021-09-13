@@ -19,7 +19,7 @@ import {
   CONFIG_LOAD_ERROR,
   SET_UI_STATE,
   SET_LANDING,
-  SET_LAYER_INFO_HIDDEN,
+  SHOW_LAYER_INFO_MODULE,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -57,7 +57,7 @@ export const initialState = {
   // contentError: Object.assign({}, initialContent),
   uiState: {},
   landing: false,
-  layerPanelHidden: false,
+  layerModuleVisible: false,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -111,8 +111,8 @@ const appReducer = (state = initialState, action) =>
       case SET_LANDING:
         draft.landing = true;
         break;
-      case SET_LAYER_INFO_HIDDEN:
-        draft.layerPanelHidden = action.hidden;
+      case SHOW_LAYER_INFO_MODULE:
+        draft.layerModuleVisible = action.visible;
         break;
     }
   });
