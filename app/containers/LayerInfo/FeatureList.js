@@ -40,7 +40,14 @@ const FeatureButton = styled(p => (
   }
 `;
 
-export function FeatureList({ title, items, layerId, onSetLayerInfo, config }) {
+export function FeatureList({
+  title,
+  items,
+  layerId,
+  onSetLayerInfo,
+  config,
+  isSourceList,
+}) {
   return (
     <FeatureListWrap>
       <ListTitle>{title}</ListTitle>
@@ -48,7 +55,11 @@ export function FeatureList({ title, items, layerId, onSetLayerInfo, config }) {
         {items.map(item => (
           <FeatureButton
             key={item.id}
-            onClick={() => onSetLayerInfo(layerId, item.id)}
+            onClick={() =>
+              isSourceList
+                ? onSetLayerInfo(layerId, `source-${item.id}`)
+                : onSetLayerInfo(layerId, item.id)
+            }
             label={
               <Box
                 direction="row"
@@ -82,6 +93,7 @@ FeatureList.propTypes = {
   config: PropTypes.object,
   layerId: PropTypes.string,
   title: PropTypes.string,
+  isSourceList: PropTypes.bool,
 };
 
 function mapDispatchToProps(dispatch) {

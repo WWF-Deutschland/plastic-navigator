@@ -105,6 +105,7 @@ export function ModulePolicy({
 
   // unhide layer info
   useEffect(() => {
+    console.log('onShowLayerInfo', info);
     if (info === '') {
       onShowLayerInfo();
     }
@@ -191,9 +192,7 @@ function mapDispatchToProps(dispatch) {
     onSetLayerInfo: id => {
       dispatch(setLayerInfo(id));
     },
-    onShowLayerInfo: () => {
-      dispatch(showLayerInfoModule(true));
-    },
+    onShowLayerInfo: () => dispatch(showLayerInfoModule()),
     onMemo: (newUIState, uiState) => {
       // console.log('onMemo', newUIState, uiState);
       // console.log(

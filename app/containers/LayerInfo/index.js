@@ -11,6 +11,7 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, ResponsiveContext } from 'grommet';
 
+import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
 
 import { getAsideInfoWidth } from 'utils/responsive';
@@ -20,6 +21,7 @@ import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 import {
   selectSingleLayerContentConfig,
   selectLayerModuleVisible,
+  selectLocale,
 } from 'containers/App/selectors';
 import { showLayerInfoModule } from 'containers/App/actions';
 
@@ -31,6 +33,7 @@ import SourceList from './SourceList';
 import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
+import SourceContent from './SourceContent';
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -85,11 +88,11 @@ const ButtonClose = styled(p => (
 export function LayerInfo({
   view,
   config,
-  featured,
   currentModule,
   onClose,
   visible,
   onHideLayerPanel,
+  locale,
   // onShowLayerPanel,
 }) {
   const [layerId, layerView] = decodeInfoView(view);
@@ -121,7 +124,12 @@ export function LayerInfo({
     !!currentModule &&
     !!currentModule.featuredLayer &&
     currentModule.featuredLayer === layerId;
-  console.log('isModule', isModule);
+  console.log('LayerInfo', type, isModule);
+
+  let title = '';
+  if (config && config.title) {
+    title = config.title[locale] || config.title[DEFAULT_LOCALE];
+  }
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -131,21 +139,37 @@ export function LayerInfo({
             <Styled panelWidth={getAsideInfoWidth(size)}>
               <ContentWrap ref={cRef}>
                 {type === 'project' && (
-                  <ProjectContent id={layerId} location={layerView} />
+                  <ProjectContent
+                    id={layerId}
+                    location={layerView}
+                    title={title}
+                  />
                 )}
-                {type === 'feature' && (
-                  <FeatureContent featureId={layerView} config={config} />
+                {type === 'feature' && config && (
+                  <FeatureContent
+                    featureId={layerView}
+                    config={config}
+                    title={title}
+                    isCountry={POLICY_LAYERS.indexOf(config.id) > -1}
+                  />
                 )}
-                {type === 'countryList' && (
-                  <CountryList config={config} />
+                {type === 'source' && config && (
+                  <SourceContent
+                    sourceId={layerView}
+                    config={config}
+                    title={title}
+                  />
                 )}
-                {type === 'sourceList' && (
-                  <SourceList config={config} />
+                {type === 'countryList' && config && (
+                  <CountryList config={config} title={title} />
                 )}
-                {type === 'layer' && (
+                {type === 'sourceList' && config && (
+                  <SourceList config={config} title={title}/>
+                )}
+                {type === 'layer' && config && (
                   <LayerContent
                     config={config}
-                    featured={featured}
+                    title={title}
                     inject={
                       !layerView &&
                       config &&
@@ -185,9 +209,9 @@ LayerInfo.propTypes = {
   // onShowLayerPanel: PropTypes.func,
   onHideLayerPanel: PropTypes.func,
   config: PropTypes.object,
-  featured: PropTypes.object,
   currentModule: PropTypes.object,
   visible: PropTypes.bool,
+  locale: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -196,6 +220,7 @@ const mapStateToProps = createStructuredSelector({
     return selectSingleLayerContentConfig(state, { key: layerId });
   },
   visible: state => selectLayerModuleVisible(state),
+  locale: state => selectLocale(state),
 });
 
 function mapDispatchToProps(dispatch) {

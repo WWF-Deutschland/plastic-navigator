@@ -19,11 +19,21 @@ import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 
+import { setLayerInfo } from 'containers/App/actions';
+
 import coreMessages from 'messages';
 
+import ListItemHeader from './ListItemHeader';
 import FeatureList from './FeatureList';
 
-export function CountryList({ onLoadLayer, config, layer, intl }) {
+export function CountryList({
+  onLoadLayer,
+  config,
+  layer,
+  intl,
+  onSetLayerInfo,
+  title,
+}) {
   useInjectSaga({ key: 'map', saga });
 
   useEffect(() => {
@@ -51,22 +61,27 @@ export function CountryList({ onLoadLayer, config, layer, intl }) {
     locale,
   );
   return countries ? (
-    <FeatureList
-      title={intl.formatMessage(coreMessages.countries, {
-        count: countries.length,
-      })}
-      layerId={config.id}
-      items={countries}
-      config={config}
-      searchable
-    />
+    <>
+      <ListItemHeader title={title} onClick={() => onSetLayerInfo(config.id)} />
+      <FeatureList
+        title={intl.formatMessage(coreMessages.countries, {
+          count: countries.length,
+        })}
+        layerId={config.id}
+        items={countries}
+        config={config}
+        searchable
+      />
+    </>
   ) : null;
 }
 
 CountryList.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
+  onSetLayerInfo: PropTypes.func.isRequired,
   config: PropTypes.object,
   layer: PropTypes.object,
+  title: PropTypes.string,
   intl: intlShape.isRequired,
 };
 
@@ -83,6 +98,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadLayer: (id, config) => {
       dispatch(loadLayer(id, config));
+    },
+    onSetLayerInfo: id => {
+      dispatch(setLayerInfo(id));
     },
   };
 }

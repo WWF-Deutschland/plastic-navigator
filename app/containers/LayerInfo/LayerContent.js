@@ -12,14 +12,11 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Box, Text } from 'grommet';
 
-import { DEFAULT_LOCALE } from 'i18n';
-
 import { useInjectSaga } from 'utils/injectSaga';
 
 import saga from 'containers/App/saga';
 import {
   selectContentByKey,
-  selectLocale,
   selectIsActiveLayer,
 } from 'containers/App/selectors';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -50,13 +47,12 @@ export function LayerContent({
   onLoadContent,
   content,
   config,
-  locale,
   onToggleLayer,
   isActive,
   layerData,
   onLoadLayer,
   inject = [],
-  featured,
+  title,
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -70,12 +66,6 @@ export function LayerContent({
       onLoadLayer(config.id, config);
     }
   }, [layerData]);
-  let title = 'loading';
-  if (featured && featured.title) {
-    ({ title } = featured);
-  } else if (config) {
-    title = config.title[locale] || config.title[DEFAULT_LOCALE];
-  }
 
   // prettier-ignore
   return (
@@ -125,10 +115,9 @@ LayerContent.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
   layerData: PropTypes.object,
-  featured: PropTypes.object,
   inject: PropTypes.array,
-  locale: PropTypes.string,
   isActive: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -139,7 +128,6 @@ const mapStateToProps = createStructuredSelector({
     }),
   layerData: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
-  locale: state => selectLocale(state),
 });
 
 function mapDispatchToProps(dispatch) {

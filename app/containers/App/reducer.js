@@ -57,7 +57,7 @@ export const initialState = {
   // contentError: Object.assign({}, initialContent),
   uiState: {},
   landing: false,
-  layerModuleVisible: false,
+  layerModuleVisible: true,
 };
 
 /* eslint-disable default-case, no-param-reassign */
