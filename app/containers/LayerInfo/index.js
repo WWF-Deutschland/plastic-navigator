@@ -34,6 +34,7 @@ import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 import SourceContent from './SourceContent';
+import Alternates from './Alternates';
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -178,7 +179,7 @@ export function LayerInfo({
                         },
                         {
                           tag: '[LAYERS-ALTERNATE]',
-                          el: (<div>TODO: Alternate Layer Selection</div>)
+                          el: (<Alternates config={config} />)
                         }]
                         : null
                     } />
