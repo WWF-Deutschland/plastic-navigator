@@ -95,6 +95,20 @@ const CountryPolicySinglePosition = ({
           )}
         </Section>
       )}
+      {listCountries && source && source.countries && source.countries.length > 0 && (
+        <FeatureListCollapsable
+          items={source.countries}
+          title={
+            intl.formatMessage(
+              coreMessages.countries,
+              {
+                count: source.countries.length,
+                isSingle: source.countries.length === 1,
+              },
+            )
+          }
+        />
+      )}
       {source &&
         (source[`source_${locale}`] ||
           source[`source_${DEFAULT_LOCALE}`]
@@ -125,20 +139,6 @@ const CountryPolicySinglePosition = ({
             </P>
           )}
         </Section>
-      )}
-      {listCountries && source && source.countries && source.countries.length > 0 && (
-        <FeatureListCollapsable
-          items={source.countries}
-          title={
-            intl.formatMessage(
-              coreMessages.countries,
-              {
-                count: source.countries.length,
-                isSingle: source.countries.length === 1,
-              },
-            )
-          }
-        />
       )}
     </>
   );

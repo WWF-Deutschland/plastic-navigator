@@ -18,7 +18,7 @@ const ListTitleCollapsable = styled(p => <Heading level="5" {...p} />)`
 `;
 
 const FeatureListWrap = styled(Box)`
-  margin-top: 30px;
+  margin: 30px 0 50px;
 `;
 
 const TitleButton = styled(Button)`
