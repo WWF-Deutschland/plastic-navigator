@@ -43,7 +43,7 @@ export function FeatureContent({
   locale,
   layerData,
   onLoadLayer,
-  title,
+  supTitle,
   onSetLayerInfo,
   isCountry,
 }) {
@@ -59,7 +59,7 @@ export function FeatureContent({
   return (
     <>
       <ListItemHeader
-        title={title}
+        supTitle={supTitle}
         onClick={() =>
           isCountry
             ? onSetLayerInfo(config.id, 'countries')
@@ -80,7 +80,7 @@ FeatureContent.propTypes = {
   config: PropTypes.object,
   featureId: PropTypes.string,
   locale: PropTypes.string,
-  title: PropTypes.string,
+  supTitle: PropTypes.string,
   isCountry: PropTypes.bool,
   layerData: PropTypes.object,
 };

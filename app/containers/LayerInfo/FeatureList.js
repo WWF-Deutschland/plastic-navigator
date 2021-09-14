@@ -48,11 +48,15 @@ export function FeatureList({
   config,
   isSourceList,
 }) {
+  const sorted = items.sort((a, b) =>
+    (a.label || a.id) > (b.label || b.id) ? 1 : -1,
+  );
+
   return (
     <FeatureListWrap>
       <ListTitle>{title}</ListTitle>
       <Box>
-        {items.map(item => (
+        {sorted.map(item => (
           <FeatureButton
             key={item.id}
             onClick={() =>

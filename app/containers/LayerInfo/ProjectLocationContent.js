@@ -83,7 +83,7 @@ export function ProjectLocationContent({
   return (
     <Styled>
       <ListItemHeader
-        title={projectTitle}
+        supTitle={projectTitle}
         onClick={() => onSetLayerInfo(projectId)}
       />
       <Title>{title}</Title>

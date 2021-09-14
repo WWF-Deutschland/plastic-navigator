@@ -31,7 +31,7 @@ export function SourceList({
   layer,
   intl,
   onSetLayerInfo,
-  title,
+  supTitle,
 }) {
   useInjectSaga({ key: 'map', saga });
 
@@ -42,7 +42,7 @@ export function SourceList({
     }
   }, [config]);
 
-  // const { locale } = intl;
+  const { locale } = intl;
 
   if (
     !config ||
@@ -57,14 +57,19 @@ export function SourceList({
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
     layer.data.features,
+    locale,
   );
 
   return sources ? (
     <>
-      <ListItemHeader title={title} onClick={() => onSetLayerInfo(config.id)} />
+      <ListItemHeader
+        supTitle={supTitle}
+        onClick={() => onSetLayerInfo(config.id)}
+      />
       <FeatureList
         title={intl.formatMessage(coreMessages.sources, {
           count: Object.keys(sources).length,
+          isSingle: Object.keys(sources).length === 1,
         })}
         layerId={config.id}
         items={Object.values(sources)}
@@ -81,7 +86,7 @@ SourceList.propTypes = {
   onSetLayerInfo: PropTypes.func.isRequired,
   config: PropTypes.object,
   layer: PropTypes.object,
-  title: PropTypes.string,
+  supTitle: PropTypes.string,
   intl: intlShape.isRequired,
 };
 

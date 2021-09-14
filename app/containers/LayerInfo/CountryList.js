@@ -32,7 +32,7 @@ export function CountryList({
   layer,
   intl,
   onSetLayerInfo,
-  title,
+  supTitle,
 }) {
   useInjectSaga({ key: 'map', saga });
 
@@ -62,10 +62,14 @@ export function CountryList({
   );
   return countries ? (
     <>
-      <ListItemHeader title={title} onClick={() => onSetLayerInfo(config.id)} />
+      <ListItemHeader
+        supTitle={supTitle}
+        onClick={() => onSetLayerInfo(config.id)}
+      />
       <FeatureList
         title={intl.formatMessage(coreMessages.countries, {
           count: countries.length,
+          isSingle: countries.length === 1,
         })}
         layerId={config.id}
         items={countries}
@@ -81,7 +85,7 @@ CountryList.propTypes = {
   onSetLayerInfo: PropTypes.func.isRequired,
   config: PropTypes.object,
   layer: PropTypes.object,
-  title: PropTypes.string,
+  supTitle: PropTypes.string,
   intl: intlShape.isRequired,
 };
 

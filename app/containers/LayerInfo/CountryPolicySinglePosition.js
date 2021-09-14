@@ -10,7 +10,10 @@ import {
 import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
+import coreMessages from 'messages';
+
 import CountryPositionSymbol from './CountryPositionSymbol';
+import FeatureListCollapsable from './FeatureListCollapsable';
 
 import messages from './messages';
 
@@ -46,9 +49,9 @@ const CountryPolicySinglePosition = ({
   position,
   source,
   intl,
+  listCountries,
 }) => {
   const { locale } = intl;
-  console.log(position, source);
   // prettier-ignore
   return (
     <>
@@ -123,6 +126,20 @@ const CountryPolicySinglePosition = ({
           )}
         </Section>
       )}
+      {listCountries && source && source.countries && source.countries.length > 0 && (
+        <FeatureListCollapsable
+          items={source.countries}
+          title={
+            intl.formatMessage(
+              coreMessages.countries,
+              {
+                count: source.countries.length,
+                isSingle: source.countries.length === 1,
+              },
+            )
+          }
+        />
+      )}
     </>
   );
 };
@@ -132,6 +149,7 @@ CountryPolicySinglePosition.propTypes = {
   position: PropTypes.object, // the feature
   source: PropTypes.object, // the feature
   multiple: PropTypes.bool, // the feature
+  listCountries: PropTypes.bool, // the feature
   intl: intlShape.isRequired,
 };
 

@@ -194,7 +194,10 @@ export function CountryChart({
                     <ListTitle>
                       <FormattedMessage
                         {...coreMessages.countries}
-                        values={{count: countries.length}}
+                        values={{
+                          count: countries.length,
+                          isSingle: countries.length === 1,
+                        }}
                       />
                     </ListTitle>
                     <ArrowRightL />
@@ -219,7 +222,10 @@ export function CountryChart({
                     <ListTitle>
                       <FormattedMessage
                         {...coreMessages.sources}
-                        values={{count: Object.keys(sources).length}}
+                        values={{
+                          count: Object.keys(sources).length,
+                          isSingle: Object.keys(sources).length === 1,
+                        }}
                       />
                     </ListTitle>
                     <ArrowRightL />

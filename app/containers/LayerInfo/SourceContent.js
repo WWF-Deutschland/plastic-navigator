@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import { FormattedMessage } from 'react-intl';
+import { intlShape, injectIntl } from 'react-intl';
 import { getSourcesFromCountryFeaturesWithPosition } from 'utils/positions';
 
 import { setLayerInfo } from 'containers/App/actions';
@@ -18,18 +18,23 @@ import { loadLayer } from 'containers/Map/actions';
 
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
 import ListItemHeader from './ListItemHeader';
+import Title from './Title';
 
 export function SourceContent({
   sourceId,
   config, // layer config
   layerData,
   onLoadLayer,
-  title,
+  supTitle,
   onSetLayerInfo,
+  intl,
 }) {
   useEffect(() => {
     onLoadLayer(config.id, config);
   }, [config]);
+
+  const { locale } = intl;
+
   if (!sourceId || !config || !layerData) return null;
   // const feature = findFeature(layerData.data.features, featureId);
   // if (!feature) return <LayerContent config={config} />;
@@ -37,19 +42,23 @@ export function SourceContent({
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
     layerData.data.features,
+    locale,
   );
   const source = sources[xSourceId];
+  // console.log(source)
   return (
     <>
       <ListItemHeader
-        title={title}
+        supTitle={supTitle}
         onClick={() => onSetLayerInfo(config.id, 'sources')}
       />
+      <Title>{source.label || source.id}</Title>
       {source && (
         <CountryPolicySinglePosition
           source={source}
           position={source.position}
           config={config}
+          listCountries
         />
       )}
     </>
@@ -63,8 +72,9 @@ SourceContent.propTypes = {
   onSetLayerInfo: PropTypes.func,
   config: PropTypes.object,
   sourceId: PropTypes.string,
-  title: PropTypes.string,
+  supTitle: PropTypes.string,
   layerData: PropTypes.object,
+  intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -87,4 +97,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(SourceContent);
+export default compose(withConnect)(injectIntl(SourceContent));

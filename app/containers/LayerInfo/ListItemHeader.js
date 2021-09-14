@@ -22,7 +22,7 @@ const BackButton = styled(p => <Button {...p} plain />)`
   }
 `;
 
-export function ListItemHeader({ onClick, title }) {
+export function ListItemHeader({ onClick, supTitle }) {
   return (
     <Box
       direction="row"
@@ -36,10 +36,10 @@ export function ListItemHeader({ onClick, title }) {
       }}
     >
       <BackButton plain onClick={() => onClick()} icon={<Back />} />
-      {title && (
+      {supTitle && (
         <SupTitle
-          onClick={() => onClick(title)}
-          label={<Text size="small">{title}</Text>}
+          onClick={() => onClick()}
+          label={<Text size="small">{supTitle}</Text>}
         />
       )}
     </Box>
@@ -48,7 +48,7 @@ export function ListItemHeader({ onClick, title }) {
 
 ListItemHeader.propTypes = {
   onClick: PropTypes.func.isRequired,
-  title: PropTypes.string,
+  supTitle: PropTypes.string,
 };
 
 export default ListItemHeader;

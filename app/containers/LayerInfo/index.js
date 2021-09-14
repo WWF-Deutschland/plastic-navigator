@@ -124,7 +124,6 @@ export function LayerInfo({
     !!currentModule &&
     !!currentModule.featuredLayer &&
     currentModule.featuredLayer === layerId;
-  console.log('LayerInfo', type, isModule);
 
   let title = '';
   if (config && config.title) {
@@ -142,14 +141,13 @@ export function LayerInfo({
                   <ProjectContent
                     id={layerId}
                     location={layerView}
-                    title={title}
                   />
                 )}
                 {type === 'feature' && config && (
                   <FeatureContent
                     featureId={layerView}
                     config={config}
-                    title={title}
+                    supTitle={title}
                     isCountry={POLICY_LAYERS.indexOf(config.id) > -1}
                   />
                 )}
@@ -157,14 +155,14 @@ export function LayerInfo({
                   <SourceContent
                     sourceId={layerView}
                     config={config}
-                    title={title}
+                    supTitle={title}
                   />
                 )}
                 {type === 'countryList' && config && (
-                  <CountryList config={config} title={title} />
+                  <CountryList config={config} supTitle={title} />
                 )}
                 {type === 'sourceList' && config && (
-                  <SourceList config={config} title={title}/>
+                  <SourceList config={config} supTitle={title}/>
                 )}
                 {type === 'layer' && config && (
                   <LayerContent

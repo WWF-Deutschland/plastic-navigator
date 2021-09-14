@@ -232,7 +232,11 @@ export const getSourcesFromCountryFeatures = (config, features) => {
   }, {});
   return sources;
 };
-export const getSourcesFromCountryFeaturesWithPosition = (config, features) => {
+export const getSourcesFromCountryFeaturesWithPosition = (
+  config,
+  features,
+  locale,
+) => {
   const sources = features.reduce((memo, f) => {
     const { code } = f.properties;
     if (
@@ -254,13 +258,34 @@ export const getSourcesFromCountryFeaturesWithPosition = (config, features) => {
                 position,
                 position_id: position.id,
               },
-              countries: [code],
+              countries: [
+                {
+                  id: code,
+                  label:
+                    f.properties[`name_${locale}`] ||
+                    f.properties[`name_${DEFAULT_LOCALE}`] ||
+                    code,
+                },
+              ],
+              label:
+                source[`title_${locale}`] ||
+                source[`title_${DEFAULT_LOCALE}`] ||
+                source.id,
             });
             return Object.assign(m2, { [source.id]: sx });
           }
           // if known source, add current feature's country code
           const sx = Object.assign({}, m2[source.id], {
-            countries: [...m2[source.id].countries, code],
+            countries: [
+              ...m2[source.id].countries,
+              {
+                id: code,
+                label:
+                  f.properties[`name_${locale}`] ||
+                  f.properties[`name_${DEFAULT_LOCALE}`] ||
+                  code,
+              },
+            ],
           });
           return Object.assign(m2, { [source.id]: sx });
         }
