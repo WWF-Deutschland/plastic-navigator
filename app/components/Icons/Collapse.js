@@ -2,12 +2,7 @@ import React from 'react';
 import StyledIcon from './StyledIcon';
 function Collapse(props) {
   return (
-    <StyledIcon
-      size="20px"
-      viewBox="0 0 20 20"
-      a11yTitle="Collapse"
-      {...props}
-    >
+    <StyledIcon size="20px" viewBox="0 0 20 20" a11yTitle="Collapse" {...props}>
       <g>
         <path
           fill="inherit"
