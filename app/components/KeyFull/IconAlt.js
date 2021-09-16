@@ -9,7 +9,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import {
-  getPositionStats,
+  getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
 } from 'utils/policy';
 import quasiEquals from 'utils/quasi-equals';
@@ -52,7 +52,8 @@ export function IconAlt({ config, intl, dark, layerData }) {
       layerData.features,
       locale,
     );
-  const countryStats = countries && getPositionStats(config, countries);
+  const countryStats =
+    countries && getPositionStatsFromCountries(config, countries);
   if (key.style && key.style.type === 'circle') {
     circles = key.iconValue.full.map(val => {
       let t;

@@ -9,7 +9,7 @@ import { POLICY_LAYERS } from 'config';
 
 import quasiEquals from 'utils/quasi-equals';
 import {
-  getPositionStats,
+  getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
 } from 'utils/policy';
 
@@ -54,7 +54,8 @@ export function Areas({
       layerData.features,
       locale,
     );
-  const countryStats = countries && getPositionStats(config, countries);
+  const countryStats =
+    countries && getPositionStatsFromCountries(config, countries);
 
   if (featureStyle.multiple === 'true') {
     square = key.values.reduce((memo, val) => {

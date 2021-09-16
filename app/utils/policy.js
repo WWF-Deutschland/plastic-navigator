@@ -145,7 +145,7 @@ export const hexToRgba = (hex, opacity) => {
     : null;
 };
 
-export const getPositionStats = (config, countries) => {
+export const getPositionStatsFromCountries = (config, countries) => {
   const values =
     (config.info && config.info.values) ||
     (config.key && config.key.iconValue && config.key.iconValue.full);

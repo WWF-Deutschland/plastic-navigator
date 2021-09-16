@@ -15,7 +15,7 @@ import { startsWith } from 'utils/string';
 import {
   getPositionSquareStyle,
   hexToRgba,
-  getPositionStats,
+  getPositionStatsFromCountries,
 } from 'utils/policy';
 
 const StackedBarWrapper = styled.div`
@@ -76,7 +76,7 @@ const getTitle = (value, config, locale) => {
 
 export function CountryStats({ config, countries, intl }) {
   const { locale } = intl;
-  const stats = getPositionStats(config, countries);
+  const stats = getPositionStatsFromCountries(config, countries);
   // console.log(stats, config)
   // prettier-ignore
   if (stats &&  stats.length === 2) {
