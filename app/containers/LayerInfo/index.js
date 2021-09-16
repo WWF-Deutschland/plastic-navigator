@@ -10,6 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, ResponsiveContext } from 'grommet';
+import { FormattedMessage } from 'react-intl';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
@@ -27,6 +28,8 @@ import { showLayerInfoModule } from 'containers/App/actions';
 
 import { Close } from 'components/Icons';
 
+import coreMessages from 'messages';
+
 import LayerContent from './LayerContent';
 import CountryList from './CountryList';
 import SourceList from './SourceList';
@@ -35,6 +38,8 @@ import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
 import SourceContent from './SourceContent';
 import Alternates from './Alternates';
+import TitleIcon from './TitleIcon';
+import TitleIconPolicy from './TitleIconPolicy';
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -67,9 +72,7 @@ const Styled = styled.div`
   }
 `;
 
-const ButtonClose = styled(p => (
-  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
-))`
+const ButtonClose = styled(p => <Button plain alignSelf="end" {...p} />)`
   position: absolute;
   top: 15px;
   right: 15px;
@@ -83,6 +86,26 @@ const ButtonClose = styled(p => (
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 10px;
     right: 30px;
+  }
+`;
+const ButtonCloseText = styled(p => <Button plain alignSelf="end" {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: absolute;
+  top: 24px;
+  right: 15px;
+  padding: 5px;
+  color: ${({ theme }) => theme.global.colors.black};
+  background: ${({ theme }) => theme.global.colors.white};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 99999px;
+  &:hover {
+    text-decoration: underline;
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 8px;
+    right: 35px;
   }
 `;
 
@@ -169,6 +192,11 @@ export function LayerInfo({
                   <LayerContent
                     config={config}
                     title={title}
+                    header={
+                      (isModule && POLICY_LAYERS.indexOf(config.id) > -1)
+                        ? <TitleIconPolicy title={title}/>
+                        : <TitleIcon title={title}/>
+                    }
                     inject={
                       !layerView &&
                       config &&
@@ -185,15 +213,19 @@ export function LayerInfo({
                     } />
                 )}
               </ContentWrap>
-              <ButtonClose
-                onClick={() => {
-                  if (isModule) {
-                    onHideLayerPanel();
-                  } else {
-                    onClose();
-                  }
-                }}
-              />
+              {isModule && (
+                <ButtonCloseText
+                  onClick={() => onHideLayerPanel()}
+                >
+                  <FormattedMessage {...coreMessages.label_hide} />
+                </ButtonCloseText>
+              )}
+              {!isModule && (
+                <ButtonClose
+                  onClick={() => onClose()}
+                  icon={<Close color="white" />}
+                />
+              )}
             </Styled>
           )}
         </div>

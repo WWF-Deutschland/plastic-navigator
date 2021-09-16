@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Text, Heading, Button } from 'grommet';
+import { Box, Text, Button } from 'grommet';
 import { ArrowRightL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -36,6 +36,9 @@ import KeyLabel from 'components/KeyFull/KeyLabel';
 import coreMessages from 'messages';
 import messages from './messages';
 
+const Styled = styled(p => (
+  <Box margin={{ top: 'medium', bottom: 'large' }} {...p} />
+))``;
 const SquareLabelWrap = styled(p => (
   <Box direction="row" align="center" gap="xsmall" {...p} />
 ))``;
@@ -56,7 +59,7 @@ const Title = styled(Text)`
   text-transform: uppercase;
 `;
 
-const ListTitle = styled(p => <Heading level={4} {...p} />)`
+const ListTitle = styled(p => <Text size="large" {...p} />)`
   font-family: 'wwfregular';
   letter-spacing: 0.1px;
   line-height: 1;
@@ -151,11 +154,12 @@ export function CountryChart({
     ];
   }, []);
 
-  // console.log(countries, countryStats)
+  // console.log(countries, countryStats);
+  // console.log(sources);
   //   const { key, featureStyle } = config;
   // prettier-ignore
   return (
-    <div>
+    <Styled>
       <Box>
         <Title>
           <FormattedMessage {...messages.countryChartTitle} />
@@ -187,7 +191,7 @@ export function CountryChart({
                   <Box
                     direction="row"
                     justify="between"
-                    pad={{ vertical: 'small', right: 'small', left: 'small' }}
+                    pad={{ vertical: 'small', right: 'small', left: 'edge' }}
                     align="center"
                     responsive={false}
                   >
@@ -215,7 +219,7 @@ export function CountryChart({
                   <Box
                     direction="row"
                     justify="between"
-                    pad={{ vertical: 'small', right: 'small', left: 'small' }}
+                    pad={{ vertical: 'small', right: 'small', left: 'edge' }}
                     align="center"
                     responsive={false}
                   >
@@ -236,7 +240,7 @@ export function CountryChart({
           )}
         </Box>
       )}
-    </div>
+    </Styled>
   );
 }
 

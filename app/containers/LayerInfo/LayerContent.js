@@ -27,9 +27,7 @@ import LoadingIndicator from 'components/LoadingIndicator';
 import HTMLWrapper from 'components/HTMLWrapper';
 import KeyFull from 'components/KeyFull';
 import Checkbox from 'components/Checkbox';
-import { ExploreS as Layer } from 'components/Icons';
 
-import Title from './Title';
 import LayerReference from './LayerReference';
 // import messages from './messages';
 
@@ -38,10 +36,6 @@ const LayerTitle = styled(Text)`
   font-weight: 700;
   line-height: 20px;
 `;
-
-const TitleWrap = styled(p => (
-  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
-))``;
 
 export function LayerContent({
   onLoadContent,
@@ -53,6 +47,7 @@ export function LayerContent({
   onLoadLayer,
   inject = [],
   title,
+  header,
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -70,10 +65,7 @@ export function LayerContent({
   // prettier-ignore
   return (
     <>
-      <TitleWrap>
-        <Layer />
-        <Title>{title}</Title>
-      </TitleWrap>
+      {header && (<>{header}</>)}
       {!content && <LoadingIndicator />}
       {content && (
         <HTMLWrapper
@@ -118,6 +110,7 @@ LayerContent.propTypes = {
   inject: PropTypes.array,
   isActive: PropTypes.bool,
   title: PropTypes.string,
+  header: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -1,4 +1,4 @@
-import { Explore, Intro } from 'components/Icons';
+import { Explore, Intro, Policy } from 'components/Icons';
 import React from 'react';
 
 // application routes and paths
@@ -38,10 +38,10 @@ export const MODULES = {
   policy: {
     path: ROUTES.POLICY,
     featuredLayer: 'policy-commitments-area',
-    icon: <Explore color="white" />,
-    iconActive: <Explore color="black" />,
-    iconS: <Explore color="white" size="26px" />,
-    iconActiveS: <Explore color="black" size="26px" />,
+    icon: <Policy color="white" />,
+    iconActive: <Policy color="black" />,
+    iconS: <Policy color="white" size="26px" />,
+    iconActiveS: <Policy color="black" size="26px" />,
     layers: ['surface-concentration', 'policy-commitments-area'],
     hasKey: true,
   },

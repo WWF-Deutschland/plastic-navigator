@@ -20,7 +20,7 @@ import { Box, Button } from 'grommet';
 import { MODULES } from 'config';
 
 import ModuleWrap from 'components/ModuleWrap';
-import { ExploreS } from 'components/Icons';
+import { Policy } from 'components/Icons';
 
 import {
   selectActiveLayers,
@@ -105,7 +105,6 @@ export function ModulePolicy({
 
   // unhide layer info
   useEffect(() => {
-    console.log('onShowLayerInfo', info);
     if (info === '') {
       onShowLayerInfo();
     }
@@ -152,7 +151,7 @@ export function ModulePolicy({
             onClick={() => {
               onShowLayerInfo();
             }}
-            icon={<ExploreS color="white" />}
+            icon={<Policy color="white" size="26px" />}
             label={<FormattedMessage {...messages.showLayerPanel} />}
           />
         </Buttons>
