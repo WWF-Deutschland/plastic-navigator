@@ -13,7 +13,7 @@ import { intlShape, injectIntl } from 'react-intl';
 
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
-import { featuresToCountriesWithStrongestPosition } from 'utils/positions';
+import { featuresToCountriesWithStrongestPosition } from 'utils/policy';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';

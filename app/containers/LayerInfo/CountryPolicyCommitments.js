@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Text } from 'grommet';
 
-import { sortPositions } from 'utils/positions';
+import { sortPositions } from 'utils/policy';
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
 
 import messages from './messages';

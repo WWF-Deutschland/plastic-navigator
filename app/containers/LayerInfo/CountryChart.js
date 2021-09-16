@@ -27,7 +27,7 @@ import {
   getPositionStats,
   featuresToCountriesWithStrongestPosition,
   getSourcesFromCountryFeatures,
-} from 'utils/positions';
+} from 'utils/policy';
 import quasiEquals from 'utils/quasi-equals';
 
 import KeyArea from 'components/KeyArea';

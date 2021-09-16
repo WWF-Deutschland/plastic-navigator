@@ -16,7 +16,7 @@ import {
   getPositionSquareStyle,
   hexToRgba,
   getPositionStats,
-} from 'utils/positions';
+} from 'utils/policy';
 
 const StackedBarWrapper = styled.div`
   display: block;

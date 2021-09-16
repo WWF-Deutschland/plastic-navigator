@@ -11,7 +11,7 @@ import quasiEquals from 'utils/quasi-equals';
 import {
   getPositionStats,
   featuresToCountriesWithStrongestPosition,
-} from 'utils/positions';
+} from 'utils/policy';
 
 import asArray from 'utils/as-array';
 

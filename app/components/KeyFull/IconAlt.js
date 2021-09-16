@@ -11,7 +11,7 @@ import { POLICY_LAYERS } from 'config';
 import {
   getPositionStats,
   featuresToCountriesWithStrongestPosition,
-} from 'utils/positions';
+} from 'utils/policy';
 import quasiEquals from 'utils/quasi-equals';
 
 import KeyCircle from 'components/KeyCircle';
