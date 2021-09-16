@@ -12,6 +12,18 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button } from 'grommet';
+import {
+  FlexibleWidthXYPlot,
+  LineSeries,
+  AreaSeries,
+  // XAxis,
+  // YAxis,
+  // HorizontalGridLines,
+  // MarkSeries,
+  // Hint,
+  // ChartLabel,
+} from 'react-vis';
+
 import { ArrowRightL } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -81,48 +93,82 @@ const TitleButton = styled(p => (
     background: ${({ theme }) => theme.global.colors.light};
   }
 `;
+const getXTime = dateString => new Date(`${dateString}`).getTime();
 
-export function CountryChart({
-  config,
-  intl,
-  onLoadLayer,
-  layer,
-  onClickLayerList,
-}) {
-  useInjectSaga({ key: 'map', saga });
-  useEffect(() => {
-    // kick off loading of page content
-    if (POLICY_LAYERS.indexOf(config.id) > -1) {
-      onLoadLayer(config.id, config);
-    }
-  }, [config]);
-
-  const { locale } = intl;
-  const { key, featureStyle } = config;
-
-  if (
-    POLICY_LAYERS.indexOf(config.id) === -1 ||
-    !layer ||
-    !layer.data ||
-    !layer.data.features
-  ) {
-    return null;
+const getDataForDate = (dateKey, positions, positionID, positionIDYOffset) => {
+  let y = 0;
+  if (positionIDYOffset && positions[dateKey].positions[positionIDYOffset]) {
+    y += positions[dateKey].positions[positionIDYOffset].length;
   }
-  // console.log(layer.data.features)
-  const sourceCount = getSourceCountFromCountryFeatures(
-    config,
-    layer.data.features,
+  return {
+    sdate: dateKey,
+    scount: positions[dateKey].positions[positionID]
+      ? positions[dateKey].positions[positionID].length
+      : 0,
+    x: getXTime(dateKey),
+    y: parseFloat(
+      positions[dateKey].positions[positionID]
+        ? y + positions[dateKey].positions[positionID].length
+        : y,
+    ),
+  };
+  // return addSteps(dataSimple);
+};
+const addStep = (previous, datum) => {
+  if (previous.length > 0) {
+    return [
+      {
+        ...datum,
+        y: previous[previous.length - 1].y,
+      },
+      datum,
+    ];
+  }
+  return [datum];
+};
+const prepChartData = (positions, minDate) => {
+  const data = Object.keys(positions).reduce(
+    (memo, dateKey) => ({
+      1: [
+        ...memo[1],
+        ...addStep(memo[1], getDataForDate(dateKey, positions, 1)),
+      ],
+      2: [
+        ...memo[2],
+        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, 1)),
+      ],
+    }),
+    {
+      1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
+      2: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
+    },
   );
+  return {
+    1: [
+      ...data[1],
+      {
+        sdate: 'today',
+        scount: 0,
+        y: data[1][data[1].length - 1].y,
+        x: new Date().getTime(),
+      },
+    ],
+    2: [
+      ...data[2],
+      {
+        sdate: 'today',
+        scount: 0,
+        y: data[2][data[2].length - 1].y,
+        x: new Date().getTime(),
+      },
+    ],
+  };
+};
 
-  const countries = featuresToCountriesWithStrongestPosition(
-    config,
-    layer.data.features,
-    locale,
-  );
+const prepChartKey = (countries, config, locale) => {
+  const { key, featureStyle } = config;
   const countryStats = getPositionStatsFromCountries(config, countries);
-  // console.log(countries, countryStats, config, key)
-
-  const statsForKey = key.values.reduce((memo, val) => {
+  return key.values.reduce((memo, val) => {
     let t;
     if (key.title && key.title[val]) {
       t =
@@ -157,14 +203,84 @@ export function CountryChart({
       },
     ];
   }, []);
+};
 
+export function CountryChart({
+  config,
+  intl,
+  onLoadLayer,
+  layer,
+  onClickLayerList,
+}) {
+  useInjectSaga({ key: 'map', saga });
+  useEffect(() => {
+    // kick off loading of page content
+    if (POLICY_LAYERS.indexOf(config.id) > -1) {
+      onLoadLayer(config.id, config);
+    }
+  }, [config]);
+
+  const { locale } = intl;
+
+  if (
+    POLICY_LAYERS.indexOf(config.id) === -1 ||
+    !layer ||
+    !layer.data ||
+    !layer.data.features
+  ) {
+    return null;
+  }
+
+  // console.log(layer.data.features)
+  const sourceCount = getSourceCountFromCountryFeatures(
+    config,
+    layer.data.features,
+  );
+  const countries = featuresToCountriesWithStrongestPosition(
+    config,
+    layer.data.features,
+    locale,
+  );
+  const countryStats = getPositionStatsFromCountries(config, countries);
+  const statsForKey = prepChartKey(countries, config, locale);
   const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures(
     config,
     layer.data.features,
   );
+
+  // const tickValuesY = getTickValuesY(metric.type, mode);
   // console.log(countries, countryStats);
-  console.log(positionsOverTime);
-  //   const { key, featureStyle } = config;
+  // console.log(positionsOverTime);
+  // Object.keys(positionsOverTime).forEach(date => {
+  //   const value = positionsOverTime[date];
+  //   console.log(
+  //     date,
+  //     value.positions['1'] ? value.positions['1'].length : 0,
+  //     value.positions['2'] ? value.positions['2'].length : 0,
+  //   );
+  // });
+  const MINDATE = '2017-9-1';
+  const chartData = prepChartData(positionsOverTime, MINDATE);
+  // console.log(chartData);
+  // prettier-ignore
+  const dataForceYRange =
+    chartData && chartData[1] && chartData[1].length > 0
+      ? [
+        {
+          x: new Date(MINDATE).getTime(),
+          y: 0,
+        },
+        {
+          x: new Date().getTime(),
+          y: chartData[2][chartData[2].length - 1].y,
+        },
+      ]
+      : null;
+  const dataStyles = {
+    1: statsForKey.find(s => s.id === '1'),
+    2: statsForKey.find(s => s.id === '2'),
+  };
+  // console.log(statsForKey, dataForceYRange);
   // prettier-ignore
   return (
     <Styled>
@@ -174,7 +290,7 @@ export function CountryChart({
         </Title>
       </Box>
       {(countryStats && countryStats.length > 1) && (
-        <Box responsive={false}>
+        <Box responsive={false} margin={{ vertical: 'small' }}>
           {statsForKey.map(stat => (
             <SquareLabelWrap key={stat.id}>
               <KeyAreaWrap>
@@ -188,6 +304,71 @@ export function CountryChart({
             </SquareLabelWrap>
           ))}
         </Box>
+      )}
+      {chartData && dataForceYRange && (
+        <FlexibleWidthXYPlot
+          height={200}
+          xType="time"
+          style={{ fill: 'transparent' }}
+          margin={{
+            bottom: 30,
+            top: 10,
+            right: 18,
+            left: 28,
+          }}
+        >
+          <AreaSeries data={dataForceYRange} style={{ opacity: 0 }} />
+          <AreaSeries
+            data={chartData[2]}
+            style={{
+              stroke: 'transparent',
+              fill: dataStyles && dataStyles[2] && dataStyles[2].style
+                ? dataStyles[2].style.fillColor
+                : 'red',
+              opacity: dataStyles && dataStyles[2] &&  dataStyles[2].style
+                ? dataStyles[2].style.fillOpacity
+                : 0.1,
+            }}
+          />
+          <AreaSeries
+            data={chartData[1]}
+            style={{
+              stroke: 'transparent',
+              fill: 'white',
+              opacity: 1,
+            }}
+          />
+          <AreaSeries
+            data={chartData[1]}
+            style={{
+              stroke: 'transparent',
+              fill: dataStyles && dataStyles[1] && dataStyles[1].style
+                ? dataStyles[1].style.fillColor
+                : 'blue',
+              opacity: dataStyles && dataStyles[1] &&  dataStyles[1].style
+                ? dataStyles[1].style.fillOpacity
+                : 0.1,
+            }}
+          />
+          <LineSeries
+            data={chartData[2]}
+            style={{
+              stroke: dataStyles && dataStyles[2] && dataStyles[2].style
+                ? dataStyles[2].style.fillColor
+                : 'red',
+              strokeWidth: 0.5,
+            }}
+          />
+          <LineSeries
+            data={chartData[1]}
+            style={{
+              stroke: dataStyles && dataStyles[1] && dataStyles[1].style
+                ? dataStyles[1].style.fillColor
+                : 'blue',
+              strokeWidth: 0.5,
+            }}
+          />
+        </FlexibleWidthXYPlot>
       )}
       {(countries || (sourceCount && sourceCount !== 0)) && (
         <Box pad={{ top: 'medium' }}>
