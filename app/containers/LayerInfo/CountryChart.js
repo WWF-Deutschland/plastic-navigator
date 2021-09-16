@@ -24,9 +24,9 @@ import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import {
-  getPositionStats,
+  getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
-  getSourcesFromCountryFeatures,
+  getSourceCountFromCountryFeatures,
 } from 'utils/policy';
 import quasiEquals from 'utils/quasi-equals';
 
@@ -108,14 +108,17 @@ export function CountryChart({
     return null;
   }
   // console.log(layer.data.features)
-  const sources = getSourcesFromCountryFeatures(config, layer.data.features);
+  const sourceCount = getSourceCountFromCountryFeatures(
+    config,
+    layer.data.features,
+  );
 
   const countries = featuresToCountriesWithStrongestPosition(
     config,
     layer.data.features,
     locale,
   );
-  const countryStats = getPositionStats(config, countries);
+  const countryStats = getPositionStatsFromCountries(config, countries);
   // console.log(countries, countryStats, config, key)
 
   const statsForKey = key.values.reduce((memo, val) => {
@@ -155,7 +158,7 @@ export function CountryChart({
   }, []);
 
   // console.log(countries, countryStats);
-  // console.log(sources);
+  console.log(sourceCount);
   //   const { key, featureStyle } = config;
   // prettier-ignore
   return (
@@ -181,7 +184,7 @@ export function CountryChart({
           ))}
         </Box>
       )}
-      {(countries || sources) && (
+      {(countries || (sourceCount && sourceCount !== 0)) && (
         <Box pad={{ top: 'medium' }}>
           {countries && (
             <Box>
@@ -210,7 +213,7 @@ export function CountryChart({
               />
             </Box>
           )}
-          {sources && (
+          {sourceCount && sourceCount !== 0 && (
             <Box>
               <TitleButton
                 last
@@ -227,8 +230,8 @@ export function CountryChart({
                       <FormattedMessage
                         {...coreMessages.sources}
                         values={{
-                          count: Object.keys(sources).length,
-                          isSingle: Object.keys(sources).length === 1,
+                          count: sourceCount,
+                          isSingle: sourceCount === 1,
                         }}
                       />
                     </ListTitle>

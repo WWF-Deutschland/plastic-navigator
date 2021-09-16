@@ -196,9 +196,8 @@ export const featuresToCountriesWithStrongestPosition = (
       deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1,
     );
 
-export const getSourcesFromCountryFeatures = (config, features) => {
+export const getSourceCountFromCountryFeatures = (config, features) => {
   const sources = features.reduce((memo, f) => {
-    const { code } = f.properties;
     if (
       config.properties &&
       config.properties.join &&
@@ -209,29 +208,19 @@ export const getSourcesFromCountryFeatures = (config, features) => {
       const fPositions = f.properties[config.properties.join.as];
       // check each position for the source and remember source in new list m2
       return fPositions.reduce((m2, p) => {
-        const { source, position } = p;
-        if (source && source.id) {
-          // if new source, remember source with current country code
-          if (!m2[source.id]) {
-            const sx = Object.assign({}, source, {
-              position,
-              countries: [code],
-            });
-            return Object.assign(m2, { [source.id]: sx });
-          }
-          // if known source, add current feature's country code
-          const sx = Object.assign({}, source, {
-            countries: [...m2[source.id].countries, code],
-          });
-          return Object.assign(m2, { [source.id]: sx });
+        const { source } = p;
+        // if new source, remember source with current country code
+        if (source && source.id && m2.indexOf(source.id) === -1) {
+          return [...m2, source.id];
         }
         return m2;
       }, memo);
     }
     return memo;
-  }, {});
-  return sources;
+  }, []);
+  return sources ? sources.length : null;
 };
+
 export const getSourcesFromCountryFeaturesWithPosition = (
   config,
   features,
