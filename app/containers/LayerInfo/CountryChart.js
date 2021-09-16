@@ -27,6 +27,7 @@ import {
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
   getSourceCountFromCountryFeatures,
+  getCountryPositionsOverTimeFromCountryFeatures,
 } from 'utils/policy';
 import quasiEquals from 'utils/quasi-equals';
 
@@ -157,8 +158,12 @@ export function CountryChart({
     ];
   }, []);
 
+  const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures(
+    config,
+    layer.data.features,
+  );
   // console.log(countries, countryStats);
-  console.log(sourceCount);
+  console.log(positionsOverTime);
   //   const { key, featureStyle } = config;
   // prettier-ignore
   return (

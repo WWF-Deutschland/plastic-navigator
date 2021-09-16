@@ -285,3 +285,108 @@ export const getSourcesFromCountryFeaturesWithPosition = (
   }, {});
   return sources;
 };
+
+const concatIfMissing = (arr, values) =>
+  values.reduce((memo, val) => {
+    if (memo.indexOf(val) > -1) {
+      return memo;
+    }
+    return memo.concat([val]);
+  }, arr);
+
+const cleanupPositions = positions => {
+  if (positions['2']) {
+    const pos2 = positions['2'].filter(p2 => positions['1'].indexOf(p2) === -1);
+    return Object.assign({}, positions, { '2': pos2 });
+  }
+  return positions;
+};
+
+export const getCountryPositionsOverTimeFromCountryFeatures = (
+  config,
+  features,
+) => {
+  const sources = features.reduce((memo, f) => {
+    const { code } = f.properties;
+    if (
+      config.properties &&
+      config.properties.join &&
+      config.properties.join.as &&
+      f.properties[config.properties.join.as]
+    ) {
+      // get country-positions from feature
+      const fPositions = f.properties[config.properties.join.as];
+      // check each position for the source and remember source in new list m2
+      return fPositions.reduce((m2, p) => {
+        const { source, position } = p;
+        if (source && source.id) {
+          // if new source, remember source with current country code
+          if (!m2[source.id]) {
+            const sx = Object.assign({}, source, {
+              position,
+              countries: [code],
+            });
+            return Object.assign(m2, { [source.id]: sx });
+          }
+          // if known source, add current feature's country code
+          const sx = Object.assign({}, source, {
+            countries: [...m2[source.id].countries, code],
+          });
+          return Object.assign(m2, { [source.id]: sx });
+        }
+        return m2;
+      }, memo);
+    }
+    return memo;
+  }, {});
+  const sourcesSorted = Object.values(sources).sort((a, b) => {
+    const aDate = new Date(a.date).getTime();
+    const bDate = new Date(b.date).getTime();
+    return aDate > bDate ? 1 : -1;
+  });
+  // console.log(sourcesSorted)
+  const positionsByDate = sourcesSorted.reduce((memo, source) => {
+    // console.log(memo, source);
+    const previousPositions =
+      Object.keys(memo).length > 0
+        ? Object.values(memo)[Object.keys(memo).length - 1].positions
+        : null;
+    let positions;
+    if (previousPositions) {
+      // prettier-ignore
+      positions = Object.assign({}, previousPositions, {
+        [source.position_id]: previousPositions[source.position_id]
+          ? concatIfMissing(
+            previousPositions[source.position_id],
+            source.countries,
+          )
+          : source.countries,
+      });
+      positions = cleanupPositions(positions);
+    } else {
+      positions = { [source.position_id]: source.countries };
+    }
+    if (!memo[source.date]) {
+      // remember source
+      const date = {
+        sources: {
+          [source.id]: source,
+        },
+        positions,
+      };
+      return Object.assign({}, memo, { [source.date]: date });
+    }
+    if (memo[source.date]) {
+      const dateSources = Object.assign({}, memo[source.date].sources, {
+        [source.id]: source,
+      });
+      const date = Object.assign({}, memo[source.date], {
+        sources: dateSources,
+        positions,
+      });
+      return Object.assign({}, memo, { [source.date]: date });
+    }
+    return memo;
+  }, {});
+  return positionsByDate;
+};
