@@ -43,6 +43,10 @@ export default defineMessages({
   },
   countryChartTitle: {
     id: `${scope}.countryChartTitle`,
-    defaultMessage: 'Number of countries by policy position (with sources)',
+    defaultMessage: 'Number of countries by policy position',
+  },
+  countryChartSupTitle: {
+    id: `${scope}.countryChartSupTitle`,
+    defaultMessage: 'With individual statements shown below (TODO)',
   },
 });

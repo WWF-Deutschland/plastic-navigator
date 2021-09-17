@@ -12,13 +12,14 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button } from 'grommet';
+import { utcFormat as timeFormat } from 'd3-time-format';
 import {
   FlexibleWidthXYPlot,
   LineSeries,
   AreaSeries,
-  // XAxis,
+  XAxis,
+  VerticalGridLines,
   // YAxis,
-  // HorizontalGridLines,
   // MarkSeries,
   // Hint,
   // ChartLabel,
@@ -71,6 +72,7 @@ const Title = styled(Text)`
   font-weight: bold;
   text-transform: uppercase;
 `;
+const SupTitle = styled(p => <Text size="xsmall" {...p} />)``;
 
 const ListTitle = styled(p => <Text size="large" {...p} />)`
   font-family: 'wwfregular';
@@ -205,6 +207,8 @@ const prepChartKey = (countries, config, locale) => {
   }, []);
 };
 
+const MINDATE = '2018-07-01';
+
 export function CountryChart({
   config,
   intl,
@@ -259,7 +263,7 @@ export function CountryChart({
   //     value.positions['2'] ? value.positions['2'].length : 0,
   //   );
   // });
-  const MINDATE = '2017-9-1';
+
   const chartData = prepChartData(positionsOverTime, MINDATE);
   // console.log(chartData);
   // prettier-ignore
@@ -284,13 +288,16 @@ export function CountryChart({
   // prettier-ignore
   return (
     <Styled>
-      <Box>
+      <Box gap="xxsmall">
         <Title>
           <FormattedMessage {...messages.countryChartTitle} />
         </Title>
+        <SupTitle>
+          <FormattedMessage {...messages.countryChartSupTitle} />
+        </SupTitle>
       </Box>
       {(countryStats && countryStats.length > 1) && (
-        <Box responsive={false} margin={{ vertical: 'small' }}>
+        <Box responsive={false} margin={{ vertical: 'small' }} gap="xxsmall">
           {statsForKey.map(stat => (
             <SquareLabelWrap key={stat.id}>
               <KeyAreaWrap>
@@ -349,6 +356,33 @@ export function CountryChart({
                 ? dataStyles[1].style.fillOpacity
                 : 0.1,
             }}
+          />
+          <VerticalGridLines
+            tickValues={[
+              new Date('2019-01-01').getTime(),
+              new Date('2020-01-01').getTime(),
+              new Date('2021-01-01').getTime(),
+            ]}
+            style={{
+              stroke: 'rgba(136, 150, 160, 0.4)',
+            }}
+          />
+          <XAxis
+            tickFormat={timeFormat('%Y')}
+            tickSize={0}
+            style={{
+              line: { strokeWidth: 1, stroke: 'black' },
+              text: {
+                fill: 'black',
+                fontSize: '12px',
+              },
+            }}
+            tickValues={[
+              new Date('2019-01-01').getTime(),
+              new Date('2020-01-01').getTime(),
+              new Date('2021-01-01').getTime(),
+            ]}
+            tickPadding={12}
           />
           <LineSeries
             data={chartData[2]}
