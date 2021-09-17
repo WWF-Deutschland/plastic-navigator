@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { selectConfigByKey } from 'containers/App/selectors';
+import {
+  selectConfigByKey,
+  selectRouterSearchParams,
+} from 'containers/App/selectors';
 
 import { initialState } from './reducer';
 
@@ -71,4 +74,9 @@ export const selectLayersLoading = createSelector(
     );
     return layersReady !== layersRequested;
   },
+);
+
+export const selectMapPosition = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('mview') ? search.get('mview') : ''),
 );
