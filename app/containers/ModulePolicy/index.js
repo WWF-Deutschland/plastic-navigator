@@ -92,11 +92,14 @@ export function ModulePolicy({
   const { layersMemo, viewMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
+
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
-    } else if (MODULES.policy.layers && !firstLanding) {
-      onSetLayers(MODULES.policy.layers);
+    } else if (MODULES.policy.layers) {
+      if (!firstLanding || activeLayers.length === 0) {
+        onSetLayers(MODULES.policy.layers);
+      }
     }
     if (firstLanding) {
       onSetLanding();

@@ -127,13 +127,16 @@ export function ModuleExplore({
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
-    } else if (MODULES.explore.layers && !firstLanding) {
-      onSetLayers(MODULES.explore.layers);
+    } else if (MODULES.explore.layers) {
+      if (!firstLanding || activeLayers.length === 0) {
+        onSetLayers(MODULES.explore.layers);
+      }
     }
     if (firstLanding) {
       onSetLanding();
     }
   }, []);
+
   useEffect(() => {
     onMemoLayers(activeLayers, uiState);
   }, [activeLayers]);
