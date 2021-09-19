@@ -47,6 +47,6 @@ export default defineMessages({
   },
   countryChartSupTitle: {
     id: `${scope}.countryChartSupTitle`,
-    defaultMessage: 'With individual statements shown below (TODO)',
+    defaultMessage: 'With individual statements shown below',
   },
 });

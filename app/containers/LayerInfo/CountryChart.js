@@ -19,15 +19,14 @@ import {
   AreaSeries,
   XAxis,
   VerticalGridLines,
+  MarkSeries,
   // YAxis,
-  // MarkSeries,
   // Hint,
   // ChartLabel,
 } from 'react-vis';
 
 import { ArrowRightL } from 'components/Icons';
 
-import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import { setLayerInfo } from 'containers/App/actions';
@@ -42,13 +41,19 @@ import {
   getSourceCountFromCountryFeatures,
   getCountryPositionsOverTimeFromCountryFeatures,
 } from 'utils/policy';
-import quasiEquals from 'utils/quasi-equals';
 
 import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
 
 import coreMessages from 'messages';
 import messages from './messages';
+import {
+  prepChartKey,
+  prepChartData,
+  prepChartDataSources,
+  getTickValuesX,
+  getYRange,
+} from './charts';
 
 const Styled = styled(p => (
   <Box margin={{ top: 'medium', bottom: 'large' }} {...p} />
@@ -95,119 +100,18 @@ const TitleButton = styled(p => (
     background: ${({ theme }) => theme.global.colors.light};
   }
 `;
-const getXTime = dateString => new Date(`${dateString}`).getTime();
 
-const getDataForDate = (dateKey, positions, positionID, positionIDYOffset) => {
-  let y = 0;
-  if (positionIDYOffset && positions[dateKey].positions[positionIDYOffset]) {
-    y += positions[dateKey].positions[positionIDYOffset].length;
-  }
-  return {
-    sdate: dateKey,
-    scount: positions[dateKey].positions[positionID]
-      ? positions[dateKey].positions[positionID].length
-      : 0,
-    x: getXTime(dateKey),
-    y: parseFloat(
-      positions[dateKey].positions[positionID]
-        ? y + positions[dateKey].positions[positionID].length
-        : y,
-    ),
-  };
-  // return addSteps(dataSimple);
-};
-const addStep = (previous, datum) => {
-  if (previous.length > 0) {
-    return [
-      {
-        ...datum,
-        y: previous[previous.length - 1].y,
-      },
-      datum,
-    ];
-  }
-  return [datum];
-};
-const prepChartData = (positions, minDate) => {
-  const data = Object.keys(positions).reduce(
-    (memo, dateKey) => ({
-      1: [
-        ...memo[1],
-        ...addStep(memo[1], getDataForDate(dateKey, positions, 1)),
-      ],
-      2: [
-        ...memo[2],
-        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, 1)),
-      ],
-    }),
-    {
-      1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
-      2: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
-    },
-  );
-  return {
-    1: [
-      ...data[1],
-      {
-        sdate: 'today',
-        scount: 0,
-        y: data[1][data[1].length - 1].y,
-        x: new Date().getTime(),
-      },
-    ],
-    2: [
-      ...data[2],
-      {
-        sdate: 'today',
-        scount: 0,
-        y: data[2][data[2].length - 1].y,
-        x: new Date().getTime(),
-      },
-    ],
-  };
-};
+const YearLabel = styled.text`
+  fill: black;
+  font-size: 12px;
+  text-anchor: start;
+`;
 
-const prepChartKey = (countries, config, locale) => {
-  const { key, featureStyle } = config;
-  const countryStats = getPositionStatsFromCountries(config, countries);
-  return key.values.reduce((memo, val) => {
-    let t;
-    if (key.title && key.title[val]) {
-      t =
-        key.title[val][locale] ||
-        key.title[val][DEFAULT_LOCALE] ||
-        key.title[val];
-    }
-    let style;
-    if (featureStyle && featureStyle.style) {
-      style = Object.keys(featureStyle.style).reduce(
-        (memo2, attr) => ({
-          ...memo2,
-          [attr]: featureStyle.style[attr][val],
-        }),
-        {
-          fillOpacity: 0.4,
-        },
-      );
-    }
-    const stat =
-      countryStats && countryStats.find(s => quasiEquals(s.val, val));
-    if (!stat) {
-      return memo;
-    }
-    return [
-      ...memo,
-      {
-        id: val,
-        style,
-        title: t,
-        count: stat && stat.count,
-      },
-    ];
-  }, []);
-};
+const myTimeFormat = value => (
+  <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
+);
 
-const MINDATE = '2018-07-01';
+const MINDATE = '2018-10-01';
 
 export function CountryChart({
   config,
@@ -246,45 +150,22 @@ export function CountryChart({
     locale,
   );
   const countryStats = getPositionStatsFromCountries(config, countries);
-  const statsForKey = prepChartKey(countries, config, locale);
+  const statsForKey = prepChartKey(countryStats, config, locale);
   const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures(
     config,
     layer.data.features,
   );
-
-  // const tickValuesY = getTickValuesY(metric.type, mode);
-  // console.log(countries, countryStats);
-  // console.log(positionsOverTime);
-  // Object.keys(positionsOverTime).forEach(date => {
-  //   const value = positionsOverTime[date];
-  //   console.log(
-  //     date,
-  //     value.positions['1'] ? value.positions['1'].length : 0,
-  //     value.positions['2'] ? value.positions['2'].length : 0,
-  //   );
-  // });
-
   const chartData = prepChartData(positionsOverTime, MINDATE);
-  // console.log(chartData);
-  // prettier-ignore
-  const dataForceYRange =
-    chartData && chartData[1] && chartData[1].length > 0
-      ? [
-        {
-          x: new Date(MINDATE).getTime(),
-          y: 0,
-        },
-        {
-          x: new Date().getTime(),
-          y: chartData[2][chartData[2].length - 1].y,
-        },
-      ]
-      : null;
+  const dataForceYRange = getYRange(chartData, MINDATE);
   const dataStyles = {
     1: statsForKey.find(s => s.id === '1'),
     2: statsForKey.find(s => s.id === '2'),
   };
-  // console.log(statsForKey, dataForceYRange);
+  const tickValuesX = getTickValuesX(chartData);
+
+  const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
+  console.log(chartDataSources, dataStyles);
+
   // prettier-ignore
   return (
     <Styled>
@@ -314,14 +195,14 @@ export function CountryChart({
       )}
       {chartData && dataForceYRange && (
         <FlexibleWidthXYPlot
-          height={200}
+          height={230}
           xType="time"
           style={{ fill: 'transparent' }}
           margin={{
             bottom: 30,
             top: 10,
-            right: 18,
-            left: 28,
+            right: 25,
+            left: 25,
           }}
         >
           <AreaSeries data={dataForceYRange} style={{ opacity: 0 }} />
@@ -352,37 +233,10 @@ export function CountryChart({
               fill: dataStyles && dataStyles[1] && dataStyles[1].style
                 ? dataStyles[1].style.fillColor
                 : 'blue',
-              opacity: dataStyles && dataStyles[1] &&  dataStyles[1].style
+              opacity: dataStyles && dataStyles[1] && dataStyles[1].style
                 ? dataStyles[1].style.fillOpacity
                 : 0.1,
             }}
-          />
-          <VerticalGridLines
-            tickValues={[
-              new Date('2019-01-01').getTime(),
-              new Date('2020-01-01').getTime(),
-              new Date('2021-01-01').getTime(),
-            ]}
-            style={{
-              stroke: 'rgba(136, 150, 160, 0.4)',
-            }}
-          />
-          <XAxis
-            tickFormat={timeFormat('%Y')}
-            tickSize={0}
-            style={{
-              line: { strokeWidth: 1, stroke: 'black' },
-              text: {
-                fill: 'black',
-                fontSize: '12px',
-              },
-            }}
-            tickValues={[
-              new Date('2019-01-01').getTime(),
-              new Date('2020-01-01').getTime(),
-              new Date('2021-01-01').getTime(),
-            ]}
-            tickPadding={12}
           />
           <LineSeries
             data={chartData[2]}
@@ -401,6 +255,62 @@ export function CountryChart({
                 : 'blue',
               strokeWidth: 0.5,
             }}
+          />
+          <AreaSeries
+            data={[
+              {
+                x: new Date(MINDATE).getTime(),
+                y: 0,
+              },
+              {
+                x: new Date().getTime(),
+                y: 0,
+              },
+            ]}
+            style={{
+              stroke: 'white',
+              fill: 'white',
+              opacity: 1,
+            }}
+          />
+          <VerticalGridLines
+            tickValues={tickValuesX}
+            style={{
+              stroke: 'rgba(136, 150, 160, 0.4)',
+            }}
+          />
+          <LineSeries
+            data={[
+              {
+                x: new Date(MINDATE).getTime(),
+                y: 0,
+              },
+              {
+                x: new Date().getTime(),
+                y: 0,
+              },
+            ]}
+            style={{
+              strokeWidth: 1,
+              stroke: 'rgb(0,0,0)',
+              opacity: 1,
+            }}
+          />
+          <XAxis
+            tickFormat={myTimeFormat}
+            tickSizeInner={0}
+            tickSizeOuter={20}
+            style={{
+              ticks: { strokeWidth: 1, stroke: 'rgba(136, 150, 160, 0.4)' },
+            }}
+            tickValues={tickValuesX}
+            tickPadding={-12}
+          />
+          <MarkSeries
+            data={chartDataSources}
+            size={3}
+            colorType="literal"
+            style={{ opacity: 0.7 }}
           />
         </FlexibleWidthXYPlot>
       )}
