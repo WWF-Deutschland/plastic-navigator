@@ -1,12 +1,4 @@
-import {
-  takeEvery,
-  takeLatest,
-  select,
-  put,
-  call,
-  all,
-} from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import * as topojson from 'topojson-client';
 import { csv2geojson } from 'csv2geojson';
 import Papa from 'papaparse';
@@ -14,12 +6,11 @@ import 'whatwg-fetch';
 import 'url-search-params-polyfill';
 
 import { MAX_LOAD_ATTEMPTS, RESOURCES } from 'config';
-import { selectRouterLocation } from 'containers/App/selectors';
 
 import quasiEquals from 'utils/quasi-equals';
 import asArray from 'utils/as-array';
 
-import { LOAD_LAYER, SET_MAP_POSITION } from './constants';
+import { LOAD_LAYER } from './constants';
 
 import { selectLayerReadyByKey, selectLayerRequestedByKey } from './selectors';
 
@@ -243,22 +234,9 @@ export function* loadDataSaga({ key, config }) {
   }
 }
 
-function* setMapPositionSaga({ position }) {
-  // yield put(navigate({ search: { mview: position } }));
-  const currentLocation = yield select(selectRouterLocation);
-  const searchParams = new URLSearchParams(currentLocation.search);
-  searchParams.set('mview', position);
-  const newSearch = searchParams.toString();
-  const search = newSearch.length > 0 ? `?${newSearch}` : '';
-  if (search !== currentLocation.search) {
-    yield put(push(`${currentLocation.pathname}${search}`));
-  }
-}
-
 export default function* defaultSaga() {
   yield takeEvery(
     LOAD_LAYER,
     autoRestart(loadDataSaga, loadDataErrorHandler, MAX_LOAD_ATTEMPTS),
   );
-  yield takeLatest(SET_MAP_POSITION, setMapPositionSaga);
 }

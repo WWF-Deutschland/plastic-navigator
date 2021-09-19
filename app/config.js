@@ -133,6 +133,7 @@ export const PROJECT_CONFIG = {
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
+export const MAX_NAV_ATTEMPTS = 1000;
 
 // map config
 

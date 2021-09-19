@@ -38,6 +38,7 @@ import {
   SET_STORY,
   SET_CHAPTER,
   SET_LANDING,
+  SET_MAP_POSITION,
 } from './constants';
 
 export function setLocale(locale) {
@@ -220,5 +221,11 @@ export function setStory(index) {
 export function setLanding() {
   return {
     type: SET_LANDING,
+  };
+}
+export function setMapPosition(position) {
+  return {
+    type: SET_MAP_POSITION,
+    position,
   };
 }

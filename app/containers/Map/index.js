@@ -28,7 +28,7 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import { setLayerInfo } from 'containers/App/actions';
+import { setLayerInfo, setMapPosition } from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
@@ -56,12 +56,7 @@ import {
   selectLayersLoading,
   selectMapPosition,
 } from './selectors';
-import {
-  loadLayer,
-  setMapLayers,
-  setHighlightFeature,
-  setMapPosition,
-} from './actions';
+import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
 
 const Styled = styled.div`
   background: ${({ theme }) => theme.global.colors.white};
