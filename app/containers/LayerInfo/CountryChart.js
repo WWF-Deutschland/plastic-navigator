@@ -487,15 +487,12 @@ export function CountryChart({
                 }
               }}
               onValueMouseOver={point => {
-                console.log("over", point)
                 setMouseOverSource(point)
               }}
-              onValueMouseOut={point => {
-                console.log("out", point)
-                // setMouseOverSource(null)
+              onValueMouseOut={() => {
+                setMouseOverSource(null)
               }}
               onValueClick={point => {
-                console.log("click", point)
                 onSetLayerInfo(config.id, `source-${point.sid}`)
               }}
             />
