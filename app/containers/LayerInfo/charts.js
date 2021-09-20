@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE } from 'i18n';
-import quasiEquals from 'utils/quasi-equals';
+// import quasiEquals from 'utils/quasi-equals';
 
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
@@ -76,8 +76,8 @@ export const prepChartData = (positions, minDate) => {
 
 // TODO: figure out a way to express in pixels rather than scaled values
 const X_THRESHOLD = 1600000000;
-const Y_OFFSET = 7;
-const Y_OFFSET_MIN = 8;
+const Y_OFFSET = 9;
+const Y_OFFSET_MIN = 9;
 
 export const prepChartDataSources = (positions, dataStyles) => {
   const data = Object.keys(positions).reduce((memo, dateKey) => {
@@ -97,6 +97,7 @@ export const prepChartDataSources = (positions, dataStyles) => {
           {
             sdate: source.date,
             sposition: source.position_id,
+            sid: source.id,
             y,
             x,
             color:
@@ -112,9 +113,10 @@ export const prepChartDataSources = (positions, dataStyles) => {
   return data;
 };
 
-export const prepChartKey = (countryStats, config, locale) => {
+export const prepChartKey = (positionsCurrentDate, config, locale) => {
   const { key, featureStyle } = config;
   return key.values.reduce((memo, val) => {
+    if (val === '0') return memo;
     let t;
     if (key.title && key.title[val]) {
       t =
@@ -134,18 +136,17 @@ export const prepChartKey = (countryStats, config, locale) => {
         },
       );
     }
-    const stat =
-      countryStats && countryStats.find(s => quasiEquals(s.val, val));
-    if (!stat) {
-      return memo;
-    }
+    const count =
+      positionsCurrentDate && positionsCurrentDate[val]
+        ? positionsCurrentDate[val].length.toString()
+        : '0';
     return [
       ...memo,
       {
         id: val,
         style,
         title: t,
-        count: stat && stat.count,
+        count,
       },
     ];
   }, []);
@@ -167,17 +168,40 @@ export const getTickValuesX = chartData => {
   return values;
 };
 
+const Y_BUFFER = 8;
+export const getYRange = (chartData, chartDataSources, minDate) => {
+  const yMax =
+    chartData && chartData[2] && chartData[2].length > 0
+      ? chartData[2][chartData[2].length - 1].y
+      : 0;
+  const yMin = chartDataSources
+    ? chartDataSources.reduce((min, s) => Math.min(min, s.y), 0)
+    : 0;
+  return [
+    {
+      x: new Date(minDate).getTime(),
+      y: yMin - Y_BUFFER,
+    },
+    {
+      x: new Date().getTime(),
+      y: yMax + Y_BUFFER,
+    },
+  ];
+};
 // prettier-ignore
-export const getYRange = (chartData, minDate) =>
-  chartData && chartData[2] && chartData[2].length > 0
-    ? [
+export const getMouseOverCover = (chartData, minDate) => {
+  if (chartData[2][chartData[2].length - 1]) {
+    const maxY = chartData[2][chartData[2].length - 1].y;
+    return [
       {
         x: new Date(minDate).getTime(),
-        y: 0,
+        y: maxY,
       },
       {
         x: new Date().getTime(),
-        y: chartData[2][chartData[2].length - 1].y,
+        y: maxY,
       },
     ]
-    : null;
+  }
+  return null;
+}

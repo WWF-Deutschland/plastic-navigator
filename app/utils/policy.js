@@ -221,6 +221,20 @@ export const getSourceCountFromCountryFeatures = (config, features) => {
   return sources ? sources.length : null;
 };
 
+export const getSourceCountFromPositions = (positionsOverTime, dateString) =>
+  Object.keys(positionsOverTime).reduce((count, key) => {
+    if (
+      dateString &&
+      new Date(key).getTime() > new Date(dateString).getTime()
+    ) {
+      return count;
+    }
+    if (positionsOverTime[key] && positionsOverTime[key].sources) {
+      return count + Object.keys(positionsOverTime[key].sources).length;
+    }
+    return count;
+  }, 0);
+
 export const getSourcesFromCountryFeaturesWithPosition = (
   config,
   features,

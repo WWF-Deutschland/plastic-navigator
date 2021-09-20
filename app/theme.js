@@ -79,6 +79,7 @@ export const colors = {
     dark: '#ffffff', // on dark background
     light: '#000000', // on light background
   },
+  textSecondary: '#999999',
   border: {
     dark: '#ffffff', // on dark background
     light: '#dddddd', // on light background
@@ -89,6 +90,7 @@ export const colors = {
 
 // grommet text
 const text = {
+  xxxsmall: { size: '11px', height: '13px', maxWidth: '500px' },
   xxsmall: { size: '12px', height: '14px', maxWidth: '500px' },
   xsmall: { size: '13px', height: '16px', maxWidth: '600px' },
   small: { size: '14px', height: '18px', maxWidth: '700px' },
