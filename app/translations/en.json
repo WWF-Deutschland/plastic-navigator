@@ -6,6 +6,7 @@
   "app.common.sources": "{count} {isSingle, select, true {statement} false {statements}}",
   "app.common.locations": "Locations",
   "app.common.module_explore": "Explore",
+  "app.common.module_policy": "Policy",
   "app.common.module_explore_metaTitle": "Explore",
   "app.common.module_stories": "Intro",
   "app.common.module_stories_metaTitle": "Introduction",

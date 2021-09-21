@@ -115,10 +115,6 @@ const YearLabel = styled.text`
   text-anchor: start;
 `;
 
-const myTimeFormat = value => (
-  <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
-);
-
 const KeySourceMarker = styled.div`
   display: block;
   width: 8px;
@@ -127,6 +123,23 @@ const KeySourceMarker = styled.div`
   border-radius: 9999px;
   opacity: 0.7;
 `;
+
+const myTimeFormat = value => (
+  <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
+);
+
+const formatDate = (locale, time) => {
+  if (Intl && Intl.DateTimeFormat) {
+    return new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : locale, {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    }).format(time);
+  }
+  return (
+    <FormattedDate value={time} year="numeric" month="numeric" day="numeric" />
+  );
+};
 
 const MINDATE = '2018-10-01';
 
@@ -268,12 +281,7 @@ export function CountryChart({
             <Box direction="row" gap="xsmall" justify="end">
               <Text size="xxsmall" textAlign="end" color="textSecondary">
                 <FormattedMessage {...messages.countryChartDateLabel} />
-                <FormattedDate
-                  value={statusTime}
-                  year = 'numeric'
-                  month= 'numeric'
-                  day = 'numeric'
-                />
+                {formatDate(locale, statusTime)}
               </Text>
             </Box>
           </Box>
@@ -453,12 +461,7 @@ export function CountryChart({
               >
                 <Box elevation="small" background="white" pad="xsmall" gap="xsmall">
                   <Text size="xxxsmall" color="textSecondary">
-                    <FormattedDate
-                      value={new Date(activeSource.date).getTime()}
-                      year = 'numeric'
-                      month= 'numeric'
-                      day = 'numeric'
-                    />
+                    {formatDate(locale, new Date(activeSource.date).getTime())}
                   </Text>
                   <Text size="xxsmall" weight="bold">
                     {activeSource[`title_${locale}`]}
