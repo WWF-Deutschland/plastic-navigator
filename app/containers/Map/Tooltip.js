@@ -261,11 +261,12 @@ const Tooltip = ({
                     </Box>
                   }
                   onClick={() => {
+                    const id = config['content-default'] || config.id
                     onFeatureClick({
                       layer: layer && config.data['layer-id']
-                        ? `${config.id}-${layer[config.data['layer-id']]}`
-                        : config.id,
-                      feature: feature.properties.f_id,
+                        ? `${id}-${layer[config.data['layer-id']]}`
+                        : id,
+                      feature: feature.properties.code || feature.properties.f_id,
                       copy: layerOptions ? layerOptions.copy : null,
                     });
                   }}

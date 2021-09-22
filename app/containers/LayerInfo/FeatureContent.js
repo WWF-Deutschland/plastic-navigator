@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
-import { POLICY_LAYERS } from 'config';
 
 import { findFeature } from 'utils/layers';
 
@@ -46,16 +45,15 @@ export function FeatureContent({
   supTitle,
   onSetLayerInfo,
   isCountry,
+  headerFallback,
 }) {
   useEffect(() => {
     onLoadLayer(config.id, config);
   }, [config]);
   if (!featureId || !config || !layerData) return null;
-  if (POLICY_LAYERS.indexOf(config.id) === -1 || !config.tooltip) {
-    return <LayerContent config={config} />;
-  }
+
   const feature = findFeature(layerData.data.features, featureId);
-  if (!feature) return <LayerContent config={config} />;
+  if (!feature) return <LayerContent config={config} header={headerFallback} />;
   return (
     <>
       <ListItemHeader
@@ -83,6 +81,7 @@ FeatureContent.propTypes = {
   supTitle: PropTypes.string,
   isCountry: PropTypes.bool,
   layerData: PropTypes.object,
+  headerFallback: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({

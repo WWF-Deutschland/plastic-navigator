@@ -106,6 +106,8 @@ export function LayerInfo({
   //   setOpen(true);
   // }, [view]);
 
+  const isCountry = config && POLICY_LAYERS.indexOf(config.id) > -1;
+
   let type;
   if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
     type = 'project';
@@ -115,7 +117,7 @@ export function LayerInfo({
     type = 'sourceList';
   } else if (layerView && startsWith(layerView, 'source-')) {
     type = 'source';
-  } else if (config && layerView) {
+  } else if (config && layerView && isCountry && config.tooltip) {
     type = 'feature';
   } else if (config) {
     type = 'layer';
@@ -149,7 +151,12 @@ export function LayerInfo({
                     featureId={layerView}
                     config={config}
                     supTitle={title}
-                    isCountry={POLICY_LAYERS.indexOf(config.id) > -1}
+                    isCountry
+                    headerFallback={
+                      isModule
+                        ? <TitleIconPolicy title={title}/>
+                        : <TitleIcon title={title}/>
+                    }
                   />
                 )}
                 {type === 'source' && config && (
@@ -170,7 +177,7 @@ export function LayerInfo({
                     config={config}
                     title={title}
                     header={
-                      (isModule && POLICY_LAYERS.indexOf(config.id) > -1)
+                      (isModule && isCountry)
                         ? <TitleIconPolicy title={title}/>
                         : <TitleIcon title={title}/>
                     }

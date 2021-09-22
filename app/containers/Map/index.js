@@ -426,8 +426,11 @@ export function Map({
               lcopy.eachLayer(marker => {
                 let icon;
                 const fid = marker.feature.properties.f_id;
+                const fcode = marker.feature.properties.code;
                 const mcopy = marker.options.copy;
-                const infoLayerActive = key === infoLayerId;
+                const infoLayerActive =
+                  config['content-default'] === infoLayerId ||
+                  config.id === infoLayerId;
                 const tooltipOpen =
                   tooltip &&
                   key === tooltip.layerId &&
@@ -438,7 +441,9 @@ export function Map({
                 const active =
                   tooltipOpen ||
                   (infoLayerActive &&
-                    (layerCount === 1 || fid === infoFeatureId));
+                    (layerCount === 1 ||
+                      fcode === infoFeatureId ||
+                      fid === infoFeatureId));
                 // mouse over
                 const highlight =
                   !active &&
@@ -598,7 +603,8 @@ export function Map({
                 type: jsonLayer.data.type,
                 features: jsonLayer.data.features.filter(
                   feature =>
-                    feature.properties.f_id === infoFeatureId &&
+                    (feature.properties.code === infoFeatureId ||
+                      feature.properties.f_id === infoFeatureId) &&
                     (!tooltip || tooltip.featureId !== feature.properties.f_id),
                 ),
               },
