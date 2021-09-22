@@ -31,6 +31,7 @@ import {
 } from 'react-vis';
 
 import { ArrowRightL } from 'components/Icons';
+import LoadingIndicator from 'components/LoadingIndicator';
 
 import { POLICY_LAYERS } from 'config';
 
@@ -182,7 +183,7 @@ export function CountryChart({
     !layer.data ||
     !layer.data.features
   ) {
-    return null;
+    return <LoadingIndicator />;
   }
 
   // console.log(layer.data.features)
