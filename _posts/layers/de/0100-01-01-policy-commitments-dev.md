@@ -21,7 +21,7 @@ Die Darstellung zeigt, in welchem Maße sich die einzelnen UN-Mitgliedstaaten ö
 *Bei Anklicken des Markers erhalten Sie nähere Informationen dazu, in welcher Weise sich das entsprechende Land für ein globales Abkommen ausgesprochen hat. Mit einem Klick auf „Mehr“ erhalten Sie weitere Informationen zum Projekt und entsprechende Quellenangaben.*
 
 
-[KEY-ALTERNATE]
+[LAYERS-ALTERNATE]
 
 ### Über die Studie
 
