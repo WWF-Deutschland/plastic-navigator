@@ -13,9 +13,4 @@ export default defineMessages({
     id: `${scope}.showLayerPanel`,
     defaultMessage: 'Policy info',
   },
-  title: {
-    id: `${scope}.title`,
-    defaultMessage:
-      'How do countries support a new global agreement on marine plastic pollution?',
-  },
 });

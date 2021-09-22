@@ -70,6 +70,9 @@ const SquareLabelWrap = styled(p => (
 ))`
   min-height: 18px;
 `;
+const KeyLabelWrap = styled(p => (
+  <Box direction="row" align="center" gap="xxsmall" {...p} />
+))``;
 
 const KeyAreaWrap = styled.div`
   position: relative;
@@ -78,8 +81,17 @@ const KeyAreaWrap = styled.div`
   padding: 0px;
 `;
 
+const KeyStatements = styled(p => (
+  <Box direction="row" gap="hair" align="center" {...p} />
+))`
+  height: 18px;
+  width: 18px;
+  padding: 0px;
+`;
+
 const StyledKeyLabel = styled(KeyLabel)`
   white-space: normal;
+  font-weight: ${({ strong }) => (strong ? 'bold' : 'normal')};
 `;
 
 const Title = styled(Text)`
@@ -254,15 +266,21 @@ export function CountryChart({
                   <KeyAreaWrap>
                     <KeyArea areaStyles={[stat.style]} />
                   </KeyAreaWrap>
-                  <StyledKeyLabel>
-                    {!stat.count && stat.title}
-                    {!!stat.count && `${stat.title}: `}
-                    {!!stat.count && <strong>{stat.count}</strong>}
-                  </StyledKeyLabel>
+                  <KeyLabelWrap>
+                    <StyledKeyLabel>
+                      {!stat.count && stat.title}
+                      {!!stat.count && `${stat.title}:`}
+                    </StyledKeyLabel>
+                    {!!stat.count && (
+                      <StyledKeyLabel strong>
+                        {stat.count}
+                      </StyledKeyLabel>
+                    )}
+                  </KeyLabelWrap>
                 </SquareLabelWrap>
               ))}
               <SquareLabelWrap>
-                <Box direction="row" gap="hair">
+                <KeyStatements>
                   {statsForKey.map(
                     stat => (
                       <KeySourceMarker
@@ -271,11 +289,17 @@ export function CountryChart({
                       />
                     )
                   )}
-                </Box>
-                <StyledKeyLabel>
-                  <FormattedMessage {...messages.countryChartNoSources} />
-                  {!!sourceCountCurrent && <strong>{sourceCountCurrent}</strong>}
-                </StyledKeyLabel>
+                </KeyStatements>
+                <KeyLabelWrap>
+                  <StyledKeyLabel>
+                    <FormattedMessage {...messages.countryChartNoSources} />
+                  </StyledKeyLabel>
+                  {!!sourceCountCurrent && (
+                    <StyledKeyLabel strong>
+                      {sourceCountCurrent}
+                    </StyledKeyLabel>
+                  )}
+                </KeyLabelWrap>
               </SquareLabelWrap>
             </Box>
             <Box direction="row" gap="xsmall" justify="end">
