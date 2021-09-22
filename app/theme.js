@@ -49,7 +49,7 @@ export const dimensions = {
   // layer info
   asideInfo: {
     // by breakpoint
-    width: [0, 0, 400, 500, 600],
+    width: [0, 0, 480, 500, 600],
     zIndex: 1150,
   },
 };
