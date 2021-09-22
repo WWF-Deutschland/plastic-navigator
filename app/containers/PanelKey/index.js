@@ -408,12 +408,14 @@ export function PanelKey({
                                 if (
                                   currentModule &&
                                   currentModule.featuredLayer &&
-                                  currentModule.featuredLayer === config.id
+                                  (
+                                    currentModule.featuredLayer === config['content-default'] ||
+                                    currentModule.featuredLayer === config.id)
                                 ) {
                                   onLayerInfo();
                                   onShowLayerInfoModule();
                                 } else {
-                                  onLayerInfo(config.id);
+                                  onLayerInfo(config['content-default'] || config.id);
                                 }
                               }}
                               icon={<Info />}
