@@ -72,8 +72,4 @@ export default defineMessages({
     id: `${scope}.sources`,
     defaultMessage: '{count} statements',
   },
-  label_hide: {
-    id: `${scope}.label_hide`,
-    defaultMessage: 'hide',
-  },
 });
