@@ -14,6 +14,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
 import { getSourcesFromCountryFeaturesWithPosition } from 'utils/policy';
+import { filterSources } from 'utils/string';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -74,7 +75,7 @@ export function SourceList({
         layerId={config.id}
         items={Object.values(sources)}
         config={config}
-        searchable
+        search={filterSources}
         isSourceList
       />
     </>

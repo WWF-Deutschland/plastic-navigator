@@ -49,4 +49,16 @@ export default defineMessages({
     id: `${scope}.countryChartDateLabel`,
     defaultMessage: 'Status: ',
   },
+  placeholderDefault: {
+    id: `${scope}.placeholderDefault`,
+    defaultMessage: 'Filter list by name',
+  },
+  placeholderCountries: {
+    id: `${scope}.placeholderCountries`,
+    defaultMessage: 'Filter list by country name or code',
+  },
+  noSearchResults: {
+    id: `${scope}.noSearchResults`,
+    defaultMessage: 'No results for current search',
+  },
 });

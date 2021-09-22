@@ -25,7 +25,7 @@ const CountryPolicyCommitments = ({ config, feature }) => {
     <Styled>
       {positions.length > 1 && (
         <MultipleWrap>
-          <Text size="small">
+          <Text size="xsmall" color="textSecondary">
             <FormattedMessage {...messages.multiplePositions} />
           </Text>
         </MultipleWrap>

@@ -14,6 +14,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
 import { featuresToCountriesWithStrongestPosition } from 'utils/policy';
+import { filterCountries } from 'utils/string';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
@@ -25,6 +26,7 @@ import coreMessages from 'messages';
 
 import ListItemHeader from './ListItemHeader';
 import FeatureList from './FeatureList';
+import messages from './messages';
 
 export function CountryList({
   onLoadLayer,
@@ -74,7 +76,8 @@ export function CountryList({
         layerId={config.id}
         items={countries}
         config={config}
-        searchable
+        search={filterCountries}
+        placeholder={intl.formatMessage(messages.placeholderCountries)}
       />
     </>
   ) : null;

@@ -184,7 +184,7 @@ export const featuresToCountriesWithStrongestPosition = (
       const { positions } = f.properties;
       const position = getStrongestPosition(positions, config);
       return {
-        id: f.properties.f_id,
+        id: f.properties.code || f.properties.f_id,
         label:
           f.properties[`name_${locale}`] ||
           f.properties[`name_${DEFAULT_LOCALE}`],

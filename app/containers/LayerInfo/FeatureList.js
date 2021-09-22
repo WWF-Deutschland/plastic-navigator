@@ -3,25 +3,29 @@
  * LayerInfo
  *
  */
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
-import { ArrowRightL } from 'components/Icons';
+import { ArrowRightL, CloseXS } from 'components/Icons';
 
 import { setLayerInfo } from 'containers/App/actions';
 
 import { sortLabels } from 'utils/string';
 import CountryPositionSymbol from './CountryPositionSymbol';
+import TextInput from './TextInput';
+import messages from './messages';
 
 const ListTitle = styled(p => <Heading level={4} {...p} />)`
   font-family: 'wwfregular';
   letter-spacing: 0.1px;
   font-size: 24px;
   line-height: 1;
+  margin-top: 15px;
   margin-bottom: 15px;
   font-weight: normal;
 `;
@@ -49,46 +53,110 @@ export function FeatureList({
   onSetLayerInfo,
   config,
   isSourceList,
+  search,
+  placeholder,
+  intl,
 }) {
-  const sorted = items.sort((a, b) =>
+  const [test, setTest] = useState('');
+  const textInputRef = useRef(null);
+
+  useEffect(() => {
+    if (search && textInputRef) {
+      textInputRef.current.focus();
+    }
+  }, []);
+
+  const itemsFiltered =
+    search && test.length > 0
+      ? items.filter(item => search(item, test))
+      : items;
+  const sorted = itemsFiltered.sort((a, b) =>
     sortLabels(a.label || a.id, b.label || b.id),
   );
 
   return (
     <FeatureListWrap>
       <ListTitle>{title}</ListTitle>
-      <Box>
-        {sorted.map(item => (
-          <FeatureButton
-            key={item.id}
-            onClick={() =>
-              isSourceList
-                ? onSetLayerInfo(layerId, `source-${item.id}`)
-                : onSetLayerInfo(layerId, item.id)
+      {search && (
+        <Box
+          direction="row"
+          align="center"
+          round="xlarge"
+          style={{ maxWidth: '500px' }}
+          height="20px"
+          pad={{ horizontal: 'ms', vertical: 'ms' }}
+          margin={{ bottom: 'small' }}
+          background="light"
+          border
+        >
+          <TextInput
+            plain
+            value={test}
+            onChange={evt => {
+              if (evt && evt.target) {
+                setTest(evt.target.value);
+              }
+            }}
+            placeholder={
+              placeholder || intl.formatMessage(messages.placeholderDefault)
             }
-            label={
-              <Box
-                direction="row"
-                justify="between"
-                pad={{ vertical: 'small', right: 'small', left: 'small' }}
-                align="center"
-                responsive={false}
-              >
-                <Box direction="row" justify="start" gap="small">
-                  {item.position && config && (
-                    <CountryPositionSymbol
-                      position={item.position}
-                      config={config}
-                    />
-                  )}
-                  <Text>{item.label || item.id}</Text>
-                </Box>
-                <ArrowRightL />
-              </Box>
-            }
+            ref={textInputRef}
           />
-        ))}
-      </Box>
+          {test.length > 0 && (
+            <Button
+              plain
+              fill="vertical"
+              onClick={() => setTest('')}
+              icon={<CloseXS />}
+              style={{
+                textAlign: 'center',
+                height: '20px',
+              }}
+            />
+          )}
+        </Box>
+      )}
+      {sorted.length === 0 && (
+        <Box pad="small">
+          <Text style={{ fontStyle: 'italic' }} color="textSecondary">
+            <FormattedMessage {...messages.noSearchResults} />
+          </Text>
+        </Box>
+      )}
+      {sorted.length > 0 && (
+        <Box>
+          {sorted.map(item => (
+            <FeatureButton
+              key={item.id}
+              onClick={() =>
+                isSourceList
+                  ? onSetLayerInfo(layerId, `source-${item.id}`)
+                  : onSetLayerInfo(layerId, item.id)
+              }
+              label={
+                <Box
+                  direction="row"
+                  justify="between"
+                  pad={{ vertical: 'small', right: 'small', left: 'small' }}
+                  align="center"
+                  responsive={false}
+                >
+                  <Box direction="row" justify="start" gap="small">
+                    {item.position && config && (
+                      <CountryPositionSymbol
+                        position={item.position}
+                        config={config}
+                      />
+                    )}
+                    <Text>{item.label || item.id}</Text>
+                  </Box>
+                  <ArrowRightL />
+                </Box>
+              }
+            />
+          ))}
+        </Box>
+      )}
     </FeatureListWrap>
   );
 }
@@ -100,6 +168,9 @@ FeatureList.propTypes = {
   layerId: PropTypes.string,
   title: PropTypes.string,
   isSourceList: PropTypes.bool,
+  placeholder: PropTypes.string,
+  search: PropTypes.func,
+  intl: intlShape.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -115,4 +186,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(FeatureList);
+export default compose(withConnect)(injectIntl(FeatureList));
