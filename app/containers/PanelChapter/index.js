@@ -276,7 +276,9 @@ export function PanelChapter({
                             )}
                             <LayerButtonInfo
                               onClick={() =>
-                                onLayerInfo(config['content-id'] || config.id)
+                                onLayerInfo(
+                                  config['content-default'] || config.id,
+                                )
                               }
                               icon={<InfoOutline />}
                               stretch
