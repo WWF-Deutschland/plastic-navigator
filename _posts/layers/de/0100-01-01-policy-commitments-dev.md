@@ -1,7 +1,7 @@
 ---
 layout: layer
 published: true
-permalink: /content/de/layers/policy-commitments/
+permalink: /content/de/layers/policy-commitments-dev/
 lang: de
 title: Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)
 ---
