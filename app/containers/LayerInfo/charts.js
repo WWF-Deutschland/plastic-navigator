@@ -1,5 +1,5 @@
 import { DEFAULT_LOCALE } from 'i18n';
-// import quasiEquals from 'utils/quasi-equals';
+import { isMinSize } from 'utils/responsive';
 
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
@@ -205,3 +205,9 @@ export const getMouseOverCover = (chartData, minDate) => {
   }
   return null;
 }
+
+export const getPlotHeight = size => {
+  if (isMinSize(size, 'large')) return 290;
+  if (isMinSize(size, 'medium')) return 260;
+  return 230;
+};

@@ -26,8 +26,6 @@ import {
   VerticalGridLines,
   MarkSeries,
   Hint,
-  // YAxis,
-  // ChartLabel,
 } from 'react-vis';
 
 import { ArrowRightL } from 'components/Icons';
@@ -62,6 +60,7 @@ import {
   getTickValuesX,
   getYRange,
   getMouseOverCover,
+  getPlotHeight,
 } from './charts';
 
 const Styled = styled(p => (
@@ -331,7 +330,7 @@ export function CountryChart({
           <div style={{ position: 'relative' }}>
             {chartData && dataForceYRange && (
               <FlexibleWidthXYPlot
-                height={230}
+                height={getPlotHeight(size)}
                 xType="time"
                 style={{ fill: 'transparent' }}
                 margin={{
