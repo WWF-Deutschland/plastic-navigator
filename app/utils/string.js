@@ -1,5 +1,4 @@
-import { toLower } from 'lodash/string';
-
+import { toLower, deburr } from 'lodash/string';
 export const lowerCase = str => toLower(str);
 export const upperCaseFirst = str => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -41,3 +40,6 @@ export const prepMarkdown = (str, { para }) => {
   }
   return res;
 };
+
+export const sortLabels = (a, b) =>
+  deburr(lowerCase(a)) > deburr(lowerCase(b)) ? 1 : -1;

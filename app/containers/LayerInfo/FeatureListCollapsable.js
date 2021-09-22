@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { Button, Box, Heading, Text } from 'grommet';
 
 import { ArrowDown, ArrowUp } from 'components/Icons';
+import { sortLabels } from 'utils/string';
 
 const ListTitleCollapsable = styled(p => <Heading level="5" {...p} />)`
   font-weight: 600;
@@ -37,7 +38,7 @@ export function FeatureListCollapsable({ title, items }) {
   const [expand, setExpand] = useState(false);
   const [over, setOver] = useState(false);
   const sorted = items.sort((a, b) =>
-    (a.label || a.id) > (b.label || b.id) ? 1 : -1,
+    sortLabels(a.label || a.id, b.label || b.id),
   );
   return (
     <FeatureListWrap>

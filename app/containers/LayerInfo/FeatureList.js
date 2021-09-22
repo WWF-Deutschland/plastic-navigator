@@ -13,6 +13,8 @@ import { Button, Box, Heading, Text } from 'grommet';
 import { ArrowRightL } from 'components/Icons';
 
 import { setLayerInfo } from 'containers/App/actions';
+
+import { sortLabels } from 'utils/string';
 import CountryPositionSymbol from './CountryPositionSymbol';
 
 const ListTitle = styled(p => <Heading level={4} {...p} />)`
@@ -49,7 +51,7 @@ export function FeatureList({
   isSourceList,
 }) {
   const sorted = items.sort((a, b) =>
-    (a.label || a.id) > (b.label || b.id) ? 1 : -1,
+    sortLabels(a.label || a.id, b.label || b.id),
   );
 
   return (

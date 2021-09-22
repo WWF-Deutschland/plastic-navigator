@@ -1,5 +1,4 @@
-import { deburr } from 'lodash/string';
-import { lowerCase } from 'utils/string';
+import { sortLabels } from 'utils/string';
 import asArray from 'utils/as-array';
 import quasiEquals from 'utils/quasi-equals';
 import { DEFAULT_LOCALE } from 'i18n';
@@ -192,9 +191,7 @@ export const featuresToCountriesWithStrongestPosition = (
         position,
       };
     })
-    .sort((a, b) =>
-      deburr(lowerCase(a.label)) > deburr(lowerCase(b.label)) ? 1 : -1,
-    );
+    .sort((a, b) => sortLabels(a.label, b.label));
 
 export const getSourceCountFromCountryFeatures = (config, features) => {
   const sources = features.reduce((memo, f) => {
