@@ -46,7 +46,10 @@ const ContentWrap = styled.div`
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
-  padding: 12px 24px 64px;
+  padding: 12px 12px 64px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 12px 24px 64px;
+  }
 `;
 
 const Styled = styled.div`

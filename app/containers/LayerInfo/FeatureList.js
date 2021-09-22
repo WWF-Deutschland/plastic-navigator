@@ -3,7 +3,7 @@
  * LayerInfo
  *
  */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -60,12 +60,6 @@ export function FeatureList({
   const [test, setTest] = useState('');
   const textInputRef = useRef(null);
 
-  useEffect(() => {
-    if (search && textInputRef) {
-      textInputRef.current.focus();
-    }
-  }, []);
-
   const itemsFiltered =
     search && test.length > 0
       ? items.filter(item => search(item, test))
@@ -88,6 +82,7 @@ export function FeatureList({
           margin={{ bottom: 'small' }}
           background="light"
           border
+          responsive={false}
         >
           <TextInput
             plain
@@ -141,7 +136,12 @@ export function FeatureList({
                   align="center"
                   responsive={false}
                 >
-                  <Box direction="row" justify="start" gap="small">
+                  <Box
+                    direction="row"
+                    justify="start"
+                    gap="hair"
+                    align="center"
+                  >
                     {item.position && config && (
                       <CountryPositionSymbol
                         position={item.position}

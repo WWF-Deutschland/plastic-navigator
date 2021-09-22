@@ -16,7 +16,7 @@ import {
   injectIntl,
 } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Text, Button } from 'grommet';
+import { Box, Text, Button, ResponsiveContext } from 'grommet';
 import { utcFormat as timeFormat } from 'd3-time-format';
 import {
   FlexibleWidthXYPlot,
@@ -41,6 +41,7 @@ import { selectLayerByKey } from 'containers/Map/selectors';
 import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
+import { isMinSize } from 'utils/responsive';
 import {
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
@@ -246,347 +247,364 @@ export function CountryChart({
   // console.log(activeSource)
   // prettier-ignore
   return (
-    <Styled>
-      <Box>
-        <Title>
-          <FormattedMessage {...messages.countryChartTitle} />
-        </Title>
-      </Box>
-      {(countryStats && countryStats.length > 1) && (
-        <Box
-          responsive={false}
-          margin={{ top: 'small' }}
-          pad={{ vertical: 'small', horizontal: '15px' }}
-          gap="xxsmall"
-          elevation={!mouseOverSource && mouseOver ? 'small' : 'none'}
-        >
-          <Box direction="row" justify="between">
-            <Box gap="xxsmall">
-              {statsForKey.map(stat => (
-                <SquareLabelWrap key={stat.id}>
-                  <KeyAreaWrap>
-                    <KeyArea areaStyles={[stat.style]} />
-                  </KeyAreaWrap>
-                  <KeyLabelWrap>
-                    <StyledKeyLabel>
-                      {!stat.count && stat.title}
-                      {!!stat.count && `${stat.title}:`}
-                    </StyledKeyLabel>
-                    {!!stat.count && (
-                      <StyledKeyLabel strong>
-                        {stat.count}
-                      </StyledKeyLabel>
-                    )}
-                  </KeyLabelWrap>
-                </SquareLabelWrap>
-              ))}
-              <SquareLabelWrap>
-                <KeyStatements>
-                  {statsForKey.map(
-                    stat => (
-                      <KeySourceMarker
-                        key={stat.id}
-                        keyStyle={stat.style}
-                      />
-                    )
-                  )}
-                </KeyStatements>
-                <KeyLabelWrap>
-                  <StyledKeyLabel>
-                    <FormattedMessage {...messages.countryChartNoSources} />
-                  </StyledKeyLabel>
-                  {!!sourceCountCurrent && (
-                    <StyledKeyLabel strong>
-                      {sourceCountCurrent}
-                    </StyledKeyLabel>
-                  )}
-                </KeyLabelWrap>
-              </SquareLabelWrap>
-            </Box>
-            <Box direction="row" gap="xsmall" justify="end">
-              <Text size="xxsmall" textAlign="end" color="textSecondary">
-                <FormattedMessage {...messages.countryChartDateLabel} />
-                {formatDate(locale, statusTime)}
-              </Text>
-            </Box>
+    <ResponsiveContext.Consumer>
+      {size => (
+        <Styled>
+          <Box>
+            <Title>
+              <FormattedMessage {...messages.countryChartTitle} />
+            </Title>
           </Box>
-        </Box>
-      )}
-      <div style={{ position: 'relative' }}>
-        {chartData && dataForceYRange && (
-          <FlexibleWidthXYPlot
-            height={230}
-            xType="time"
-            style={{ fill: 'transparent' }}
-            margin={{
-              bottom: 30,
-              top: 0,
-              right: 15,
-              left: 15,
-            }}
-            onMouseEnter={() => setMouseOver(true)}
-            onMouseLeave={() => setMouseOver(false)}
-          >
-            {/* dummy series to make sure chart starts at 0 */}
-            <AreaSeries data={dataForceYRange} style={{ opacity: 0 }} />
-            {/* position 2 series as area */}
-            <AreaSeries
-              data={chartData[2]}
-              style={{
-                stroke: 'transparent',
-                fill: dataStyles && dataStyles[2] && dataStyles[2].style
-                  ? dataStyles[2].style.fillColor
-                  : 'red',
-                opacity: dataStyles && dataStyles[2] &&  dataStyles[2].style
-                  ? dataStyles[2].style.fillOpacity
-                  : 0.1,
+          {(countryStats && countryStats.length > 1) && (
+            <Box
+              responsive={false}
+              margin={{ top: 'small' }}
+              pad={{
+                vertical: 'small',
+                horizontal: isMinSize(size, 'medium') ? 'small' : 'xsmall',
               }}
-            />
-            {/* white background for position 1 series, covering pos 2 series */}
-            <AreaSeries
-              data={chartData[1]}
-              style={{
-                stroke: 'transparent',
-                fill: 'white',
-                opacity: 1,
-              }}
-            />
-            {/* position 1 series as area */}
-            <AreaSeries
-              data={chartData[1]}
-              style={{
-                stroke: 'transparent',
-                fill: dataStyles && dataStyles[1] && dataStyles[1].style
-                  ? dataStyles[1].style.fillColor
-                  : 'blue',
-                opacity: dataStyles && dataStyles[1] && dataStyles[1].style
-                  ? dataStyles[1].style.fillOpacity
-                  : 0.1,
-              }}
-            />
-            {/* position 2 series as line */}
-            <LineSeries
-              data={chartData[2]}
-              style={{
-                stroke: dataStyles && dataStyles[2] && dataStyles[2].style
-                  ? dataStyles[2].style.fillColor
-                  : 'red',
-                strokeWidth: 0.5,
-              }}
-            />
-            {/* position 1 series as line */}
-            <LineSeries
-              data={chartData[1]}
-              style={{
-                stroke: dataStyles && dataStyles[1] && dataStyles[1].style
-                  ? dataStyles[1].style.fillColor
-                  : 'blue',
-                strokeWidth: 0.5,
-              }}
-            />
-            {/* cover other areas series as background for source dots */}
-            <AreaSeries
-              data={[
-                {
-                  x: new Date(MINDATE).getTime(),
-                  y: 0,
-                },
-                {
-                  x: new Date().getTime(),
-                  y: 0,
-                },
-              ]}
-              style={{
-                stroke: 'white',
-                fill: 'white',
-                opacity: 1,
-              }}
-            />
-            {/* source dots */}
-            <MarkSeries
-              data={chartDataSources}
-              size={3}
-              colorType="literal"
-              style={{ opacity: 0.7 }}
-            />
-            {/* cover chart beyond current date */}
-            {dataMouseOverCover && (
-              <AreaSeries
-                data={dataMouseOverCover}
-                style={{
-                  stroke: 'none',
-                  fill: 'white',
-                  opacity: 0.7,
-                }}
-              />
-            )}
-            {/* indicate current date */}
-            {dataMouseOverCover && (
-              <VerticalGridLines
-                tickValues={[new Date(currentDate).getTime()]}
-                style={{
-                  stroke: 'black',
-                }}
-              />
-            )}
-            {/* fake x-axis at 0 */}
-            <LineSeries
-              data={[
-                {
-                  x: new Date(MINDATE).getTime(),
-                  y: 0,
-                },
-                {
-                  x: new Date().getTime(),
-                  y: 0,
-                },
-              ]}
-              style={{
-                strokeWidth: 1,
-                stroke: 'rgb(0,0,0)',
-                opacity: 1,
-              }}
-            />
-            {/* vertical gridlines */}
-            <VerticalGridLines
-              tickValues={tickValuesX}
-              style={{
-                stroke: 'rgba(136, 150, 160, 0.4)',
-              }}
-            />
-            {/* tickmarks as vertical gridlines and date */}
-            <XAxis
-              tickFormat={myTimeFormat}
-              tickSizeInner={0}
-              tickSizeOuter={20}
-              style={{
-                ticks: { strokeWidth: 1, stroke: 'rgba(136, 150, 160, 0.4)' },
-              }}
-              tickValues={tickValuesX}
-              tickPadding={-12}
-            />
-            {/* highlight source dot */}
-            {mouseOverSource && (
-              <MarkSeries
-                data={[mouseOverSource]}
-                size={4}
-                colorType="literal"
-                style={{ opacity: 1, pointerEvents: 'none' }}
-              />
-            )}
-            {mouseOverSource && (
-              <Hint
-                value={mouseOverSource}
-                align={{ vertical: 'top', horizontal: 'auto' }}
-                style={{
-                  transform: 'translateY(-10px)',
-                  minWidth: '100px',
-                  maxWidth: '120px',
-                }}
-              >
-                <Box elevation="small" background="white" pad="xsmall" gap="xsmall">
-                  <Text size="xxxsmall" color="textSecondary">
-                    {formatDate(locale, new Date(activeSource.date).getTime())}
+              gap="xxsmall"
+              elevation={!mouseOverSource && mouseOver ? 'small' : 'none'}
+            >
+              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xxsmall">
+                <Box gap="xxsmall">
+                  {statsForKey.map(stat => (
+                    <SquareLabelWrap key={stat.id}>
+                      <KeyAreaWrap>
+                        <KeyArea areaStyles={[stat.style]} />
+                      </KeyAreaWrap>
+                      <KeyLabelWrap>
+                        <StyledKeyLabel>
+                          {!stat.count && stat.title}
+                          {!!stat.count && `${stat.title}:`}
+                        </StyledKeyLabel>
+                        {!!stat.count && (
+                          <StyledKeyLabel strong>
+                            {stat.count}
+                          </StyledKeyLabel>
+                        )}
+                      </KeyLabelWrap>
+                    </SquareLabelWrap>
+                  ))}
+                  <SquareLabelWrap>
+                    <KeyStatements>
+                      {statsForKey.map(
+                        stat => (
+                          <KeySourceMarker
+                            key={stat.id}
+                            keyStyle={stat.style}
+                          />
+                        )
+                      )}
+                    </KeyStatements>
+                    <KeyLabelWrap>
+                      <StyledKeyLabel>
+                        <FormattedMessage {...messages.countryChartNoSources} />
+                      </StyledKeyLabel>
+                      {!!sourceCountCurrent && (
+                        <StyledKeyLabel strong>
+                          {sourceCountCurrent}
+                        </StyledKeyLabel>
+                      )}
+                    </KeyLabelWrap>
+                  </SquareLabelWrap>
+                </Box>
+                <Box direction="row" gap="xsmall" justify={isMinSize(size, 'medium') ? 'end' : 'start'}>
+                  <Text
+                    size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
+                    textAlign="end"
+                    color="textSecondary"
+                  >
+                    <FormattedMessage {...messages.countryChartDateLabel} />
                   </Text>
-                  <Text size="xxsmall" weight="bold">
-                    {activeSource[`title_${locale}`]}
-                  </Text>
-                  <Text size="xxsmall">
-                    <FormattedMessage
-                      {...coreMessages.countries}
-                      values={{
-                        count: activeSource.countries.length,
-                        isSingle: activeSource.countries.length === 1,
-                      }}
-                    />
+                  <Text
+                    size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
+                    textAlign="end"
+                    color="textSecondary"
+                  >
+                    {formatDate(locale, statusTime)}
                   </Text>
                 </Box>
-              </Hint>
+              </Box>
+            </Box>
+          )}
+          <div style={{ position: 'relative' }}>
+            {chartData && dataForceYRange && (
+              <FlexibleWidthXYPlot
+                height={230}
+                xType="time"
+                style={{ fill: 'transparent' }}
+                margin={{
+                  bottom: 30,
+                  top: 0,
+                  right: 15,
+                  left: 15,
+                }}
+                onMouseEnter={() => setMouseOver(true)}
+                onMouseLeave={() => setMouseOver(false)}
+              >
+                {/* dummy series to make sure chart starts at 0 */}
+                <AreaSeries data={dataForceYRange} style={{ opacity: 0 }} />
+                {/* position 2 series as area */}
+                <AreaSeries
+                  data={chartData[2]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: dataStyles && dataStyles[2] && dataStyles[2].style
+                      ? dataStyles[2].style.fillColor
+                      : 'red',
+                    opacity: dataStyles && dataStyles[2] &&  dataStyles[2].style
+                      ? dataStyles[2].style.fillOpacity
+                      : 0.1,
+                  }}
+                />
+                {/* white background for position 1 series, covering pos 2 series */}
+                <AreaSeries
+                  data={chartData[1]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: 'white',
+                    opacity: 1,
+                  }}
+                />
+                {/* position 1 series as area */}
+                <AreaSeries
+                  data={chartData[1]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: dataStyles && dataStyles[1] && dataStyles[1].style
+                      ? dataStyles[1].style.fillColor
+                      : 'blue',
+                    opacity: dataStyles && dataStyles[1] && dataStyles[1].style
+                      ? dataStyles[1].style.fillOpacity
+                      : 0.1,
+                  }}
+                />
+                {/* position 2 series as line */}
+                <LineSeries
+                  data={chartData[2]}
+                  style={{
+                    stroke: dataStyles && dataStyles[2] && dataStyles[2].style
+                      ? dataStyles[2].style.fillColor
+                      : 'red',
+                    strokeWidth: 0.5,
+                  }}
+                />
+                {/* position 1 series as line */}
+                <LineSeries
+                  data={chartData[1]}
+                  style={{
+                    stroke: dataStyles && dataStyles[1] && dataStyles[1].style
+                      ? dataStyles[1].style.fillColor
+                      : 'blue',
+                    strokeWidth: 0.5,
+                  }}
+                />
+                {/* cover other areas series as background for source dots */}
+                <AreaSeries
+                  data={[
+                    {
+                      x: new Date(MINDATE).getTime(),
+                      y: 0,
+                    },
+                    {
+                      x: new Date().getTime(),
+                      y: 0,
+                    },
+                  ]}
+                  style={{
+                    stroke: 'white',
+                    fill: 'white',
+                    opacity: 1,
+                  }}
+                />
+                {/* source dots */}
+                <MarkSeries
+                  data={chartDataSources}
+                  size={3}
+                  colorType="literal"
+                  style={{ opacity: 0.7 }}
+                />
+                {/* cover chart beyond current date */}
+                {dataMouseOverCover && (
+                  <AreaSeries
+                    data={dataMouseOverCover}
+                    style={{
+                      stroke: 'none',
+                      fill: 'white',
+                      opacity: 0.7,
+                    }}
+                  />
+                )}
+                {/* indicate current date */}
+                {dataMouseOverCover && (
+                  <VerticalGridLines
+                    tickValues={[new Date(currentDate).getTime()]}
+                    style={{
+                      stroke: 'black',
+                    }}
+                  />
+                )}
+                {/* fake x-axis at 0 */}
+                <LineSeries
+                  data={[
+                    {
+                      x: new Date(MINDATE).getTime(),
+                      y: 0,
+                    },
+                    {
+                      x: new Date().getTime(),
+                      y: 0,
+                    },
+                  ]}
+                  style={{
+                    strokeWidth: 1,
+                    stroke: 'rgb(0,0,0)',
+                    opacity: 1,
+                  }}
+                />
+                {/* vertical gridlines */}
+                <VerticalGridLines
+                  tickValues={tickValuesX}
+                  style={{
+                    stroke: 'rgba(136, 150, 160, 0.4)',
+                  }}
+                />
+                {/* tickmarks as vertical gridlines and date */}
+                <XAxis
+                  tickFormat={myTimeFormat}
+                  tickSizeInner={0}
+                  tickSizeOuter={20}
+                  style={{
+                    ticks: { strokeWidth: 1, stroke: 'rgba(136, 150, 160, 0.4)' },
+                  }}
+                  tickValues={tickValuesX}
+                  tickPadding={-12}
+                />
+                {/* highlight source dot */}
+                {mouseOverSource && (
+                  <MarkSeries
+                    data={[mouseOverSource]}
+                    size={4}
+                    colorType="literal"
+                    style={{ opacity: 1, pointerEvents: 'none' }}
+                  />
+                )}
+                {mouseOverSource && (
+                  <Hint
+                    value={mouseOverSource}
+                    align={{ vertical: 'top', horizontal: 'auto' }}
+                    style={{
+                      transform: 'translateY(-10px)',
+                      minWidth: '100px',
+                      maxWidth: '120px',
+                    }}
+                  >
+                    <Box elevation="small" background="white" pad="xsmall" gap="xsmall">
+                      <Text size="xxxsmall" color="textSecondary">
+                        {formatDate(locale, new Date(activeSource.date).getTime())}
+                      </Text>
+                      <Text size="xxsmall" weight="bold">
+                        {activeSource[`title_${locale}`]}
+                      </Text>
+                      <Text size="xxsmall">
+                        <FormattedMessage
+                          {...coreMessages.countries}
+                          values={{
+                            count: activeSource.countries.length,
+                            isSingle: activeSource.countries.length === 1,
+                          }}
+                        />
+                      </Text>
+                    </Box>
+                  </Hint>
+                )}
+                {/* source dots interactions */}
+                <MarkSeries
+                  data={chartDataSources}
+                  size={5}
+                  colorType="literal"
+                  style={{ opacity: 0, cursor: 'pointer' }}
+                  onNearestX={point => {
+                    if (point) {
+                      setNearestXDate(point.sdate)
+                    }
+                  }}
+                  onValueMouseOver={point => {
+                    setMouseOverSource(point)
+                  }}
+                  onValueMouseOut={() => {
+                    setMouseOverSource(null)
+                  }}
+                  onValueClick={point => {
+                    onSetLayerInfo(config.id, `source-${point.sid}`)
+                  }}
+                />
+              </FlexibleWidthXYPlot>
             )}
-            {/* source dots interactions */}
-            <MarkSeries
-              data={chartDataSources}
-              size={5}
-              colorType="literal"
-              style={{ opacity: 0, cursor: 'pointer' }}
-              onNearestX={point => {
-                if (point) {
-                  setNearestXDate(point.sdate)
-                }
-              }}
-              onValueMouseOver={point => {
-                setMouseOverSource(point)
-              }}
-              onValueMouseOut={() => {
-                setMouseOverSource(null)
-              }}
-              onValueClick={point => {
-                onSetLayerInfo(config.id, `source-${point.sid}`)
-              }}
-            />
-          </FlexibleWidthXYPlot>
-        )}
-      </div>
-      {(countries || (sourceCount && sourceCount !== 0)) && (
-        <Box pad={{ top: 'medium' }}>
-          {countries && (
-            <Box>
-              <TitleButton
-                onClick={() => onSetLayerInfo(config.id, 'countries')}
-                label={
-                  <Box
-                    direction="row"
-                    justify="between"
-                    pad={{ vertical: 'small', right: 'small', left: 'edge' }}
-                    align="center"
-                    responsive={false}
-                  >
-                    <ListTitle>
-                      <FormattedMessage
-                        {...coreMessages.countries}
-                        values={{
-                          count: countries.length,
-                          isSingle: countries.length === 1,
-                        }}
-                      />
-                    </ListTitle>
-                    <ArrowRightL />
-                  </Box>
-                }
-              />
+          </div>
+          {(countries || (sourceCount && sourceCount !== 0)) && (
+            <Box pad={{ top: 'medium' }}>
+              {countries && (
+                <Box>
+                  <TitleButton
+                    onClick={() => onSetLayerInfo(config.id, 'countries')}
+                    label={
+                      <Box
+                        direction="row"
+                        justify="between"
+                        pad={{ vertical: 'small', right: 'small', left: 'edge' }}
+                        align="center"
+                        responsive={false}
+                      >
+                        <ListTitle>
+                          <FormattedMessage
+                            {...coreMessages.countries}
+                            values={{
+                              count: countries.length,
+                              isSingle: countries.length === 1,
+                            }}
+                          />
+                        </ListTitle>
+                        <ArrowRightL />
+                      </Box>
+                    }
+                  />
+                </Box>
+              )}
+              {sourceCount && sourceCount !== 0 && (
+                <Box>
+                  <TitleButton
+                    last
+                    onClick={() => onSetLayerInfo(config.id, 'sources')}
+                    label={
+                      <Box
+                        direction="row"
+                        justify="between"
+                        pad={{ vertical: 'small', right: 'small', left: 'edge' }}
+                        align="center"
+                        responsive={false}
+                      >
+                        <ListTitle>
+                          <FormattedMessage
+                            {...coreMessages.sources}
+                            values={{
+                              count: sourceCount,
+                              isSingle: sourceCount === 1,
+                            }}
+                          />
+                        </ListTitle>
+                        <ArrowRightL />
+                      </Box>
+                    }
+                  />
+                </Box>
+              )}
             </Box>
           )}
-          {sourceCount && sourceCount !== 0 && (
-            <Box>
-              <TitleButton
-                last
-                onClick={() => onSetLayerInfo(config.id, 'sources')}
-                label={
-                  <Box
-                    direction="row"
-                    justify="between"
-                    pad={{ vertical: 'small', right: 'small', left: 'edge' }}
-                    align="center"
-                    responsive={false}
-                  >
-                    <ListTitle>
-                      <FormattedMessage
-                        {...coreMessages.sources}
-                        values={{
-                          count: sourceCount,
-                          isSingle: sourceCount === 1,
-                        }}
-                      />
-                    </ListTitle>
-                    <ArrowRightL />
-                  </Box>
-                }
-              />
-            </Box>
-          )}
-        </Box>
+        </Styled>
       )}
-    </Styled>
+    </ResponsiveContext.Consumer>
   );
 }
 
