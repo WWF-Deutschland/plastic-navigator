@@ -20,6 +20,8 @@ The visualisation shows the level of publicly expressed support by United Nation
 
 *Clicking on the country areas (or markers) shows a brief overview of the country’s level of support and clicking on “Read more” displays detailed information with source.*
 
+## Layer options
+
 [LAYERS-ALTERNATE]
 
 ### About the data
