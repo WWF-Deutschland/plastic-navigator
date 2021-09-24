@@ -1892,8 +1892,8 @@
       "type": "Feature",
       "properties": {
         "code": "SWZ",
-        "name_en": "Swaziland",
-        "name_de": "Swaziland"
+        "name_en": "Eswatini",
+        "name_de": "Swasiland"
       },
       "geometry": { "type": "Point", "coordinates": [31.4819369, -26.55843045] }
     },
