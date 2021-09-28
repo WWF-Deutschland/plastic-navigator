@@ -76,7 +76,6 @@ export function FeatureList({
           direction="row"
           align="center"
           round="xlarge"
-          style={{ maxWidth: '500px' }}
           height="20px"
           pad={{ horizontal: 'ms', vertical: 'ms' }}
           margin={{ bottom: 'small' }}
