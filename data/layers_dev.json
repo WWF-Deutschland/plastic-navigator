@@ -364,6 +364,7 @@
       "join": {
         "self": "country_code",
         "related": "code",
+        "relatedPrimary": "code_sovereign",
         "as": "positions",
         "default": [
           {
@@ -478,6 +479,7 @@
       "join": {
         "self": "country_code",
         "related": "code",
+        "relatedPrimary": "code_sovereign",
         "as": "positions"
       },
       "extend": [
