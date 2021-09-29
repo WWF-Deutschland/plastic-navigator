@@ -51,7 +51,7 @@ export function SourceContent({
         supTitle={supTitle}
         onClick={() => onSetLayerInfo(config.id, 'sources')}
       />
-      <Title>{source.label || source.id}</Title>
+      <Title wide>{source.label || source.id}</Title>
       {source && (
         <CountryPolicySinglePosition
           source={source}
