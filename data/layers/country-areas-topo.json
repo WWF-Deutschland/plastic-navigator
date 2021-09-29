@@ -86297,7 +86297,8 @@
           "properties": {
             "code": "GRL",
             "name_de": "Grönland (Dänemark)",
-            "name_en": "Greenland (Denmark)"
+            "name_en": "Greenland (Denmark)",
+            "code_sovereign": "DNK"
           }
         },
         {

@@ -833,7 +833,8 @@
       "properties": {
         "code": "GRL",
         "name_en": "Greenland (Denmark)",
-        "name_de": "Grönland (Dänemark)"
+        "name_de": "Grönland (Dänemark)",
+        "code_sovereign": "DNK"
       },
       "geometry": {
         "type": "Point",
