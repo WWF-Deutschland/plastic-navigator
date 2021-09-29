@@ -134,6 +134,7 @@ export function FeatureList({
                   pad={{ vertical: 'small', right: 'small', left: 'small' }}
                   align="center"
                   responsive={false}
+                  gap="xsmall"
                 >
                   <Box
                     direction="row"
