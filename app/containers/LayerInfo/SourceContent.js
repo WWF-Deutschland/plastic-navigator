@@ -38,14 +38,13 @@ export function SourceContent({
   if (!sourceId || !config || !layerData) return null;
   // const feature = findFeature(layerData.data.features, featureId);
   // if (!feature) return <LayerContent config={config} />;
-  const [, xSourceId] = sourceId.split('-');
+  const [, xSourceId] = sourceId.split('source-');
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
     layerData.data.features,
     locale,
   );
   const source = sources[xSourceId];
-  // console.log(source)
   return (
     <>
       <ListItemHeader
