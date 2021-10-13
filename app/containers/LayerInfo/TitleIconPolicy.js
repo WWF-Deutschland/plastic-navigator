@@ -15,6 +15,10 @@ const SupTitle = styled(p => <Text size="small" {...p} />)`
   letter-spacing: 0.5px;
 `;
 
+const StyledTitle = styled(p => <Title wide {...p} />)`
+  font-size: 29px;
+`;
+
 export function TitleIcon({ title }) {
   return (
     <Box margin={{ top: 'small' }} align="center" flex={false}>
@@ -24,7 +28,7 @@ export function TitleIcon({ title }) {
           <FormattedMessage {...coreMessages.module_policy} />
         </SupTitle>
       </Box>
-      <Title>{title}</Title>
+      <StyledTitle>{title}</StyledTitle>
     </Box>
   );
 }

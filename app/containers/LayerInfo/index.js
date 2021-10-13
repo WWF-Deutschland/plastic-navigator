@@ -135,6 +135,11 @@ export function LayerInfo({
   if (config && config.title) {
     title = config.title[locale] || config.title[DEFAULT_LOCALE];
   }
+  let titleHeader = title;
+  if (isModule && config && config['title-module']) {
+    titleHeader =
+      config['title-module'][locale] || config['title-module'][DEFAULT_LOCALE];
+  }
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -181,8 +186,8 @@ export function LayerInfo({
                     title={title}
                     header={
                       (isModule && isCountry)
-                        ? <TitleIconPolicy title={title}/>
-                        : <TitleIcon title={title}/>
+                        ? <TitleIconPolicy title={titleHeader}/>
+                        : <TitleIcon title={titleHeader}/>
                     }
                     inject={
                       !layerView &&
