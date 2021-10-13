@@ -31,6 +31,7 @@ import {
 import { ArrowRightL } from 'components/Icons';
 import LoadingIndicator from 'components/LoadingIndicator';
 
+import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import { setLayerInfo } from 'containers/App/actions';
@@ -504,7 +505,7 @@ export function CountryChart({
                         {formatDate(locale, new Date(activeSource.date).getTime())}
                       </Text>
                       <Text size="xxsmall" weight="bold">
-                        {activeSource[`title_${locale}`]}
+                        {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
                       </Text>
                       <Text size="xxsmall">
                         <FormattedMessage
