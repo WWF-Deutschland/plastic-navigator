@@ -352,7 +352,7 @@
       "en": "Country’s level of support",
       "de": "Grad an Engagement nach Ländern"
     },
-    "title-info": {
+    "title-module": {
       "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
       "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
     },
@@ -511,7 +511,7 @@
       "en": "Country’s level of support for treaty (shown as markers)",
       "de": "Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)"
     },
-    "title-info": {
+    "title-module": {
       "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
 "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"    },
     "about": {
