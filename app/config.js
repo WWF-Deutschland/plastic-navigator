@@ -26,15 +26,6 @@ export const MODULES = {
     iconS: <Intro color="white" size="26px" />,
     iconActiveS: <Intro color="black" size="26px" />,
   },
-  explore: {
-    path: ROUTES.EXPLORE,
-    icon: <Explore color="white" />,
-    iconActive: <Explore color="black" />,
-    iconS: <Explore color="white" size="26px" />,
-    iconActiveS: <Explore color="black" size="26px" />,
-    layers: ['surface-concentration'],
-    hasKey: true,
-  },
   policy: {
     path: ROUTES.POLICY,
     featuredLayer: 'policy-commitments-area',
@@ -43,6 +34,15 @@ export const MODULES = {
     iconS: <Policy color="white" size="26px" />,
     iconActiveS: <Policy color="black" size="26px" />,
     layers: ['surface-concentration', 'policy-commitments-area'],
+    hasKey: true,
+  },
+  explore: {
+    path: ROUTES.EXPLORE,
+    icon: <Explore color="white" />,
+    iconActive: <Explore color="black" />,
+    iconS: <Explore color="white" size="26px" />,
+    iconActiveS: <Explore color="black" size="26px" />,
+    layers: ['surface-concentration'],
     hasKey: true,
   },
 };
