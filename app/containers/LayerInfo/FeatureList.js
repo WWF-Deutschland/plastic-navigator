@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box, Heading, Text } from 'grommet';
+import { Button, Box, Heading, Text, ResponsiveContext } from 'grommet';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { ArrowRightL, CloseXS } from 'components/Icons';
@@ -16,6 +16,9 @@ import { ArrowRightL, CloseXS } from 'components/Icons';
 import { setLayerInfo } from 'containers/App/actions';
 
 import { sortLabels } from 'utils/string';
+import { isMinSize } from 'utils/responsive';
+import formatDate from 'utils/format-date';
+
 import CountryPositionSymbol from './CountryPositionSymbol';
 import TextInput from './TextInput';
 import messages from './messages';
@@ -59,105 +62,133 @@ export function FeatureList({
 }) {
   const [test, setTest] = useState('');
   const textInputRef = useRef(null);
+  const { locale } = intl;
 
   const itemsFiltered =
     search && test.length > 0
       ? items.filter(item => search(item, test))
       : items;
+  // const sorted = itemsFiltered.sort((a, b) => {
+  //   if (a.date && b.date) {
+  //     return new Date(a.date).getTime() > new Date(b.date).getTime() ? -1 : 1;
+  //   }
+  //   return sortLabels(a.label || a.id, b.label || b.id);
+  // });
   const sorted = itemsFiltered.sort((a, b) =>
     sortLabels(a.label || a.id, b.label || b.id),
   );
 
   return (
-    <FeatureListWrap>
-      <ListTitle>{title}</ListTitle>
-      {search && (
-        <Box
-          direction="row"
-          align="center"
-          round="xlarge"
-          height="20px"
-          pad={{ horizontal: 'ms', vertical: 'ms' }}
-          margin={{ bottom: 'small' }}
-          background="light"
-          border
-          responsive={false}
-        >
-          <TextInput
-            plain
-            value={test}
-            onChange={evt => {
-              if (evt && evt.target) {
-                setTest(evt.target.value);
-              }
-            }}
-            placeholder={
-              placeholder || intl.formatMessage(messages.placeholderDefault)
-            }
-            ref={textInputRef}
-          />
-          {test.length > 0 && (
-            <Button
-              plain
-              fill="vertical"
-              onClick={() => setTest('')}
-              icon={<CloseXS />}
-              style={{
-                textAlign: 'center',
-                height: '20px',
-              }}
-            />
+    <ResponsiveContext.Consumer>
+      {size => (
+        <FeatureListWrap>
+          <ListTitle>{title}</ListTitle>
+          {search && (
+            <Box
+              direction="row"
+              align="center"
+              round="xlarge"
+              height="20px"
+              pad={{ horizontal: 'ms', vertical: 'ms' }}
+              margin={{ bottom: 'small' }}
+              background="light"
+              border
+              responsive={false}
+            >
+              <TextInput
+                plain
+                value={test}
+                onChange={evt => {
+                  if (evt && evt.target) {
+                    setTest(evt.target.value);
+                  }
+                }}
+                placeholder={
+                  placeholder || intl.formatMessage(messages.placeholderDefault)
+                }
+                ref={textInputRef}
+              />
+              {test.length > 0 && (
+                <Button
+                  plain
+                  fill="vertical"
+                  onClick={() => setTest('')}
+                  icon={<CloseXS />}
+                  style={{
+                    textAlign: 'center',
+                    height: '20px',
+                  }}
+                />
+              )}
+            </Box>
           )}
-        </Box>
+          {sorted.length === 0 && (
+            <Box pad="small">
+              <Text style={{ fontStyle: 'italic' }} color="textSecondary">
+                <FormattedMessage {...messages.noSearchResults} />
+              </Text>
+            </Box>
+          )}
+          {sorted.length > 0 && (
+            <Box>
+              {sorted.map(item => (
+                <FeatureButton
+                  key={item.id}
+                  onClick={() =>
+                    isSourceList
+                      ? onSetLayerInfo(layerId, `source-${item.id}`)
+                      : onSetLayerInfo(layerId, item.id)
+                  }
+                  label={
+                    <Box
+                      direction="row"
+                      justify="between"
+                      pad={{ vertical: 'small', right: 'small', left: 'small' }}
+                      align="center"
+                      responsive={false}
+                      gap="xsmall"
+                    >
+                      <Box
+                        direction="row"
+                        justify="start"
+                        gap="hair"
+                        align="center"
+                      >
+                        {item.position && config && (
+                          <CountryPositionSymbol
+                            position={item.position}
+                            config={config}
+                          />
+                        )}
+                        <Box>
+                          {isSourceList && item.date && (
+                            <Text
+                              size={
+                                isMinSize(size, 'medium')
+                                  ? 'xxsmall'
+                                  : 'xxxsmall'
+                              }
+                              color="textSecondary"
+                            >
+                              {formatDate(
+                                locale,
+                                new Date(item.date).getTime(),
+                              )}
+                            </Text>
+                          )}
+                          <Text>{item.label || item.id}</Text>
+                        </Box>
+                      </Box>
+                      <ArrowRightL />
+                    </Box>
+                  }
+                />
+              ))}
+            </Box>
+          )}
+        </FeatureListWrap>
       )}
-      {sorted.length === 0 && (
-        <Box pad="small">
-          <Text style={{ fontStyle: 'italic' }} color="textSecondary">
-            <FormattedMessage {...messages.noSearchResults} />
-          </Text>
-        </Box>
-      )}
-      {sorted.length > 0 && (
-        <Box>
-          {sorted.map(item => (
-            <FeatureButton
-              key={item.id}
-              onClick={() =>
-                isSourceList
-                  ? onSetLayerInfo(layerId, `source-${item.id}`)
-                  : onSetLayerInfo(layerId, item.id)
-              }
-              label={
-                <Box
-                  direction="row"
-                  justify="between"
-                  pad={{ vertical: 'small', right: 'small', left: 'small' }}
-                  align="center"
-                  responsive={false}
-                  gap="xsmall"
-                >
-                  <Box
-                    direction="row"
-                    justify="start"
-                    gap="hair"
-                    align="center"
-                  >
-                    {item.position && config && (
-                      <CountryPositionSymbol
-                        position={item.position}
-                        config={config}
-                      />
-                    )}
-                    <Text>{item.label || item.id}</Text>
-                  </Box>
-                  <ArrowRightL />
-                </Box>
-              }
-            />
-          ))}
-        </Box>
-      )}
-    </FeatureListWrap>
+    </ResponsiveContext.Consumer>
   );
 }
 

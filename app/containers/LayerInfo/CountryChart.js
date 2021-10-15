@@ -9,12 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  FormattedMessage,
-  FormattedDate,
-  intlShape,
-  injectIntl,
-} from 'react-intl';
+import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button, ResponsiveContext } from 'grommet';
 import { utcFormat as timeFormat } from 'd3-time-format';
@@ -41,6 +36,7 @@ import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { isMinSize } from 'utils/responsive';
+import formatDate from 'utils/format-date';
 import {
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
@@ -141,19 +137,6 @@ const KeySourceMarker = styled.div`
 const myTimeFormat = value => (
   <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
 );
-
-const formatDate = (locale, time) => {
-  if (Intl && Intl.DateTimeFormat) {
-    return new Intl.DateTimeFormat(locale === 'en' ? 'en-GB' : locale, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    }).format(time);
-  }
-  return (
-    <FormattedDate value={time} year="numeric" month="numeric" day="numeric" />
-  );
-};
 
 const MINDATE = '2018-10-01';
 
