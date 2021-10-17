@@ -1,0 +1,30 @@
+[
+  {
+    "id": "gyres",
+    "dir": "uni",
+    "nodes": {
+      "from": {
+        "data": "transfer/regions.csv",
+        "as": "regions"
+      },
+      "to": {
+        "data": "transfer/gyres.csv",
+        "as": "gyres"
+      }
+    },
+    "transfer": {
+      "data": "transfer/regions-to-gyres.csv"
+    }
+  },
+  {
+    "id": "countries",
+    "dir": "omni",
+    "nodes": {
+      "data": "transfer/eez.csv",
+      "as": "eez"
+    },
+    "transfer": {
+      "data": "transfer/eez-to-eez.csv"
+    }
+  }
+]

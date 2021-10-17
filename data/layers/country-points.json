@@ -390,7 +390,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "CHN", "name_en": "China", "name_de": "China" },
+      "properties": {
+        "code": "CHN",
+        "name_en": "People's Republic of China",
+        "name_de": "Volksrepublik China"
+      },
       "geometry": { "type": "Point", "coordinates": [107.1820773, 34.26845927] }
     },
     {
@@ -599,7 +603,7 @@
     {
       "type": "Feature",
       "properties": {
-        "code": "ALG",
+        "code": "DZA",
         "name_en": "Algeria",
         "name_de": "Algerien"
       },
@@ -772,7 +776,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "GMB", "name_en": "Gambia", "name_de": "Gambia" },
+      "properties": {
+        "code": "GMB",
+        "name_en": "The Gambia",
+        "name_de": "Gambia"
+      },
       "geometry": {
         "type": "Point",
         "coordinates": [-15.39601295, 13.44965244]
@@ -801,7 +809,11 @@
     },
     {
       "type": "Feature",
-      "properties": { "code": "GRC", "name_en": "Greece", "name_de": "Greece" },
+      "properties": {
+        "code": "GRC",
+        "name_en": "Greece",
+        "name_de": "Griechenland"
+      },
       "geometry": { "type": "Point", "coordinates": [22.95555794, 39.07469623] }
     },
     {
@@ -821,7 +833,8 @@
       "properties": {
         "code": "GRL",
         "name_en": "Greenland (Denmark)",
-        "name_de": "Grönland (Dänemark)"
+        "name_de": "Grönland (Dänemark)",
+        "code_sovereign": "DNK"
       },
       "geometry": {
         "type": "Point",
@@ -854,8 +867,8 @@
       "type": "Feature",
       "properties": {
         "code": "HKG",
-        "name_en": "Hong Kong S.A.R.",
-        "name_de": "Hong Kong S.A.R."
+        "name_en": "Hong Kong",
+        "name_de": "Hongkong"
       },
       "geometry": { "type": "Point", "coordinates": [114.1138045, 22.39827737] }
     },
@@ -1210,8 +1223,8 @@
       "type": "Feature",
       "properties": {
         "code": "MAC",
-        "name_en": "Macao S.A.R",
-        "name_de": "Macao S.A.R"
+        "name_en": "Macau",
+        "name_de": "Macau"
       },
       "geometry": { "type": "Point", "coordinates": [113.5093212, 22.22311688] }
     },
@@ -1295,8 +1308,8 @@
       "type": "Feature",
       "properties": {
         "code": "MKD",
-        "name_en": "Macedonia",
-        "name_de": "Macedonia"
+        "name_en": "Republic of Macedonia",
+        "name_de": "Mazedonien"
       },
       "geometry": { "type": "Point", "coordinates": [21.68211346, 41.59530893] }
     },
@@ -1636,7 +1649,7 @@
     {
       "type": "Feature",
       "properties": {
-        "code": "PSX",
+        "code": "PSE",
         "name_en": "Palestine",
         "name_de": "Palästina"
       },
@@ -1714,7 +1727,7 @@
     {
       "type": "Feature",
       "properties": {
-        "code": "SDS",
+        "code": "SSD",
         "name_en": "South Sudan",
         "name_de": "Südsudan"
       },
@@ -1838,8 +1851,8 @@
       "type": "Feature",
       "properties": {
         "code": "SRB",
-        "name_en": "Republic of Serbia",
-        "name_de": "Republic of Serbia"
+        "name_en": "Serbia",
+        "name_de": "Serbien"
       },
       "geometry": { "type": "Point", "coordinates": [20.78958334, 44.2215032] }
     },
@@ -1847,7 +1860,7 @@
       "type": "Feature",
       "properties": {
         "code": "STP",
-        "name_en": "São Tomé und Príncipe",
+        "name_en": "São Tomé and Príncipe",
         "name_de": "São Tomé und Príncipe"
       },
       "geometry": { "type": "Point", "coordinates": [6.724296579, 0.443914449] }
@@ -1892,8 +1905,8 @@
       "type": "Feature",
       "properties": {
         "code": "SWZ",
-        "name_en": "Swaziland",
-        "name_de": "Swaziland"
+        "name_en": "Eswatini",
+        "name_de": "Swasiland"
       },
       "geometry": { "type": "Point", "coordinates": [31.4819369, -26.55843045] }
     },
@@ -2032,8 +2045,8 @@
       "type": "Feature",
       "properties": {
         "code": "TZA",
-        "name_en": "United Republic of Tanzania",
-        "name_de": "United Republic of Tanzania"
+        "name_en": "Tanzania",
+        "name_de": "Tanzania"
       },
       "geometry": {
         "type": "Point",
@@ -2071,7 +2084,7 @@
       "properties": {
         "code": "USA",
         "name_en": "United States of America",
-        "name_de": "United States of America"
+        "name_de": "Vereinigte Staaten"
       },
       "geometry": {
         "type": "Point",
@@ -2091,8 +2104,8 @@
       "type": "Feature",
       "properties": {
         "code": "VAT",
-        "name_en": "Vatican",
-        "name_de": "Vatican"
+        "name_en": "Vatican City",
+        "name_de": "Vatikanstadt"
       },
       "geometry": { "type": "Point", "coordinates": [12.43387177, 41.90174985] }
     },

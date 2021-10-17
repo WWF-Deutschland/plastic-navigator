@@ -1,0 +1,15 @@
+﻿code,type,name_en,name_de
+np,main,North Pacific gyre,Nordpazifikwirbel
+na,main,North Atlantic gyre,Nordatlantikwirbel
+sa,main,South Atlantic gyre,Südatlantikwirbel
+sp,main,South Pacific gyre,Südpazifikwirbel
+io,main,Indian Ocean gyre,Indischer-Ozean-Wirbel
+bb,marginal,Bay of Bengal,Golf von Bengalen
+sc,marginal,South China Sea,Südchinesisches Meer
+ms,marginal,Mediterranean Sea,Mittlemeer
+js,marginal,Java Sea,Javasee
+as,marginal,Arabian Sea,Arabisches Meer
+gg,marginal,Gulf of Guinea,Golf von Guinea
+gm,marginal,Gulf of Mexico,Golf von Mexiko
+ys,marginal,Yellow Sea,Gelbes Meer
+os,marginal,Other Seas,Andere 
