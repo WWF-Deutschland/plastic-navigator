@@ -337,6 +337,7 @@
   },
   {
     "id": "policy-commitments-area",
+    "content-id": "policy-commitments-area",
     "alternate": "policy-commitments",
     "z-index": "20",
     "category": "policy",
@@ -344,12 +345,16 @@
     "source": "data",
     "type": "topojson",
     "title": {
-      "en": "Country’s level of support for treaty (shown as area)",
-      "de": "Positionierungen für ein Abkommen nach Ländern (als Flächen gezeigt)"
+      "en": "Country’s level of support for treaty",
+      "de": "Positionierungen für ein Abkommen nach Ländern"
     },
     "title-short": {
       "en": "Country’s level of support",
       "de": "Grad an Engagement nach Ländern"
+    },
+    "title-module": {
+      "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+      "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
     },
     "about": {
       "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
@@ -363,6 +368,7 @@
       "join": {
         "self": "country_code",
         "related": "code",
+        "relatedPrimary": "code_sovereign",
         "as": "positions",
         "default": [
           {
@@ -463,6 +469,8 @@
   },
   {
     "id": "policy-commitments",
+    "content-id": "policy-commitments-area",
+    "content-default": "policy-commitments-area",
     "category": "policy",
     "group": "policy",
     "source": "data",
@@ -475,6 +483,7 @@
       "join": {
         "self": "country_code",
         "related": "code",
+        "relatedPrimary": "code_sovereign",
         "as": "positions"
       },
       "extend": [
@@ -501,6 +510,10 @@
     "title": {
       "en": "Country’s level of support for treaty (shown as markers)",
       "de": "Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)"
+    },
+    "title-module": {
+      "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+      "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
     },
     "about": {
       "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",

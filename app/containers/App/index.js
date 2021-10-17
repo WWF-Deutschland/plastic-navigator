@@ -34,13 +34,14 @@ import {
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
 import ModuleExplore from 'containers/ModuleExplore/Loadable';
+import ModulePolicy from 'containers/ModulePolicy/Loadable';
 import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
 import LayerInfo from 'containers/LayerInfo';
 import CookieConsent from 'containers/CookieConsent';
 
-import { ROUTES, CONFIG } from 'config';
+import { ROUTES, CONFIG, MODULES } from 'config';
 import GlobalStyle from 'global-styles';
 import { appLocales, DEFAULT_LOCALE } from 'i18n';
 
@@ -104,6 +105,13 @@ function App({
   const paths = path.split('/');
   const route = paths.length > 1 ? paths[2] : '';
   const title = intl.formatMessage(commonMessages.appTitle);
+  const currentModule = Object.values(MODULES).find(m => m.path === route);
+  const hasKey = currentModule && currentModule.hasKey;
+
+  // do not show info panel for
+  // prettier-ignore
+  const showInfo = info !== '';
+
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -113,7 +121,9 @@ function App({
         <Header route={route} />
         <Content>
           <ResponsiveContext.Consumer>
-            {size => <Map size={size} hasKey={route === ROUTES.EXPLORE} />}
+            {size => (
+              <Map size={size} hasKey={hasKey} currentModule={currentModule} />
+            )}
           </ResponsiveContext.Consumer>
           <Switch>
             <Route
@@ -124,11 +134,19 @@ function App({
               path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
               component={ModuleExplore}
             />
+            <Route
+              path={`/:locale(${appLocales.join('|')})/${ROUTES.POLICY}/`}
+              component={ModulePolicy}
+            />
             <Redirect to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
           </Switch>
           {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
-          {info !== '' && (
-            <LayerInfo id={info} onClose={() => onCloseLayerInfo()} />
+          {showInfo && (
+            <LayerInfo
+              view={info}
+              onClose={() => onCloseLayerInfo()}
+              currentModule={currentModule}
+            />
           )}
         </Content>
         {!window.wwfMpxInsideIframe && <CookieConsent />}

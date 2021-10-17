@@ -17,8 +17,9 @@ import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { getLayerFeatureIds } from 'utils/layers';
+import { decodeInfoView } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
+import { roundNumber } from 'utils/numbers';
 // import commonMessages from 'messages';
 //
 import {
@@ -27,7 +28,7 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import { setLayerInfo } from 'containers/App/actions';
+import { setLayerInfo, setMapPosition } from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
@@ -53,6 +54,7 @@ import {
   selectMapLayers,
   selectHighlightFeature,
   selectLayersLoading,
+  selectMapPosition,
 } from './selectors';
 import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
 
@@ -87,6 +89,24 @@ const LoadingWrap = styled(MapContainer)`
   background: none;
 `;
 
+const getNWSE = map => {
+  const bounds = map.getBounds();
+  const nw = bounds.getNorthWest();
+  const se = bounds.getSouthEast();
+  const n = roundNumber(nw.lat, 5);
+  const w = roundNumber(nw.lng, 5);
+  const s = roundNumber(se.lat, 5);
+  const e = roundNumber(se.lng, 5);
+  return `${n}|${w}|${s}|${e}`;
+};
+const getLLBounds = nwse => {
+  const split = nwse.split('|');
+  if (split.length === 4) {
+    return [[split[0], split[1]], [split[2], split[3]]];
+  }
+  return null;
+};
+
 export function Map({
   layersConfig,
   activeLayerIds,
@@ -102,6 +122,9 @@ export function Map({
   highlightFeature,
   hasKey,
   loading,
+  currentModule,
+  onMapMove,
+  mview,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -112,12 +135,11 @@ export function Map({
   const mapRef = useRef(null);
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
-  const [layerId, featureId, copy] = getLayerFeatureIds(info);
-  const [
-    layerHighlightId,
-    featureHighlightId,
-    copyHighlight,
-  ] = getLayerFeatureIds(highlightFeature);
+  const areaInfoRef = useRef(null);
+  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(info);
+  const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
+    highlightFeature,
+  );
 
   const showTooltip = (e, config) => {
     // console.log('click', e, config, tooltip);
@@ -190,14 +212,14 @@ export function Map({
       // console.log('movestart')
       setTooltip(null);
     },
-    layeradd: () => {
-      // console.log('layerAdd', layer)
-      // setTooltip(null)
-    },
-    layerremove: () => {
-      // console.log('layerremove', layer)
-      // setTooltip(null)
-    },
+    // layeradd: () => {
+    //   // console.log('layerAdd', layer)
+    //   // setTooltip(null)
+    // },
+    // layerremove: () => {
+    //   // console.log('layerremove', layer)
+    //   // setTooltip(null)
+    // },
   };
   // move active marker into view
   useEffect(() => {
@@ -207,25 +229,35 @@ export function Map({
   // init map
   useEffect(() => {
     mapRef.current = L.map('ll-map', {
-      center: MAP_OPTIONS.CENTER,
-      zoom: size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+      // center: MAP_OPTIONS.CENTER,
+      // zoom: size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+      zoomControl: false,
       minZoom: MAP_OPTIONS.ZOOM.MIN,
       maxZoom: MAP_OPTIONS.ZOOM.MAX,
-      attributionControl: false,
-      zoomControl: false,
       maxBounds: [
         [MAP_OPTIONS.BOUNDS.N, MAP_OPTIONS.BOUNDS.W],
         [MAP_OPTIONS.BOUNDS.S, MAP_OPTIONS.BOUNDS.E],
       ],
+      attributionControl: false,
     }).on(mapEvents);
+    //
     mapRef.current.getPane('tilePane').style.pointerEvents = 'none';
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
+    areaInfoRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
+    areaInfoRef.current.addTo(mapRef.current);
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
+    mapRef.current.on('moveend', () => {
+      onMapMove(getNWSE(mapRef.current));
+    });
+    mapRef.current.setView(
+      MAP_OPTIONS.CENTER,
+      size === 'small' ? MAP_OPTIONS.ZOOM.MIN : MAP_OPTIONS.ZOOM.INIT,
+    );
   }, []);
 
   useEffect(() => {
@@ -238,6 +270,14 @@ export function Map({
       mapRef.current.setZoom(zoom);
     }
   }, [zoom]);
+  useEffect(() => {
+    if (mapRef.current && getNWSE(mapRef.current) !== mview) {
+      const llbounds = getLLBounds(mview);
+      if (llbounds) {
+        mapRef.current.fitBounds(llbounds);
+      }
+    }
+  }, [mview]);
 
   // add basemap
   useEffect(() => {
@@ -264,8 +304,8 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    console.log('Map: active layer ids: ', activeLayerIds);
-    console.log('Map: layers config present ', !!layersConfig);
+    // console.log('Map: active layer ids: ', activeLayerIds);
+    // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
       // remove layers no longer active
@@ -372,7 +412,7 @@ export function Map({
     }
   }, [activeLayerIds, layersConfig, jsonLayers, projects]);
 
-  // update icon states
+  // update icon/marker states for mouse over, tooltip and info panel
   useEffect(() => {
     if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
@@ -386,23 +426,34 @@ export function Map({
               lcopy.eachLayer(marker => {
                 let icon;
                 const fid = marker.feature.properties.f_id;
+                const fcode = marker.feature.properties.code;
+                const fcodeSov =
+                  marker.feature.properties.code_sovereign || null;
                 const mcopy = marker.options.copy;
-                const layerActive = key === layerId;
+                const infoLayerActive =
+                  config['content-default'] === infoLayerId ||
+                  config.id === infoLayerId;
                 const tooltipOpen =
                   tooltip &&
                   key === tooltip.layerId &&
                   fid === tooltip.featureId &&
                   ((!mcopy && !tooltip.options.copy) ||
                     mcopy === tooltip.options.copy);
+                // tooltip or info open
                 const active =
                   tooltipOpen ||
-                  (layerActive && (layerCount === 1 || fid === featureId));
+                  (infoLayerActive &&
+                    (layerCount === 1 ||
+                      fcodeSov === infoFeatureId ||
+                      fcode === infoFeatureId ||
+                      fid === infoFeatureId));
+                // mouse over
                 const highlight =
                   !active &&
-                  key === layerHighlightId &&
-                  fid === featureHighlightId &&
-                  ((!mcopy && !copyHighlight) || mcopy === copyHighlight);
-                if (active || layerActive || highlight) {
+                  key === highlightLayerId &&
+                  fid === highlightFeatureId &&
+                  ((!mcopy && !highlightCopy) || mcopy === highlightCopy);
+                if (active || infoLayerActive || highlight) {
                   if (highlight) {
                     icon = getIcon(config.icon, {
                       feature: marker.feature,
@@ -415,7 +466,7 @@ export function Map({
                       latlng: marker.getLatLng(),
                       state: 'active',
                     });
-                  } else if (layerActive) {
+                  } else if (infoLayerActive) {
                     icon = getIcon(config.icon, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
@@ -439,7 +490,7 @@ export function Map({
       });
     }
   }, [
-    info,
+    info, // infoLayerId, infoFeatureId
     layersConfig,
     projects,
     mapLayers,
@@ -448,7 +499,7 @@ export function Map({
     tooltip,
   ]);
 
-  // update tooltip highlight area layers
+  // update feature area when tooltip active (click)
   useEffect(() => {
     if (mapLayers && layersConfig) {
       if (tooltip) {
@@ -489,17 +540,17 @@ export function Map({
     }
   }, [layersConfig, mapLayers, tooltip]);
 
-  // update feature highlight area layers
+  // update feature area when highlighted (mouse over)
   useEffect(() => {
     if (mapLayers && layersConfig) {
-      if (featureHighlightId) {
+      if (highlightFeatureId) {
         Object.keys(mapLayers).forEach(key => {
           const mapLayer = mapLayers[key];
           if (
             mapLayer &&
             mapLayer.config.render &&
             mapLayer.config.render.type === 'area' &&
-            mapLayer.config.id === layerHighlightId &&
+            mapLayer.config.id === highlightLayerId &&
             jsonLayers[mapLayer.config.id]
           ) {
             const { config } = mapLayer;
@@ -510,7 +561,7 @@ export function Map({
                 type: jsonLayer.data.type,
                 features: jsonLayer.data.features.filter(
                   feature =>
-                    feature.properties.f_id === featureHighlightId &&
+                    feature.properties.f_id === highlightFeatureId &&
                     (!tooltip || tooltip.featureId !== feature.properties.f_id),
                 ),
               },
@@ -534,19 +585,52 @@ export function Map({
     }
   }, [layersConfig, mapLayers, highlightFeature]);
 
-  // useEffect(() => {
-  //   if (mapLayers && layersConfig) {
-  //     if (highlightFeature) {
-  //       Object.keys(mapLayers).forEach(key => {
-  //         const mapLayer = mapLayers[key];
-  //         const { config } = mapLayer;
-  //         if (config.render && config.render.type === 'scaledCircle') {
-  //           console.log('c', featureHighlightId, layerHighlightId, mapLayer)
-  //         }
-  //       });
-  //     }
-  //   }
-  // }, [highlightFeature]);
+  // update feature area when info active
+  useEffect(() => {
+    if (mapLayers && layersConfig) {
+      if (infoFeatureId) {
+        Object.keys(mapLayers).forEach(key => {
+          const mapLayer = mapLayers[key];
+          if (
+            mapLayer &&
+            mapLayer.config.render &&
+            mapLayer.config.render.type === 'area' &&
+            mapLayer.config.id === infoLayerId &&
+            jsonLayers[mapLayer.config.id]
+          ) {
+            const { config } = mapLayer;
+            const jsonLayer = jsonLayers[config.id];
+            const jsonLayerFiltered = {
+              config,
+              data: {
+                type: jsonLayer.data.type,
+                features: jsonLayer.data.features.filter(
+                  feature =>
+                    (feature.properties.code_sovereign === infoFeatureId ||
+                      feature.properties.code === infoFeatureId ||
+                      feature.properties.f_id === infoFeatureId) &&
+                    (!tooltip || tooltip.featureId !== feature.properties.f_id),
+                ),
+              },
+            };
+            const infoLayer = getVectorLayer({
+              jsonLayer: jsonLayerFiltered,
+              config,
+              state: 'info',
+              markerEvents: {
+                click: markerEvents.click,
+              },
+            });
+            // shouldn't really be any layers present but just in case
+            areaInfoRef.current.clearLayers();
+            areaInfoRef.current.addLayer(infoLayer);
+          }
+        });
+      } else {
+        areaInfoRef.current.clearLayers();
+      }
+    }
+  }, [layersConfig, mapLayers, info]);
 
   // move active marker into view
   useEffect(() => {
@@ -563,9 +647,9 @@ export function Map({
                 const fid = marker.feature.properties.f_id;
                 const mcopy = marker.options.copy;
                 const active =
-                  key === layerId &&
-                  (layerCount === 1 || fid === featureId) &&
-                  ((!mcopy && !copy) || mcopy === copy);
+                  key === infoLayerId &&
+                  (layerCount === 1 || fid === infoFeatureId) &&
+                  ((!mcopy && !infoCopy) || mcopy === infoCopy); // TODO check use of infoCopy
                 if (active) {
                   const latlng = marker.getLatLng();
                   const aside = getAsideInfoWidth(size);
@@ -591,8 +675,6 @@ export function Map({
     }
   }, [info, layersConfig, projects, mapLayers, size]);
 
-  // move active marker into view
-
   return (
     <Styled>
       <MapContainer id="ll-map" />
@@ -602,6 +684,7 @@ export function Map({
           layersConfig={layersConfig}
           onLayerInfo={onFeatureClick}
           jsonLayers={jsonLayers}
+          currentModule={currentModule}
         />
       )}
       {tooltip && (
@@ -612,7 +695,10 @@ export function Map({
           config={tooltip.config}
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
-          onFeatureClick={onFeatureClick}
+          onFeatureClick={args => {
+            setTooltip(null);
+            onFeatureClick(args);
+          }}
         />
       )}
       <AttributionWrap>
@@ -658,12 +744,15 @@ Map.propTypes = {
   activeLayerIds: PropTypes.array,
   mapLayers: PropTypes.object,
   jsonLayers: PropTypes.object,
+  currentModule: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
   onFeatureClick: PropTypes.func,
   onFeatureHighlight: PropTypes.func,
+  onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
   info: PropTypes.string,
+  mview: PropTypes.string,
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
@@ -679,6 +768,7 @@ const mapStateToProps = createStructuredSelector({
   info: state => selectInfoSearch(state),
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
+  mview: state => selectMapPosition(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -689,7 +779,7 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onFeatureClick: ({ feature, layer, copy }) => {
+    onFeatureClick: ({ layer, feature, copy }) => {
       dispatch(setLayerInfo(layer, feature, copy));
     },
     onFeatureHighlight: args => {
@@ -697,6 +787,9 @@ function mapDispatchToProps(dispatch) {
       const feature = args ? args.feature : null;
       const copy = args ? args.copy : null;
       dispatch(setHighlightFeature(layer, feature, copy));
+    },
+    onMapMove: position => {
+      dispatch(setMapPosition(position));
     },
   };
 }

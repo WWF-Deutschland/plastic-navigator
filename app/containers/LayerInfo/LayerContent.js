@@ -12,28 +12,22 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import { Box, Text } from 'grommet';
 
-import { DEFAULT_LOCALE } from 'i18n';
-
 import { useInjectSaga } from 'utils/injectSaga';
 
 import saga from 'containers/App/saga';
 import {
   selectContentByKey,
-  selectLocale,
   selectIsActiveLayer,
 } from 'containers/App/selectors';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadContent, toggleLayer } from 'containers/App/actions';
 import { loadLayer } from 'containers/Map/actions';
-import { getRange } from 'containers/Map/utils';
 
 import LoadingIndicator from 'components/LoadingIndicator';
 import HTMLWrapper from 'components/HTMLWrapper';
 import KeyFull from 'components/KeyFull';
 import Checkbox from 'components/Checkbox';
-import { ExploreS as Layer } from 'components/Icons';
 
-import Title from './Title';
 import LayerReference from './LayerReference';
 // import messages from './messages';
 
@@ -43,20 +37,17 @@ const LayerTitle = styled(Text)`
   line-height: 20px;
 `;
 
-const TitleWrap = styled(p => (
-  <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
-))``;
-
 export function LayerContent({
   onLoadContent,
   content,
   config,
-  locale,
   onToggleLayer,
   isActive,
   layerData,
   onLoadLayer,
   inject = [],
+  title,
+  header,
 }) {
   useInjectSaga({ key: 'default', saga });
 
@@ -70,17 +61,11 @@ export function LayerContent({
       onLoadLayer(config.id, config);
     }
   }, [layerData]);
-  const title = config
-    ? config.title[locale] || config.title[DEFAULT_LOCALE]
-    : 'loading';
 
   // prettier-ignore
   return (
     <>
-      <TitleWrap>
-        <Layer />
-        <Title>{title}</Title>
-      </TitleWrap>
+      {header && (<>{header}</>)}
       {!content && <LoadingIndicator />}
       {content && (
         <HTMLWrapper
@@ -100,14 +85,7 @@ export function LayerContent({
                   <Box margin={{ left: '30px', }} flex={false}>
                     <KeyFull
                       config={config}
-                      range={
-                        layerData && layerData.data
-                          ? getRange(
-                            layerData.data.features,
-                            config.render.attribute,
-                          )
-                          : null
-                      }
+                      layerData={layerData && layerData.data}
                     />
                   </Box>
                 </Box>
@@ -130,8 +108,9 @@ LayerContent.propTypes = {
   config: PropTypes.object,
   layerData: PropTypes.object,
   inject: PropTypes.array,
-  locale: PropTypes.string,
   isActive: PropTypes.bool,
+  title: PropTypes.string,
+  header: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -142,7 +121,6 @@ const mapStateToProps = createStructuredSelector({
     }),
   layerData: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
-  locale: state => selectLocale(state),
 });
 
 function mapDispatchToProps(dispatch) {

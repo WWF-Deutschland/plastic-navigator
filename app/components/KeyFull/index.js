@@ -7,11 +7,14 @@ import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import DEFAULT_LOCALE from 'i18n';
 import { PROJECT_CONFIG } from 'config';
 
+import { getRange } from 'containers/Map/utils';
+
 import coreMessages from 'messages';
 import Gradient from './Gradient';
 import Circles from './Circles';
 import Areas from './Areas';
 import Icon from './Icon';
+import IconAlt from './IconAlt';
 import SubTitle from './SubTitle';
 
 import messages from './messages';
@@ -24,7 +27,15 @@ const SubTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
 
-export function KeyFull({ config, id, simple, intl, dark, range }) {
+export function KeyFull({
+  config,
+  id,
+  simple,
+  intl,
+  dark,
+  layerData,
+  excludeEmpty,
+}) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
@@ -34,7 +45,13 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
+  const isIconAlt = isIcon && key.style;
   /* eslint-disable react/no-danger */
+  // prettier-ignore
+  const range =
+    isCircle && layerData && layerData.features && render.attribute
+      ? getRange(layerData.features, render.attribute)
+      : null;
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
   return (
@@ -63,7 +80,7 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
           )}
         </SubTitleWrap>
       )}
-      {isIcon && (
+      {isIcon && !isIconAlt && (
         <Icon
           id={myId}
           config={config}
@@ -74,6 +91,20 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
+        />
+      )}
+      {isIconAlt && (
+        <IconAlt
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          title={
+            myId === PROJECT_CONFIG.id
+              ? intl.formatMessage(coreMessages.projectLocation)
+              : null
+          }
+          layerData={layerData}
         />
       )}
       {isGradient && (
@@ -89,7 +120,14 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
         />
       )}
       {isArea && (
-        <Areas id={myId} config={config} simple={simple} dark={dark} />
+        <Areas
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          layerData={layerData}
+          excludeEmpty={excludeEmpty}
+        />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
         <div>
@@ -109,10 +147,11 @@ export function KeyFull({ config, id, simple, intl, dark, range }) {
 
 KeyFull.propTypes = {
   config: PropTypes.object,
+  layerData: PropTypes.object,
   id: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
-  range: PropTypes.object,
+  excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

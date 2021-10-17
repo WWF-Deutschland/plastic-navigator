@@ -11,8 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Text, Box, Button, Heading } from 'grommet';
-import { Back } from 'components/Icons';
+import { Box, Button, Heading } from 'grommet';
 // import { Back } from 'components/Icons';
 import Markdown from 'react-remarkable';
 // import anchorme from 'anchorme';
@@ -24,28 +23,13 @@ import { PROJECT_CONFIG } from 'config';
 
 import { selectLocale } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
+
+import ListItemHeader from './ListItemHeader';
+
 import messages from './messages';
 
 const Styled = styled.div`
   margin-top: 5px;
-`;
-
-const SupTitle = styled(p => <Button {...p} plain />)`
-  text-transform: uppercase;
-  font-weight: bold;
-`;
-
-const BackButton = styled(p => <Button {...p} plain />)`
-  padding: 15px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.white};
-  height: 40px;
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.light};
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    height: 50px;
-  }
 `;
 
 const ButtonExternal = styled(p => <Button as="a" {...p} plain />)`
@@ -98,22 +82,10 @@ export function ProjectLocationContent({
   const projectId = `${PROJECT_CONFIG.id}-${project.project_id}`;
   return (
     <Styled>
-      <Box
-        direction="row"
-        align="center"
-        gap="xsmall"
-        margin={{ right: 'xlarge', bottom: 'xlarge', left: '-12px' }}
-      >
-        <BackButton
-          plain
-          onClick={() => onSetLayerInfo(projectId)}
-          icon={<Back />}
-        />
-        <SupTitle
-          onClick={() => onSetLayerInfo(projectId)}
-          label={<Text size="small">{projectTitle}</Text>}
-        />
-      </Box>
+      <ListItemHeader
+        supTitle={projectTitle}
+        onClick={() => onSetLayerInfo(projectId)}
+      />
       <Title>{title}</Title>
       {exists(location.image_url) && (
         <div>

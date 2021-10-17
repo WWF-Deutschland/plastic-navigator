@@ -12,7 +12,7 @@ const Title = styled(p => <Heading level={1} {...p} />)`
   margin-top: 0px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 350px;
+  max-width: ${({ wide }) => (wide ? '500px' : '350px')};
 `;
 
 export default Title;

@@ -19,6 +19,7 @@ import {
   CONFIG_LOAD_ERROR,
   SET_UI_STATE,
   SET_LANDING,
+  SHOW_LAYER_INFO_MODULE,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -56,6 +57,7 @@ export const initialState = {
   // contentError: Object.assign({}, initialContent),
   uiState: {},
   landing: false,
+  layerModuleVisible: true,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -108,6 +110,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_LANDING:
         draft.landing = true;
+        break;
+      case SHOW_LAYER_INFO_MODULE:
+        draft.layerModuleVisible = action.visible;
         break;
     }
   });

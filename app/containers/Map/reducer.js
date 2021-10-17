@@ -41,9 +41,13 @@ const mapReducer = (state = initialState, action) =>
         }
         break;
       case LAYER_REQUESTED:
+        /* eslint-disable no-console */
+        console.log('Request layer:', action.key);
         draft.layersRequested[action.key] = action.time;
         break;
       case LAYER_LOAD_SUCCESS:
+        /* eslint-disable no-console */
+        console.log('Success loading layer:', action.key);
         draft.layers[action.key] = {
           config: action.config,
           data: action.data,
@@ -51,6 +55,7 @@ const mapReducer = (state = initialState, action) =>
         draft.layersReady[action.key] = action.time;
         break;
       case LAYER_LOAD_ERROR:
+        /* eslint-disable no-console */
         console.log('Error loading layer data... giving up!', action.key);
         draft.layersRequested[action.key] = action.time;
         break;
