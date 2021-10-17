@@ -85,9 +85,12 @@ function extendProperties(properties, config, parsed) {
 function setProperties(json, config, parsed) {
   const properties = parsed[0].data;
   const features = json.features.reduce((memo, feature) => {
-    let joinProperties = properties.filter(p =>
-      quasiEquals(p[config.join.self], feature.properties[config.join.related]),
-    );
+    let joinProperties = properties.filter(p => {
+      const fp =
+        feature.properties[config.join.relatedPrimary] ||
+        feature.properties[config.join.related];
+      return quasiEquals(p[config.join.self], fp);
+    });
     if (joinProperties.length === 0) {
       if (
         config.featuresWithoutProperties &&
@@ -114,7 +117,7 @@ function setProperties(json, config, parsed) {
       }
       return memo;
     }
-    // console.log(feature, xProperties)
+    // console.log(feature.properties, joinProperties)
     // return [...memo, feature];
     return [
       ...memo,

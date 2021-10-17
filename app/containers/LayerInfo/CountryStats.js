@@ -15,8 +15,8 @@ import { startsWith } from 'utils/string';
 import {
   getPositionSquareStyle,
   hexToRgba,
-  getPositionStats,
-} from 'utils/positions';
+  getPositionStatsFromCountries,
+} from 'utils/policy';
 
 const StackedBarWrapper = styled.div`
   display: block;
@@ -76,7 +76,7 @@ const getTitle = (value, config, locale) => {
 
 export function CountryStats({ config, countries, intl }) {
   const { locale } = intl;
-  const stats = getPositionStats(config, countries);
+  const stats = getPositionStatsFromCountries(config, countries);
   // console.log(stats, config)
   // prettier-ignore
   if (stats &&  stats.length === 2) {
@@ -106,7 +106,7 @@ export function CountryStats({ config, countries, intl }) {
         </StackedBarWrapper>
         <AllLabelsWrapper>
           {stats.map(({ val, count }, index) => (
-            <LabelWrapper align={index === 0 ? 'left' : 'right'}>
+            <LabelWrapper align={index === 0 ? 'start' : 'end'} key={val}>
               <Count>{count}</Count>
               <Label>{getTitle(val, config, locale)}</Label>
             </LabelWrapper>
@@ -120,7 +120,7 @@ export function CountryStats({ config, countries, intl }) {
 
 CountryStats.propTypes = {
   config: PropTypes.object,
-  countries: PropTypes.object,
+  countries: PropTypes.array,
   intl: PropTypes.object,
 };
 
