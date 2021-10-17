@@ -24,8 +24,8 @@ import MenuLayer from './MenuLayer';
 const MenuButton = styled(props => <Button plain {...props} fill="vertical" />)`
   text-align: center;
   background: black !important;
-  width: 40px;
-  min-width: 40px;
+  width: 28px;
+  min-width: 28px;
 `;
 
 const NavSecondary = styled(props => (
@@ -53,7 +53,7 @@ const Primary = styled(props => <Button {...props} plain fill="vertical" />)`
   &:hover {
     background: ${({ active, theme }) => theme.global.colors[active ? 'light' : 'dark']};
   }
-  width: 50px;
+  width: 40px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: auto;
     min-width: 120px;
@@ -89,18 +89,18 @@ const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   text-transform: uppercase;
   z-index: 3000;
   max-width: 85px;
-  padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
   color: ${({ theme }) => theme.global.colors.white};
   font-size: 16px;
   line-height: 1;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding-right: ${({ theme }) => theme.global.edgeSize.xsmall};
     max-width: 120px;
     font-size: 20px;
   }
 `;
 const BrandWWFWrap = styled(props => <Box {...props} />)`
   position: relative;
-  width: 60px;
+  width: 50px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     width: 72px;
   }
@@ -111,8 +111,8 @@ const BrandWWF = styled(props => <Button {...props} plain />)`
   left: 0;
   right: 0;
   z-index: 3000;
-  height: 68px;
-  width: 60px;
+  height: 58px;
+  width: 50px;
   background: ${({ theme }) => theme.global.colors.white};
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -148,7 +148,7 @@ function Header({ nav, navPage, path, navHome, intl }) {
             pad={
               isMinSize(size, 'large')
                 ? { horizontal: 'medium' }
-                : { left: 'small', right: 'xsmall' }
+                : { horizontal: 'xsmall' }
             }
             gap="none"
           >
@@ -169,7 +169,7 @@ function Header({ nav, navPage, path, navHome, intl }) {
                   >
                     <WWFLogoHeader
                       color="black"
-                      size={isMaxSize(size, 'medium') ? '60px' : '72px'}
+                      size={isMaxSize(size, 'medium') ? '50px' : '72px'}
                     />
                   </BrandWWF>
                 </BrandWWFWrap>

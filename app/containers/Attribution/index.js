@@ -28,6 +28,7 @@ const Styled = styled(Box)`
 const StyledButton = styled(Button)`
   text-decoration: none;
   color: ${({ theme }) => theme.global.colors['dark-3']};
+  line-height: 15px;
   &:hover {
     text-decoration: underline;
     color: ${({ theme }) => theme.global.colors.brand};
@@ -46,7 +47,9 @@ const Title = styled(Heading)`
   font-weight: 400;
 `;
 
-const Label = styled(p => <Text size="xxsmall" {...p} />)``;
+const Label = styled(p => <Text size="xxxsmall" {...p} />)`
+  line-height: 1;
+`;
 const Para = styled(p => <Paragraph size="xsmall" {...p} />)`
   margin: 5px 0 10px;
 `;
@@ -77,6 +80,7 @@ export function Attribution({ map, intl, onNav }) {
           margin={isMinSize(size, 'medium') ? 'xsmall' : 'xxsmall'}
           gap="xxsmall"
           align="center"
+          wrap
         >
           <StyledButton
             plain

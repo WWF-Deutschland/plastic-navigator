@@ -136,6 +136,22 @@ export const selectSingleLayerConfig = createSelector(
   selectLayersConfig,
   (key, layers) => layers && layers.find(l => l.id === key),
 );
+export const selectSingleLayerContentConfig = createSelector(
+  (state, { key }) => key,
+  selectLayersConfig,
+  (key, layers) => {
+    if (!layers) return null;
+    const layerConfig = layers.find(l => l.id === key);
+    if (!layerConfig) return null;
+    if (layerConfig['content-default']) {
+      const layerConfigDefault = layers.find(
+        l => l.id === layerConfig['content-default'],
+      );
+      if (layerConfigDefault) return layerConfigDefault;
+    }
+    return layerConfig;
+  },
+);
 export const selectSingleLayerCategory = createSelector(
   selectSingleLayerConfig,
   selectExploreConfig,
@@ -211,4 +227,8 @@ export const selectIsActiveLayer = createSelector(
 export const selectFirstLanding = createSelector(
   selectGlobal,
   global => !global.landing,
+);
+export const selectLayerModuleVisible = createSelector(
+  selectGlobal,
+  global => global.layerModuleVisible,
 );

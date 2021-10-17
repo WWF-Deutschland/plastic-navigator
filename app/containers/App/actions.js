@@ -32,11 +32,13 @@ import {
   CONFIG_READY,
   SET_UI_STATE,
   SET_LAYER_INFO,
+  SHOW_LAYER_INFO_MODULE,
   TOGGLE_LAYER,
   SET_LAYERS,
   SET_STORY,
   SET_CHAPTER,
   SET_LANDING,
+  SET_MAP_POSITION,
 } from './constants';
 
 export function setLocale(locale) {
@@ -178,12 +180,18 @@ export function setUIState(component, state) {
     state,
   };
 }
-export function setLayerInfo(layer, feature, copy) {
+export function setLayerInfo(layer, view, copy) {
   return {
     type: SET_LAYER_INFO,
     layer,
-    feature,
+    view,
     copy,
+  };
+}
+export function showLayerInfoModule(visible = true) {
+  return {
+    type: SHOW_LAYER_INFO_MODULE,
+    visible,
   };
 }
 export function toggleLayer(id) {
@@ -213,5 +221,11 @@ export function setStory(index) {
 export function setLanding() {
   return {
     type: SET_LANDING,
+  };
+}
+export function setMapPosition(position) {
+  return {
+    type: SET_MAP_POSITION,
+    position,
   };
 }

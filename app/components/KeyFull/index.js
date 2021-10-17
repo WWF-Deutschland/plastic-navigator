@@ -27,24 +27,31 @@ const SubTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
 
-export function KeyFull({ config, id, simple, intl, dark, layerData }) {
+export function KeyFull({
+  config,
+  id,
+  simple,
+  intl,
+  dark,
+  layerData,
+  excludeEmpty,
+}) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
-  // prettier-ignore
-  const range =
-    isCircle && layerData && layerData.features && render.attribute
-      ? getRange(layerData.features, render.attribute)
-      : null;
-
   const isArea = key && render && render.type === 'area' && !!featureStyle;
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
   const isIconAlt = isIcon && key.style;
   /* eslint-disable react/no-danger */
+  // prettier-ignore
+  const range =
+    isCircle && layerData && layerData.features && render.attribute
+      ? getRange(layerData.features, render.attribute)
+      : null;
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
   return (
@@ -97,6 +104,7 @@ export function KeyFull({ config, id, simple, intl, dark, layerData }) {
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
+          layerData={layerData}
         />
       )}
       {isGradient && (
@@ -112,7 +120,14 @@ export function KeyFull({ config, id, simple, intl, dark, layerData }) {
         />
       )}
       {isArea && (
-        <Areas id={myId} config={config} simple={simple} dark={dark} />
+        <Areas
+          id={myId}
+          config={config}
+          simple={simple}
+          dark={dark}
+          layerData={layerData}
+          excludeEmpty={excludeEmpty}
+        />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
         <div>
@@ -136,6 +151,7 @@ KeyFull.propTypes = {
   id: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
+  excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

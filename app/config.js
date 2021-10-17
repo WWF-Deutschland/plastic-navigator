@@ -1,11 +1,11 @@
-import { Explore, Intro } from 'components/Icons';
+import { Explore, Intro, Policy } from 'components/Icons';
 import React from 'react';
 
 // application routes and paths
 export const ROUTES = {
   INTRO: 'stories',
   EXPLORE: 'explore',
-  ANALYSE: 'analyse',
+  POLICY: 'policy',
 };
 
 export const PAGES = {
@@ -26,6 +26,16 @@ export const MODULES = {
     iconS: <Intro color="white" size="26px" />,
     iconActiveS: <Intro color="black" size="26px" />,
   },
+  policy: {
+    path: ROUTES.POLICY,
+    featuredLayer: 'policy-commitments-area',
+    icon: <Policy color="white" />,
+    iconActive: <Policy color="black" />,
+    iconS: <Policy color="white" size="26px" />,
+    iconActiveS: <Policy color="black" size="26px" />,
+    layers: ['surface-concentration', 'policy-commitments-area'],
+    hasKey: true,
+  },
   explore: {
     path: ROUTES.EXPLORE,
     icon: <Explore color="white" />,
@@ -33,6 +43,7 @@ export const MODULES = {
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
+    hasKey: true,
   },
 };
 
@@ -61,7 +72,7 @@ export const LAYER_CONTENT_PATH = 'layers';
 export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
-  layers: 'layers.json',
+  layers: 'layers_dev.json',
   projects: {
     file: 'projects.csv',
     type: 'csv',
@@ -122,6 +133,7 @@ export const PROJECT_CONFIG = {
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
+export const MAX_NAV_ATTEMPTS = 1000;
 
 // map config
 

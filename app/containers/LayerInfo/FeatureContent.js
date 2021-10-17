@@ -10,12 +10,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
-import { Text, Box, Button } from 'grommet';
-import { Back } from 'components/Icons';
-
-import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYERS } from 'config';
 
 import { findFeature } from 'utils/layers';
 
@@ -29,28 +23,7 @@ import { getPropertyByLocale } from 'containers/Map/utils';
 import Title from './Title';
 import LayerContent from './LayerContent';
 import CountryPolicyCommitments from './CountryPolicyCommitments';
-
-const Styled = styled.div`
-  margin-top: 5px;
-`;
-
-const SupTitle = styled(p => <Button {...p} plain />)`
-  text-transform: uppercase;
-  font-weight: bold;
-`;
-
-const BackButton = styled(p => <Button {...p} plain />)`
-  padding: 15px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.white};
-  height: 40px;
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.light};
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    height: 50px;
-  }
-`;
+import ListItemHeader from './ListItemHeader';
 
 const getTitle = (feature, config, locale) => {
   if (config.tooltip.title.propertyByLocale) {
@@ -67,52 +40,48 @@ export function FeatureContent({
   featureId,
   config, // layer config
   locale,
-  onSetLayerInfo,
   layerData,
   onLoadLayer,
+  supTitle,
+  onSetLayerInfo,
+  isCountry,
+  headerFallback,
 }) {
   useEffect(() => {
     onLoadLayer(config.id, config);
   }, [config]);
   if (!featureId || !config || !layerData) return null;
-  if (POLICY_LAYERS.indexOf(config.id) === -1 || !config.tooltip) {
-    return <LayerContent config={config} />;
-  }
+
   const feature = findFeature(layerData.data.features, featureId);
-  if (!feature) return <LayerContent config={config} />;
-  const supTitle = config.title[locale] || config.title[DEFAULT_LOCALE];
+  if (!feature) return <LayerContent config={config} header={headerFallback} />;
   return (
-    <Styled>
-      <Box
-        direction="row"
-        gap="xxsmall"
-        margin={{ right: 'xlarge', bottom: 'ml', left: '-10px' }}
-      >
-        <BackButton
-          plain
-          onClick={() => onSetLayerInfo(config.id)}
-          icon={<Back />}
-        />
-        <SupTitle
-          onClick={() => onSetLayerInfo(config.id)}
-          label={<Text size="small">{supTitle}</Text>}
-        />
-      </Box>
+    <>
+      <ListItemHeader
+        supTitle={supTitle}
+        onClick={() =>
+          isCountry
+            ? onSetLayerInfo(config.id, 'countries')
+            : onSetLayerInfo(config.id)
+        }
+      />
       <Title>{getTitle(feature, config, locale)}</Title>
-      {POLICY_LAYERS.indexOf(config.id) > -1 && (
+      {isCountry && (
         <CountryPolicyCommitments feature={feature} config={config} />
       )}
-    </Styled>
+    </>
   );
 }
 
 FeatureContent.propTypes = {
-  onSetLayerInfo: PropTypes.func.isRequired,
   onLoadLayer: PropTypes.func,
+  onSetLayerInfo: PropTypes.func,
   config: PropTypes.object,
   featureId: PropTypes.string,
   locale: PropTypes.string,
+  supTitle: PropTypes.string,
+  isCountry: PropTypes.bool,
   layerData: PropTypes.object,
+  headerFallback: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -122,11 +91,11 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetLayerInfo: id => {
-      dispatch(setLayerInfo(id));
-    },
     onLoadLayer: (key, config) => {
       dispatch(loadLayer(key, config));
+    },
+    onSetLayerInfo: (id, view) => {
+      dispatch(setLayerInfo(id, view));
     },
   };
 }

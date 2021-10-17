@@ -3,29 +3,34 @@
  * LayerInfo
  *
  */
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Box, Heading, Text } from 'grommet';
+import { Button, Box, Heading, Text, ResponsiveContext } from 'grommet';
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
-import { ArrowRightL, ArrowDown, ArrowUp } from 'components/Icons';
+import { ArrowRightL, CloseXS } from 'components/Icons';
 
 import { setLayerInfo } from 'containers/App/actions';
+
+import { sortLabels } from 'utils/string';
+import { isMinSize } from 'utils/responsive';
+import formatDate from 'utils/format-date';
+
 import CountryPositionSymbol from './CountryPositionSymbol';
+import TextInput from './TextInput';
+import messages from './messages';
 
 const ListTitle = styled(p => <Heading level={4} {...p} />)`
   font-family: 'wwfregular';
   letter-spacing: 0.1px;
   font-size: 24px;
   line-height: 1;
+  margin-top: 15px;
   margin-bottom: 15px;
   font-weight: normal;
-`;
-const ListTitleCollapsable = styled(ListTitle)`
-  margin: 0 !important;
 `;
 
 const FeatureListWrap = styled(Box)`
@@ -44,88 +49,146 @@ const FeatureButton = styled(p => (
   }
 `;
 
-const TitleButton = styled(Button)`
-  border-bottom: 1px solid ${({ theme }) => theme.global.colors.dark};
-`;
-
-const IconWrap = styled(p => <Box {...p} responsive={false} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.small};
-  margin-left: ${({ stretch }) => (stretch ? 'auto' : 0)};
-  border-radius: 9999px;
-  background: ${({ theme, over, expand }) =>
-    over || expand ? theme.global.colors.light : 'transparent'};
-`;
-
 export function FeatureList({
   title,
   items,
   layerId,
   onSetLayerInfo,
-  collapsable,
   config,
+  isSourceList,
+  search,
+  placeholder,
+  intl,
 }) {
-  const [expand, setExpand] = useState(false);
-  const [over, setOver] = useState(false);
+  const [test, setTest] = useState('');
+  const textInputRef = useRef(null);
+  const { locale } = intl;
+
+  const itemsFiltered =
+    search && test.length > 0
+      ? items.filter(item => search(item, test))
+      : items;
+  // const sorted = itemsFiltered.sort((a, b) => {
+  //   if (a.date && b.date) {
+  //     return new Date(a.date).getTime() > new Date(b.date).getTime() ? -1 : 1;
+  //   }
+  //   return sortLabels(a.label || a.id, b.label || b.id);
+  // });
+  const sorted = itemsFiltered.sort((a, b) =>
+    sortLabels(a.label || a.id, b.label || b.id),
+  );
 
   return (
-    <FeatureListWrap>
-      {collapsable && (
-        <TitleButton
-          plain
-          reverse
-          onClick={() => setExpand(!expand)}
-          onMouseOver={() => setOver(true)}
-          onFocus={() => setOver(true)}
-          onMouseOut={() => setOver(false)}
-          onBlur={() => setOver(false)}
-          label={
+    <ResponsiveContext.Consumer>
+      {size => (
+        <FeatureListWrap>
+          <ListTitle>{title}</ListTitle>
+          {search && (
             <Box
-              justify="between"
               direction="row"
-              pad={{ top: 'small', bottom: 'edge', left: 'xsmall' }}
               align="center"
+              round="xlarge"
+              height="20px"
+              pad={{ horizontal: 'ms', vertical: 'ms' }}
+              margin={{ bottom: 'small' }}
+              background="light"
+              border
               responsive={false}
             >
-              <ListTitleCollapsable>{title}</ListTitleCollapsable>
-              <IconWrap over={over} expand={expand}>
-                {expand ? <ArrowUp /> : <ArrowDown />}
-              </IconWrap>
+              <TextInput
+                plain
+                value={test}
+                onChange={evt => {
+                  if (evt && evt.target) {
+                    setTest(evt.target.value);
+                  }
+                }}
+                placeholder={
+                  placeholder || intl.formatMessage(messages.placeholderDefault)
+                }
+                ref={textInputRef}
+              />
+              {test.length > 0 && (
+                <Button
+                  plain
+                  fill="vertical"
+                  onClick={() => setTest('')}
+                  icon={<CloseXS />}
+                  style={{
+                    textAlign: 'center',
+                    height: '20px',
+                  }}
+                />
+              )}
             </Box>
-          }
-        />
+          )}
+          {sorted.length === 0 && (
+            <Box pad="small">
+              <Text style={{ fontStyle: 'italic' }} color="textSecondary">
+                <FormattedMessage {...messages.noSearchResults} />
+              </Text>
+            </Box>
+          )}
+          {sorted.length > 0 && (
+            <Box>
+              {sorted.map(item => (
+                <FeatureButton
+                  key={item.id}
+                  onClick={() =>
+                    isSourceList
+                      ? onSetLayerInfo(layerId, `source-${item.id}`)
+                      : onSetLayerInfo(layerId, item.id)
+                  }
+                  label={
+                    <Box
+                      direction="row"
+                      justify="between"
+                      pad={{ vertical: 'small', right: 'small', left: 'small' }}
+                      align="center"
+                      responsive={false}
+                      gap="xsmall"
+                    >
+                      <Box
+                        direction="row"
+                        justify="start"
+                        gap="hair"
+                        align="center"
+                      >
+                        {item.position && config && (
+                          <CountryPositionSymbol
+                            position={item.position}
+                            config={config}
+                          />
+                        )}
+                        <Box>
+                          {isSourceList && item.date && (
+                            <Text
+                              size={
+                                isMinSize(size, 'medium')
+                                  ? 'xxsmall'
+                                  : 'xxxsmall'
+                              }
+                              color="textSecondary"
+                            >
+                              {formatDate(
+                                locale,
+                                new Date(item.date).getTime(),
+                              )}
+                            </Text>
+                          )}
+                          <Text>{item.label || item.id}</Text>
+                        </Box>
+                      </Box>
+                      <ArrowRightL />
+                    </Box>
+                  }
+                />
+              ))}
+            </Box>
+          )}
+        </FeatureListWrap>
       )}
-      {!collapsable && <ListTitle>{title}</ListTitle>}
-      {(expand || !collapsable) && (
-        <Box>
-          {items.map(item => (
-            <FeatureButton
-              key={item.id}
-              onClick={() => onSetLayerInfo(layerId, item.id)}
-              label={
-                <Box
-                  direction="row"
-                  justify="between"
-                  pad={{ vertical: 'small', right: 'small', left: 'small' }}
-                  align="center"
-                  responsive={false}
-                >
-                  <Box direction="row" justify="start" gap="small">
-                    {item.position && config && (
-                      <CountryPositionSymbol
-                        position={item.position}
-                        config={config}
-                      />
-                    )}
-                    <Text>{item.label}</Text>
-                  </Box>
-                  <ArrowRightL />
-                </Box>
-              }
-            />
-          ))}
-        </Box>
-      )}
-    </FeatureListWrap>
+    </ResponsiveContext.Consumer>
   );
 }
 
@@ -135,7 +198,10 @@ FeatureList.propTypes = {
   config: PropTypes.object,
   layerId: PropTypes.string,
   title: PropTypes.string,
-  collapsable: PropTypes.bool,
+  isSourceList: PropTypes.bool,
+  placeholder: PropTypes.string,
+  search: PropTypes.func,
+  intl: intlShape.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
@@ -151,4 +217,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(FeatureList);
+export default compose(withConnect)(injectIntl(FeatureList));

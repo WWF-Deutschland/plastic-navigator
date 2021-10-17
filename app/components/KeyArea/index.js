@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const Styled = styled.div`
   background: white;
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   overflow: hidden;
 `;
 

@@ -231,6 +231,7 @@ const Tooltip = ({
   const markerSize = getMarkerSize(config, feature, layerOptions);
   const offset = getOffset(config, feature, markerSize);
   const layer = layerOptions ? layerOptions.layer : null;
+
   // prettier-ignore
   return (
     <Root position={position}>
@@ -261,12 +262,16 @@ const Tooltip = ({
                     </Box>
                   }
                   onClick={() => {
+                    const id = config['content-default'] || config.id;
                     onFeatureClick({
-                      feature: feature.properties.f_id,
-                      copy: layerOptions ? layerOptions.copy : null,
                       layer: layer && config.data['layer-id']
-                        ? `${config.id}-${layer[config.data['layer-id']]}`
-                        : config.id,
+                        ? `${id}-${layer[config.data['layer-id']]}`
+                        : id,
+                      feature:
+                        feature.properties.code_sovereign ||
+                        feature.properties.code ||
+                        feature.properties.f_id,
+                      copy: layerOptions ? layerOptions.copy : null,
                     });
                   }}
                 />

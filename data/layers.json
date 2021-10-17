@@ -337,6 +337,7 @@
   },
   {
     "id": "policy-commitments-area",
+    "alternate": "policy-commitments",
     "z-index": "20",
     "category": "policy",
     "group": "policy",

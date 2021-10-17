@@ -13,8 +13,7 @@ import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { Button, Box } from 'grommet';
 import Markdown from 'react-remarkable';
-import { deburr } from 'lodash/string';
-import { lowerCase, prepMarkdown } from 'utils/string';
+import { sortLabels, prepMarkdown } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG } from 'config';
@@ -141,11 +140,7 @@ export function ProjectContent({
                     l[`location_title_${locale}`] ||
                     l[`location_title_${DEFAULT_LOCALE}`],
                 }))
-                .sort((a, b) =>
-                  deburr(lowerCase(a.label)) > deburr(lowerCase(b.label))
-                    ? 1
-                    : -1,
-                )}
+                .sort((a, b) => sortLabels(a.label, b.label))}
             />
           )}
           {exists(projectLink) && (

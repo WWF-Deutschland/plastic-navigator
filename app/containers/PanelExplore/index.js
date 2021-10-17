@@ -20,9 +20,8 @@ import {
   ResponsiveContext,
 } from 'grommet';
 import { Close, ExploreS as Layer } from 'components/Icons';
-import { deburr } from 'lodash/string';
 import { getAsideWidth } from 'utils/responsive';
-import { lowerCase, startsWith } from 'utils/string';
+import { sortLabels, startsWith } from 'utils/string';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -279,7 +278,7 @@ export function PanelExplore({
                             const titleB =
                               b[`project_title_${locale}`] ||
                               b[`project_title_${DEFAULT_LOCALE}`];
-                            return deburr(lowerCase(titleA)) > deburr(lowerCase(titleB)) ? 1 : -1;
+                            return sortLabels(titleA, titleB);
                           })
                         }
                         projects

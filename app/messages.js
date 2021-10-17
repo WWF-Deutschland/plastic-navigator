@@ -28,9 +28,17 @@ export default defineMessages({
     id: `${scope}.module_stories`,
     defaultMessage: 'Intro',
   },
+  module_policy: {
+    id: `${scope}.module_policy`,
+    defaultMessage: 'Policy',
+  },
   module_explore_metaTitle: {
     id: `${scope}.module_explore_metaTitle`,
     defaultMessage: 'Explore',
+  },
+  module_policy_metaTitle: {
+    id: `${scope}.module_policy_metaTitle`,
+    defaultMessage: 'Policy',
   },
   module_stories_metaTitle: {
     id: `${scope}.module_stories_metaTitle`,
@@ -58,6 +66,10 @@ export default defineMessages({
   },
   countries: {
     id: `${scope}.countries`,
-    defaultMessage: 'Countries',
+    defaultMessage: '{count} countries',
+  },
+  sources: {
+    id: `${scope}.sources`,
+    defaultMessage: '{count} statements',
   },
 });

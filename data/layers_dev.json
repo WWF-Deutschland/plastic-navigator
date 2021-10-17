@@ -1,0 +1,596 @@
+[
+  {
+    "id": "basemap",
+    "z-index": "0",
+    "source": "mapbox",
+    "type": "vector-tiles",
+    "style-id": "ckeirl16751xx19lz4pmf7ow8",
+    "title": {
+      "en": "Basemap",
+      "de": "Basiskarte"
+    },
+    "about": {
+      "en": "The basemap",
+      "de": "Die Basiskarte"
+    },
+    "attribution": {
+      "author": "Mapbox"
+    }
+  },
+  {
+    "id": "surface-concentration",
+    "content-id": "surface-concentration",
+    "z-index": "-1",
+    "category": "plastic",
+    "group": "destination",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "wwfdeutschland.6z31vvpw",
+    "title": {
+      "en": "Floating plastic concentration",
+      "de": "Konzentration von treibendem Plastik an der Meeresoberfläche"
+    },
+    "about": {
+      "en": "The visualisation shows the estimated concentration of floating plastic waste by weight. The darker the colour, the higher the estimated concentration of floating plastic debris is.",
+      "de": "Die Karte stellt die geschätzte Konzentration von an der Meeresoberfläche treibendem Plastik nach Gewicht dar. Je dunkler die Farbe, desto höher die Konzentration."
+    },
+    "attribution": {
+      "author": "Eriksen M, Lebreton LCM, Carson HS, Thiel M, Moore CJ, Borerro JC, Galgani F, Ryan PG, Reisser J.",
+      "year": "2014",
+      "title": "Plastic pollution in the world's oceans: more than 5 trillion plastic pieces weighing over 250,000 tons afloat at sea.",
+      "publication": "PLoS ONE 9, 12",
+      "url": "https://doi.org/10.1371/journal.pone.0111913"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "g per km<sup>2</sup>",
+        "de": "g pro km<sup>2</sup>"
+      },
+      "unit-short": {
+        "en": "g/km<sup>2</sup>",
+        "de": "g/km<sup>2</sup>"
+      },
+      "unit-additional": {
+        "en": "Items measuring 0.33 mm and more",
+        "de": "Mindestgröße der Teile: 0,33 mm"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "true",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#f6f1f8"
+        },
+        {
+          "value": 10,
+          "color": "#e1d5e5"
+        },
+        {
+          "value": 100,
+          "color": "#cabad2"
+        },
+        {
+          "value": 1000,
+          "color": "#987da5"
+        },
+        {
+          "value": 10000,
+          "color": "#643f74"
+        },
+        {
+          "value": 100000,
+          "color": "#402d49"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mismanaged-waste",
+    "category": "plastic",
+    "z-index": "10",
+    "group": "source",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "wwfdeutschland.cqel1laq",
+    "title": {
+      "en": "Mismanaged plastic waste",
+      "de": "Mangelhafte Entsorgung von Plastikmüll"
+    },
+    "about": {
+      "en": "The visualisation shows the global estimated annual mismanaged plastic waste generation. The darker the colour the higher the estimated amount of mismanaged waste is.",
+      "de": "Die Karte zeigt die geschätzte Menge von mangelhaft entsorgtem Plastikmüll pro km². Je dunkler die Farbe, desto höher das Müllaufkommen und die mögliche Verschmutzung der Umwelt."
+    },
+    "attribution": {
+      "author": "Lebreton LCM, Andrady A",
+      "year": "2019",
+      "title": "Future scenarios of global plastic waste generation and disposal",
+      "publication": "Palgrave Communications 5, 6",
+      "url": "https://doi.org/10.1057/s41599-018-0212-7"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "kg per year and km²",
+        "de": "kg pro Jahr und km²"
+      },
+      "unit-short": {
+        "en": "kg/yr/km²",
+        "de": "kg/Jahr/km²"
+      }
+    },
+    "key": {
+      "scale": "log",
+      "type": "continuous",
+      "exceed": "top",
+      "stops": [
+        {
+          "value": 1,
+          "color": "#fcecdd"
+        },
+        {
+          "value": 10,
+          "color": "#ffd5b0"
+        },
+        {
+          "value": 100,
+          "color": "#fbaf68"
+        },
+        {
+          "value": 1000,
+          "color": "#f07d00"
+        },
+        {
+          "value": 10000,
+          "color": "#b64309"
+        },
+        {
+          "value": 100000,
+          "color": "#531510"
+        }
+      ]
+    }
+  },
+  {
+    "id": "river-emissions",
+    "category": "plastic",
+    "group": "source",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/river-emissions-122.json",
+    "title": {
+      "en": "River plastic emissions (top 122)",
+      "de": "Plastikeinträge durch Flüsse ins Meer (Top 122)"
+    },
+    "title-short": {
+      "en": "River emissions",
+      "de": "Flusseinträge"
+    },
+    "about": {
+      "en": "The circles visualise the estimated annual plastic emissions for the 122 most polluting rivers. Larger circles represent rivers estimated to contribute larger amounts of plastic.",
+      "de": "Die Kreise zeigen die geschätzten jährlichen Plastikeinträge der 122 am meisten verschmutzenden Flüsse. Je höher der jeweilige Eintrag, desto größer der Kreis."
+    },
+    "attribution": {
+      "author": "Lebreton LCM, van der Zwet J, Damsteeg J-W, Slat B, Andrady A, Reisser J",
+      "year": "2017",
+      "title": "River plastic emissions to the world’s oceans",
+      "publication": "Nature Communications 8, 15611",
+      "url": "https://doi.org/10.1038/ncomms15611"
+    },
+    "data": {
+      "type": "weight",
+      "unit": {
+        "en": "tonnes per year",
+        "de": "Tonnen pro Jahr"
+      },
+      "unit-short": {
+        "en": "t/yr",
+        "de": "t/Jahr"
+      }
+    },
+    "render": {
+      "type": "scaledCircle",
+      "min": "2",
+      "max": "30",
+      "attribute": "i_mid",
+      "exponent": "0.5"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Estimated plastic emissions",
+        "de": "Geschätzter Plastikeintrag"
+      },
+      "title": {
+        "property": "i_mid",
+        "type": "number",
+        "units": "true"
+      }
+    },
+    "style": {
+      "color": "#000A40",
+      "weight": "0.5",
+      "fillColor": "#000A40",
+      "fillOpacity": "0.3"
+    },
+    "key": {
+      "title": {
+        "en": "Annual emissions",
+        "de": "Jährlicher Eintrag"
+      },
+      "values": [100000],
+      "radius-simple": {
+        "less": 5,
+        "more": 20
+      }
+    }
+  },
+  {
+    "id": "currents",
+    "category": "plastic",
+    "group": "hydro",
+    "source": "mapbox",
+    "type": "raster-tiles",
+    "tileset": "wwfdeutschland.241dtqaj",
+    "title": {
+      "en": "Ocean surface currents",
+      "de": "Oberflächenströmungen der Meere"
+    },
+    "title-short": {
+      "en": "Surface currents",
+      "de": "Strömungen an der Oberfläche"
+    },
+    "about": {
+      "en": "The arrows show the direction of our ocean's prevailing currents. They play a major role in determining the movements and fate of marine plastic pollution.",
+      "de": "Die Pfeile zeigen Richtung und Lage der vorherrschenden Oberflächenströmungen, die ein entscheidender Faktor für die Verteilung von Plastikmüll in unseren Ozeanen sind."
+    },
+    "style": {
+      "opacity": "0.3"
+    },
+    "key": {
+      "icon": {
+        "backgroundOnDark": "#DBD1DE",
+        "datauri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAABYlAAAWJQFJUiTwAAACKUlEQVRoge2agVECMRBF/7cB7UBLwAqkBDqQDrQESsAOsALpQOxAKhAqUCpYJzMbPS+n4pHbxJA/k2EuyUHebHLZ/IMigmPSyVHRVuAjUAUuXRW4dFXg0lWBS1cFLl3ZAZO8IDkOGiIpxwhfAHgkuSE5JXkW9DhA2Z2HFfC1UbUDsAQwE5FNcMNfvz9HA4Dkd4N6AjAXkWXQsqdyXMMTjWqXrgA8kHzuaNtL2QDrenVT9gHAadDhU2sA06B2X7kpnbIAGAFwoLJHWQA4O2S8QYVl0Ug1QVcA3JY0a9W/ub4xxhZUWJUWrAMafwwKmDTa3HodxRpXUGFRNIpNoC/TtNF+8BRODuwANKKiazcA0j5RpnC7mO/DJOcAbvTyUkR6bzG9ft8S2OXJAF708k5EboNOA8t6H/b7506fxOayBvYRXYrIW9BqIDNgTRl9BpUkujCO8EQ/1zFOPX2VAngRtBjKBLg1nXsf7WLIKsI+utuU0xmGwN6jShpdWACrIXeul0nXL4wi7JONrXUa2aVBgdWQu9bL5NGFQYSbufI8aE2gwYD1oOCB71Olkm0NdloiuVKXcaeORdLtyGuQCJNcKCxiGejR1OUKHOhoLBr2zbKrT8oSE3Ss/tS3XtW/B/bek9qrTVs1uvmWFFjN8zakN+UmXffkUno9pVveFPT1h3vJlUVy8ZN6b0skZxrRVVZP4V9U/y9duipw6arApasCl64KXLoqcNEC8A4wpRGm+65itQAAAABJRU5ErkJggg=="
+      },
+      "title": {
+        "en": "Prevailing current",
+        "de": "Vorherrschende Strömung"
+      },
+      "title-short": {
+        "en": "Prevailing current",
+        "de": "Vorherrsch. Strömung"
+      }
+    }
+  },
+  {
+    "id": "gyres",
+    "category": "plastic",
+    "group": "hydro",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/gyres.json",
+    "title": {
+      "en": "The 5 principal gyres",
+      "de": "Die fünf großen Meereswirbel"
+    },
+    "title-short": {
+      "en": "Gyres",
+      "de": "Meereswirbel"
+    },
+    "about": {
+      "en": "The icons show the approximate centres of the 5 major rotating current systems that trap much of the floating plastic and push it towards their centres.",
+      "de": "Die Markierungen zeigen das ungefähre Zentrum der fünf großen Meereswirbel, die einen Großteil des treibenden Plastiks mitnehmen und in Richtung Mitte befördern."
+    },
+    "attribution": {
+      "author": {
+        "en": "Author’s own graphic",
+        "de": "Eigene Darstellung"
+      },
+      "year": "2020"
+    },
+    "data": {
+      "type": "location",
+      "feature-type": "Point"
+    },
+    "render": {
+      "type": "marker"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Gyre",
+        "de": "Meereswirbel"
+      },
+      "title": {
+        "propertyByLocale": {
+          "en": "name_en",
+          "de": "name_de"
+        }
+      }
+    },
+    "key": {
+      "title": {
+        "en": "Approximate centre of gyre",
+        "de": "Ungefähres Zentrum des Meereswirbels"
+      },
+      "title-short": {
+        "en": "Centre of gyre",
+        "de": "Zentrum des Meereswirbels"
+      }
+    },
+    "icon": {
+      "datauri": {
+        "default": "data:image/png;base64,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",
+        "active": "data:image/png;base64,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",
+        "hover": "data:image/png;base64,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"
+      },
+      "flip": {
+        "latitude": "south"
+      },
+      "size": {
+        "x": "42",
+        "y": "40"
+      },
+      "align": "bottom"
+    }
+  },
+  {
+    "id": "policy-commitments-area",
+    "content-id": "policy-commitments-dev",
+    "alternate": "policy-commitments",
+    "z-index": "20",
+    "category": "policy",
+    "group": "policy",
+    "source": "data",
+    "type": "topojson",
+    "title": {
+      "en": "Country’s level of support for treaty",
+      "de": "Positionierungen für ein Abkommen nach Ländern"
+    },
+    "title-short": {
+      "en": "Country’s level of support",
+      "de": "Grad an Engagement nach Ländern"
+    },
+    "about": {
+      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
+      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
+    },
+    "file": "layers/country-areas-topo.json",
+    "properties": {
+      "featuresWithoutProperties": "true",
+      "file": "layers/policy/country-positions.csv",
+      "type": "csv",
+      "join": {
+        "self": "country_code",
+        "related": "code",
+        "as": "positions",
+        "default": [
+          {
+            "position_id": "0"
+          }
+        ]
+      },
+      "extend": [
+        {
+          "file": "layers/policy/positions.csv",
+          "type": "csv",
+          "join": {
+            "as": "position",
+            "self": "id",
+            "related": "position_id"
+          }
+        },
+        {
+          "file": "layers/policy/sources.csv",
+          "type": "csv",
+          "join": {
+            "as": "source",
+            "self": "id",
+            "related": "source_id"
+          }
+        }
+      ]
+    },
+    "data": {
+      "type": "area",
+      "feature-type": "Polygon"
+    },
+    "render": {
+      "type": "area"
+    },
+    "featureStyle": {
+      "multiple": "true",
+      "multiplePriority": ["1", "2", "0"],
+      "property": "positions.position_id",
+      "style": {
+        "fillColor": {
+          "1": "#007731",
+          "2": "#8CC63F",
+          "0": "#dddddd"
+        },
+        "color": {
+          "1": "#007731",
+          "2": "#8CC63F",
+          "0": "#bbbbbb"
+        }
+      }
+    },
+    "key": {
+      "values": ["1", "2", "0"],
+      "title": {
+        "1": {
+          "en": "Publicly called for new agreement",
+          "de": "Öffentlich für Abkommen ausgesprochen"
+        },
+        "2": {
+          "en": "Agreed to consider option of agreement",
+          "de": "Bereitschaft, Abkommen zu prüfen"
+        },
+        "0": {
+          "en": "No public statement of support recorded",
+          "de": "Kein Statement für Abkommen bekannt"
+        }
+      }
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Country’s level of support",
+        "de": "Grad an Engagement nach Ländern"
+      },
+      "values": ["1", "2"],
+      "property": "positions.position_id",
+      "title": {
+        "propertyByLocale": {
+          "en": "name_en",
+          "de": "name_de"
+        }
+      },
+      "content": {
+        "multiple": "true",
+        "multiplePriority": ["1", "2"],
+        "property": "positions.position_id",
+        "propertyByLocale": {
+          "en": "positions.position.position_en",
+          "de": "positions.position.position_en"
+        }
+      },
+      "more": "true"
+    },
+    "info": {
+      "values": ["1", "2"],
+      "property": "positions.position_id"
+    }
+  },
+  {
+    "id": "policy-commitments",
+    "content-id": "policy-commitments-dev",
+    "content-default": "policy-commitments-area",
+    "category": "policy",
+    "group": "policy",
+    "source": "data",
+    "type": "geojson",
+    "file": "layers/country-points.json",
+    "properties": {
+      "featuresWithoutProperties": "false",
+      "file": "layers/policy/country-positions.csv",
+      "type": "csv",
+      "join": {
+        "self": "country_code",
+        "related": "code",
+        "as": "positions"
+      },
+      "extend": [
+        {
+          "file": "layers/policy/positions.csv",
+          "type": "csv",
+          "join": {
+            "as": "position",
+            "self": "id",
+            "related": "position_id"
+          }
+        },
+        {
+          "file": "layers/policy/sources.csv",
+          "type": "csv",
+          "join": {
+            "as": "source",
+            "self": "id",
+            "related": "source_id"
+          }
+        }
+      ]
+    },
+    "title": {
+      "en": "Country’s level of support for treaty (shown as markers)",
+      "de": "Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)"
+    },
+    "about": {
+      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
+      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
+    },
+    "data": {
+      "type": "location",
+      "feature-type": "Point"
+    },
+    "render": {
+      "type": "marker"
+    },
+    "tooltip": {
+      "supTitle": {
+        "en": "Country’s level of support",
+        "de": "Grad an Engagement nach Ländern"
+      },
+      "title": {
+        "propertyByLocale": {
+          "en": "name_en",
+          "de": "name_de"
+        }
+      },
+      "content": {
+        "multiple": "true",
+        "multiplePriority": ["1", "2"],
+        "property": "positions.position_id",
+        "propertyByLocale": {
+          "en": "positions.position.position_en",
+          "de": "positions.position.position_en"
+        }
+      },
+      "more": "true"
+    },
+    "key": {
+      "iconValue": {
+        "simple": "2",
+        "full": ["1", "2"]
+      },
+      "style": {
+        "property": "positions.position_id",
+        "type": "circle",
+        "fillColor": {
+          "1": "#007731",
+          "2": "#8CC63F"
+        }
+      },
+      "iconTitle": {
+        "simple": {
+          "en": "positions.position.position_short_en",
+          "de": "positions.position.position_short_en"
+        },
+        "full": {
+          "1": {
+            "en": "Publicly called for new agreement",
+            "de": "Öffentlich für Abkommen ausgesprochen"
+          },
+          "2": {
+            "en": "Agreed to consider option of agreement",
+            "de": "Bereitschaft, Abkommen zu prüfen"
+          }
+        }
+      }
+    },
+    "icon": {
+      "multiple": "true",
+      "multiplePriority": ["1", "2"],
+      "property": "positions.position_id",
+      "size": {
+        "x": "28",
+        "y": "30"
+      },
+      "datauri": {
+        "default": {
+          "1": "data:image/png;base64,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",
+          "2": "data:image/png;base64,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"
+        },
+        "active": {
+          "1": "data:image/png;base64,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",
+          "2": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA8CAYAAAAzF3kIAAAACXBIWXMAABYlAAAWJQFJUiTwAAAGVUlEQVRoge1bW2xUVRRdM1NqG2rEWkMZMCYi0KrERyyUD2tiIiJNFB8JxaiRGPxRjFpfCfjhK6Axfojxp5KoHwqJkvhRP0rCR4kJDcbGSB+A1aBQSsQWbQml7XTMHs4uZ/Z53DvMnZmksJLJvo9z797rrnPPuXfvO7F0Oo1LQSwWi4nDgtbDQgaUtZ7OMeC4sWWWoSwsHY9iYW0QWBmv5TDCKnlFQU05aeMhrTxOQio2rWzKsc5xXTgoQMnLV0GLclKxhDhHmdieEO1nTq1skHJTwsbE/kz7ICUvPwU9yknF5ihbLtZ5fzWAegCNABYCWCRcnQBwHEAXgD4AI2o7Kzap7ISIR8KrpDHRR0CwBcADAO43QvFjr/rtchCcENvlIJT2EgxBTBK6SthNAJ4BkPTSCMYggC8BfK5anld23EHYSzQKgvcC+Eh1wyhBXfg1AJ15EbTMU2xlV2RCFZrdCGCLjVRySRUammuRXDIXi++cZ+wnDHSfweDRszjYPoTBo2PGfoX3AXwB4Jwgyspyl+V7N2t0zofgJwAeldEQqdXP3ohrayvkLi9GhsbRsfNYhqwFewC8mC9BV5eUxCoBfCjJkWItby1D8uYqM7wcMPjbGHa9e9imKJF8Q1OSrSSa1WUTFuVcoybbtwFs0D2Taps+Xo6rq8uRL+gcqx5JYmTovCRJU841APapdVbMeg+yTShCMc0y6XK1rUJtI+UeBLBV99qytS7TJaPGbU01qF5QiUOdp/Uz3wHgCIBjilBC2biyMUVsRjSfgvIevA7AN1qXxT3rF+G+p26InByDuv25sRT+7PlP30yj9tcAWF6vkglBLKYIxS0KfgDgdvay+K55ePKdeiOoqFHXWI2B7n8xcpLHlswFrgXQoeJKaQpKJUM/i9Jj1jpeqawqw8bttxqNCgXyRT41rLM8+lkR10bSmHYvxtXVSaiu2qofTF2zosp4jC0YyBf5FKAnpzItzriNT1gFV+vqNa2P+qElGORTqPh4mON0gi4l19DozY3ubq4tqnoM8km+NVBMa1zK2Qi6sFLf3tA839Gs8LD4Xhnk1EZQXomZoZK6SL5PKvmAfItuWm+JN5CgxApeTy4tHTlHDCuMBgI+gsYVoYm31LDEYMSpw0fQQGUJBpd8Y5j1SacrBHXQS2mpkWsMYQiO8sLwydITFDGMGg0EbATT4tfHOwZ+PmM0LjZEDH2WeLNgIyjRpa/37D9tNCgWLL67glzrBOWVmFa/Dv2AQ53/GCcpFiy+O7Q4rUqGUbBX5SgzoKxXKQYb8ikybhRTr9FQIG5hPi1+9Ma8Uz+M0nvFhsUnxZSyxJvFJ+w08a0+YtGVpKRtsUC+hHqjKqZA2O5BvhJT2m8YwA79ZLvfO4zxsamCUyQf5Etgh4pJj1EqmEEuEz0VRPp5heajz57/xWgUNciHmPv6VSyhkNCW9fQh5xanRcaqG8BDnDocHZ7IZLyWN9WgrDzapz5Sru2VX2XKkLrmcwCGVEZ7WhVhuMelfWlDV2Z7jmb/BvAXgLXskdJ5/QdGULeqOrK3DRox2142yBFeBfCjWpY1icC8KCOm9WHOMaY0+4caomcKnKTkT+2nMDWRzuRL8wGNlnTPWaai1wF8r5RLaXYSF0d7XcEMbNUlWZPgTHalslyE2aBKW1moXlCRSfE1rJ0fOjlF3fHgD6ewf/dx1/PuFpVVh1ZdksUXqaSzAOrqolxZYYJE/BYAba6qLqlJtcGFS+caZInUiSNnM1OA5xl3UOU/ez2VXmtVyVfhzYUg4XoALwB42ggvP3wF4FN13yNKgq5CqKsgysRvUkVKoyiaI/ao4urvgoir4GktfBaCIK/XAHgTwMM5EqMBZDsAfmVgQtEQZHiIugqikiB34XYAywwadtCjSrPaI0vUTFASyhpMXJ+RFDInsznMG7dqs9nYGhEMBRkeJV0lbtsg1KiKlT48AeCAZxDxTuQu5RiFzqpR4NuMrRexTbUpGJwKMjxf+ob9UKhczZXy0669ao6Tg4h3+M/1G+5i5UVb9eSVWm41WhUAob+6z0FJOZ2wpfr+d2r5MQD8rjUpbNA9d2ElZODFLDb0AHhJWy4KovjfhOuLYPkFsLwdXF/4TgvrHSWDMOtrE5es4MwJTCVdisp7WH6rndP8FhazW0EA/wOksomDmxNkDgAAAABJRU5ErkJggg=="
+        },
+        "hover": {
+          "1": "data:image/png;base64,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",
+          "2": "data:image/png;base64,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"
+        }
+      }
+    },
+    "align": "bottom"
+  }
+]
