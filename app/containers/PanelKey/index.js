@@ -253,9 +253,14 @@ export function PanelKey({
   const keyULRef = useRef(null);
   const keyWrapperRef = useRef(null);
 
-  // update active layer when new layers are added
+  // update key when new layers are added or previous layer has become invalid
   useEffect(() => {
-    if (!active || activeLayerIds.length !== activeLength) {
+    if (
+      // any manual change will lead to a different number of active layers
+      activeLayerIds.length !== activeLength ||
+      // programamtic changes may lead an invalid active no longer listed
+      activeLayerIds.indexOf(active) < 0
+    ) {
       const latestActive = activeLayerIds[0];
       const isProject = startsWith(latestActive, `${PROJECT_CONFIG.id}-`);
       if (isProject) {
@@ -264,14 +269,19 @@ export function PanelKey({
         setActive(latestActive);
       }
       setKeyIconOffset(0);
+      setActiveLength(activeLayerIds.length);
     }
-    setActiveLength(activeLayerIds.length);
-  }, [activeLayerIds, activeLength]);
+  }, [activeLayerIds]);
 
   const { locale } = intl;
   const allConfig = layersConfig && [...layersConfig, PROJECT_CONFIG];
-  const config = active && allConfig && allConfig.find(l => l.id === active);
-  const isActiveProject = active === PROJECT_CONFIG.id;
+  let activeContent = active || activeLayerIds[0];
+  if (startsWith(activeContent, `${PROJECT_CONFIG.id}-`)) {
+    activeContent = PROJECT_CONFIG.id;
+  }
+  const config =
+    activeContent && allConfig && allConfig.find(l => l.id === activeContent);
+  const isActiveProject = activeContent === PROJECT_CONFIG.id;
 
   let hasAlreadyProject = false;
   const cleanActiveLayerIds =
@@ -318,12 +328,12 @@ export function PanelKey({
                     return (
                       <KeyLI key={id}>
                         <ButtonKey
-                          activeLayer={open && id === active}
+                          activeLayer={open && id === activeContent}
                           onClick={() => {
                             onSetOpen(true);
                             setActive(id);
                           }}
-                          disabled={open && id === active}
+                          disabled={open && id === activeContent}
                         >
                           {conf && <KeyIcon config={conf} />}
                         </ButtonKey>
