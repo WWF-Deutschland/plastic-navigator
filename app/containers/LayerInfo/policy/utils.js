@@ -1,6 +1,8 @@
 import { sortLabels } from 'utils/string';
 import asArray from 'utils/as-array';
 import quasiEquals from 'utils/quasi-equals';
+import formatDate from 'utils/format-date';
+
 import { DEFAULT_LOCALE } from 'i18n';
 
 export const sortPositions = (positions, config) =>
@@ -412,3 +414,70 @@ export const getCountryPositionsOverTimeFromCountryFeatures = (
   }, {});
   return positionsByDate;
 };
+
+// target structure
+// const datas = [
+//   {
+//     cell1: 'row 1 - cell 1',
+//     cell2: 'row 1 - cell 2',
+//   },
+//   {
+//     cell1: 'row 2 - cell 1',
+//     cell2: 'row 2 - cell 2',
+//   },
+// ];
+//
+// source structure
+// sources = {
+//   ID: {
+//     countries: [
+//       { country: attributes, ... }
+//       ...
+//     ],
+//     position: {
+//       position: { position: atttributes, ... },
+//       position_id: id,
+//       ...
+//     },
+//     source: attributes,
+//     ...
+//   }
+//   ...
+// }
+//
+export const getFlatCSVFromSources = (sources, locale) =>
+  Object.keys(sources).reduce((memo, sourceId) => {
+    const source = sources[sourceId];
+    const { position } = source.position;
+    // the position attributes
+    const positionAttributes = {
+      position_id: position.id,
+      position: getPositionLabel(position, locale),
+    };
+    // the source attributes
+    const sourceAttributes = {
+      source_id: sourceId,
+      source_date: formatDate(locale, new Date(source.date).getTime()),
+      source_title:
+        source[`title_${locale}`] && source[`title_${locale}`].trim() !== ''
+          ? source[`title_${locale}`]
+          : source[`title_${DEFAULT_LOCALE}`],
+      source_name:
+        source[`source_${locale}`] && source[`source_${locale}`].trim() !== ''
+          ? source[`source_${locale}`]
+          : source[`source_${DEFAULT_LOCALE}`],
+      source_statement:
+        source[`quote_${locale}`] && source[`quote_${locale}`].trim() !== ''
+          ? source[`quote_${locale}`]
+          : source[`quote_${DEFAULT_LOCALE}`],
+      source_url: source.url,
+      source_country_count: source.countries.length,
+    };
+    const sourceCountries = source.countries.map(country => ({
+      country_code: country.id,
+      country: country.label,
+      ...positionAttributes,
+      ...sourceAttributes,
+    }));
+    return memo.concat(sourceCountries);
+  }, []);

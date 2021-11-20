@@ -22,6 +22,7 @@ import {
   MarkSeries,
   Hint,
 } from 'react-vis';
+import CsvDownloader from 'react-csv-downloader';
 
 import { ArrowRightL } from 'components/Icons';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -48,6 +49,7 @@ import {
   getCountryPositionsOverTimeFromCountryFeatures,
   getSourceCountFromPositions,
   getSourcesFromCountryFeaturesWithPosition,
+  getFlatCSVFromSources,
 } from './utils';
 import messages from '../messages';
 import {
@@ -186,6 +188,7 @@ export function CountryChart({
     config,
     layer.data.features,
   );
+
   // prettier-ignore
   const currentDate =
     !mouseOverSource && mouseOver && nearestXDate && positionsOverTime[nearestXDate]
@@ -228,6 +231,9 @@ export function CountryChart({
 
   const activeSource = mouseOverSource && sources[mouseOverSource.sid];
   // console.log(activeSource)
+  // console.log(getFlatCSVFromSources(sources, locale))
+  console.log(sources);
+
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -583,6 +589,11 @@ export function CountryChart({
                   />
                 </Box>
               )}
+              <CsvDownloader
+                wrapColumnChar={`"`}
+                datas={() => getFlatCSVFromSources(sources, locale)}
+                filename={`country-positions_${locale}_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`}
+              />
             </Box>
           )}
         </Styled>
