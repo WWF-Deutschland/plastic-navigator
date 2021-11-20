@@ -37,18 +37,18 @@ import saga from 'containers/Map/saga';
 import { useInjectSaga } from 'utils/injectSaga';
 import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
+
+import KeyArea from 'components/KeyArea';
+import KeyLabel from 'components/KeyFull/KeyLabel';
+
+import coreMessages from 'messages';
 import {
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
   getCountryPositionsOverTimeFromCountryFeatures,
   getSourceCountFromPositions,
   getSourcesFromCountryFeaturesWithPosition,
-} from 'utils/policy';
-
-import KeyArea from 'components/KeyArea';
-import KeyLabel from 'components/KeyFull/KeyLabel';
-
-import coreMessages from 'messages';
+} from './utils';
 import messages from '../messages';
 import {
   prepChartKey,

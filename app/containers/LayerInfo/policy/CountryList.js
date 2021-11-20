@@ -13,7 +13,6 @@ import { intlShape, injectIntl } from 'react-intl';
 
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
-import { featuresToCountriesWithStrongestPosition } from 'utils/policy';
 import { filterCountries } from 'utils/string';
 
 import saga from 'containers/Map/saga';
@@ -23,6 +22,7 @@ import { loadLayer } from 'containers/Map/actions';
 import { setLayerInfo } from 'containers/App/actions';
 
 import coreMessages from 'messages';
+import { featuresToCountriesWithStrongestPosition } from './utils';
 
 import ListItemHeader from '../ListItemHeader';
 import FeatureList from '../FeatureList';
