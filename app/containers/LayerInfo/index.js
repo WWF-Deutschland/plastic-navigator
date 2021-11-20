@@ -27,13 +27,14 @@ import { showLayerInfoModule } from 'containers/App/actions';
 
 import { Close } from 'components/Icons';
 
+import CountryChart from './policy/CountryChart';
+import CountryList from './policy/CountryList';
+import SourceList from './policy/SourceList';
+import SourceContent from './policy/SourceContent';
+import CountryFeatureContent from './policy/CountryFeatureContent';
 import LayerContent from './LayerContent';
-import CountryList from './CountryList';
-import SourceList from './SourceList';
-import CountryChart from './CountryChart';
 import ProjectContent from './ProjectContent';
 import FeatureContent from './FeatureContent';
-import SourceContent from './SourceContent';
 import Alternates from './Alternates';
 import TitleIcon from './TitleIcon';
 import TitleIconPolicy from './TitleIconPolicy';
@@ -154,12 +155,19 @@ export function LayerInfo({
                     location={layerView}
                   />
                 )}
-                {type === 'feature' && config && (
+                {type === 'feature' && !isCountry && config && (
                   <FeatureContent
                     featureId={layerView}
                     config={config}
                     supTitle={title}
-                    isCountry
+                    headerFallback={<TitleIcon title={title}/>}
+                  />
+                )}
+                {type === 'feature' && isCountry && config && (
+                  <CountryFeatureContent
+                    featureId={layerView}
+                    config={config}
+                    supTitle={title}
                     headerFallback={
                       isModule
                         ? <TitleIconPolicy title={title}/>

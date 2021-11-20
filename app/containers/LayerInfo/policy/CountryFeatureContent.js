@@ -20,9 +20,10 @@ import { loadLayer } from 'containers/Map/actions';
 
 import { getPropertyByLocale } from 'containers/Map/utils';
 
-import Title from './Title';
-import LayerContent from './LayerContent';
-import ListItemHeader from './ListItemHeader';
+import Title from '../Title';
+import LayerContent from '../LayerContent';
+import ListItemHeader from '../ListItemHeader';
+import CountryPolicyCommitments from './CountryPolicyCommitments';
 
 const getTitle = (feature, config, locale) => {
   if (config.tooltip.title.propertyByLocale) {
@@ -35,7 +36,7 @@ const getTitle = (feature, config, locale) => {
   return config.tooltip.title[locale];
 };
 
-export function FeatureContent({
+export function CountryFeatureContent({
   featureId,
   config, // layer config
   locale,
@@ -56,14 +57,15 @@ export function FeatureContent({
     <>
       <ListItemHeader
         supTitle={supTitle}
-        onClick={() => onSetLayerInfo(config.id)}
+        onClick={() => onSetLayerInfo(config.id, 'countries')}
       />
       <Title>{getTitle(feature, config, locale)}</Title>
+      <CountryPolicyCommitments feature={feature} config={config} />
     </>
   );
 }
 
-FeatureContent.propTypes = {
+CountryFeatureContent.propTypes = {
   onLoadLayer: PropTypes.func,
   onSetLayerInfo: PropTypes.func,
   config: PropTypes.object,
@@ -95,4 +97,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(FeatureContent);
+export default compose(withConnect)(CountryFeatureContent);

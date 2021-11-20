@@ -19,7 +19,7 @@ import { sortLabels } from 'utils/string';
 import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
 
-import CountryPositionSymbol from './CountryPositionSymbol';
+import CountryPositionSymbol from './policy/CountryPositionSymbol';
 import TextInput from './TextInput';
 import messages from './messages';
 

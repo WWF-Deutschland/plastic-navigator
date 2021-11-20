@@ -17,8 +17,8 @@ import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
-import ListItemHeader from './ListItemHeader';
-import Title from './Title';
+import ListItemHeader from '../ListItemHeader';
+import Title from '../Title';
 
 export function SourceContent({
   sourceId,

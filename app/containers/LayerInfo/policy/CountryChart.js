@@ -49,7 +49,7 @@ import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
 
 import coreMessages from 'messages';
-import messages from './messages';
+import messages from '../messages';
 import {
   prepChartKey,
   prepChartData,

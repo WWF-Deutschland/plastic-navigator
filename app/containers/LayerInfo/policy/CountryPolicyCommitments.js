@@ -7,7 +7,7 @@ import { Text } from 'grommet';
 import { sortPositions } from 'utils/policy';
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Styled = styled.div``;
 
