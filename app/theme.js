@@ -154,7 +154,7 @@ const theme = {
     colors,
     input: {
       padding: '2px',
-      weight: 400,
+      weight: 300,
     },
     breakpoints: {
       small: {

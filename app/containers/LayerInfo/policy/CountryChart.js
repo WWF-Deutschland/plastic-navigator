@@ -145,7 +145,9 @@ const ButtonDownload = styled(props => <Button plain {...props} />)`
   color: ${({ theme }) => theme.global.colors.dark};
   stroke: ${({ theme }) => theme.global.colors.dark};
   text-decoration: underline;
+  opacity: 0.7;
   &:hover {
+    opacity: 1;
     color: ${({ theme }) => theme.global.colors.brand};
     stroke: ${({ theme }) => theme.global.colors.brand};
   }

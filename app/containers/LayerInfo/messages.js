@@ -65,4 +65,12 @@ export default defineMessages({
     id: `${scope}.downloadPolicyData`,
     defaultMessage: 'Download all country positions (CSV)',
   },
+  showCountryLink: {
+    id: `${scope}.showCountryLink`,
+    defaultMessage: 'Get link to country view',
+  },
+  shareCountryLink: {
+    id: `${scope}.shareCountryLink`,
+    defaultMessage: 'Copy link to country view',
+  },
 });

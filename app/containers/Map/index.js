@@ -17,7 +17,7 @@ import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { decodeInfoView } from 'utils/layers';
+import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
 // import commonMessages from 'messages';
@@ -28,7 +28,11 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import { setLayerInfo, setMapPosition } from 'containers/App/actions';
+import {
+  setLayerInfo,
+  setMapPosition,
+  showLayerInfoModule,
+} from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
@@ -125,6 +129,9 @@ export function Map({
   currentModule,
   onMapMove,
   mview,
+  layerInfo,
+  onShowLayerInfo,
+  layerInfoActive,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -271,13 +278,53 @@ export function Map({
     }
   }, [zoom]);
   useEffect(() => {
-    if (mapRef.current && getNWSE(mapRef.current) !== mview) {
-      const llbounds = getLLBounds(mview);
-      if (llbounds) {
-        mapRef.current.fitBounds(llbounds);
+    const [layerId, layerFeatureId] = decodeInfoView(layerInfo);
+    if (mapRef.current) {
+      if (
+        (!mview || mview === '') &&
+        layersConfig &&
+        layerFeatureId &&
+        layerFeatureId !== '' &&
+        layerId &&
+        jsonLayers &&
+        jsonLayers[layerId] &&
+        activeLayerIds &&
+        activeLayerIds.indexOf(layerId) > -1
+      ) {
+        const feature = findFeature(
+          jsonLayers[layerId].data.features,
+          layerFeatureId,
+        );
+
+        if (feature && feature.geometry && feature.geometry.coordinates) {
+          // const polygonLayer = L.polygon(feature.geometry.coordinates)
+          // console.log('polygonLayer', polygonLayer)
+          // mapRef.current.fitBounds(polygonLayer.getBounds());
+          const jsonLayer = L.geoJSON(feature);
+          mapRef.current.fitBounds(jsonLayer.getBounds(), {
+            animate: false,
+            duration: 0,
+          });
+          // center map on center of feature
+          let center = jsonLayer.getBounds().getCenter();
+          const aside = getAsideInfoWidth(size);
+          // correct center for side panel
+          if (layerInfoActive && aside !== 0) {
+            const centerPoint = mapRef.current.project(center);
+            center = mapRef.current.unproject(
+              L.point(centerPoint.x + aside / 2, centerPoint.y),
+            );
+          }
+          mapRef.current.panTo(center, { animate: false, duration: 0 });
+        }
+      } else if (getNWSE(mapRef.current) !== mview) {
+        const llbounds = getLLBounds(mview);
+        if (llbounds) {
+          mapRef.current.fitBounds(llbounds);
+        }
       }
     }
-  }, [mview]);
+  }, [mview, activeLayerIds, jsonLayers, size]);
 
   // add basemap
   useEffect(() => {
@@ -697,6 +744,7 @@ export function Map({
           onClose={() => setTooltip(null)}
           onFeatureClick={args => {
             setTooltip(null);
+            onShowLayerInfo();
             onFeatureClick(args);
           }}
         />
@@ -756,6 +804,9 @@ Map.propTypes = {
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
+  layerInfo: PropTypes.string,
+  onShowLayerInfo: PropTypes.func,
+  layerInfoActive: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -791,6 +842,7 @@ function mapDispatchToProps(dispatch) {
     onMapMove: position => {
       dispatch(setMapPosition(position));
     },
+    onShowLayerInfo: () => dispatch(showLayerInfoModule()),
   };
 }
 
