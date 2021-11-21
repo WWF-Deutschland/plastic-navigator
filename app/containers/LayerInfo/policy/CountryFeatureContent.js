@@ -136,7 +136,9 @@ export function CountryFeatureContent({
               ref={inputRef}
               readOnly
               focusIndicator
-              value={`${window.location.host}/#${path}?info=${info}`}
+              value={`${window.location.host}${
+                window.location.pathname
+              }#${path}?info=${info}`}
               onFocus={() => {
                 if (inputRef && inputRef.current) {
                   inputRef.current.select();
