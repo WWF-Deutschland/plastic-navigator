@@ -131,9 +131,25 @@ export const getPositionCircleStyle = (positionOrValue, config) => {
   return null;
 };
 
+export const getAttributeLabel = (attribute, prefix, locale) => {
+  if (
+    locale &&
+    attribute[`${prefix}_${locale}`] &&
+    attribute[`${prefix}_${locale}`].trim() !== ''
+  ) {
+    return attribute[`${prefix}_${locale}`];
+  }
+  if (
+    attribute[`${prefix}_${DEFAULT_LOCALE}`] &&
+    attribute[`${prefix}_${DEFAULT_LOCALE}`].trim() !== ''
+  ) {
+    return attribute[`${prefix}_${DEFAULT_LOCALE}`];
+  }
+  return '';
+};
+
 export const getPositionLabel = (position, locale) =>
-  (locale && position[`position_${locale}`]) ||
-  position[`position_${DEFAULT_LOCALE}`];
+  getAttributeLabel(position, 'position', locale);
 
 export const hexToRgba = (hex, opacity) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -415,6 +431,8 @@ export const getCountryPositionsOverTimeFromCountryFeatures = (
   return positionsByDate;
 };
 
+const sanitiseCSVcontent = str => str.replaceAll(`"`, `'`);
+
 // target structure
 // const datas = [
 //   {
@@ -449,29 +467,26 @@ export const getFlatCSVFromSources = (sources, locale) =>
   Object.keys(sources).reduce((memo, sourceId) => {
     const source = sources[sourceId];
     const { position } = source.position;
+    // TODO: SANITISE quotes? _ " _ >>> _ ' _ double to single
     // the position attributes
     const positionAttributes = {
       position_id: position.id,
-      position: getPositionLabel(position, locale),
+      position: sanitiseCSVcontent(getPositionLabel(position, locale)),
     };
     // the source attributes
     const sourceAttributes = {
-      source_id: sourceId,
-      source_date: formatDate(locale, new Date(source.date).getTime()),
-      source_title:
-        source[`title_${locale}`] && source[`title_${locale}`].trim() !== ''
-          ? source[`title_${locale}`]
-          : source[`title_${DEFAULT_LOCALE}`],
-      source_name:
-        source[`source_${locale}`] && source[`source_${locale}`].trim() !== ''
-          ? source[`source_${locale}`]
-          : source[`source_${DEFAULT_LOCALE}`],
-      source_statement:
-        source[`quote_${locale}`] && source[`quote_${locale}`].trim() !== ''
-          ? source[`quote_${locale}`]
-          : source[`quote_${DEFAULT_LOCALE}`],
+      statement_id: sanitiseCSVcontent(sourceId),
+      statement_date: formatDate(locale, new Date(source.date).getTime()),
+      statement_name: sanitiseCSVcontent(
+        getAttributeLabel(source, 'source', locale),
+      ),
+      statement_quote: sanitiseCSVcontent(
+        getAttributeLabel(source, 'quote', locale),
+      ),
+      source_title: sanitiseCSVcontent(
+        getAttributeLabel(source, 'title', locale),
+      ),
       source_url: source.url,
-      source_country_count: source.countries.length,
     };
     const sourceCountries = source.countries.map(country => ({
       country_code: country.id,

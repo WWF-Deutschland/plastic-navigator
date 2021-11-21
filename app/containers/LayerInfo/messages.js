@@ -61,4 +61,8 @@ export default defineMessages({
     id: `${scope}.noSearchResults`,
     defaultMessage: 'No results for current search',
   },
+  downloadPolicyData: {
+    id: `${scope}.downloadPolicyData`,
+    defaultMessage: 'Download all country positions (CSV)',
+  },
 });

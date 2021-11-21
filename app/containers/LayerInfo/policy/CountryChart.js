@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button, ResponsiveContext } from 'grommet';
+import { Download } from 'grommet-icons';
 import { utcFormat as timeFormat } from 'd3-time-format';
 import {
   FlexibleWidthXYPlot,
@@ -140,6 +141,16 @@ const myTimeFormat = value => (
   <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
 );
 
+const ButtonDownload = styled(props => <Button plain {...props} />)`
+  color: ${({ theme }) => theme.global.colors.dark};
+  stroke: ${({ theme }) => theme.global.colors.dark};
+  text-decoration: underline;
+  &:hover {
+    color: ${({ theme }) => theme.global.colors.brand};
+    stroke: ${({ theme }) => theme.global.colors.brand};
+  }
+`;
+
 const MINDATE = '2018-10-01';
 
 export function CountryChart({
@@ -232,7 +243,7 @@ export function CountryChart({
   const activeSource = mouseOverSource && sources[mouseOverSource.sid];
   // console.log(activeSource)
   // console.log(getFlatCSVFromSources(sources, locale))
-  console.log(sources);
+  // console.log(sources);
 
   // prettier-ignore
   return (
@@ -589,11 +600,25 @@ export function CountryChart({
                   />
                 </Box>
               )}
-              <CsvDownloader
-                wrapColumnChar={`"`}
-                datas={() => getFlatCSVFromSources(sources, locale)}
-                filename={`country-positions_${locale}_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`}
-              />
+              <Box margin={{ top: 'small' }}>
+                <CsvDownloader
+                  wrapColumnChar={`"`}
+                  datas={() => getFlatCSVFromSources(sources, locale)}
+                  filename={`country-positions_${locale}_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`}
+                >
+                  <ButtonDownload
+                    plain
+                    reverse
+                    icon={<Download color="inherit" size="small" />}
+                    gap="xsmall"
+                    label={
+                      <Text weight={300} size="xsmall">
+                        <FormattedMessage {...messages.downloadPolicyData} />
+                      </Text>
+                    }
+                  />
+                </CsvDownloader>
+              </Box>
             </Box>
           )}
         </Styled>
