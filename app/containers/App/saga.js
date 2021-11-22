@@ -1,11 +1,4 @@
-import {
-  takeLatest,
-  takeEvery,
-  select,
-  put,
-  call,
-  delay,
-} from 'redux-saga/effects';
+import { takeEvery, select, put, call, delay } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import extend from 'lodash/extend';
 import Papa from 'papaparse';
@@ -15,6 +8,8 @@ import 'url-search-params-polyfill';
 import {
   MAX_LOAD_ATTEMPTS,
   MAX_NAV_ATTEMPTS,
+  RETRY_LOAD_DELAY,
+  RETRY_NAV_DELAY,
   RESOURCES,
   PAGES,
   CONFIG,
@@ -64,7 +59,12 @@ let navPending = false; // false: pass; true: wait
  * @param {function} handleError the error handler after X unsuccessful tries
  * @param {integer} maxTries the maximum number of tries
  */
-const autoRestart = (generator, handleError, maxTries = MAX_LOAD_ATTEMPTS) =>
+const autoRestart = (
+  generator,
+  handleError,
+  maxTries = MAX_LOAD_ATTEMPTS,
+  delayMS = RETRY_LOAD_DELAY,
+) =>
   function* autoRestarting(...args) {
     let n = 0;
     while (n < maxTries) {
@@ -72,7 +72,7 @@ const autoRestart = (generator, handleError, maxTries = MAX_LOAD_ATTEMPTS) =>
         yield call(generator, ...args);
         break;
       } catch (err) {
-        yield delay(100);
+        yield delay(delayMS);
         yield (n += 1);
         if (n >= maxTries) {
           yield handleError(err, ...args);
@@ -95,6 +95,7 @@ function* loadConfigErrorHandler(err, { key }) {
 }
 function* navigateErrorHandler(err) {
   console.log('Failed to navigate... giving up!', err);
+  navPending = false;
 }
 
 // key expected to include full path, for at risk data metric/country
@@ -224,11 +225,12 @@ function* loadConfigSaga({ key }) {
 // location can either be string or object { pathname, search }
 function* navigateSaga({ location, args }) {
   if (navPending) {
+    console.log('navigateSaga waiting for: ', navPending);
     throw new Error({
       function: 'navigateSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'navigateSaga';
     const currentLocale = yield select(selectLocale);
     const currentLocation = yield select(selectRouterLocation);
     // default args
@@ -361,11 +363,12 @@ function* navigateSaga({ location, args }) {
 
 function* changeLocaleSaga({ locale }) {
   if (navPending) {
+    console.log('changeLocaleSaga waiting for', navPending, locale);
     throw new Error({
       function: 'changeLocaleSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'changeLocaleSaga';
     const currentLocale = yield select(selectLocale);
     if (currentLocale !== locale) {
       const currentLocation = yield select(selectRouterLocation);
@@ -384,11 +387,12 @@ function* changeLocaleSaga({ locale }) {
 
 function* setLayerInfoSaga({ layer, view, copy }) {
   if (navPending) {
+    console.log('setLayerInfoSaga waiting for', navPending, view);
     throw new Error({
       function: 'setLayerInfoSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'setLayerInfoSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
     // only update if not already active
@@ -419,11 +423,12 @@ function* setLayerInfoSaga({ layer, view, copy }) {
 
 function* setLayersSaga({ layers }) {
   if (navPending) {
+    console.log('setLayersSaga waiting for: ', navPending);
     throw new Error({
       function: 'setLayersSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'setLayersSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
     searchParams.delete('layers');
@@ -442,11 +447,12 @@ function* setLayersSaga({ layers }) {
 
 function* setStorySaga({ index }) {
   if (navPending) {
+    console.log('setStorySaga waiting for: ', navPending);
     throw new Error({
       function: 'setStorySaga',
     });
   } else {
-    navPending = true;
+    navPending = 'setStorySaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
 
@@ -463,11 +469,12 @@ function* setStorySaga({ index }) {
 
 function* toggleLayerSaga({ id }) {
   if (navPending) {
+    console.log('toggleLayerSaga waiting for: ', navPending);
     throw new Error({
       function: 'toggleLayerSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'toggleLayerSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
 
@@ -501,11 +508,12 @@ function* toggleLayerSaga({ id }) {
 
 function* setChapterSaga({ index }) {
   if (navPending) {
+    console.log('setChapterSaga waiting for: ', navPending);
     throw new Error({
       function: 'setChapterSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'setChapterSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
 
@@ -522,11 +530,12 @@ function* setChapterSaga({ index }) {
 
 function* setMapPositionSaga({ position }) {
   if (navPending) {
+    console.log('setMapPositionSaga waiting for', navPending);
     throw new Error({
       function: 'setMapPositionSaga',
     });
   } else {
-    navPending = true;
+    navPending = 'setMapPositionSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
     searchParams.set('mview', position);
@@ -543,42 +552,82 @@ export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
   yield takeEvery(
     LOAD_CONTENT,
-    autoRestart(loadContentSaga, loadContentErrorHandler, MAX_LOAD_ATTEMPTS),
+    autoRestart(loadContentSaga, loadContentErrorHandler),
   );
   yield takeEvery(
     LOAD_CONFIG,
-    autoRestart(loadConfigSaga, loadConfigErrorHandler, MAX_LOAD_ATTEMPTS),
+    autoRestart(loadConfigSaga, loadConfigErrorHandler),
   );
   yield takeEvery(
     NAVIGATE,
-    autoRestart(navigateSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      navigateSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     CHANGE_LOCALE,
-    autoRestart(changeLocaleSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      changeLocaleSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     TOGGLE_LAYER,
-    autoRestart(toggleLayerSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      toggleLayerSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     SET_LAYERS,
-    autoRestart(setLayersSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      setLayersSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     SET_LAYER_INFO,
-    autoRestart(setLayerInfoSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      setLayerInfoSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     SET_STORY,
-    autoRestart(setStorySaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      setStorySaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
   yield takeEvery(
     SET_CHAPTER,
-    autoRestart(setChapterSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      setChapterSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
-  yield takeLatest(
+  yield takeEvery(
     SET_MAP_POSITION,
-    autoRestart(setMapPositionSaga, navigateErrorHandler, MAX_NAV_ATTEMPTS),
+    autoRestart(
+      setMapPositionSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
   );
 }

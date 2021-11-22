@@ -133,7 +133,9 @@ export const PROJECT_CONFIG = {
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
-export const MAX_NAV_ATTEMPTS = 1000;
+export const MAX_NAV_ATTEMPTS = 10;
+export const RETRY_LOAD_DELAY = 100;
+export const RETRY_NAV_DELAY = 10;
 
 // map config
 

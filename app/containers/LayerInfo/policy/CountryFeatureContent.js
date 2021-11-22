@@ -136,7 +136,7 @@ export function CountryFeatureContent({
               ref={inputRef}
               readOnly
               focusIndicator
-              value={`${window.location.host}${
+              value={`${window.location.origin}${
                 window.location.pathname
               }#${path}?info=${info}`}
               onFocus={() => {
