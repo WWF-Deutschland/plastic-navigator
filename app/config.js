@@ -160,7 +160,7 @@ export const MAP_OPTIONS = {
   },
   BOUNDS: {
     N: 85,
-    W: -180,
+    W: -270,
     S: -85,
     E: 540,
   },

@@ -103,10 +103,16 @@ const getNWSE = map => {
   const e = roundNumber(se.lng, 5);
   return `${n}|${w}|${s}|${e}`;
 };
-const getLLBounds = nwse => {
+const getLLBounds = (nwse, asObject) => {
   const split = nwse.split('|');
   if (split.length === 4) {
-    return [[split[0], split[1]], [split[2], split[3]]];
+    // prettier-ignore
+    return asObject
+      ? L.latLngBounds(
+        L.latLng([split[0], split[1]]),
+        L.latLng([split[2], split[3]]),
+      )
+      : [[split[0], split[1]], [split[2], split[3]]];
   }
   return null;
 };
@@ -317,10 +323,10 @@ export function Map({
 
         if (feature && feature.geometry && feature.geometry.coordinates) {
           let featureBounds;
-          if (feature.properties && feature.properties.bounds) {
-            featureBounds = getLLBounds(feature.properties.bounds);
+          if (feature.properties && feature.properties.bounds_nwse) {
+            featureBounds = getLLBounds(feature.properties.bounds_nwse, true);
           }
-          if (!featureBounds) {
+          if (!featureBounds || !featureBounds.getCenter) {
             const jsonLayer = L.geoJSON(feature);
             featureBounds = jsonLayer.getBounds();
           }
