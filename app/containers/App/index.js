@@ -126,8 +126,7 @@ function App({
                 size={size}
                 hasKey={hasKey}
                 currentModule={currentModule}
-                layerInfo={info}
-                showInfo={showInfo}
+                layerInfoActive={showInfo}
               />
             )}
           </ResponsiveContext.Consumer>

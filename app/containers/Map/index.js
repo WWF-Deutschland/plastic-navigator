@@ -120,7 +120,7 @@ export function Map({
   jsonLayers,
   projects,
   onFeatureClick,
-  info,
+  layerInfo,
   size,
   onFeatureHighlight,
   highlightFeature,
@@ -129,7 +129,6 @@ export function Map({
   currentModule,
   onMapMove,
   mview,
-  layerInfo,
   onShowLayerInfo,
   layerInfoActive,
 }) {
@@ -143,10 +142,11 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
-  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(info);
+  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(layerInfo);
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
   );
+  const jsonLayerLength = jsonLayers ? Object.keys(jsonLayers).length : 0;
 
   const showTooltip = (e, config) => {
     // console.log('click', e, config, tooltip);
@@ -277,36 +277,60 @@ export function Map({
       mapRef.current.setZoom(zoom);
     }
   }, [zoom]);
+
   useEffect(() => {
-    const [layerId, layerFeatureId] = decodeInfoView(layerInfo);
     if (mapRef.current) {
+      // only fit bounds from mview when we dont have a feature to zoom to
+      // - no ids set
+      // - if ids set, if layer id is not present in loaded json Layers
       if (
+        (mview && mview !== '') ||
+        !infoLayerId ||
+        !infoFeatureId ||
+        (infoLayerId &&
+          infoFeatureId &&
+          jsonLayers &&
+          Object.keys(jsonLayers).length !== 0 &&
+          !jsonLayers[infoLayerId])
+      ) {
+        if (getNWSE(mapRef.current) !== mview) {
+          const llbounds = getLLBounds(mview);
+          if (llbounds) {
+            mapRef.current.fitBounds(llbounds);
+          }
+        }
+      } else if (
         (!mview || mview === '') &&
         layersConfig &&
-        layerFeatureId &&
-        layerFeatureId !== '' &&
-        layerId &&
+        infoFeatureId &&
+        infoFeatureId !== '' &&
+        infoLayerId &&
         jsonLayers &&
-        jsonLayers[layerId] &&
+        jsonLayers[infoLayerId] &&
         activeLayerIds &&
-        activeLayerIds.indexOf(layerId) > -1
+        activeLayerIds.indexOf(infoLayerId) > -1
       ) {
         const feature = findFeature(
-          jsonLayers[layerId].data.features,
-          layerFeatureId,
+          jsonLayers[infoLayerId].data.features,
+          infoFeatureId,
         );
 
         if (feature && feature.geometry && feature.geometry.coordinates) {
-          // const polygonLayer = L.polygon(feature.geometry.coordinates)
-          // console.log('polygonLayer', polygonLayer)
-          // mapRef.current.fitBounds(polygonLayer.getBounds());
-          const jsonLayer = L.geoJSON(feature);
-          mapRef.current.fitBounds(jsonLayer.getBounds(), {
+          let featureBounds;
+          if (feature.properties && feature.properties.bounds) {
+            featureBounds = getLLBounds(feature.properties.bounds);
+          }
+          if (!featureBounds) {
+            const jsonLayer = L.geoJSON(feature);
+            featureBounds = jsonLayer.getBounds();
+          }
+          mapRef.current.fitBounds(featureBounds, {
             animate: false,
             duration: 0,
+            maxZoom: MAP_OPTIONS.ZOOM.MAX - 1,
           });
           // center map on center of feature
-          let center = jsonLayer.getBounds().getCenter();
+          let center = featureBounds.getCenter();
           const aside = getAsideInfoWidth(size);
           // correct center for side panel
           if (layerInfoActive && aside !== 0) {
@@ -317,14 +341,9 @@ export function Map({
           }
           mapRef.current.panTo(center, { animate: false, duration: 0 });
         }
-      } else if (getNWSE(mapRef.current) !== mview) {
-        const llbounds = getLLBounds(mview);
-        if (llbounds) {
-          mapRef.current.fitBounds(llbounds);
-        }
       }
     }
-  }, [mview, activeLayerIds, jsonLayers, size]);
+  }, [mview, jsonLayerLength]);
 
   // add basemap
   useEffect(() => {
@@ -537,7 +556,7 @@ export function Map({
       });
     }
   }, [
-    info, // infoLayerId, infoFeatureId
+    layerInfo, // infoLayerId, infoFeatureId
     layersConfig,
     projects,
     mapLayers,
@@ -677,7 +696,7 @@ export function Map({
         areaInfoRef.current.clearLayers();
       }
     }
-  }, [layersConfig, mapLayers, info]);
+  }, [layersConfig, mapLayers, layerInfo]);
 
   // move active marker into view
   useEffect(() => {
@@ -720,7 +739,7 @@ export function Map({
         }
       });
     }
-  }, [info, layersConfig, projects, mapLayers, size]);
+  }, [layerInfo, layersConfig, projects, mapLayers, size]);
 
   return (
     <Styled>
@@ -799,12 +818,11 @@ Map.propTypes = {
   onFeatureHighlight: PropTypes.func,
   onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
-  info: PropTypes.string,
+  layerInfo: PropTypes.string,
   mview: PropTypes.string,
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
-  layerInfo: PropTypes.string,
   onShowLayerInfo: PropTypes.func,
   layerInfoActive: PropTypes.bool,
 };
@@ -816,7 +834,7 @@ const mapStateToProps = createStructuredSelector({
   mapLayers: state => selectMapLayers(state),
   jsonLayers: state => selectLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
-  info: state => selectInfoSearch(state),
+  layerInfo: state => selectInfoSearch(state),
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
   mview: state => selectMapPosition(state),
