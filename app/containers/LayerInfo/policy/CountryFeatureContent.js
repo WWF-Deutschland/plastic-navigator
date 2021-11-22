@@ -14,13 +14,10 @@ import { Box, Button, Text, TextInput } from 'grommet';
 import { Link as LinkIcon, Close } from 'grommet-icons';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
+import { ROUTES } from 'config';
 import { findFeature } from 'utils/layers';
 
-import {
-  selectLocale,
-  selectRouterPath,
-  selectInfoSearch,
-} from 'containers/App/selectors';
+import { selectLocale, selectInfoSearch } from 'containers/App/selectors';
 import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
@@ -64,6 +61,11 @@ const getTitle = (feature, config, locale) => {
   return config.tooltip.title[locale];
 };
 
+const getCountryPath = (info, locale) =>
+  `${window.location.origin}${window.location.pathname}#/${locale}/${
+    ROUTES.POLICY
+  }/?info=${info}`;
+
 export function CountryFeatureContent({
   featureId,
   config, // layer config
@@ -73,7 +75,6 @@ export function CountryFeatureContent({
   supTitle,
   onSetLayerInfo,
   headerFallback,
-  path,
   info,
   intl,
 }) {
@@ -136,9 +137,7 @@ export function CountryFeatureContent({
               ref={inputRef}
               readOnly
               focusIndicator
-              value={`${window.location.origin}${
-                window.location.pathname
-              }#${path}?info=${info}`}
+              value={getCountryPath(info, locale)}
               onFocus={() => {
                 if (inputRef && inputRef.current) {
                   inputRef.current.select();
@@ -161,7 +160,6 @@ CountryFeatureContent.propTypes = {
   featureId: PropTypes.string,
   locale: PropTypes.string,
   supTitle: PropTypes.string,
-  path: PropTypes.string,
   info: PropTypes.string,
   layerData: PropTypes.object,
   headerFallback: PropTypes.node,
@@ -171,7 +169,6 @@ CountryFeatureContent.propTypes = {
 const mapStateToProps = createStructuredSelector({
   locale: state => selectLocale(state),
   layerData: (state, { config }) => selectLayerByKey(state, config.id),
-  path: state => selectRouterPath(state),
   info: state => selectInfoSearch(state),
 });
 
