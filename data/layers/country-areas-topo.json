@@ -84069,7 +84069,8 @@
           "properties": {
             "code": "USA",
             "name_de": "Vereinigte Staaten",
-            "name_en": "United States of America"
+            "name_en": "United States of America",
+            "bounds_nwse": "72|-180|17|-52"
           }
         },
         {
@@ -84821,7 +84822,8 @@
           "properties": {
             "code": "RUS",
             "name_de": "Russland",
-            "name_en": "Russia"
+            "name_en": "Russia",
+            "bounds_nwse": "81|19|41|191"
           }
         },
         {
@@ -85108,7 +85110,8 @@
           "properties": {
             "code": "NZL",
             "name_de": "Neuseeland",
-            "name_en": "New Zealand"
+            "name_en": "New Zealand",
+            "bounds_nwse": "-34|166|-52|185"
           }
         },
         {
@@ -85489,7 +85492,8 @@
           "properties": {
             "code": "KIR",
             "name_de": "Kiribati",
-            "name_en": "Kiribati"
+            "name_en": "Kiribati",
+            "bounds_nwse": "7|-195|-8|-165"
           }
         },
         {
@@ -86170,7 +86174,8 @@
           "properties": {
             "code": "FJI",
             "name_de": "Fidschi",
-            "name_en": "Fiji"
+            "name_en": "Fiji",
+            "bounds_nwse": "-16|177|-19|182"
           }
         },
         {
