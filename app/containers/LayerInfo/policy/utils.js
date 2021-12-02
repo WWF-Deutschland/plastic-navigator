@@ -1,7 +1,6 @@
 import { sortLabels } from 'utils/string';
 import asArray from 'utils/as-array';
 import quasiEquals from 'utils/quasi-equals';
-import formatDate from 'utils/format-date';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -464,35 +463,45 @@ const sanitiseCSVcontent = str => str.replaceAll(`"`, `'`);
 // }
 //
 export const getFlatCSVFromSources = (sources, locale) =>
-  Object.keys(sources).reduce((memo, sourceId) => {
-    const source = sources[sourceId];
-    const { position } = source.position;
-    // TODO: SANITISE quotes? _ " _ >>> _ ' _ double to single
-    // the position attributes
-    const positionAttributes = {
-      position_id: position.id,
-      position: sanitiseCSVcontent(getPositionLabel(position, locale)),
-    };
-    // the source attributes
-    const sourceAttributes = {
-      statement_id: sanitiseCSVcontent(sourceId),
-      statement_date: formatDate(locale, new Date(source.date).getTime()),
-      statement_name: sanitiseCSVcontent(
-        getAttributeLabel(source, 'source', locale),
-      ),
-      statement_quote: sanitiseCSVcontent(
-        getAttributeLabel(source, 'quote', locale),
-      ),
-      source_title: sanitiseCSVcontent(
-        getAttributeLabel(source, 'title', locale),
-      ),
-      source_url: source.url,
-    };
-    const sourceCountries = source.countries.map(country => ({
-      country_code: country.id,
-      country: country.label,
-      ...positionAttributes,
-      ...sourceAttributes,
-    }));
-    return memo.concat(sourceCountries);
-  }, []);
+  Object.keys(sources)
+    .reduce((memo, sourceId) => {
+      const source = sources[sourceId];
+      const { position } = source.position;
+      // TODO: SANITISE quotes? _ " _ >>> _ ' _ double to single
+      // the position attributes
+      const positionAttributes = {
+        position_id: position.id,
+        position: sanitiseCSVcontent(getPositionLabel(position, locale)),
+      };
+      // the source attributes
+      const sourceAttributes = {
+        // statement_id: sanitiseCSVcontent(sourceId),
+        statement_date: source.date, // format yyy-mm-dd
+        statement_name: sanitiseCSVcontent(
+          getAttributeLabel(source, 'source', locale),
+        ),
+        statement_quote: sanitiseCSVcontent(
+          getAttributeLabel(source, 'quote', locale),
+        ),
+        source_title: sanitiseCSVcontent(
+          getAttributeLabel(source, 'title', locale),
+        ),
+        source_url: source.url,
+      };
+      const sourceCountries = source.countries.map(country => ({
+        country_code: country.id,
+        country: country.label,
+        ...positionAttributes,
+        ...sourceAttributes,
+      }));
+      return memo.concat(sourceCountries);
+    }, [])
+    .sort((a, b) => (a.country > b.country ? 1 : -1))
+    .sort((a, b) => {
+      const aDate = a.statement_date && new Date(a.statement_date);
+      const bDate = b.statement_date && new Date(b.statement_date);
+      if (aDate && !bDate) return -1;
+      if (!aDate && bDate) return 1;
+      if (aDate > bDate) return -1;
+      return 1;
+    });
