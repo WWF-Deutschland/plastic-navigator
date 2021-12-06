@@ -26,3 +26,5 @@ Die Darstellung zeigt, in welchem Maße sich die einzelnen UN-Mitgliedstaaten ö
 ### Über die Studie
 
 Aussagen dazu, inwieweit die einzelnen Länder ein Abkommen befürworten, basieren auf der Auswertung öffentlich zugänglicher Dokumente durch den WWF, einschließlich regionaler Erklärungen und Beschlüsse (Afrika, EU, Karibik, skandinavische Länder), regionaler Aktionspläne (Pazifikinseln) sowie der Aufgaben- bzw. Leistungsbeschreibung für die Group of Friends in New York.
+
+_The designation of geographical entities and the presentation of the material, do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries._
