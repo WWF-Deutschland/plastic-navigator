@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{f9c0d22799479965d07c:function(n,o,t){"use strict";var e=t("0b3cb19af78752326f59");o.a=e.default.div.withConfig({displayName:"ModuleWrap",componentId:"sc-12lyby8-0"})(["position:absolute;top:0;bottom:0;right:0;left:0;background:transparent;pointer-events:none;z-index:2000;"])}}]);
