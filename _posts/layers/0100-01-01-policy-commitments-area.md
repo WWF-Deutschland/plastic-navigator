@@ -26,4 +26,4 @@ The visualisation shows the level of publicly expressed support by United Nation
 
 The estimated level of support by each country is based on WWF’s assessment of publicly available documents, including regional declarations and decisions (Africa, EU, Caribbean, Nordic countries), regional action plans (Pacific Islands) as well as the Terms of Reference for the Group of Friends in New York.
 
-_The designation of geographical entities and the presentation of the material, do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries._
+_Die Zuordnung geografischer Einheiten und die Darstellung des Materials stellen in keiner Form eine Meinungsäußerung/Einschätzung des WWFs bezüglich des rechtlichen Status eines Landes, eines Territoriums oder eines Gebiets oder seiner Behörden oder bezüglich des Verlaufs seiner Grenzen dar._
