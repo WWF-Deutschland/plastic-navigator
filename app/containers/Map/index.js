@@ -17,7 +17,7 @@ import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { decodeInfoView } from 'utils/layers';
+import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
 // import commonMessages from 'messages';
@@ -28,7 +28,11 @@ import {
   selectInfoSearch,
 } from 'containers/App/selectors';
 
-import { setLayerInfo, setMapPosition } from 'containers/App/actions';
+import {
+  setLayerInfo,
+  setMapPosition,
+  showLayerInfoModule,
+} from 'containers/App/actions';
 import PanelKey from 'containers/PanelKey';
 import Attribution from 'containers/Attribution';
 
@@ -99,10 +103,16 @@ const getNWSE = map => {
   const e = roundNumber(se.lng, 5);
   return `${n}|${w}|${s}|${e}`;
 };
-const getLLBounds = nwse => {
+const getLLBounds = (nwse, asObject) => {
   const split = nwse.split('|');
   if (split.length === 4) {
-    return [[split[0], split[1]], [split[2], split[3]]];
+    // prettier-ignore
+    return asObject
+      ? L.latLngBounds(
+        L.latLng([split[0], split[1]]),
+        L.latLng([split[2], split[3]]),
+      )
+      : [[split[0], split[1]], [split[2], split[3]]];
   }
   return null;
 };
@@ -116,7 +126,7 @@ export function Map({
   jsonLayers,
   projects,
   onFeatureClick,
-  info,
+  layerInfo,
   size,
   onFeatureHighlight,
   highlightFeature,
@@ -125,6 +135,8 @@ export function Map({
   currentModule,
   onMapMove,
   mview,
+  onShowLayerInfo,
+  layerInfoActive,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -136,10 +148,11 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
-  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(info);
+  const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(layerInfo);
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
   );
+  const jsonLayerLength = jsonLayers ? Object.keys(jsonLayers).length : 0;
 
   const showTooltip = (e, config) => {
     // console.log('click', e, config, tooltip);
@@ -270,14 +283,73 @@ export function Map({
       mapRef.current.setZoom(zoom);
     }
   }, [zoom]);
+
   useEffect(() => {
-    if (mapRef.current && getNWSE(mapRef.current) !== mview) {
-      const llbounds = getLLBounds(mview);
-      if (llbounds) {
-        mapRef.current.fitBounds(llbounds);
+    if (mapRef.current) {
+      // only fit bounds from mview when we dont have a feature to zoom to
+      // - no ids set
+      // - if ids set, if layer id is not present in loaded json Layers
+      if (
+        (mview && mview !== '') ||
+        !infoLayerId ||
+        !infoFeatureId ||
+        (infoLayerId &&
+          infoFeatureId &&
+          jsonLayers &&
+          Object.keys(jsonLayers).length !== 0 &&
+          !jsonLayers[infoLayerId])
+      ) {
+        if (getNWSE(mapRef.current) !== mview) {
+          const llbounds = getLLBounds(mview);
+          if (llbounds) {
+            mapRef.current.fitBounds(llbounds);
+          }
+        }
+      } else if (
+        (!mview || mview === '') &&
+        layersConfig &&
+        infoFeatureId &&
+        infoFeatureId !== '' &&
+        infoLayerId &&
+        jsonLayers &&
+        jsonLayers[infoLayerId] &&
+        activeLayerIds &&
+        activeLayerIds.indexOf(infoLayerId) > -1
+      ) {
+        const feature = findFeature(
+          jsonLayers[infoLayerId].data.features,
+          infoFeatureId,
+        );
+
+        if (feature && feature.geometry && feature.geometry.coordinates) {
+          let featureBounds;
+          if (feature.properties && feature.properties.bounds_nwse) {
+            featureBounds = getLLBounds(feature.properties.bounds_nwse, true);
+          }
+          if (!featureBounds || !featureBounds.getCenter) {
+            const jsonLayer = L.geoJSON(feature);
+            featureBounds = jsonLayer.getBounds();
+          }
+          mapRef.current.fitBounds(featureBounds, {
+            animate: false,
+            duration: 0,
+            maxZoom: MAP_OPTIONS.ZOOM.MAX - 1,
+          });
+          // center map on center of feature
+          let center = featureBounds.getCenter();
+          const aside = getAsideInfoWidth(size);
+          // correct center for side panel
+          if (layerInfoActive && aside !== 0) {
+            const centerPoint = mapRef.current.project(center);
+            center = mapRef.current.unproject(
+              L.point(centerPoint.x + aside / 2, centerPoint.y),
+            );
+          }
+          mapRef.current.panTo(center, { animate: false, duration: 0 });
+        }
       }
     }
-  }, [mview]);
+  }, [mview, jsonLayerLength]);
 
   // add basemap
   useEffect(() => {
@@ -490,7 +562,7 @@ export function Map({
       });
     }
   }, [
-    info, // infoLayerId, infoFeatureId
+    layerInfo, // infoLayerId, infoFeatureId
     layersConfig,
     projects,
     mapLayers,
@@ -630,7 +702,7 @@ export function Map({
         areaInfoRef.current.clearLayers();
       }
     }
-  }, [layersConfig, mapLayers, info]);
+  }, [layersConfig, mapLayers, layerInfo]);
 
   // move active marker into view
   useEffect(() => {
@@ -673,7 +745,7 @@ export function Map({
         }
       });
     }
-  }, [info, layersConfig, projects, mapLayers, size]);
+  }, [layerInfo, layersConfig, projects, mapLayers, size]);
 
   return (
     <Styled>
@@ -697,6 +769,7 @@ export function Map({
           onClose={() => setTooltip(null)}
           onFeatureClick={args => {
             setTooltip(null);
+            onShowLayerInfo();
             onFeatureClick(args);
           }}
         />
@@ -751,11 +824,13 @@ Map.propTypes = {
   onFeatureHighlight: PropTypes.func,
   onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
-  info: PropTypes.string,
+  layerInfo: PropTypes.string,
   mview: PropTypes.string,
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
+  onShowLayerInfo: PropTypes.func,
+  layerInfoActive: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -765,7 +840,7 @@ const mapStateToProps = createStructuredSelector({
   mapLayers: state => selectMapLayers(state),
   jsonLayers: state => selectLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
-  info: state => selectInfoSearch(state),
+  layerInfo: state => selectInfoSearch(state),
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
   mview: state => selectMapPosition(state),
@@ -791,6 +866,7 @@ function mapDispatchToProps(dispatch) {
     onMapMove: position => {
       dispatch(setMapPosition(position));
     },
+    onShowLayerInfo: () => dispatch(showLayerInfoModule()),
   };
 }
 

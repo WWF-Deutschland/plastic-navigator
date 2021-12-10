@@ -133,7 +133,9 @@ export const PROJECT_CONFIG = {
 };
 
 export const MAX_LOAD_ATTEMPTS = 5;
-export const MAX_NAV_ATTEMPTS = 1000;
+export const MAX_NAV_ATTEMPTS = 100;
+export const RETRY_LOAD_DELAY = 100;
+export const RETRY_NAV_DELAY = 20;
 
 // map config
 
@@ -158,7 +160,7 @@ export const MAP_OPTIONS = {
   },
   BOUNDS: {
     N: 85,
-    W: -180,
+    W: -270,
     S: -85,
     E: 540,
   },

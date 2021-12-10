@@ -122,7 +122,12 @@ function App({
         <Content>
           <ResponsiveContext.Consumer>
             {size => (
-              <Map size={size} hasKey={hasKey} currentModule={currentModule} />
+              <Map
+                size={size}
+                hasKey={hasKey}
+                currentModule={currentModule}
+                layerInfoActive={showInfo}
+              />
             )}
           </ResponsiveContext.Consumer>
           <Switch>

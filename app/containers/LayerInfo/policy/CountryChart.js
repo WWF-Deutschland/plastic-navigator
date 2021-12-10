@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button, ResponsiveContext } from 'grommet';
+import { Download } from 'grommet-icons';
 import { utcFormat as timeFormat } from 'd3-time-format';
 import {
   FlexibleWidthXYPlot,
@@ -22,6 +23,7 @@ import {
   MarkSeries,
   Hint,
 } from 'react-vis';
+import CsvDownloader from 'react-csv-downloader';
 
 import { ArrowRightL } from 'components/Icons';
 import LoadingIndicator from 'components/LoadingIndicator';
@@ -37,19 +39,20 @@ import saga from 'containers/Map/saga';
 import { useInjectSaga } from 'utils/injectSaga';
 import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
+
+import KeyArea from 'components/KeyArea';
+import KeyLabel from 'components/KeyFull/KeyLabel';
+
+import coreMessages from 'messages';
 import {
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
   getCountryPositionsOverTimeFromCountryFeatures,
   getSourceCountFromPositions,
   getSourcesFromCountryFeaturesWithPosition,
-} from 'utils/policy';
-
-import KeyArea from 'components/KeyArea';
-import KeyLabel from 'components/KeyFull/KeyLabel';
-
-import coreMessages from 'messages';
-import messages from './messages';
+  getFlatCSVFromSources,
+} from './utils';
+import messages from '../messages';
 import {
   prepChartKey,
   prepChartData,
@@ -138,6 +141,18 @@ const myTimeFormat = value => (
   <YearLabel dx="2">{timeFormat('%Y')(value)}</YearLabel>
 );
 
+const ButtonDownload = styled(props => <Button plain {...props} />)`
+  color: ${({ theme }) => theme.global.colors.dark};
+  stroke: ${({ theme }) => theme.global.colors.dark};
+  text-decoration: underline;
+  opacity: 0.7;
+  &:hover {
+    opacity: 1;
+    color: ${({ theme }) => theme.global.colors.brand};
+    stroke: ${({ theme }) => theme.global.colors.brand};
+  }
+`;
+
 const MINDATE = '2018-10-01';
 
 export function CountryChart({
@@ -186,6 +201,7 @@ export function CountryChart({
     config,
     layer.data.features,
   );
+
   // prettier-ignore
   const currentDate =
     !mouseOverSource && mouseOver && nearestXDate && positionsOverTime[nearestXDate]
@@ -228,6 +244,9 @@ export function CountryChart({
 
   const activeSource = mouseOverSource && sources[mouseOverSource.sid];
   // console.log(activeSource)
+  // console.log(getFlatCSVFromSources(sources, locale))
+  // console.log(sources);
+
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -583,6 +602,25 @@ export function CountryChart({
                   />
                 </Box>
               )}
+              <Box margin={{ top: 'small' }}>
+                <CsvDownloader
+                  wrapColumnChar={`"`}
+                  datas={() => getFlatCSVFromSources(sources, locale)}
+                  filename={`country-positions_${locale}_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`}
+                >
+                  <ButtonDownload
+                    plain
+                    reverse
+                    icon={<Download color="inherit" size="small" />}
+                    gap="xsmall"
+                    label={
+                      <Text weight={300} size="xsmall">
+                        <FormattedMessage {...messages.downloadPolicyData} />
+                      </Text>
+                    }
+                  />
+                </CsvDownloader>
+              </Box>
             </Box>
           )}
         </Styled>

@@ -1,6 +1,6 @@
 /**
  *
- * SourceList
+ * CountryList
  *
  */
 
@@ -13,20 +13,22 @@ import { intlShape, injectIntl } from 'react-intl';
 
 import { POLICY_LAYERS } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
-import { getSourcesFromCountryFeaturesWithPosition } from 'utils/policy';
-import { filterSources } from 'utils/string';
+import { filterCountries } from 'utils/string';
 
 import saga from 'containers/Map/saga';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
+
 import { setLayerInfo } from 'containers/App/actions';
 
 import coreMessages from 'messages';
+import { featuresToCountriesWithStrongestPosition } from './utils';
 
-import ListItemHeader from './ListItemHeader';
-import FeatureList from './FeatureList';
+import ListItemHeader from '../ListItemHeader';
+import FeatureList from '../FeatureList';
+import messages from '../messages';
 
-export function SourceList({
+export function CountryList({
   onLoadLayer,
   config,
   layer,
@@ -55,34 +57,33 @@ export function SourceList({
     return null;
   }
 
-  const sources = getSourcesFromCountryFeaturesWithPosition(
+  const countries = featuresToCountriesWithStrongestPosition(
     config,
     layer.data.features,
     locale,
   );
-
-  return sources ? (
+  return countries ? (
     <>
       <ListItemHeader
         supTitle={supTitle}
         onClick={() => onSetLayerInfo(config.id)}
       />
       <FeatureList
-        title={intl.formatMessage(coreMessages.sources, {
-          count: Object.keys(sources).length,
-          isSingle: Object.keys(sources).length === 1,
+        title={intl.formatMessage(coreMessages.countries, {
+          count: countries.length,
+          isSingle: countries.length === 1,
         })}
         layerId={config.id}
-        items={Object.values(sources)}
+        items={countries}
         config={config}
-        search={filterSources}
-        isSourceList
+        search={filterCountries}
+        placeholder={intl.formatMessage(messages.placeholderCountries)}
       />
     </>
   ) : null;
 }
 
-SourceList.propTypes = {
+CountryList.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
   onSetLayerInfo: PropTypes.func.isRequired,
   config: PropTypes.object,
@@ -116,4 +117,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(injectIntl(SourceList));
+export default compose(withConnect)(injectIntl(CountryList));

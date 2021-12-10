@@ -10,15 +10,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { intlShape, injectIntl } from 'react-intl';
-import { getSourcesFromCountryFeaturesWithPosition } from 'utils/policy';
 
 import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
+import { getSourcesFromCountryFeaturesWithPosition } from './utils';
 
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
-import ListItemHeader from './ListItemHeader';
-import Title from './Title';
+import ListItemHeader from '../ListItemHeader';
+import Title from '../Title';
 
 export function SourceContent({
   sourceId,

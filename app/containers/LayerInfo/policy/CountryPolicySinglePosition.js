@@ -13,9 +13,9 @@ import { DEFAULT_LOCALE } from 'i18n';
 import coreMessages from 'messages';
 
 import CountryPositionSymbol from './CountryPositionSymbol';
-import FeatureListCollapsable from './FeatureListCollapsable';
+import FeatureListCollapsable from '../FeatureListCollapsable';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Section = styled.div`
   margin-bottom: 30px;

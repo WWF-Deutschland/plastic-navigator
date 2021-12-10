@@ -22,7 +22,6 @@ import { getPropertyByLocale } from 'containers/Map/utils';
 
 import Title from './Title';
 import LayerContent from './LayerContent';
-import CountryPolicyCommitments from './CountryPolicyCommitments';
 import ListItemHeader from './ListItemHeader';
 
 const getTitle = (feature, config, locale) => {
@@ -44,7 +43,6 @@ export function FeatureContent({
   onLoadLayer,
   supTitle,
   onSetLayerInfo,
-  isCountry,
   headerFallback,
 }) {
   useEffect(() => {
@@ -58,16 +56,9 @@ export function FeatureContent({
     <>
       <ListItemHeader
         supTitle={supTitle}
-        onClick={() =>
-          isCountry
-            ? onSetLayerInfo(config.id, 'countries')
-            : onSetLayerInfo(config.id)
-        }
+        onClick={() => onSetLayerInfo(config.id)}
       />
       <Title>{getTitle(feature, config, locale)}</Title>
-      {isCountry && (
-        <CountryPolicyCommitments feature={feature} config={config} />
-      )}
     </>
   );
 }
@@ -79,7 +70,6 @@ FeatureContent.propTypes = {
   featureId: PropTypes.string,
   locale: PropTypes.string,
   supTitle: PropTypes.string,
-  isCountry: PropTypes.bool,
   layerData: PropTypes.object,
   headerFallback: PropTypes.node,
 };

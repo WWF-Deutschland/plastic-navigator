@@ -19,7 +19,7 @@ import { sortLabels } from 'utils/string';
 import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
 
-import CountryPositionSymbol from './CountryPositionSymbol';
+import CountryPositionSymbol from './policy/CountryPositionSymbol';
 import TextInput from './TextInput';
 import messages from './messages';
 
@@ -68,15 +68,12 @@ export function FeatureList({
     search && test.length > 0
       ? items.filter(item => search(item, test))
       : items;
-  // const sorted = itemsFiltered.sort((a, b) => {
-  //   if (a.date && b.date) {
-  //     return new Date(a.date).getTime() > new Date(b.date).getTime() ? -1 : 1;
-  //   }
-  //   return sortLabels(a.label || a.id, b.label || b.id);
-  // });
-  const sorted = itemsFiltered.sort((a, b) =>
-    sortLabels(a.label || a.id, b.label || b.id),
-  );
+  const sorted = itemsFiltered.sort((a, b) => {
+    if (a.date && b.date) {
+      return new Date(a.date).getTime() > new Date(b.date).getTime() ? -1 : 1;
+    }
+    return sortLabels(a.label || a.id, b.label || b.id);
+  });
 
   return (
     <ResponsiveContext.Consumer>
