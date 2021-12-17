@@ -332,8 +332,12 @@ const concatIfMissing = (arr, values) =>
   }, arr);
 
 const cleanupPositions = positions => {
-  if (positions['2']) {
-    const pos2 = positions['2'].filter(p2 => positions['1'].indexOf(p2) === -1);
+  if (positions['1'] && positions['2']) {
+    const pos1 = positions['1'].filter(p1 => positions['2'].indexOf(p1) === -1);
+    return Object.assign({}, positions, { '1': pos1 });
+  }
+  if (positions['2'] && positions['3']) {
+    const pos2 = positions['2'].filter(p2 => positions['3'].indexOf(p2) === -1);
     return Object.assign({}, positions, { '2': pos2 });
   }
   return positions;

@@ -83,7 +83,7 @@ export const getPositionSquareStyle = (positionOrValue, config) => {
       stroke: config.render && config.render.type === 'area',
       weight: config.render && config.render.type === 'area' ? 1 : 0,
       fill: true,
-      fillOpacity: config.render && config.render.type === 'area' ? 0.4 : 1,
+      fillOpacity: config.render && config.render.type === 'area' ? 0.5 : 1,
       ...style,
     };
   }

@@ -220,10 +220,10 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
   } else if (state === 'active') {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'info') {
-    featureStyle.fillOpacity = 0.2;
-    featureStyle.color = '#000';
+    featureStyle.fillOpacity = 0;
+    featureStyle.color = '#222';
   } else {
-    featureStyle.fillOpacity = 0.4;
+    featureStyle.fillOpacity = 0.5;
   }
   return {
     stroke: true,
