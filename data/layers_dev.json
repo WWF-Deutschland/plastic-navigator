@@ -484,7 +484,7 @@
     "file": "layers/country-points.json",
     "properties": {
       "featuresWithoutProperties": "false",
-      "file": "layers/policy/country-positions.csv",
+      "file": "layers/policy/country-positions-v2.csv",
       "type": "csv",
       "join": {
         "self": "country_code",
@@ -494,7 +494,7 @@
       },
       "extend": [
         {
-          "file": "layers/policy/positions.csv",
+          "file": "layers/policy/positions-v2.csv",
           "type": "csv",
           "join": {
             "as": "position",
@@ -503,7 +503,7 @@
           }
         },
         {
-          "file": "layers/policy/sources.csv",
+          "file": "layers/policy/sources-v2.csv",
           "type": "csv",
           "join": {
             "as": "source",
