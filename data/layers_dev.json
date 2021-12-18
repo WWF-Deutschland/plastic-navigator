@@ -575,12 +575,12 @@
         },
         "full": {
           "1": {
-            "en": "Publicly called for new agreement",
-            "de": "Öffentlich für Abkommen ausgesprochen"
-          },
-          "2": {
             "en": "Agreed to consider option of agreement",
             "de": "Bereitschaft, Abkommen zu prüfen"
+          },
+          "2": {
+            "en": "Publicly called for new agreement",
+            "de": "Öffentlich für Abkommen ausgesprochen"
           },
           "3": {
             "en": "Support for resolution",
