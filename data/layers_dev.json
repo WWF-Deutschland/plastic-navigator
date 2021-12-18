@@ -557,7 +557,7 @@
     "key": {
       "iconValue": {
         "simple": "2",
-        "full": ["1", "2", "3"]
+        "full": ["3", "2", "1"]
       },
       "style": {
         "property": "positions.position_id",
