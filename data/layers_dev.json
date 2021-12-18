@@ -449,7 +449,7 @@
         "en": "Country’s level of support",
         "de": "Grad an Engagement nach Ländern"
       },
-      "values": ["1", "2", "3"],
+      "values": ["3", "2", "1"],
       "property": "positions.position_id",
       "title": {
         "propertyByLocale": {
@@ -459,7 +459,7 @@
       },
       "content": {
         "multiple": "true",
-        "multiplePriority": ["1", "2", "3"],
+        "multiplePriority": ["3", "2", "1"],
         "property": "positions.position_id",
         "propertyByLocale": {
           "en": "positions.position.position_en",
@@ -469,7 +469,7 @@
       "more": "true"
     },
     "info": {
-      "values": ["1", "2", "3"],
+      "values": ["3", "2", "1"],
       "property": "positions.position_id"
     }
   },
@@ -545,7 +545,7 @@
       },
       "content": {
         "multiple": "true",
-        "multiplePriority": ["1", "2", "3"],
+        "multiplePriority": ["3", "2", "1"],
         "property": "positions.position_id",
         "propertyByLocale": {
           "en": "positions.position.position_en",
