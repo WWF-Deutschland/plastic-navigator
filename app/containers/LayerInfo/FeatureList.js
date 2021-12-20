@@ -148,7 +148,7 @@ export function FeatureList({
                       <Box
                         direction="row"
                         justify="start"
-                        gap="hair"
+                        gap="small"
                         align="center"
                       >
                         {item.position && config && (

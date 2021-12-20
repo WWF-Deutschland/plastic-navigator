@@ -84,7 +84,7 @@ const KeyAreaWrap = styled.div`
 `;
 
 const KeyStatements = styled(p => (
-  <Box direction="row" gap="hair" align="center" {...p} />
+  <Box direction="row" align="center" {...p} />
 ))`
   height: 18px;
   width: 18px;
@@ -297,6 +297,10 @@ export function CountryChart({
                           <KeySourceMarker
                             key={stat.id}
                             keyStyle={stat.style}
+                            style={{
+                              width: '6px',
+                              height: '6px',
+                            }}
                           />
                         )
                       )}

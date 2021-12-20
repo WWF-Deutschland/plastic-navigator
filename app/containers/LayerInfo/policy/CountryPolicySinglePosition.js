@@ -61,17 +61,25 @@ const CountryPolicySinglePosition = ({
           <SectionTitle>
             <FormattedMessage {...messages.position} />
           </SectionTitle>
-          <Box direction="row" gap="small" margin={{ bottom: 'medium' }} align="center">
+          <Box
+            direction="row"
+            justify="start"
+            gap="small"
+            align="center"
+            margin={{ bottom: 'medium' }}
+          >
             {position && config && (
               <CountryPositionSymbol
                 position={position}
                 config={config}
               />
             )}
-            <Text size="small">
-              {position.position[`position_${locale}`] ||
-                position.position[`position_${DEFAULT_LOCALE}`]}
-            </Text>
+            <Box flex={{ grow: 1, shrink: 1, }}>
+              <Text size="small">
+                {position.position[`position_${locale}`] ||
+                  position.position[`position_${DEFAULT_LOCALE}`]}
+              </Text>
+            </Box>
           </Box>
         </Section>
       )}
@@ -79,6 +87,13 @@ const CountryPolicySinglePosition = ({
         (source[`quote_${locale}`] ||
           source[`quote_${DEFAULT_LOCALE}`]) && (
         <Section>
+          {source.date && (
+            <P>
+              <Text size="xsmall" color="textSecondary">
+                <FormattedDate value={new Date(source.date)} />
+              </Text>
+            </P>
+          )}
           <SectionTitle>
             <FormattedMessage {...messages.quote} />
           </SectionTitle>
@@ -86,13 +101,6 @@ const CountryPolicySinglePosition = ({
             {source[`quote_${locale}`] ||
               source[`quote_${DEFAULT_LOCALE}`]}
           </Quote>
-          {source.date && (
-            <P>
-              <Text size="xsmall">
-                (<FormattedDate value={new Date(source.date)} />)
-              </Text>
-            </P>
-          )}
         </Section>
       )}
       {listCountries && source && source.countries && source.countries.length > 0 && (
