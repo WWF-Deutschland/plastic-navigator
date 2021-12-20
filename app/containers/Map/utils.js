@@ -287,49 +287,45 @@ const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
   return vectorGrid;
 };
 
+const getBestValue = (multiplePriority, properties, path) => {
+  const propertyArray = properties[path[0]];
+  const values = propertyArray && uniq(propertyArray.map(p => p[path[1]]));
+  return multiplePriority.reduce((memo, pvalue) => {
+    if (memo) return memo;
+    return values.find(val => val === pvalue);
+  }, null);
+};
+
 const getPolygonLayer = ({ data, config, markerEvents, state }) => {
   const layer = L.featureGroup(null, { pane: 'overlayPane' });
+  let dataSorted;
   if (config && config.featureStyle && config.featureStyle.multiplePriority) {
-    const priorities = config.featureStyle.multiplePriority;
-    const reversed = [];
-    /* eslint-disable no-plusplus */
-    for (let i = priorities.length - 1; i >= 0; i--) {
-      reversed.push(priorities[i]);
-    }
-    reversed.forEach(prio => {
-      const dataFeatures = data.features.filter(f => {
-        const ps = config.featureStyle.property.split('.');
-        const propertyArray = f.properties[ps[0]];
-        const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
-        const bestValue = config.featureStyle.multiplePriority.reduce(
-          (memo, pvalue) => {
-            if (memo) return memo;
-            return values.find(val => val === pvalue);
-          },
-          null,
-        );
-        return bestValue === prio;
-      });
-      const vectorGrid = getPolygonVectorGrid({
-        data: {
-          ...data,
-          features: dataFeatures,
-        },
-        config,
-        markerEvents,
-        state,
-      });
-      layer.addLayer(vectorGrid);
+    const path = config.featureStyle.property.split('.');
+    const dataFeatures = [...data.features].sort((f1, f2) => {
+      const bestValue1 = getBestValue(
+        config.featureStyle.multiplePriority,
+        f1.properties,
+        path,
+      );
+      const bestValue2 = getBestValue(
+        config.featureStyle.multiplePriority,
+        f2.properties,
+        path,
+      );
+      return bestValue1 > bestValue2 ? 1 : -1;
     });
-  } else {
-    const vectorGrid = getPolygonVectorGrid({
-      data,
-      config,
-      markerEvents,
-      state,
-    });
-    layer.addLayer(vectorGrid);
+    dataSorted = {
+      ...data,
+      features: dataFeatures,
+    };
   }
+  const vectorGrid = getPolygonVectorGrid({
+    data: dataSorted || data,
+    config,
+    markerEvents,
+    state,
+  });
+  layer.addLayer(vectorGrid);
   return layer;
 };
 
