@@ -174,7 +174,10 @@ const getPolylineLayer = ({ data, config }) => {
 export const getVectorGridStyle = (properties, config, state = 'default') => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
-  let featureStyle = {};
+  let featureStyle = {
+    fillOpacity: 0.4,
+  };
+
   if (
     properties &&
     config.featureStyle &&
@@ -218,12 +221,11 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
   if (state === 'hover') {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
-    featureStyle.fillOpacity = 0.2;
+    featureStyle.fillOpacity = 0;
+    featureStyle.color = '#444';
   } else if (state === 'info') {
     featureStyle.fillOpacity = 0;
     featureStyle.color = '#222';
-  } else {
-    featureStyle.fillOpacity = 0.5;
   }
   return {
     stroke: true,
@@ -249,11 +251,7 @@ const featureInteractive = (e, config) => {
   return false;
 };
 
-const getPolygonLayer = ({ data, config, markerEvents, state }) => {
-  const layer = L.featureGroup(null, { pane: 'overlayPane' });
-  // const options = {
-  //
-  // };
+const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
   const vectorGrid = L.vectorGrid.slicer(data, {
     data,
     zIndex: config['z-index'] || 1,
@@ -286,7 +284,52 @@ const getPolygonLayer = ({ data, config, markerEvents, state }) => {
       },
     });
   }
-  layer.addLayer(vectorGrid);
+  return vectorGrid;
+};
+
+const getPolygonLayer = ({ data, config, markerEvents, state }) => {
+  const layer = L.featureGroup(null, { pane: 'overlayPane' });
+  if (config && config.featureStyle && config.featureStyle.multiplePriority) {
+    const priorities = config.featureStyle.multiplePriority;
+    const reversed = [];
+    /* eslint-disable no-plusplus */
+    for (let i = priorities.length - 1; i >= 0; i--) {
+      reversed.push(priorities[i]);
+    }
+    reversed.forEach(prio => {
+      const dataFeatures = data.features.filter(f => {
+        const ps = config.featureStyle.property.split('.');
+        const propertyArray = f.properties[ps[0]];
+        const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
+        const bestValue = config.featureStyle.multiplePriority.reduce(
+          (memo, pvalue) => {
+            if (memo) return memo;
+            return values.find(val => val === pvalue);
+          },
+          null,
+        );
+        return bestValue === prio;
+      });
+      const vectorGrid = getPolygonVectorGrid({
+        data: {
+          ...data,
+          features: dataFeatures,
+        },
+        config,
+        markerEvents,
+        state,
+      });
+      layer.addLayer(vectorGrid);
+    });
+  } else {
+    const vectorGrid = getPolygonVectorGrid({
+      data,
+      config,
+      markerEvents,
+      state,
+    });
+    layer.addLayer(vectorGrid);
+  }
   return layer;
 };
 
