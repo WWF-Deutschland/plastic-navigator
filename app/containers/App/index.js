@@ -111,7 +111,6 @@ function App({
   // do not show info panel for
   // prettier-ignore
   const showInfo = info !== '';
-
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -119,41 +118,46 @@ function App({
           <meta name="description" content="" />
         </Helmet>
         <Header route={route} />
-        <Content>
-          <ResponsiveContext.Consumer>
-            {size => (
+        <ResponsiveContext.Consumer>
+          {size => (
+            <Content>
               <Map
                 size={size}
                 hasKey={hasKey}
                 currentModule={currentModule}
                 layerInfoActive={showInfo}
               />
-            )}
-          </ResponsiveContext.Consumer>
-          <Switch>
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
-              component={ModuleStories}
-            />
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
-              component={ModuleExplore}
-            />
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.POLICY}/`}
-              component={ModulePolicy}
-            />
-            <Redirect to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
-          </Switch>
-          {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
-          {showInfo && (
-            <LayerInfo
-              view={info}
-              onClose={() => onCloseLayerInfo()}
-              currentModule={currentModule}
-            />
+              <Switch>
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
+                  component={ModuleStories}
+                />
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
+                >
+                  <ModuleExplore size={size} />
+                </Route>
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.POLICY}/`}
+                  component={ModulePolicy}
+                />
+                <Redirect
+                  to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`}
+                />
+              </Switch>
+              {page !== '' && (
+                <Page page={page} onClose={() => onClosePage()} />
+              )}
+              {showInfo && (
+                <LayerInfo
+                  view={info}
+                  onClose={() => onCloseLayerInfo()}
+                  currentModule={currentModule}
+                />
+              )}
+            </Content>
           )}
-        </Content>
+        </ResponsiveContext.Consumer>
         {!window.wwfMpxInsideIframe && <CookieConsent />}
         {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
