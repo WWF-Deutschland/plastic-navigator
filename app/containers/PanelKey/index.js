@@ -219,7 +219,7 @@ const getScrollOffsetTop = (offset, offsetStep) =>
 // figure out if scrolling up is possible
 const hasScrollTop = offset => offset > 0;
 
-const COMPONENT_KEY = 'PanelKey';
+const COMPONENT_KEY = 'pkey';
 
 const DEFAULT_UI_STATE = {
   open: true,
@@ -545,7 +545,7 @@ function mapDispatchToProps(dispatch) {
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
     onShowLayerInfoModule: () => {
-      dispatch(showLayerInfoModule());
+      dispatch(showLayerInfoModule(true));
     },
   };
 }

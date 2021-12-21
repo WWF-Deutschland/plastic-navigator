@@ -191,7 +191,7 @@ const LayerButtonInfo = styled(p => <Button plain {...p} />)`
 // content is split into 2 sub-chapters on small screens
 const STEPS = 2;
 
-const COMPONENT_KEY = 'PanelChapter';
+const COMPONENT_KEY = 'pch';
 
 const DEFAULT_UI_STATE = {
   open: true,

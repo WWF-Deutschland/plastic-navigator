@@ -69,7 +69,7 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
   }
 `;
 
-const COMPONENT_KEY = 'ModulePolicy';
+const COMPONENT_KEY = 'mpol';
 
 const DEFAULT_UI_STATE = {
   layersMemo: null,
@@ -194,7 +194,7 @@ function mapDispatchToProps(dispatch) {
     onSetLayerInfo: id => {
       dispatch(setLayerInfo(id));
     },
-    onShowLayerInfo: () => dispatch(showLayerInfoModule()),
+    onShowLayerInfo: () => dispatch(showLayerInfoModule(true)),
     onMemo: (newUIState, uiState) => {
       // console.log('onMemo', newUIState, uiState);
       // console.log(
