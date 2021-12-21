@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import styled from 'styled-components';
-import { Box, Button, ResponsiveContext, Layer } from 'grommet';
+import { Box, Button, Layer } from 'grommet';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
 import { getAsideWidth, isMaxSize } from 'utils/responsive';
@@ -28,9 +28,15 @@ import {
   selectConfigByKey,
   selectActiveLayers,
   selectUIStateByKey,
+  selectUIURLByKey,
   selectFirstLanding,
 } from 'containers/App/selectors';
-import { setLayers, setUIState, setLanding } from 'containers/App/actions';
+import {
+  setLayers,
+  setUIState,
+  setLanding,
+  setUIURL,
+} from 'containers/App/actions';
 
 import commonMessages from 'messages';
 import messages from './messages';
@@ -104,10 +110,14 @@ ProjectButton.propTypes = {
   small: PropTypes.bool,
 };
 
-const COMPONENT_KEY = 'ModuleExplore';
+const COMPONENT_KEY = 'mx';
 
 const DEFAULT_UI_STATE = {
   layersMemo: null,
+  show: true,
+};
+const DEFAULT_UI_URL_STATE = {
+  show: true,
 };
 
 export function ModuleExplore({
@@ -115,15 +125,21 @@ export function ModuleExplore({
   layerIds,
   projects,
   uiState,
+  uiURL,
   onMemoLayers,
   activeLayers,
   firstLanding,
   onSetLanding,
+  onShow,
   intl,
+  size,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
+  const { show } = uiURL
+    ? Object.assign({}, DEFAULT_UI_URL_STATE, uiURL)
+    : DEFAULT_UI_URL_STATE;
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
@@ -141,8 +157,12 @@ export function ModuleExplore({
     onMemoLayers(activeLayers, uiState);
   }, [activeLayers]);
 
-  const [show, setShow] = useState(true);
-  const [showSmall, setShowSmall] = useState(false);
+  useEffect(() => {
+    if (size === 'small') onShow(false, uiURL);
+  }, [size]);
+
+  // const [show, setShow] = useState(true);
+  // const [showSmall, setShowSmall] = useState(false);
 
   const projectIds = projects ? projects.map(p => p.project_id) : [];
   const activeProjects = layerIds
@@ -157,63 +177,58 @@ export function ModuleExplore({
   // const hasActiveProjects = activeProjects.length > 0;
   const hasAllProjectsActive =
     projects && activeProjects.length >= projects.length;
+
   return (
-    <ResponsiveContext.Consumer>
-      {size => (
-        <div>
-          <Helmet>
-            <title>{`${intl.formatMessage(
-              commonMessages.module_explore_metaTitle,
-            )}`}</title>
-          </Helmet>
-          <ModuleWrap>
-            {show && size !== 'small' && (
-              <ProjectButtonWrap asideOffset={getAsideWidth(size)}>
-                <ProjectButton
-                  showAll={!hasAllProjectsActive}
-                  lids={layerIds}
-                  pids={projectIds}
-                  onClick={onSetLayers}
-                  small={isMaxSize(size, 'small')}
-                  icon={<WWFLogoSmall color="black" />}
-                />
-              </ProjectButtonWrap>
+    <div>
+      <Helmet>
+        <title>{`${intl.formatMessage(
+          commonMessages.module_explore_metaTitle,
+        )}`}</title>
+      </Helmet>
+      <ModuleWrap>
+        {show && size !== 'small' && (
+          <ProjectButtonWrap asideOffset={getAsideWidth(size)}>
+            <ProjectButton
+              showAll={!hasAllProjectsActive}
+              lids={layerIds}
+              pids={projectIds}
+              onClick={onSetLayers}
+              small={isMaxSize(size, 'small')}
+              icon={<WWFLogoSmall color="black" />}
+            />
+          </ProjectButtonWrap>
+        )}
+        {show && size !== 'small' && (
+          <PanelExplore onClose={() => onShow(false, uiURL)} />
+        )}
+        {show && size === 'small' && (
+          <Layer full>
+            <PanelExplore onClose={() => onShow(false, uiURL)} />
+          </Layer>
+        )}
+        {!show && (
+          <Buttons>
+            {size !== 'small' && (
+              <ProjectButton
+                showAll={!hasAllProjectsActive}
+                lids={layerIds}
+                pids={projectIds}
+                onClick={onSetLayers}
+                small={isMaxSize(size, 'small')}
+                icon={<WWFLogoSmall color="black" />}
+              />
             )}
-            {show && size !== 'small' && (
-              <PanelExplore onClose={() => setShow(false)} />
-            )}
-            {showSmall && size === 'small' && (
-              <Layer full>
-                <PanelExplore onClose={() => setShowSmall(false)} />
-              </Layer>
-            )}
-            {((!show && size !== 'small') ||
-              (!showSmall && size === 'small')) && (
-              <Buttons>
-                {size !== 'small' && (
-                  <ProjectButton
-                    showAll={!hasAllProjectsActive}
-                    lids={layerIds}
-                    pids={projectIds}
-                    onClick={onSetLayers}
-                    small={isMaxSize(size, 'small')}
-                    icon={<WWFLogoSmall color="black" />}
-                  />
-                )}
-                <ShowButton
-                  onClick={() => {
-                    setShow(true);
-                    setShowSmall(true);
-                  }}
-                  icon={<ExploreS color="white" />}
-                  label={<FormattedMessage {...messages.showLayerPanel} />}
-                />
-              </Buttons>
-            )}
-          </ModuleWrap>
-        </div>
-      )}
-    </ResponsiveContext.Consumer>
+            <ShowButton
+              onClick={() => {
+                onShow(true, uiURL);
+              }}
+              icon={<ExploreS color="white" />}
+              label={<FormattedMessage {...messages.showLayerPanel} />}
+            />
+          </Buttons>
+        )}
+      </ModuleWrap>
+    </div>
   );
 }
 
@@ -223,9 +238,12 @@ ModuleExplore.propTypes = {
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
   onSetLanding: PropTypes.func,
+  onShow: PropTypes.func,
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
+  uiURL: PropTypes.object,
   firstLanding: PropTypes.bool,
+  size: PropTypes.string,
   intl: intlShape.isRequired,
 };
 
@@ -233,6 +251,7 @@ const mapStateToProps = createStructuredSelector({
   layerIds: state => selectActiveLayers(state),
   projects: state => selectConfigByKey(state, { key: 'projects' }),
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  uiURL: state => selectUIURLByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
   firstLanding: state => selectFirstLanding(state),
 });
@@ -246,6 +265,13 @@ function mapDispatchToProps(dispatch) {
         setUIState(
           COMPONENT_KEY,
           Object.assign({}, DEFAULT_UI_STATE, uiState, { layersMemo: layers }),
+        ),
+      ),
+    onShow: (show, uiURL) =>
+      dispatch(
+        setUIURL(
+          COMPONENT_KEY,
+          Object.assign({}, DEFAULT_UI_URL_STATE, uiURL, { show }),
         ),
       ),
   };

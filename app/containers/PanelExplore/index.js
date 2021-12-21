@@ -22,6 +22,7 @@ import {
 import { Close, ExploreS as Layer } from 'components/Icons';
 import { getAsideWidth } from 'utils/responsive';
 import { sortLabels, startsWith } from 'utils/string';
+import qe from 'utils/quasi-equals';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
@@ -30,11 +31,11 @@ import {
   selectConfigByKey,
   selectExploreConfig,
   selectLocale,
-  selectUIStateByKey,
+  selectUIURLByKey,
   selectActiveLayers,
 } from 'containers/App/selectors';
 import {
-  setUIState,
+  setUIURL,
   setLayerInfo,
   toggleLayer,
   setLayers,
@@ -149,9 +150,9 @@ const ButtonClose = styled(p => (
   }
 `;
 
-const COMPONENT_KEY = 'PanelExplore';
+const COMPONENT_KEY = 'px';
 
-const DEFAULT_UI_STATE = {
+const DEFAULT_UI_URL_STATE = {
   tab: 0,
 };
 
@@ -169,9 +170,8 @@ export function PanelExplore({
   onSetLayers,
 }) {
   const { tab } = uiState
-    ? Object.assign({}, DEFAULT_UI_STATE, uiState)
-    : DEFAULT_UI_STATE;
-
+    ? Object.assign({}, DEFAULT_UI_URL_STATE, uiState)
+    : DEFAULT_UI_URL_STATE;
   const cRef = useRef();
   useEffect(() => {
     cRef.current.scrollTop = 0;
@@ -219,15 +219,15 @@ export function PanelExplore({
                           <ButtonDeleteLayers
                             updateLayers={() => onSetLayers(keepLayers)}
                             layerCount={activeCategoryLayers.length}
-                            active={tab === index}
+                            active={qe(tab, index)}
                           />
                         )}
                         <TabLink
                           onClick={() => onSetTab(index, uiState)}
-                          active={tab === index}
-                          disabled={tab === index}
+                          active={qe(tab, index)}
+                          disabled={qe(tab, index)}
                           label={
-                            <TabLinkAnchor active={tab === index}>
+                            <TabLinkAnchor active={qe(tab, index)}>
                               {category.title[locale] || category.title[DEFAULT_LOCALE]}
                             </TabLinkAnchor>
                           }
@@ -350,7 +350,7 @@ const mapStateToProps = createStructuredSelector({
   layersConfig: state => selectLayersConfig(state),
   exploreConfig: state => selectExploreConfig(state),
   locale: state => selectLocale(state),
-  uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  uiState: state => selectUIURLByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
 });
 
@@ -358,9 +358,9 @@ function mapDispatchToProps(dispatch) {
   return {
     onSetTab: (tab, uiState) =>
       dispatch(
-        setUIState(
+        setUIURL(
           COMPONENT_KEY,
-          Object.assign({}, DEFAULT_UI_STATE, uiState, { tab }),
+          Object.assign({}, DEFAULT_UI_URL_STATE, uiState, { tab }),
         ),
       ),
     onLayerInfo: id => dispatch(setLayerInfo(id)),
