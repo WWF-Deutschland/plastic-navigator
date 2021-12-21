@@ -39,6 +39,7 @@ import {
   setLayerInfo,
   toggleLayer,
   setLayers,
+  showLayerInfoModule,
 } from 'containers/App/actions';
 
 import { PROJECT_CATEGORY, PROJECT_CONFIG } from 'config';
@@ -363,7 +364,10 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_URL_STATE, uiState, { tab }),
         ),
       ),
-    onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onLayerInfo: id => {
+      dispatch(setLayerInfo(id));
+      dispatch(showLayerInfoModule());
+    },
     onSetLayers: layers => dispatch(setLayers(layers)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
   };

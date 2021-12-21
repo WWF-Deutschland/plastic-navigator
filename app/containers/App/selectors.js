@@ -256,7 +256,7 @@ export const selectFirstLanding = createSelector(
   selectGlobal,
   global => !global.landing,
 );
-export const selectLayerModuleVisible = createSelector(
+export const selectLayerInfoVisible = createSelector(
   selectRouterSearchParams,
   search => {
     if (search.has('ui-info')) {

@@ -179,7 +179,9 @@ const LayerTitleWrap = styled(p => (
     responsive={false}
     {...p}
   />
-))``;
+))`
+  min-height: 36px;
+`;
 
 const LayerTitle = styled(p => <Text size="xsmall" {...p} />)`
   font-weight: 700;
@@ -238,7 +240,6 @@ export function PanelKey({
   jsonLayers,
   uiState,
   onSetOpen,
-  onShowLayerInfoModule,
   currentModule,
 }) {
   const { open } = uiState
@@ -295,7 +296,12 @@ export function PanelKey({
     }, []);
 
   const jsonLayerActive = config ? jsonLayers[config.id] : null;
-
+  const isModuleLayer =
+    config &&
+    currentModule &&
+    currentModule.featuredLayer &&
+    (currentModule.featuredLayer === config['content-default'] ||
+      currentModule.featuredLayer === config.id);
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -412,21 +418,10 @@ export function PanelKey({
                               config.title[locale] || config.title[DEFAULT_LOCALE]
                             )}
                           </LayerTitle>
-                          {!isActiveProject && (
+                          {!isActiveProject && !isModuleLayer && (
                             <LayerButtonInfo
                               onClick={() => {
-                                if (
-                                  currentModule &&
-                                  currentModule.featuredLayer &&
-                                  (
-                                    currentModule.featuredLayer === config['content-default'] ||
-                                    currentModule.featuredLayer === config.id)
-                                ) {
-                                  onLayerInfo();
-                                  onShowLayerInfoModule();
-                                } else {
-                                  onLayerInfo(config['content-default'] || config.id);
-                                }
+                                onLayerInfo(config['content-default'] || config.id);
                               }}
                               icon={<Info />}
                             />
@@ -452,19 +447,10 @@ export function PanelKey({
                               config.title[locale] || config.title[DEFAULT_LOCALE]
                             )}
                           </LayerTitle>
-                          {!isActiveProject && (
+                          {!isActiveProject && !isModuleLayer && (
                             <LayerButtonInfo
                               onClick={() => {
-                                if (
-                                  currentModule &&
-                                  currentModule.featuredLayer &&
-                                  currentModule.featuredLayer === config.id
-                                ) {
-                                  onLayerInfo();
-                                  onShowLayerInfoModule();
-                                } else {
-                                  onLayerInfo(config.id);
-                                }
+                                onLayerInfo(config.id);
                               }}
                               icon={<Info />}
                             />
@@ -527,7 +513,6 @@ PanelKey.propTypes = {
   uiState: PropTypes.object,
   currentModule: PropTypes.object,
   onSetOpen: PropTypes.func,
-  onShowLayerInfoModule: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -543,8 +528,8 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_STATE, uiState, { open }),
         ),
       ),
-    onLayerInfo: id => dispatch(setLayerInfo(id)),
-    onShowLayerInfoModule: () => {
+    onLayerInfo: id => {
+      dispatch(setLayerInfo(id));
       dispatch(showLayerInfoModule(true));
     },
   };
