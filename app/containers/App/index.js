@@ -24,12 +24,18 @@ import { getHeaderHeight } from 'utils/responsive';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
-import { loadConfig, navigate, setLayerInfo } from 'containers/App/actions';
+import {
+  loadConfig,
+  navigate,
+  setLayerInfo,
+  showLayerInfoModule,
+} from 'containers/App/actions';
 import {
   selectRouterPath,
   selectPageSearch,
   selectInfoSearch,
   selectLocale,
+  selectLayerInfoVisible,
 } from 'containers/App/selectors';
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
@@ -92,6 +98,7 @@ function App({
   onClosePage,
   onCloseLayerInfo,
   intl,
+  layerInfoVisible,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -110,7 +117,7 @@ function App({
 
   // do not show info panel for
   // prettier-ignore
-  const showInfo = info !== '';
+  const showInfo = info !== '' && layerInfoVisible;
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -173,6 +180,7 @@ App.propTypes = {
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
+  layerInfoVisible: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 
@@ -181,6 +189,7 @@ const mapStateToProps = createStructuredSelector({
   page: state => selectPageSearch(state),
   info: state => selectInfoSearch(state),
   locale: state => selectLocale(state),
+  layerInfoVisible: state => selectLayerInfoVisible(state),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -196,7 +205,10 @@ export function mapDispatchToProps(dispatch) {
           deleteSearchParams: ['page'],
         }),
       ),
-    onCloseLayerInfo: () => dispatch(setLayerInfo()),
+    onCloseLayerInfo: () => {
+      dispatch(showLayerInfoModule(false));
+      dispatch(setLayerInfo());
+    },
   };
 }
 

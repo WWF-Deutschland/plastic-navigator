@@ -38,6 +38,7 @@ import {
   setUIState,
   setLayerInfo,
   setLayers,
+  showLayerInfoModule,
 } from 'containers/App/actions';
 
 import KeyFull from 'components/KeyFull';
@@ -424,7 +425,10 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_STATE, uiState, { open }),
         ),
       ),
-    onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onLayerInfo: id => {
+      dispatch(setLayerInfo(id));
+      dispatch(showLayerInfoModule(!!id || false));
+    },
     onSetLayers: layers => dispatch(setLayers(layers)),
     navModule: id => MODULES[id] && dispatch(navigate(MODULES[id].path)),
   };
