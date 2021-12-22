@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Button, Box, ResponsiveContext } from 'grommet';
 import { WWFLogoHeader, Menu } from 'components/Icons';
 
-import { selectRouterPath } from 'containers/App/selectors';
+import { selectRouterPath, selectIFrameSearch } from 'containers/App/selectors';
 import { navigate, navigatePage, navigateHome } from 'containers/App/actions';
 
 import LocaleToggle from 'containers/LocaleToggle';
@@ -127,7 +127,7 @@ const toArray = obj =>
     ...obj[key],
   }));
 
-function Header({ nav, navPage, path, navHome, intl }) {
+function Header({ nav, navPage, path, navHome, intl, iframeConfig }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const paths = path.split('/');
@@ -135,8 +135,14 @@ function Header({ nav, navPage, path, navHome, intl }) {
   const pagesArray = toArray(PAGES).filter(p => p.header);
 
   // Logo should show
-  // if not in iframe: !window.wwfMpxInsideIframe
   // or if iframe not wwf iframe: !window.wwfMpxInsideIframe
+  const showLogo = !window.wwfMpxInsideWWFIframe;
+  const showNavPrimary = iframeConfig !== 'config1';
+  const showLangOptions = LOCALE_TOGGLE && iframeConfig !== 'config1';
+  // const showNavPrimary =
+  //   iframeConfig !== 'config1' || !window.wwfMpxInsideIframe;
+  // const showLangOptions =
+  //   LOCALE_TOGGLE && (iframeConfig !== 'config1' || !window.wwfMpxInsideIframe);
   return (
     <ResponsiveContext.Consumer>
       {size => (
@@ -158,8 +164,7 @@ function Header({ nav, navPage, path, navHome, intl }) {
               gap="small"
               justify={isMinSize(size, 'medium') ? 'start' : 'between'}
             >
-              {(!window.wwfMpxInsideIframe ||
-                !window.wwfMpxInsideWWFIframe) && (
+              {showLogo && (
                 <BrandWWFWrap>
                   <BrandWWF
                     as="a"
@@ -178,43 +183,45 @@ function Header({ nav, navPage, path, navHome, intl }) {
                 onClick={() => navHome()}
                 label={<FormattedMessage {...commonMessages.appTitle} />}
               />
-              <NavPrimary
-                margin={{
-                  left: isMaxSize(size, 'small') ? 'auto' : '0',
-                  right: isMaxSize(size, 'small') ? 'small' : '0',
-                }}
-              >
-                {toArray(MODULES).map(m => (
-                  <Primary
-                    key={m.key}
-                    onClick={() => {
-                      setShowMenu(false);
-                      nav(m.path);
-                    }}
-                    active={route === m.path}
-                    disabled={route === m.path}
-                  >
-                    <Box
-                      direction="row"
-                      justify={isMinSize(size, 'medium') ? 'start' : 'center'}
-                      align="center"
-                      gap="ms"
+              {showNavPrimary && (
+                <NavPrimary
+                  margin={{
+                    left: isMaxSize(size, 'small') ? 'auto' : '0',
+                    right: isMaxSize(size, 'small') ? 'small' : '0',
+                  }}
+                >
+                  {toArray(MODULES).map(m => (
+                    <Primary
+                      key={m.key}
+                      onClick={() => {
+                        setShowMenu(false);
+                        nav(m.path);
+                      }}
+                      active={route === m.path}
+                      disabled={route === m.path}
                     >
-                      {isMinSize(size, 'large') && (
-                        <>{route === m.path ? m.iconActive : m.icon}</>
-                      )}
-                      {isMaxSize(size, 'medium') && (
-                        <>{route === m.path ? m.iconActiveS : m.iconS}</>
-                      )}
-                      {isMinSize(size, 'medium') && (
-                        <FormattedMessage
-                          {...commonMessages[`module_${m.key}`]}
-                        />
-                      )}
-                    </Box>
-                  </Primary>
-                ))}
-              </NavPrimary>
+                      <Box
+                        direction="row"
+                        justify={isMinSize(size, 'medium') ? 'start' : 'center'}
+                        align="center"
+                        gap="ms"
+                      >
+                        {isMinSize(size, 'large') && (
+                          <>{route === m.path ? m.iconActive : m.icon}</>
+                        )}
+                        {isMaxSize(size, 'medium') && (
+                          <>{route === m.path ? m.iconActiveS : m.iconS}</>
+                        )}
+                        {isMinSize(size, 'medium') && (
+                          <FormattedMessage
+                            {...commonMessages[`module_${m.key}`]}
+                          />
+                        )}
+                      </Box>
+                    </Primary>
+                  ))}
+                </NavPrimary>
+              )}
             </Box>
             {isMinSize(size, 'medium') && (
               <Box
@@ -238,7 +245,7 @@ function Header({ nav, navPage, path, navHome, intl }) {
                         last={index === Object.keys(PAGES).length - 1}
                       />
                     ))}
-                  {LOCALE_TOGGLE && <LocaleToggle />}
+                  {showLangOptions && <LocaleToggle />}
                 </NavSecondary>
               </Box>
             )}
@@ -272,11 +279,13 @@ Header.propTypes = {
   navPage: PropTypes.func,
   navHome: PropTypes.func,
   path: PropTypes.string,
+  iframeConfig: PropTypes.string,
   intl: intlShape.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   path: state => selectRouterPath(state),
+  iframeConfig: state => selectIFrameSearch(state),
 });
 
 export function mapDispatchToProps(dispatch) {

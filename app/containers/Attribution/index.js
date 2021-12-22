@@ -91,10 +91,8 @@ export function Attribution({ map, intl, onNav }) {
               </Label>
             }
           />
-          {(!window.wwfMpxInsideIframe || !window.wwfMpxInsideWWFIframe) && (
-            <Label>|</Label>
-          )}
-          {(!window.wwfMpxInsideIframe || !window.wwfMpxInsideWWFIframe) && (
+          {!window.wwfMpxInsideWWFIframe && <Label>|</Label>}
+          {!window.wwfMpxInsideWWFIframe && (
             <StyledButton
               plain
               onClick={() => onNav(PAGES.privacy.path)}
@@ -105,10 +103,8 @@ export function Attribution({ map, intl, onNav }) {
               }
             />
           )}
-          {(!window.wwfMpxInsideIframe || !window.wwfMpxInsideWWFIframe) && (
-            <Label>|</Label>
-          )}
-          {(!window.wwfMpxInsideIframe || !window.wwfMpxInsideWWFIframe) && (
+          {!window.wwfMpxInsideWWFIframe && <Label>|</Label>}
+          {!window.wwfMpxInsideWWFIframe && (
             <StyledButton
               plain
               as="a"

@@ -47,6 +47,10 @@ export const selectStorySearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('st') ? parseInt(search.get('st'), 10) : null),
 );
+export const selectIFrameSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('iframe') ? search.get('iframe') : null),
+);
 
 /**
  * Get the language locale
