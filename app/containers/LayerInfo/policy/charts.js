@@ -3,10 +3,14 @@ import { isMinSize } from 'utils/responsive';
 
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
-const getDataForDate = (dateKey, positions, positionID, positionIDYOffset) => {
+const getDataForDate = (dateKey, positions, positionID, positionIDYOffsets) => {
   let y = 0;
-  if (positionIDYOffset && positions[dateKey].positions[positionIDYOffset]) {
-    y += positions[dateKey].positions[positionIDYOffset].length;
+  if (positionIDYOffsets) {
+    positionIDYOffsets.forEach(positionIDYOffset => {
+      if (positions[dateKey].positions[positionIDYOffset]) {
+        y += positions[dateKey].positions[positionIDYOffset].length;
+      }
+    });
   }
   return {
     sdate: dateKey,
@@ -47,11 +51,11 @@ export const prepChartData = (positions, minDate) => {
       ],
       2: [
         ...memo[2],
-        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, 3)),
+        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, [3])),
       ],
       1: [
         ...memo[1],
-        ...addStep(memo[1], getDataForDate(dateKey, positions, 1, 2)),
+        ...addStep(memo[1], getDataForDate(dateKey, positions, 1, [2, 3])),
       ],
     }),
     {

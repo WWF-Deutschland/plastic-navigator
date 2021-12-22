@@ -91,7 +91,7 @@ const KeyStatements = styled(p => (
   padding: 0px;
 `;
 
-const StyledKeyLabel = styled(KeyLabel)`
+const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
   font-weight: ${({ strong }) => (strong ? 'bold' : 'normal')};
 `;
@@ -270,7 +270,7 @@ export function CountryChart({
               gap="xxsmall"
               elevation={!mouseOverSource && mouseOver ? 'small' : 'none'}
             >
-              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xxsmall">
+              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xsmall">
                 <Box gap="xxsmall">
                   {statsForKey.map(stat => (
                     <SquareLabelWrap key={stat.id}>
@@ -280,13 +280,9 @@ export function CountryChart({
                       <KeyLabelWrap>
                         <StyledKeyLabel>
                           {!stat.count && stat.title}
-                          {!!stat.count && `${stat.title}:`}
+                          {!!stat.count && `${stat.title}: `}
+                          {!!stat.count && <strong>{`${stat.count}`}</strong>}
                         </StyledKeyLabel>
-                        {!!stat.count && (
-                          <StyledKeyLabel strong>
-                            {stat.count}
-                          </StyledKeyLabel>
-                        )}
                       </KeyLabelWrap>
                     </SquareLabelWrap>
                   ))}
@@ -317,20 +313,21 @@ export function CountryChart({
                     </KeyLabelWrap>
                   </SquareLabelWrap>
                 </Box>
-                <Box direction="row" gap="xsmall" justify={isMinSize(size, 'medium') ? 'end' : 'start'}>
+                <Box
+                  direction="row"
+                  gap="xsmall"
+                  justify={isMinSize(size, 'medium') ? 'end' : 'start'}
+                  flex={{ shrink: '0' }}
+                >
                   <Text
                     size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
                     textAlign="end"
                     color="textSecondary"
                   >
-                    <FormattedMessage {...messages.countryChartDateLabel} />
-                  </Text>
-                  <Text
-                    size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
-                    textAlign="end"
-                    color="textSecondary"
-                  >
-                    {formatDate(locale, statusTime)}
+                    <FormattedMessage
+                      {...messages.countryChartDateLabel}
+                      values={{ date: formatDate(locale, statusTime)}}
+                    />
                   </Text>
                 </Box>
               </Box>

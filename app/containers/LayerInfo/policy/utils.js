@@ -332,15 +332,24 @@ const concatIfMissing = (arr, values) =>
   }, arr);
 
 const cleanupPositions = positions => {
-  if (positions['1'] && positions['2']) {
-    const pos1 = positions['1'].filter(p1 => positions['2'].indexOf(p1) === -1);
-    return Object.assign({}, positions, { '1': pos1 });
+  let pos = positions;
+  // remove pos 3 from pos 2
+  // remove pos 3 and 2 from pos 1
+  if (positions['1']) {
+    let pos1 = positions['1'];
+    if (positions['2']) {
+      pos1 = pos1.filter(p1 => positions['2'].indexOf(p1) === -1);
+    }
+    if (positions['3']) {
+      pos1 = pos1.filter(p1 => positions['3'].indexOf(p1) === -1);
+    }
+    pos = Object.assign({}, pos, { '1': pos1 });
   }
   if (positions['2'] && positions['3']) {
     const pos2 = positions['2'].filter(p2 => positions['3'].indexOf(p2) === -1);
-    return Object.assign({}, positions, { '2': pos2 });
+    pos = Object.assign({}, pos, { '2': pos2 });
   }
-  return positions;
+  return pos;
 };
 
 export const getCountryPositionsOverTimeFromCountryFeatures = (
@@ -348,7 +357,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = (
   features,
 ) => {
   const sources = features
-    .filter(f => excludeDependentCountries(f))
+    .filter(excludeDependentCountries)
     .reduce((memo, f) => {
       const { code } = f.properties;
       if (
