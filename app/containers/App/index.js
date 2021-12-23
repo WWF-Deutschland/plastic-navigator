@@ -24,12 +24,18 @@ import { getHeaderHeight } from 'utils/responsive';
 
 import reducer from 'containers/App/reducer';
 import saga from 'containers/App/saga';
-import { loadConfig, navigate, setLayerInfo } from 'containers/App/actions';
+import {
+  loadConfig,
+  navigate,
+  setLayerInfo,
+  showLayerInfoModule,
+} from 'containers/App/actions';
 import {
   selectRouterPath,
   selectPageSearch,
   selectInfoSearch,
   selectLocale,
+  selectLayerInfoVisible,
 } from 'containers/App/selectors';
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
@@ -92,6 +98,7 @@ function App({
   onClosePage,
   onCloseLayerInfo,
   intl,
+  layerInfoVisible,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -110,8 +117,7 @@ function App({
 
   // do not show info panel for
   // prettier-ignore
-  const showInfo = info !== '';
-
+  const showInfo = info !== '' && layerInfoVisible;
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -119,41 +125,46 @@ function App({
           <meta name="description" content="" />
         </Helmet>
         <Header route={route} />
-        <Content>
-          <ResponsiveContext.Consumer>
-            {size => (
+        <ResponsiveContext.Consumer>
+          {size => (
+            <Content>
               <Map
                 size={size}
                 hasKey={hasKey}
                 currentModule={currentModule}
                 layerInfoActive={showInfo}
               />
-            )}
-          </ResponsiveContext.Consumer>
-          <Switch>
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
-              component={ModuleStories}
-            />
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
-              component={ModuleExplore}
-            />
-            <Route
-              path={`/:locale(${appLocales.join('|')})/${ROUTES.POLICY}/`}
-              component={ModulePolicy}
-            />
-            <Redirect to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`} />
-          </Switch>
-          {page !== '' && <Page page={page} onClose={() => onClosePage()} />}
-          {showInfo && (
-            <LayerInfo
-              view={info}
-              onClose={() => onCloseLayerInfo()}
-              currentModule={currentModule}
-            />
+              <Switch>
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.INTRO}/`}
+                  component={ModuleStories}
+                />
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.EXPLORE}/`}
+                >
+                  <ModuleExplore size={size} />
+                </Route>
+                <Route
+                  path={`/:locale(${appLocales.join('|')})/${ROUTES.POLICY}/`}
+                  component={ModulePolicy}
+                />
+                <Redirect
+                  to={`/${locale || DEFAULT_LOCALE}/${ROUTES.INTRO}/`}
+                />
+              </Switch>
+              {page !== '' && (
+                <Page page={page} onClose={() => onClosePage()} />
+              )}
+              {showInfo && (
+                <LayerInfo
+                  view={info}
+                  onClose={() => onCloseLayerInfo()}
+                  currentModule={currentModule}
+                />
+              )}
+            </Content>
           )}
-        </Content>
+        </ResponsiveContext.Consumer>
         {!window.wwfMpxInsideIframe && <CookieConsent />}
         {window.wwfMpxInsideIframe && <AppIframeShadow />}
         <GlobalStyle />
@@ -169,6 +180,7 @@ App.propTypes = {
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
+  layerInfoVisible: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 
@@ -177,6 +189,7 @@ const mapStateToProps = createStructuredSelector({
   page: state => selectPageSearch(state),
   info: state => selectInfoSearch(state),
   locale: state => selectLocale(state),
+  layerInfoVisible: state => selectLayerInfoVisible(state),
 });
 
 export function mapDispatchToProps(dispatch) {
@@ -192,7 +205,10 @@ export function mapDispatchToProps(dispatch) {
           deleteSearchParams: ['page'],
         }),
       ),
-    onCloseLayerInfo: () => dispatch(setLayerInfo()),
+    onCloseLayerInfo: () => {
+      dispatch(showLayerInfoModule(false));
+      dispatch(setLayerInfo());
+    },
   };
 }
 

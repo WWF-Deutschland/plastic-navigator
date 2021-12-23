@@ -7,6 +7,7 @@ import { DEFAULT_LOCALE, appLocales } from 'i18n';
 import { URL_SEARCH_SEPARATOR, PROJECT_CONFIG } from 'config';
 
 import { startsWith } from 'utils/string';
+import isNumber from 'utils/is-number';
 
 import { initialState } from './reducer';
 
@@ -45,6 +46,10 @@ export const selectChapterSearch = createSelector(
 export const selectStorySearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('st') ? parseInt(search.get('st'), 10) : null),
+);
+export const selectIFrameSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('iframe') ? search.get('iframe') : null),
 );
 
 /**
@@ -212,6 +217,33 @@ export const selectUIStateByKey = createSelector(
   selectUIState,
   (key, uiState) => uiState[key],
 );
+export const selectUIURL = createSelector(
+  selectRouterSearchParams,
+  (key, search) => (search.has('ui') ? search.get('ui') : null),
+);
+export const selectUIURLByKey = createSelector(
+  (state, { key }) => key,
+  selectRouterSearchParams,
+  (key, search) => {
+    if (search.has(`ui-${key}`)) {
+      const paramValues = search.get(`ui-${key}`).split(URL_SEARCH_SEPARATOR);
+      return paramValues.reduce((memo, pv) => {
+        if (pv.indexOf(':') === -1) return memo;
+        const pvsplit = pv.split(':');
+        let val = pvsplit[1];
+        if (val === 'true') val = true;
+        if (val === 'false') val = false;
+        if (isNumber(val))
+          val = val.indexOf('.') ? parseFloat(val, 10) : parseInt(val, 10);
+        return {
+          ...memo,
+          [pvsplit[0]]: val,
+        };
+      }, {});
+    }
+    return null;
+  },
+);
 
 export const selectActiveLayers = createSelector(
   selectLayersSearch,
@@ -228,7 +260,12 @@ export const selectFirstLanding = createSelector(
   selectGlobal,
   global => !global.landing,
 );
-export const selectLayerModuleVisible = createSelector(
-  selectGlobal,
-  global => global.layerModuleVisible,
+export const selectLayerInfoVisible = createSelector(
+  selectRouterSearchParams,
+  search => {
+    if (search.has('ui-info')) {
+      return search.get('ui-info') === '1';
+    }
+    return true;
+  },
 );

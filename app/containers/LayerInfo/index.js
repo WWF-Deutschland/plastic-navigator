@@ -20,10 +20,8 @@ import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 
 import {
   selectSingleLayerContentConfig,
-  selectLayerModuleVisible,
   selectLocale,
 } from 'containers/App/selectors';
-import { showLayerInfoModule } from 'containers/App/actions';
 
 import { Close } from 'components/Icons';
 
@@ -93,11 +91,9 @@ const ButtonClose = styled(p => <Button plain alignSelf="end" {...p} />)`
 export function LayerInfo({
   view,
   config,
-  currentModule,
   onClose,
-  visible,
-  onHideLayerPanel,
   locale,
+  isModule,
   // onShowLayerPanel,
 }) {
   const [layerId, layerView] = decodeInfoView(view);
@@ -127,11 +123,6 @@ export function LayerInfo({
     type = 'layer';
   }
 
-  const isModule =
-    !!currentModule &&
-    !!currentModule.featuredLayer &&
-    currentModule.featuredLayer === layerId;
-
   let title = '';
   if (config && config.title) {
     title = config.title[locale] || config.title[DEFAULT_LOCALE];
@@ -145,88 +136,77 @@ export function LayerInfo({
   return (
     <ResponsiveContext.Consumer>
       {size => (
-        <div>
-          {(!isModule || visible) && (
-            <Styled panelWidth={getAsideInfoWidth(size)}>
-              <ContentWrap ref={cRef}>
-                {type === 'project' && (
-                  <ProjectContent
-                    id={layerId}
-                    location={layerView}
-                  />
-                )}
-                {type === 'feature' && !isCountry && config && (
-                  <FeatureContent
-                    featureId={layerView}
-                    config={config}
-                    supTitle={title}
-                    headerFallback={<TitleIcon title={title}/>}
-                  />
-                )}
-                {type === 'feature' && isCountry && config && (
-                  <CountryFeatureContent
-                    featureId={layerView}
-                    config={config}
-                    supTitle={title}
-                    headerFallback={
-                      isModule
-                        ? <TitleIconPolicy title={title}/>
-                        : <TitleIcon title={title}/>
-                    }
-                  />
-                )}
-                {type === 'source' && config && (
-                  <SourceContent
-                    sourceId={layerView}
-                    config={config}
-                    supTitle={title}
-                  />
-                )}
-                {type === 'countryList' && config && (
-                  <CountryList config={config} supTitle={title} />
-                )}
-                {type === 'sourceList' && config && (
-                  <SourceList config={config} supTitle={title}/>
-                )}
-                {type === 'layer' && config && (
-                  <LayerContent
-                    config={config}
-                    title={title}
-                    header={
-                      (isModule && isCountry)
-                        ? <TitleIconPolicy title={titleHeader}/>
-                        : <TitleIcon title={titleHeader}/>
-                    }
-                    inject={
-                      !layerView &&
-                      config &&
-                      POLICY_LAYERS.indexOf(config.id) > -1
-                        ? [{
-                          tag: '[CHART]',
-                          el: (<CountryChart config={config} />)
-                        },
-                        {
-                          tag: '[LAYERS-ALTERNATE]',
-                          el: (<Alternates config={config} />)
-                        }]
-                        : null
-                    } />
-                )}
-              </ContentWrap>
-              <ButtonClose
-                onClick={() => {
-                  if (isModule) {
-                    onHideLayerPanel()
-                  }
-                  else {
-                    onClose()
-                  }
-                }}
-                icon={<Close color="white" />}
+        <Styled panelWidth={getAsideInfoWidth(size)}>
+          <ContentWrap ref={cRef}>
+            {type === 'project' && (
+              <ProjectContent
+                id={layerId}
+                location={layerView}
               />
-            </Styled>
-          )}
-        </div>
+            )}
+            {type === 'feature' && !isCountry && config && (
+              <FeatureContent
+                featureId={layerView}
+                config={config}
+                supTitle={title}
+                headerFallback={<TitleIcon title={title}/>}
+              />
+            )}
+            {type === 'feature' && isCountry && config && (
+              <CountryFeatureContent
+                featureId={layerView}
+                config={config}
+                supTitle={title}
+                headerFallback={
+                  isModule
+                    ? <TitleIconPolicy title={title}/>
+                    : <TitleIcon title={title}/>
+                }
+              />
+            )}
+            {type === 'source' && config && (
+              <SourceContent
+                sourceId={layerView}
+                config={config}
+                supTitle={title}
+              />
+            )}
+            {type === 'countryList' && config && (
+              <CountryList config={config} supTitle={title} />
+            )}
+            {type === 'sourceList' && config && (
+              <SourceList config={config} supTitle={title}/>
+            )}
+            {type === 'layer' && config && (
+              <LayerContent
+                config={config}
+                title={title}
+                header={
+                  (isModule && isCountry)
+                    ? <TitleIconPolicy title={titleHeader}/>
+                    : <TitleIcon title={titleHeader}/>
+                }
+                inject={
+                  !layerView &&
+                  config &&
+                  POLICY_LAYERS.indexOf(config.id) > -1
+                    ? [{
+                      tag: '[CHART]',
+                      el: (<CountryChart config={config} />)
+                    },
+                    {
+                      tag: '[LAYERS-ALTERNATE]',
+                      el: (<Alternates config={config} />)
+                    }]
+                    : null
+                } />
+            )}
+          </ContentWrap>
+          <ButtonClose
+            onClick={onClose}
+            icon={<Close color="white" />}
+          />
+        </Styled>
       )}
     </ResponsiveContext.Consumer>
   );
@@ -236,10 +216,8 @@ LayerInfo.propTypes = {
   view: PropTypes.string,
   onClose: PropTypes.func,
   // onShowLayerPanel: PropTypes.func,
-  onHideLayerPanel: PropTypes.func,
   config: PropTypes.object,
-  currentModule: PropTypes.object,
-  visible: PropTypes.bool,
+  isModule: PropTypes.bool,
   locale: PropTypes.string,
 };
 
@@ -248,20 +226,19 @@ const mapStateToProps = createStructuredSelector({
     const layerId = getLayerIdFromView(view);
     return selectSingleLayerContentConfig(state, { key: layerId });
   },
-  visible: state => selectLayerModuleVisible(state),
   locale: state => selectLocale(state),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    // onShowLayerPanel: () => dispatch(showLayerInfoModule(false)),
-    onHideLayerPanel: () => dispatch(showLayerInfoModule(false)),
-  };
-}
+// function mapDispatchToProps() {
+//   return {
+//     // onShowLayerPanel: () => dispatch(showLayerInfoModule(false)),
+//     // onHideLayerPanel: () => dispatch(showLayerInfoModule(false)),
+//   };
+// }
 
 const withConnect = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 );
 
 export default compose(withConnect)(LayerInfo);

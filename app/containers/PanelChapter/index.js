@@ -38,6 +38,7 @@ import {
   setUIState,
   setLayerInfo,
   setLayers,
+  showLayerInfoModule,
 } from 'containers/App/actions';
 
 import KeyFull from 'components/KeyFull';
@@ -191,7 +192,7 @@ const LayerButtonInfo = styled(p => <Button plain {...p} />)`
 // content is split into 2 sub-chapters on small screens
 const STEPS = 2;
 
-const COMPONENT_KEY = 'PanelChapter';
+const COMPONENT_KEY = 'pch';
 
 const DEFAULT_UI_STATE = {
   open: true,
@@ -424,7 +425,10 @@ function mapDispatchToProps(dispatch) {
           Object.assign({}, DEFAULT_UI_STATE, uiState, { open }),
         ),
       ),
-    onLayerInfo: id => dispatch(setLayerInfo(id)),
+    onLayerInfo: id => {
+      dispatch(setLayerInfo(id));
+      dispatch(showLayerInfoModule(!!id || false));
+    },
     onSetLayers: layers => dispatch(setLayers(layers)),
     navModule: id => MODULES[id] && dispatch(navigate(MODULES[id].path)),
   };

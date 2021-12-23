@@ -125,7 +125,7 @@ export function Map({
   onLoadLayer,
   jsonLayers,
   projects,
-  onFeatureClick,
+  onLayerInfo,
   layerInfo,
   size,
   onFeatureHighlight,
@@ -135,7 +135,6 @@ export function Map({
   currentModule,
   onMapMove,
   mview,
-  onShowLayerInfo,
   layerInfoActive,
 }) {
   useInjectReducer({ key: 'map', reducer });
@@ -754,7 +753,9 @@ export function Map({
         <PanelKey
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
-          onLayerInfo={onFeatureClick}
+          onLayerInfo={args => {
+            onLayerInfo(args, layersConfig);
+          }}
           jsonLayers={jsonLayers}
           currentModule={currentModule}
         />
@@ -769,8 +770,7 @@ export function Map({
           onClose={() => setTooltip(null)}
           onFeatureClick={args => {
             setTooltip(null);
-            onShowLayerInfo();
-            onFeatureClick(args);
+            onLayerInfo(args, layersConfig);
           }}
         />
       )}
@@ -820,7 +820,7 @@ Map.propTypes = {
   currentModule: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
-  onFeatureClick: PropTypes.func,
+  onLayerInfo: PropTypes.func,
   onFeatureHighlight: PropTypes.func,
   onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
@@ -829,7 +829,6 @@ Map.propTypes = {
   size: PropTypes.string.isRequired,
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
-  onShowLayerInfo: PropTypes.func,
   layerInfoActive: PropTypes.bool,
 };
 
@@ -846,7 +845,7 @@ const mapStateToProps = createStructuredSelector({
   mview: state => selectMapPosition(state),
 });
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     onLoadLayer: (key, config) => {
       dispatch(loadLayer(key, config));
@@ -854,8 +853,19 @@ function mapDispatchToProps(dispatch) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onFeatureClick: ({ layer, feature, copy }) => {
+    onLayerInfo: ({ layer, feature, copy }, layersConfig) => {
       dispatch(setLayerInfo(layer, feature, copy));
+      const { currentModule } = ownProps;
+      const config = layersConfig && layersConfig.find(l => l.id === layer);
+      const isModuleLayer =
+        config &&
+        currentModule &&
+        currentModule.featuredLayer &&
+        (currentModule.featuredLayer === config['content-default'] ||
+          currentModule.featuredLayer === layer);
+      if (!isModuleLayer) {
+        dispatch(showLayerInfoModule());
+      }
     },
     onFeatureHighlight: args => {
       const layer = args ? args.layer : null;
@@ -866,7 +876,6 @@ function mapDispatchToProps(dispatch) {
     onMapMove: position => {
       dispatch(setMapPosition(position));
     },
-    onShowLayerInfo: () => dispatch(showLayerInfoModule()),
   };
 }
 

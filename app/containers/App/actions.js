@@ -31,6 +31,7 @@ import {
   CONFIG_LOAD_ERROR,
   CONFIG_READY,
   SET_UI_STATE,
+  SET_UI_URL,
   SET_LAYER_INFO,
   SHOW_LAYER_INFO_MODULE,
   TOGGLE_LAYER,
@@ -178,6 +179,13 @@ export function setUIState(component, state) {
     type: SET_UI_STATE,
     component,
     state,
+  };
+}
+export function setUIURL(key, newState) {
+  return {
+    type: SET_UI_URL,
+    key,
+    newState,
   };
 }
 export function setLayerInfo(layer, view, copy) {
