@@ -54,6 +54,7 @@ import {
 } from './utils';
 import messages from '../messages';
 import {
+  getXMax,
   prepChartKey,
   prepChartData,
   prepChartDataSources,
@@ -83,14 +84,14 @@ const KeyAreaWrap = styled.div`
 `;
 
 const KeyStatements = styled(p => (
-  <Box direction="row" gap="hair" align="center" {...p} />
+  <Box direction="row" align="center" {...p} />
 ))`
   height: 18px;
   width: 18px;
   padding: 0px;
 `;
 
-const StyledKeyLabel = styled(KeyLabel)`
+const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
   font-weight: ${({ strong }) => (strong ? 'bold' : 'normal')};
 `;
@@ -220,6 +221,7 @@ export function CountryChart({
   const dataStyles = {
     1: statsForKey.find(s => s.id === '1'),
     2: statsForKey.find(s => s.id === '2'),
+    3: statsForKey.find(s => s.id === '3'),
   };
   const tickValuesX = getTickValuesX(chartData);
 
@@ -268,7 +270,7 @@ export function CountryChart({
               gap="xxsmall"
               elevation={!mouseOverSource && mouseOver ? 'small' : 'none'}
             >
-              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xxsmall">
+              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xsmall">
                 <Box gap="xxsmall">
                   {statsForKey.map(stat => (
                     <SquareLabelWrap key={stat.id}>
@@ -278,13 +280,9 @@ export function CountryChart({
                       <KeyLabelWrap>
                         <StyledKeyLabel>
                           {!stat.count && stat.title}
-                          {!!stat.count && `${stat.title}:`}
+                          {!!stat.count && `${stat.title}: `}
+                          {!!stat.count && <strong>{`${stat.count}`}</strong>}
                         </StyledKeyLabel>
-                        {!!stat.count && (
-                          <StyledKeyLabel strong>
-                            {stat.count}
-                          </StyledKeyLabel>
-                        )}
                       </KeyLabelWrap>
                     </SquareLabelWrap>
                   ))}
@@ -295,6 +293,10 @@ export function CountryChart({
                           <KeySourceMarker
                             key={stat.id}
                             keyStyle={stat.style}
+                            style={{
+                              width: '6px',
+                              height: '6px',
+                            }}
                           />
                         )
                       )}
@@ -311,20 +313,21 @@ export function CountryChart({
                     </KeyLabelWrap>
                   </SquareLabelWrap>
                 </Box>
-                <Box direction="row" gap="xsmall" justify={isMinSize(size, 'medium') ? 'end' : 'start'}>
+                <Box
+                  direction="row"
+                  gap="xsmall"
+                  justify={isMinSize(size, 'medium') ? 'end' : 'start'}
+                  flex={{ shrink: '0' }}
+                >
                   <Text
                     size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
                     textAlign="end"
                     color="textSecondary"
                   >
-                    <FormattedMessage {...messages.countryChartDateLabel} />
-                  </Text>
-                  <Text
-                    size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
-                    textAlign="end"
-                    color="textSecondary"
-                  >
-                    {formatDate(locale, statusTime)}
+                    <FormattedMessage
+                      {...messages.countryChartDateLabel}
+                      values={{ date: formatDate(locale, statusTime)}}
+                    />
                   </Text>
                 </Box>
               </Box>
@@ -347,28 +350,6 @@ export function CountryChart({
               >
                 {/* dummy series to make sure chart starts at 0 */}
                 <AreaSeries data={dataForceYRange} style={{ opacity: 0 }} />
-                {/* position 2 series as area */}
-                <AreaSeries
-                  data={chartData[2]}
-                  style={{
-                    stroke: 'transparent',
-                    fill: dataStyles && dataStyles[2] && dataStyles[2].style
-                      ? dataStyles[2].style.fillColor
-                      : 'red',
-                    opacity: dataStyles && dataStyles[2] &&  dataStyles[2].style
-                      ? dataStyles[2].style.fillOpacity
-                      : 0.1,
-                  }}
-                />
-                {/* white background for position 1 series, covering pos 2 series */}
-                <AreaSeries
-                  data={chartData[1]}
-                  style={{
-                    stroke: 'transparent',
-                    fill: 'white',
-                    opacity: 1,
-                  }}
-                />
                 {/* position 1 series as area */}
                 <AreaSeries
                   data={chartData[1]}
@@ -376,20 +357,54 @@ export function CountryChart({
                     stroke: 'transparent',
                     fill: dataStyles && dataStyles[1] && dataStyles[1].style
                       ? dataStyles[1].style.fillColor
-                      : 'blue',
-                    opacity: dataStyles && dataStyles[1] && dataStyles[1].style
+                      : 'red',
+                    opacity: dataStyles && dataStyles[1] &&  dataStyles[1].style
                       ? dataStyles[1].style.fillOpacity
                       : 0.1,
                   }}
                 />
-                {/* position 2 series as line */}
-                <LineSeries
+                {/* white background for position 2 series, covering pos 1 series */}
+                <AreaSeries
                   data={chartData[2]}
                   style={{
-                    stroke: dataStyles && dataStyles[2] && dataStyles[2].style
+                    stroke: 'transparent',
+                    fill: 'white',
+                    opacity: 1,
+                  }}
+                />
+                {/* position 2 series as area */}
+                <AreaSeries
+                  data={chartData[2]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: dataStyles && dataStyles[2] && dataStyles[2].style
                       ? dataStyles[2].style.fillColor
-                      : 'red',
-                    strokeWidth: 0.5,
+                      : 'blue',
+                    opacity: dataStyles && dataStyles[2] && dataStyles[2].style
+                      ? dataStyles[2].style.fillOpacity
+                      : 0.1,
+                  }}
+                />
+                {/* white background for position 3 series, covering pos 1,2 series */}
+                <AreaSeries
+                  data={chartData[3]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: 'white',
+                    opacity: 1,
+                  }}
+                />
+                {/* position 3 series as area */}
+                <AreaSeries
+                  data={chartData[3]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: dataStyles && dataStyles[3] && dataStyles[3].style
+                      ? dataStyles[3].style.fillColor
+                      : 'blue',
+                    opacity: dataStyles && dataStyles[3] && dataStyles[3].style
+                      ? dataStyles[3].style.fillOpacity
+                      : 0.1,
                   }}
                 />
                 {/* position 1 series as line */}
@@ -398,6 +413,26 @@ export function CountryChart({
                   style={{
                     stroke: dataStyles && dataStyles[1] && dataStyles[1].style
                       ? dataStyles[1].style.fillColor
+                      : 'red',
+                    strokeWidth: 0.5,
+                  }}
+                />
+                {/* position 2 series as line  */}
+                <LineSeries
+                  data={chartData[2]}
+                  style={{
+                    stroke: dataStyles && dataStyles[2] && dataStyles[2].style
+                      ? dataStyles[2].style.fillColor
+                      : 'blue',
+                    strokeWidth: 0.5,
+                  }}
+                />
+                {/* position 3 series as line  */}
+                <LineSeries
+                  data={chartData[3]}
+                  style={{
+                    stroke: dataStyles && dataStyles[3] && dataStyles[3].style
+                      ? dataStyles[3].style.fillColor
                       : 'blue',
                     strokeWidth: 0.5,
                   }}
@@ -410,7 +445,7 @@ export function CountryChart({
                       y: 0,
                     },
                     {
-                      x: new Date().getTime(),
+                      x: getXMax(),
                       y: 0,
                     },
                   ]}
@@ -455,7 +490,7 @@ export function CountryChart({
                       y: 0,
                     },
                     {
-                      x: new Date().getTime(),
+                      x: getXMax(),
                       y: 0,
                     },
                   ]}

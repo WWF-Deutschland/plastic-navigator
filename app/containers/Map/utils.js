@@ -174,7 +174,10 @@ const getPolylineLayer = ({ data, config }) => {
 export const getVectorGridStyle = (properties, config, state = 'default') => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
-  let featureStyle = {};
+  let featureStyle = {
+    fillOpacity: 0.4,
+  };
+
   if (
     properties &&
     config.featureStyle &&
@@ -218,12 +221,11 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
   if (state === 'hover') {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
-    featureStyle.fillOpacity = 0.2;
+    featureStyle.fillOpacity = 0;
+    featureStyle.color = '#444';
   } else if (state === 'info') {
-    featureStyle.fillOpacity = 0.2;
-    featureStyle.color = '#000';
-  } else {
-    featureStyle.fillOpacity = 0.4;
+    featureStyle.fillOpacity = 0;
+    featureStyle.color = '#222';
   }
   return {
     stroke: true,
@@ -249,11 +251,7 @@ const featureInteractive = (e, config) => {
   return false;
 };
 
-const getPolygonLayer = ({ data, config, markerEvents, state }) => {
-  const layer = L.featureGroup(null, { pane: 'overlayPane' });
-  // const options = {
-  //
-  // };
+const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
   const vectorGrid = L.vectorGrid.slicer(data, {
     data,
     zIndex: config['z-index'] || 1,
@@ -286,6 +284,47 @@ const getPolygonLayer = ({ data, config, markerEvents, state }) => {
       },
     });
   }
+  return vectorGrid;
+};
+
+const getBestValue = (multiplePriority, properties, path) => {
+  const propertyArray = properties[path[0]];
+  const values = propertyArray && uniq(propertyArray.map(p => p[path[1]]));
+  return multiplePriority.reduce((memo, pvalue) => {
+    if (memo) return memo;
+    return values.find(val => val === pvalue);
+  }, null);
+};
+
+const getPolygonLayer = ({ data, config, markerEvents, state }) => {
+  const layer = L.featureGroup(null, { pane: 'overlayPane' });
+  let dataSorted;
+  if (config && config.featureStyle && config.featureStyle.multiplePriority) {
+    const path = config.featureStyle.property.split('.');
+    const dataFeatures = [...data.features].sort((f1, f2) => {
+      const bestValue1 = getBestValue(
+        config.featureStyle.multiplePriority,
+        f1.properties,
+        path,
+      );
+      const bestValue2 = getBestValue(
+        config.featureStyle.multiplePriority,
+        f2.properties,
+        path,
+      );
+      return bestValue1 > bestValue2 ? 1 : -1;
+    });
+    dataSorted = {
+      ...data,
+      features: dataFeatures,
+    };
+  }
+  const vectorGrid = getPolygonVectorGrid({
+    data: dataSorted || data,
+    config,
+    markerEvents,
+    state,
+  });
   layer.addLayer(vectorGrid);
   return layer;
 };

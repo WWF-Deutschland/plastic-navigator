@@ -47,7 +47,7 @@ export default defineMessages({
   },
   countryChartDateLabel: {
     id: `${scope}.countryChartDateLabel`,
-    defaultMessage: 'Status: ',
+    defaultMessage: 'Status: {date}',
   },
   placeholderDefault: {
     id: `${scope}.placeholderDefault`,

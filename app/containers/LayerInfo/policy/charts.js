@@ -3,10 +3,14 @@ import { isMinSize } from 'utils/responsive';
 
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
-const getDataForDate = (dateKey, positions, positionID, positionIDYOffset) => {
+const getDataForDate = (dateKey, positions, positionID, positionIDYOffsets) => {
   let y = 0;
-  if (positionIDYOffset && positions[dateKey].positions[positionIDYOffset]) {
-    y += positions[dateKey].positions[positionIDYOffset].length;
+  if (positionIDYOffsets) {
+    positionIDYOffsets.forEach(positionIDYOffset => {
+      if (positions[dateKey].positions[positionIDYOffset]) {
+        y += positions[dateKey].positions[positionIDYOffset].length;
+      }
+    });
   }
   return {
     sdate: dateKey,
@@ -35,31 +39,39 @@ const addStep = (previous, datum) => {
   return [datum];
 };
 
+const dateBuffer = (nDays = 30) => 24 * 60 * 60 * nDays;
+export const getXMax = (nDays = 10) => new Date().getTime() + dateBuffer(nDays);
+
 export const prepChartData = (positions, minDate) => {
   const data = Object.keys(positions).reduce(
     (memo, dateKey) => ({
-      1: [
-        ...memo[1],
-        ...addStep(memo[1], getDataForDate(dateKey, positions, 1)),
+      3: [
+        ...memo[3],
+        ...addStep(memo[3], getDataForDate(dateKey, positions, 3)),
       ],
       2: [
         ...memo[2],
-        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, 1)),
+        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, [3])),
+      ],
+      1: [
+        ...memo[1],
+        ...addStep(memo[1], getDataForDate(dateKey, positions, 1, [2, 3])),
       ],
     }),
     {
-      1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
+      3: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
       2: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
+      1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
     },
   );
   return {
-    1: [
-      ...data[1],
+    3: [
+      ...data[3],
       {
         sdate: 'today',
         scount: 0,
-        y: data[1][data[1].length - 1].y,
-        x: new Date().getTime(),
+        y: data[3][data[3].length - 1].y,
+        x: getXMax(),
       },
     ],
     2: [
@@ -68,7 +80,16 @@ export const prepChartData = (positions, minDate) => {
         sdate: 'today',
         scount: 0,
         y: data[2][data[2].length - 1].y,
-        x: new Date().getTime(),
+        x: getXMax(),
+      },
+    ],
+    1: [
+      ...data[1],
+      {
+        sdate: 'today',
+        scount: 0,
+        y: data[1][data[1].length - 1].y,
+        x: getXMax(),
       },
     ],
   };
@@ -183,7 +204,7 @@ export const getYRange = (chartData, chartDataSources, minDate) => {
       y: yMin - Y_BUFFER,
     },
     {
-      x: new Date().getTime(),
+      x: getXMax(),
       y: yMax + Y_BUFFER,
     },
   ];

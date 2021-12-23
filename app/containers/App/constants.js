@@ -26,6 +26,7 @@ export const CONFIG_LOAD_SUCCESS = 'app/App/CONFIG_LOAD_SUCCESS';
 export const CONFIG_READY = 'app/App/CONFIG_READY';
 
 export const SET_UI_STATE = 'app/App/SET_UI_STATE';
+export const SET_UI_URL = 'app/App/SET_UI_URL';
 export const SET_LAYER_INFO = 'app/App/SET_LAYER_INFO';
 export const SHOW_LAYER_INFO_MODULE = 'app/App/SHOW_LAYER_INFO_MODULE';
 export const TOGGLE_LAYER = 'app/App/TOGGLE_LAYER';

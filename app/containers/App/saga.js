@@ -28,6 +28,8 @@ import {
   SET_STORY,
   SET_CHAPTER,
   SET_MAP_POSITION,
+  SET_UI_URL,
+  SHOW_LAYER_INFO_MODULE,
 } from './constants';
 
 import {
@@ -547,6 +549,53 @@ function* setMapPositionSaga({ position }) {
     yield (navPending = false);
   }
 }
+function* setUISaga({ key, newState }) {
+  if (navPending) {
+    console.log('setUISaga waiting for', navPending);
+    throw new Error({
+      function: 'setUISaga',
+    });
+  } else if (key && newState) {
+    navPending = 'setUISaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const currentSearchParams = new URLSearchParams(currentLocation.search);
+    // const searchString = newSearchParams.toString();
+    const newSearch = Object.keys(newState).reduce((m, k) => {
+      const state = `${k}:${newState[k]}`;
+      if (m === '') return state;
+      return `${m}${URL_SEARCH_SEPARATOR}${state}`;
+    }, '');
+    currentSearchParams.set(`ui-${key}`, newSearch);
+    const updatedSearchString = currentSearchParams.toString();
+    const search =
+      updatedSearchString.length > 0 ? `?${updatedSearchString}` : '';
+    if (search !== currentLocation.search) {
+      yield put(push(`${currentLocation.pathname}${search}`));
+    }
+    yield (navPending = false);
+  }
+}
+function* showLayerInfoSaga({ visible }) {
+  if (navPending) {
+    console.log('showLayerInfoSaga waiting for', navPending);
+    throw new Error({
+      function: 'showLayerInfoSaga',
+    });
+  } else {
+    navPending = 'showLayerInfoSaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const currentSearchParams = new URLSearchParams(currentLocation.search);
+    // const searchString = newSearchParams.toString();
+    currentSearchParams.set('ui-info', visible ? '1' : '0');
+    const updatedSearchString = currentSearchParams.toString();
+    const search =
+      updatedSearchString.length > 0 ? `?${updatedSearchString}` : '';
+    if (search !== currentLocation.search) {
+      yield put(push(`${currentLocation.pathname}${search}`));
+    }
+    yield (navPending = false);
+  }
+}
 
 export default function* defaultSaga() {
   // See example in containers/HomePage/saga.js
@@ -625,6 +674,24 @@ export default function* defaultSaga() {
     SET_MAP_POSITION,
     autoRestart(
       setMapPositionSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
+    SET_UI_URL,
+    autoRestart(
+      setUISaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
+    SHOW_LAYER_INFO_MODULE,
+    autoRestart(
+      showLayerInfoSaga,
       navigateErrorHandler,
       MAX_NAV_ATTEMPTS,
       RETRY_NAV_DELAY,
