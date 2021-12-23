@@ -227,7 +227,7 @@ function* loadConfigSaga({ key }) {
 // location can either be string or object { pathname, search }
 function* navigateSaga({ location, args }) {
   if (navPending) {
-    console.log('navigateSaga waiting for: ', navPending);
+    // console.log('navigateSaga waiting for: ', navPending);
     throw new Error({
       function: 'navigateSaga',
     });
@@ -365,7 +365,7 @@ function* navigateSaga({ location, args }) {
 
 function* changeLocaleSaga({ locale }) {
   if (navPending) {
-    console.log('changeLocaleSaga waiting for', navPending, locale);
+    // console.log('changeLocaleSaga waiting for', navPending, locale);
     throw new Error({
       function: 'changeLocaleSaga',
     });
@@ -389,7 +389,7 @@ function* changeLocaleSaga({ locale }) {
 
 function* setLayerInfoSaga({ layer, view, copy }) {
   if (navPending) {
-    console.log('setLayerInfoSaga waiting for', navPending, view);
+    // console.log('setLayerInfoSaga waiting for', navPending, view);
     throw new Error({
       function: 'setLayerInfoSaga',
     });
@@ -402,7 +402,7 @@ function* setLayerInfoSaga({ layer, view, copy }) {
     if (view) {
       infoId = `${layer}|${view}`;
       if (copy) {
-        console.log('COPY INFO', layer, view, copy);
+        // // console.log('COPY INFO', layer, view, copy);
         infoId = `${layer}|${view}|${copy}`;
       }
     }
@@ -425,7 +425,7 @@ function* setLayerInfoSaga({ layer, view, copy }) {
 
 function* setLayersSaga({ layers }) {
   if (navPending) {
-    console.log('setLayersSaga waiting for: ', navPending);
+    // console.log('setLayersSaga waiting for: ', navPending);
     throw new Error({
       function: 'setLayersSaga',
     });
@@ -449,7 +449,7 @@ function* setLayersSaga({ layers }) {
 
 function* setStorySaga({ index }) {
   if (navPending) {
-    console.log('setStorySaga waiting for: ', navPending);
+    // console.log('setStorySaga waiting for: ', navPending);
     throw new Error({
       function: 'setStorySaga',
     });
@@ -471,7 +471,7 @@ function* setStorySaga({ index }) {
 
 function* toggleLayerSaga({ id }) {
   if (navPending) {
-    console.log('toggleLayerSaga waiting for: ', navPending);
+    // console.log('toggleLayerSaga waiting for: ', navPending);
     throw new Error({
       function: 'toggleLayerSaga',
     });
@@ -510,7 +510,7 @@ function* toggleLayerSaga({ id }) {
 
 function* setChapterSaga({ index }) {
   if (navPending) {
-    console.log('setChapterSaga waiting for: ', navPending);
+    // console.log('setChapterSaga waiting for: ', navPending);
     throw new Error({
       function: 'setChapterSaga',
     });
@@ -532,7 +532,7 @@ function* setChapterSaga({ index }) {
 
 function* setMapPositionSaga({ position }) {
   if (navPending) {
-    console.log('setMapPositionSaga waiting for', navPending);
+    // console.log('setMapPositionSaga waiting for', navPending);
     throw new Error({
       function: 'setMapPositionSaga',
     });
