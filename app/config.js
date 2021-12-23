@@ -72,7 +72,7 @@ export const LAYER_CONTENT_PATH = 'layers';
 export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
-  layers: 'layers.json',
+  layers: 'layers_dev.json',
   projects: {
     file: 'projects.csv',
     type: 'csv',

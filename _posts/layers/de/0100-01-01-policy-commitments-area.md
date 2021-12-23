@@ -18,10 +18,9 @@ Es wird bereits diskutiert, wie die internationale Gemeinschaft auf die Problema
 
 Die Darstellung zeigt, in welchem Maße sich die einzelnen UN-Mitgliedstaaten öffentlich für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik ausgesprochen haben. Länder, die sich offiziell für ein solches Abkommen stark gemacht haben, sind dunkelgrün markiert; die hellgrünen Bereiche zeigen Länder, die – auch in Form regionaler Erklärungen oder Entscheidungen – ihre Bereitschaft bekundet haben, die Option eines globalen Plastik-Abkommens zu prüfen; die grau markierten Bereiche zeigen schließlich die Länder, für die bisher keine öffentlichen Erklärungen oder Zusagen zur Unterstützung (eines neuen globalen Abkommens) vorliegen.
 
-*Bei Anklicken des Markers erhalten Sie nähere Informationen dazu, in welcher Weise sich das entsprechende Land für ein globales Abkommen ausgesprochen hat. Mit einem Klick auf „Mehr“ erhalten Sie weitere Informationen zum Projekt und entsprechende Quellenangaben.*
+*Bei Anklicken der Länder erhalten Sie nähere Informationen dazu, in welcher Weise sich das entsprechende Land für ein globales Abkommen ausgesprochen hat. Mit einem Klick auf „Mehr“ erhalten Sie weitere Informationen zum Projekt und entsprechende Quellenangaben.*
 
-
-[KEY-ALTERNATE]
+[LAYERS-ALTERNATE]
 
 ### Über die Studie
 

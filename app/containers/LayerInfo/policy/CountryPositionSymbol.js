@@ -11,8 +11,8 @@ import {
   getPositionIcon,
 } from './utils';
 
-const Styled = styled.div`
-  min-width: 30px;
+const Styled = styled(p => <Box flex={false} {...p} />)`
+  width: 20px;
   margin: 0 auto;
 `;
 
