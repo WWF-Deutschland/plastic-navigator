@@ -510,6 +510,7 @@ export const getFlatCSVFromSources = (sources, locale) =>
       return memo.concat(sourceCountries);
     }, [])
     .sort((a, b) => (a.country > b.country ? 1 : -1))
+    .sort((a, b) => (a.statement_name > b.statement_name ? 1 : -1))
     .sort((a, b) => {
       const aDate = a.statement_date && new Date(a.statement_date);
       const bDate = b.statement_date && new Date(b.statement_date);
