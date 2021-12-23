@@ -90,6 +90,7 @@ const Brand = styled(props => <Button {...props} plain fill="vertical" />)`
   z-index: 3000;
   max-width: 85px;
   color: ${({ theme }) => theme.global.colors.white};
+  opacity: 1;
   font-size: 16px;
   line-height: 1;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
@@ -180,7 +181,12 @@ function Header({ nav, navPage, path, navHome, intl, iframeConfig }) {
                 </BrandWWFWrap>
               )}
               <Brand
-                onClick={() => navHome()}
+                onClick={() => {
+                  if (showNavPrimary) {
+                    navHome();
+                  }
+                }}
+                disabled={!showNavPrimary}
                 label={<FormattedMessage {...commonMessages.appTitle} />}
               />
               {showNavPrimary && (
