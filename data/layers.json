@@ -406,12 +406,13 @@
     },
     "featureStyle": {
       "multiple": "true",
-      "multiplePriority": ["1", "2", "0"],
+      "multiplePriority": ["3", "2", "1", "0"],
       "property": "positions.position_id",
       "style": {
         "fillColor": {
-          "1": "#007731",
-          "2": "#8CC63F",
+          "3": "#006431",
+          "2": "#3ea667",
+          "1": "#8CC63F",
           "0": "#dddddd"
         },
         "color": {
