@@ -18,9 +18,9 @@ Es wird bereits diskutiert, wie die internationale Gemeinschaft auf die Problema
 
 Die Darstellung zeigt, in welchem Maße sich die einzelnen UN-Mitgliedstaaten öffentlich für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik ausgesprochen haben.
 
-* Dunkelgrün kennzeichnet Länder, die offizieller Co-Sponsor des [Resolutionsentwurfs von Peru und Ruanda](https://wedocs.unep.org/bitstream/handle/20.500.11822/37395/UNEA5.2%20Global_Agreement_Explanatory%20note%20and%20Resolution%2027%20October.pdf?sequence=1&isAllowed=y) sind. Der Entwurf sieht vor, einen zwischenstaatlichen Verhandlungsausschuss (INC) zur Verhandlung eines international verbindlichen Plastikmüll-Abkommen zu etablieren.
-* Grün markiert sind Länder, die sich offiziell für ein solches Abkommen stark gemacht haben.
 * Die hellgrünen Bereiche zeigen Länder, die – auch in Form regionaler Erklärungen oder Entscheidungen – ihre Bereitschaft bekundet haben, die Option eines globalen Plastik-Abkommens zu prüfen.
+* Grün markiert sind Länder, die sich offiziell für ein solches Abkommen stark gemacht haben.
+* Dunkelgrün kennzeichnet Länder, die sich offiziell für ein solches Abkommen stark gemacht haben und zudem offizieller Co-Sponsor des [Resolutionsentwurfs von Peru und Ruanda](https://wedocs.unep.org/bitstream/handle/20.500.11822/37395/UNEA5.2%20Global_Agreement_Explanatory%20note%20and%20Resolution%2027%20October.pdf?sequence=1&isAllowed=y) sind. Der Entwurf sieht vor, einen zwischenstaatlichen Verhandlungsausschuss (INC) zur Verhandlung eines international verbindlichen Plastikmüll-Abkommen zu etablieren.
 * Grau markierten Bereiche zeigen schließlich die Länder, für die bisher keine öffentlichen Erklärungen oder Zusagen zur Unterstützung (eines neuen globalen Abkommens) vorliegen.
 
 _Durch Anklicken der Länder erhalten Sie nähere Informationen dazu, in welcher Weise sich das entsprechende Land für ein globales Abkommen ausgesprochen hat. Mit einem Klick auf „Mehr“ erhalten Sie weitere Informationen zum Projekt und entsprechende Quellenangaben._

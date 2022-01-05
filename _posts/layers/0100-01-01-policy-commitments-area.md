@@ -18,9 +18,9 @@ Discussions on how the international community should respond to the problem hav
 
 The visualisation shows the level of publicly expressed support by United Nations member states for a new global agreement to address marine plastic pollution.
 
-* The darkest green indicates countries that have officially co-sponsored the [Draft Resolution by Peru and Rwanda](https://wedocs.unep.org/bitstream/handle/20.500.11822/37395/UNEA5.2%20Global_Agreement_Explanatory%20note%20and%20Resolution%2027%20October.pdf?sequence=1&isAllowed=y) to establish an intergovernmental negotiating committee (INC) with a mandate to negotiate a legally binding global agreement to address plastic pollution.
-* The less dark green indicates countries that have officially called for a new agreement.
-* The lightest green shows countries that have expressed — including through regional declarations or decisions — a willingness to explore the option of a new global agreement.
+* The light green shows countries that have expressed — including through regional declarations or decisions — a willingness to explore the option of a new global agreement.
+* The darker green indicates countries that have officially called for a new agreement.
+* The darkest green indicates countries that have officially called for a new agreement and co-sponsored the [Draft Resolution by Peru and Rwanda](https://wedocs.unep.org/bitstream/handle/20.500.11822/37395/UNEA5.2%20Global_Agreement_Explanatory%20note%20and%20Resolution%2027%20October.pdf?sequence=1&isAllowed=y) to establish an intergovernmental negotiating committee (INC) with a mandate to negotiate a legally binding global agreement to address plastic pollution.
 * Grey indicates countries for which no public statement or commitment of support (for a new global agreement) has been documented.
 
 _Clicking on the country (markers) shows a brief overview of the country’s level of support and clicking on “Read more” displays detailed information with source._
