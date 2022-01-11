@@ -342,7 +342,7 @@ export function CountryChart({
                 margin={{
                   bottom: 30,
                   top: 0,
-                  right: 15,
+                  right: 32,
                   left: 15,
                 }}
                 onMouseEnter={() => setMouseOver(true)}
