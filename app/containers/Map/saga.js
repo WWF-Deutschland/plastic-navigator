@@ -138,8 +138,13 @@ function setProperties(json, config, parsed) {
   };
 }
 
-export function* loadDataSaga({ key, config }) {
-  const { type, path, file, properties } = config;
+export function* loadDataSaga({ key, config, args }) {
+  const { type, path, properties } = config;
+  let { file } = config;
+  const hasMask = args && args.mask;
+  if (hasMask) {
+    file = config.mask;
+  }
   if (type && (type === 'geojson' || type === 'topojson' || type === 'csv')) {
     // requestedSelector returns the times that entities where fetched from the API
     const requestedAt = yield select(selectLayerRequestedByKey, key);
@@ -165,37 +170,39 @@ export function* loadDataSaga({ key, config }) {
                   Object.values(json.objects)[0],
                 );
               }
-              json = setFeatureIds(json);
-              if (
-                properties &&
-                properties.file &&
-                properties.join &&
-                properties.type === 'csv'
-              ) {
-                const propertyUrls = [properties.file];
-                if (properties.extend) {
-                  asArray(properties.extend).forEach(x => {
-                    if (x.type === 'csv') propertyUrls.push(x.file);
-                  });
+              if (!hasMask) {
+                json = setFeatureIds(json);
+                if (
+                  properties &&
+                  properties.file &&
+                  properties.join &&
+                  properties.type === 'csv'
+                ) {
+                  const propertyUrls = [properties.file];
+                  if (properties.extend) {
+                    asArray(properties.extend).forEach(x => {
+                      if (x.type === 'csv') propertyUrls.push(x.file);
+                    });
+                  }
+                  const responses = yield all(
+                    propertyUrls.map(x => fetch(`${RESOURCES.DATA}/${x}`)),
+                  );
+                  const texts = yield all(
+                    responses.map(r => {
+                      if (r.ok && typeof r.text === 'function') {
+                        return r.text();
+                      }
+                      throw new Error(r.statusText);
+                    }),
+                  );
+                  const parsed = texts.map(t =>
+                    Papa.parse(t, {
+                      header: true,
+                      skipEmptyLines: true,
+                    }),
+                  );
+                  json = setProperties(json, properties, parsed);
                 }
-                const responses = yield all(
-                  propertyUrls.map(x => fetch(`${RESOURCES.DATA}/${x}`)),
-                );
-                const texts = yield all(
-                  responses.map(r => {
-                    if (r.ok && typeof r.text === 'function') {
-                      return r.text();
-                    }
-                    throw new Error(r.statusText);
-                  }),
-                );
-                const parsed = texts.map(t =>
-                  Papa.parse(t, {
-                    header: true,
-                    skipEmptyLines: true,
-                  }),
-                );
-                json = setProperties(json, properties, parsed);
               }
               yield put(setLayerLoadSuccess(key, config, json, Date.now()));
             } else {

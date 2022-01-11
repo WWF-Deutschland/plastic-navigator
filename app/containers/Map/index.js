@@ -147,6 +147,7 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
+  const areaMaskRef = useRef(null);
   const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(layerInfo);
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
@@ -257,9 +258,11 @@ export function Map({
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
     areaInfoRef.current = L.layerGroup();
+    areaMaskRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
     areaInfoRef.current.addTo(mapRef.current);
+    areaMaskRef.current.addTo(mapRef.current);
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
@@ -461,6 +464,20 @@ export function Map({
                 // kick of loading of vector data for group if not present
                 if (!jsonLayers[id]) {
                   onLoadLayer(id, config);
+                }
+                // kick off loading mask layers
+                const maskId = `${id}-mask`;
+                if (config.mask) {
+                  onLoadLayer(maskId, config, { mask: true });
+                }
+                if (jsonLayers[maskId] && areaMaskRef) {
+                  const layer = getVectorLayer({
+                    jsonLayer: jsonLayers[maskId],
+                    config,
+                    state: 'mask',
+                  });
+                  areaMaskRef.current.addLayer(layer);
+                  // newMapLayers[id] = { layer, config };
                 }
                 if (jsonLayers[id] && mapRef) {
                   const layer = getVectorLayer({
@@ -847,8 +864,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    onLoadLayer: (key, config) => {
-      dispatch(loadLayer(key, config));
+    onLoadLayer: (key, config, args) => {
+      dispatch(loadLayer(key, config, args));
     },
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
