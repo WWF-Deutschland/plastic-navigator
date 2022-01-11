@@ -186,6 +186,7 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
   }
   let featureStyle = {
     fillOpacity: 0.4,
+    stroke: true,
   };
 
   if (
@@ -232,13 +233,12 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
     featureStyle.fillOpacity = 0;
-    featureStyle.color = '#444';
+    featureStyle.stroke = false;
   } else if (state === 'info') {
     featureStyle.fillOpacity = 0;
-    featureStyle.color = '#222';
+    featureStyle.stroke = false;
   }
   return {
-    stroke: true,
     weight: 1,
     fill: true,
     ...featureStyle,
