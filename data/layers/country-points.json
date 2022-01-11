@@ -866,15 +866,6 @@
     {
       "type": "Feature",
       "properties": {
-        "code": "HKG",
-        "name_en": "Hong Kong",
-        "name_de": "Hongkong"
-      },
-      "geometry": { "type": "Point", "coordinates": [114.1138045, 22.39827737] }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "code": "HMD",
         "name_en": "Heard Island and McDonald Islands",
         "name_de": "Heard und McDonaldinseln"
@@ -2030,11 +2021,6 @@
       "type": "Feature",
       "properties": { "code": "TUR", "name_en": "Turkey", "name_de": "Türkei" },
       "geometry": { "type": "Point", "coordinates": [35.16895346, 39.0616029] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "code": "TWN", "name_en": "Taiwan", "name_de": "Taiwan" },
-      "geometry": { "type": "Point", "coordinates": [120.9542728, 23.7539928] }
     },
     {
       "type": "Feature",

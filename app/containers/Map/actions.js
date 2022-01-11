@@ -29,11 +29,12 @@ export function setMapLayers(layers) {
   };
 }
 
-export function loadLayer(key, config) {
+export function loadLayer(key, config, args) {
   return {
     type: LOAD_LAYER,
     key,
     config,
+    args,
   };
 }
 
