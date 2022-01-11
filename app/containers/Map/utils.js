@@ -174,6 +174,16 @@ const getPolylineLayer = ({ data, config }) => {
 export const getVectorGridStyle = (properties, config, state = 'default') => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
+  if (state === 'mask') {
+    return {
+      fillColor: '000',
+      fill: true,
+      fillOpacity: 0,
+      stroke: false,
+      weight: 0,
+      className: 'leaflet-mask',
+    };
+  }
   let featureStyle = {
     fillOpacity: 0.4,
   };
@@ -254,7 +264,10 @@ const featureInteractive = (e, config) => {
 const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
   const vectorGrid = L.vectorGrid.slicer(data, {
     data,
-    zIndex: config['z-index'] || 1,
+    zIndex:
+      state === 'mask' && config['z-index']
+        ? parseInt(config['z-index'], 10) + 1
+        : config['z-index'] || 1,
     rendererFactory: L.svg.tile,
     vectorTileLayerStyles: {
       sliced: properties => getVectorGridStyle(properties, config, state),
@@ -299,7 +312,12 @@ const getBestValue = (multiplePriority, properties, path) => {
 const getPolygonLayer = ({ data, config, markerEvents, state }) => {
   const layer = L.featureGroup(null, { pane: 'overlayPane' });
   let dataSorted;
-  if (config && config.featureStyle && config.featureStyle.multiplePriority) {
+  if (
+    state !== 'mask' &&
+    config &&
+    config.featureStyle &&
+    config.featureStyle.multiplePriority
+  ) {
     const path = config.featureStyle.property.split('.');
     const dataFeatures = [...data.features].sort((f1, f2) => {
       const bestValue1 = getBestValue(

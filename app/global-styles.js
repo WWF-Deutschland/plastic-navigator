@@ -90,7 +90,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 46px;
     margin-top: 0;
     margin-bottom: 30px;
-    margin-right: 40px; 
+    margin-right: 40px;
   }
   .mpx-content h4 {
     font-size: 20px;
@@ -149,6 +149,9 @@ const GlobalStyle = createGlobalStyle`
     &:hover{
       color: #08586C;
     }
+  }
+  .leaflet-layer .leaflet-mask.leaflet-interactive {
+    cursor: initial !important;
   }
 `;
 
