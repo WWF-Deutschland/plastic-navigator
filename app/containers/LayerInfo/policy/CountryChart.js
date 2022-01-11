@@ -317,7 +317,7 @@ export function CountryChart({
                   direction="row"
                   gap="xsmall"
                   justify={isMinSize(size, 'medium') ? 'end' : 'start'}
-                  flex={{ shrink: '0' }}
+                  flex={{ shrink: 0 }}
                 >
                   <Text
                     size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
