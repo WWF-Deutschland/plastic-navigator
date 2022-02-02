@@ -370,6 +370,9 @@
         "self": "country_code",
         "related": "code",
         "relatedPrimary": "code_sovereign",
+        "skip": {
+          "status": "observer",
+        },
         "as": "positions",
         "default": [
           {
