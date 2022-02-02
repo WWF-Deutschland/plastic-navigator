@@ -361,9 +361,10 @@
       "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
     },
     "file": "layers/country-areas-topo.json",
+    "mask": "layers/country-areas-mask-pse-topo.json",
     "properties": {
       "featuresWithoutProperties": "true",
-      "file": "layers/policy/country-positions-v2-TEST.csv",
+      "file": "layers/policy/sov-country-positions.csv",
       "type": "csv",
       "join": {
         "self": "country_code",
@@ -378,7 +379,7 @@
       },
       "extend": [
         {
-          "file": "layers/policy/positions-v2-TEST.csv",
+          "file": "layers/policy/positions.csv",
           "type": "csv",
           "join": {
             "as": "position",
@@ -387,7 +388,7 @@
           }
         },
         {
-          "file": "layers/policy/sources-v2-TEST.csv",
+          "file": "layers/policy/sources.csv",
           "type": "csv",
           "join": {
             "as": "source",
@@ -433,8 +434,8 @@
       "values": ["3", "2", "1", "0"],
       "title": {
         "3": {
-          "en": "Co-sponsored the draft resolution by Peru and Rwanda",
-          "de": "Co-Sponsor des Resolutionsentwurfs von Peru und Ruanda"
+          "en": "Publicly called for agreement and co-sponsored the draft resolution by Peru and Rwanda",
+          "de": "Öffentlich für Abkommen ausgesprochen und Co-Sponsor des Resolutionsentwurfs von Peru und Ruanda"
         },
         "2": {
           "en": "Publicly called for new agreement",
@@ -487,10 +488,10 @@
     "group": "policy",
     "source": "data",
     "type": "geojson",
-    "file": "layers/country-points.json",
+    "file": "layers/tiny-country-points.json",
     "properties": {
       "featuresWithoutProperties": "false",
-      "file": "layers/policy/country-positions-v2-TEST.csv",
+      "file": "layers/policy/country-positions.csv",
       "type": "csv",
       "join": {
         "self": "country_code",
@@ -500,7 +501,7 @@
       },
       "extend": [
         {
-          "file": "layers/policy/positions-v2-TEST.csv",
+          "file": "layers/policy/positions.csv",
           "type": "csv",
           "join": {
             "as": "position",
@@ -509,7 +510,7 @@
           }
         },
         {
-          "file": "layers/policy/sources-v2-TEST.csv",
+          "file": "layers/policy/sources.csv",
           "type": "csv",
           "join": {
             "as": "source",
@@ -589,8 +590,8 @@
             "de": "Öffentlich für Abkommen ausgesprochen"
           },
           "3": {
-            "en": "Co-sponsored the draft resolution by Peru and Rwanda",
-            "de": "Co-Sponsor des Resolutionsentwurfs von Peru und Ruanda"
+            "en": "Publicly called for agreement and co-sponsored the draft resolution by Peru and Rwanda",
+            "de": "Öffentlich für Abkommen ausgesprochen und Co-Sponsor des Resolutionsentwurfs von Peru und Ruanda"
           }
         }
       }
