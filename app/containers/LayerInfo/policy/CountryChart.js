@@ -51,6 +51,7 @@ import {
   getSourceCountFromPositions,
   getSourcesFromCountryFeaturesWithPosition,
   getFlatCSVFromSources,
+  exludeCountryFeatures,
 } from './utils';
 import messages from '../messages';
 import {
@@ -187,20 +188,23 @@ export function CountryChart({
   }
 
   // console.log(layer.data.features)
+
+  const featuresEx = exludeCountryFeatures(config, layer.data.features);
+
   const countries = featuresToCountriesWithStrongestPosition(
     config,
-    layer.data.features,
+    featuresEx,
     locale,
   );
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
-    layer.data.features,
+    featuresEx,
     locale,
   );
   const countryStats = getPositionStatsFromCountries(config, countries);
   const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures(
     config,
-    layer.data.features,
+    featuresEx,
   );
 
   // prettier-ignore

@@ -179,27 +179,12 @@ export const getPositionStatsFromCountries = (config, countries) => {
   return null;
 };
 
-const excludeDependentCountries = feature =>
-  !feature.properties.code_sovereign ||
-  feature.properties.code_sovereign === '';
-
-export const excludeObserverCountries = feature =>
-  !feature.properties.status || feature.properties.status !== 'observer';
-
 export const featuresToCountriesWithStrongestPosition = (
   config,
   features,
   locale,
-) => {
-  let featuresEx = features.filter(f => excludeDependentCountries(f));
-  if (
-    config.properties &&
-    config.properties.join &&
-    config.properties.join.skip
-  ) {
-    featuresEx = features.filter(f => excludeObserverCountries(f));
-  }
-  return featuresEx
+) =>
+  features
     .filter(f => {
       if (config.info) {
         const ps = config.info.property.split('.');
@@ -224,32 +209,48 @@ export const featuresToCountriesWithStrongestPosition = (
       };
     })
     .sort((a, b) => sortLabels(a.label, b.label));
+
+const excludeDependentCountries = feature =>
+  !feature.properties.code_sovereign ||
+  feature.properties.code_sovereign === '';
+
+const excludeObserverCountries = feature =>
+  !feature.properties.status || feature.properties.status !== 'observer';
+
+export const exludeCountryFeatures = (config, features) => {
+  let featuresEx = features.filter(f => excludeDependentCountries(f));
+  if (
+    config.properties &&
+    config.properties.join &&
+    config.properties.join.skip
+  ) {
+    featuresEx = features.filter(f => excludeObserverCountries(f));
+  }
+  return featuresEx;
 };
 
 export const getSourceCountFromCountryFeatures = (config, features) => {
-  const sources = features
-    .filter(f => excludeDependentCountries(f))
-    .reduce((memo, f) => {
-      if (
-        config.properties &&
-        config.properties.join &&
-        config.properties.join.as &&
-        f.properties[config.properties.join.as]
-      ) {
-        // get country-positions from feature
-        const fPositions = f.properties[config.properties.join.as];
-        // check each position for the source and remember source in new list m2
-        return fPositions.reduce((m2, p) => {
-          const { source } = p;
-          // if new source, remember source with current country code
-          if (source && source.id && m2.indexOf(source.id) === -1) {
-            return [...m2, source.id];
-          }
-          return m2;
-        }, memo);
-      }
-      return memo;
-    }, []);
+  const sources = features.reduce((memo, f) => {
+    if (
+      config.properties &&
+      config.properties.join &&
+      config.properties.join.as &&
+      f.properties[config.properties.join.as]
+    ) {
+      // get country-positions from feature
+      const fPositions = f.properties[config.properties.join.as];
+      // check each position for the source and remember source in new list m2
+      return fPositions.reduce((m2, p) => {
+        const { source } = p;
+        // if new source, remember source with current country code
+        if (source && source.id && m2.indexOf(source.id) === -1) {
+          return [...m2, source.id];
+        }
+        return m2;
+      }, memo);
+    }
+    return memo;
+  }, []);
   return sources ? sources.length : null;
 };
 
@@ -272,49 +273,28 @@ export const getSourcesFromCountryFeaturesWithPosition = (
   features,
   locale,
 ) => {
-  const sources = features
-    .filter(f => excludeDependentCountries(f))
-    .reduce((memo, f) => {
-      const { code } = f.properties;
-      if (
-        config.properties &&
-        config.properties.join &&
-        config.properties.join.as &&
-        f.properties[config.properties.join.as]
-      ) {
-        // get country-positions from feature
-        const fPositions = f.properties[config.properties.join.as];
-        // check each position for the source and remember source in new list m2
-        return fPositions.reduce((m2, p) => {
-          const { source, position } = p;
-          if (source && source.id) {
-            // if new source, remember source with current country code
-            if (!m2[source.id]) {
-              const sx = Object.assign({}, source, {
-                position: {
-                  position,
-                  position_id: position.id,
-                },
-                countries: [
-                  {
-                    id: code,
-                    label:
-                      f.properties[`name_${locale}`] ||
-                      f.properties[`name_${DEFAULT_LOCALE}`] ||
-                      code,
-                  },
-                ],
-                label:
-                  source[`title_${locale}`] ||
-                  source[`title_${DEFAULT_LOCALE}`] ||
-                  source.id,
-              });
-              return Object.assign(m2, { [source.id]: sx });
-            }
-            // if known source, add current feature's country code
-            const sx = Object.assign({}, m2[source.id], {
+  const sources = features.reduce((memo, f) => {
+    const { code } = f.properties;
+    if (
+      config.properties &&
+      config.properties.join &&
+      config.properties.join.as &&
+      f.properties[config.properties.join.as]
+    ) {
+      // get country-positions from feature
+      const fPositions = f.properties[config.properties.join.as];
+      // check each position for the source and remember source in new list m2
+      return fPositions.reduce((m2, p) => {
+        const { source, position } = p;
+        if (source && source.id) {
+          // if new source, remember source with current country code
+          if (!m2[source.id]) {
+            const sx = Object.assign({}, source, {
+              position: {
+                position,
+                position_id: position.id,
+              },
               countries: [
-                ...m2[source.id].countries,
                 {
                   id: code,
                   label:
@@ -323,14 +303,33 @@ export const getSourcesFromCountryFeaturesWithPosition = (
                     code,
                 },
               ],
+              label:
+                source[`title_${locale}`] ||
+                source[`title_${DEFAULT_LOCALE}`] ||
+                source.id,
             });
             return Object.assign(m2, { [source.id]: sx });
           }
-          return m2;
-        }, memo);
-      }
-      return memo;
-    }, {});
+          // if known source, add current feature's country code
+          const sx = Object.assign({}, m2[source.id], {
+            countries: [
+              ...m2[source.id].countries,
+              {
+                id: code,
+                label:
+                  f.properties[`name_${locale}`] ||
+                  f.properties[`name_${DEFAULT_LOCALE}`] ||
+                  code,
+              },
+            ],
+          });
+          return Object.assign(m2, { [source.id]: sx });
+        }
+        return m2;
+      }, memo);
+    }
+    return memo;
+  }, {});
   return sources;
 };
 
@@ -367,41 +366,39 @@ export const getCountryPositionsOverTimeFromCountryFeatures = (
   config,
   features,
 ) => {
-  const sources = features
-    .filter(excludeDependentCountries)
-    .reduce((memo, f) => {
-      const { code } = f.properties;
-      if (
-        config.properties &&
-        config.properties.join &&
-        config.properties.join.as &&
-        f.properties[config.properties.join.as]
-      ) {
-        // get country-positions from feature
-        const fPositions = f.properties[config.properties.join.as];
-        // check each position for the source and remember source in new list m2
-        return fPositions.reduce((m2, p) => {
-          const { source, position } = p;
-          if (source && source.id) {
-            // if new source, remember source with current country code
-            if (!m2[source.id]) {
-              const sx = Object.assign({}, source, {
-                position,
-                countries: [code],
-              });
-              return Object.assign(m2, { [source.id]: sx });
-            }
-            // if known source, add current feature's country code
+  const sources = features.reduce((memo, f) => {
+    const { code } = f.properties;
+    if (
+      config.properties &&
+      config.properties.join &&
+      config.properties.join.as &&
+      f.properties[config.properties.join.as]
+    ) {
+      // get country-positions from feature
+      const fPositions = f.properties[config.properties.join.as];
+      // check each position for the source and remember source in new list m2
+      return fPositions.reduce((m2, p) => {
+        const { source, position } = p;
+        if (source && source.id) {
+          // if new source, remember source with current country code
+          if (!m2[source.id]) {
             const sx = Object.assign({}, source, {
-              countries: [...m2[source.id].countries, code],
+              position,
+              countries: [code],
             });
             return Object.assign(m2, { [source.id]: sx });
           }
-          return m2;
-        }, memo);
-      }
-      return memo;
-    }, {});
+          // if known source, add current feature's country code
+          const sx = Object.assign({}, source, {
+            countries: [...m2[source.id].countries, code],
+          });
+          return Object.assign(m2, { [source.id]: sx });
+        }
+        return m2;
+      }, memo);
+    }
+    return memo;
+  }, {});
   const sourcesSorted = Object.values(sources).sort((a, b) => {
     const aDate = new Date(a.date).getTime();
     const bDate = new Date(b.date).getTime();
