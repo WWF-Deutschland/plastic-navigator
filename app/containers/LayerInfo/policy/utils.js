@@ -183,13 +183,23 @@ const excludeDependentCountries = feature =>
   !feature.properties.code_sovereign ||
   feature.properties.code_sovereign === '';
 
+export const excludeObserverCountries = feature =>
+  !feature.properties.status || feature.properties.status !== 'observer';
+
 export const featuresToCountriesWithStrongestPosition = (
   config,
   features,
   locale,
-) =>
-  features
-    .filter(f => excludeDependentCountries(f))
+) => {
+  let featuresEx = features.filter(f => excludeDependentCountries(f));
+  if (
+    config.properties &&
+    config.properties.join &&
+    config.properties.join.skip
+  ) {
+    featuresEx = features.filter(f => excludeObserverCountries(f));
+  }
+  return featuresEx
     .filter(f => {
       if (config.info) {
         const ps = config.info.property.split('.');
@@ -214,6 +224,7 @@ export const featuresToCountriesWithStrongestPosition = (
       };
     })
     .sort((a, b) => sortLabels(a.label, b.label));
+};
 
 export const getSourceCountFromCountryFeatures = (config, features) => {
   const sources = features
