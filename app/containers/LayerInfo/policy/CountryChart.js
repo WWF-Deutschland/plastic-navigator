@@ -216,10 +216,7 @@ export function CountryChart({
       ];
   const positionsCurrentDate = positionsOverTime[currentDate].positions;
   const sourceCount = getSourceCountFromPositions(positionsOverTime);
-  const sourceCountCurrent = getSourceCountFromPositions(
-    positionsOverTime,
-    currentDate,
-  );
+
   const statsForKey = prepChartKey(positionsCurrentDate, config, locale);
   const chartData = prepChartData(positionsOverTime, MINDATE);
   const dataStyles = {
@@ -309,11 +306,6 @@ export function CountryChart({
                       <StyledKeyLabel>
                         <FormattedMessage {...messages.countryChartNoSources} />
                       </StyledKeyLabel>
-                      {!!sourceCountCurrent && (
-                        <StyledKeyLabel strong>
-                          {sourceCountCurrent}
-                        </StyledKeyLabel>
-                      )}
                     </KeyLabelWrap>
                   </SquareLabelWrap>
                 </Box>

@@ -46,7 +46,7 @@
   "app.containers.Header.navSectionModules": "Module",
   "app.containers.Header.navSectionPages": "Seiten",
   "app.containers.LayerInfo.countryChartDateLabel": "Status: {date}",
-  "app.containers.LayerInfo.countryChartNoSources": "Anzahl Erklärungen:",
+  "app.containers.LayerInfo.countryChartNoSources": "Erklärungen",
   "app.containers.LayerInfo.countryChartTitle": "Anzahl der Länder nach Positionierung",
   "app.containers.LayerInfo.downloadPolicyData": "Länder-Positionierungen herunterladen (CSV)",
   "app.containers.LayerInfo.multiplePositions": "Mehrere Erklärungen",
