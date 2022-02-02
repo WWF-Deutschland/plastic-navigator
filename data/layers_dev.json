@@ -371,7 +371,7 @@
         "related": "code",
         "relatedPrimary": "code_sovereign",
         "skip": {
-          "status": "observer",
+          "status": "observer"
         },
         "as": "positions",
         "default": [
