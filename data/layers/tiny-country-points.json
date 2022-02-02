@@ -47,7 +47,6 @@
 { "type": "Feature", "properties": { "code": "NRU", "name_de": "Nauru", "name_en": "Nauru" }, "geometry": { "type": "Point", "coordinates": [ 166.93748256244703, -0.523068535976108 ] } },
 { "type": "Feature", "properties": { "code": "TUV", "name_de": "Tuvalu", "name_en": "Tuvalu" }, "geometry": { "type": "Point", "coordinates": [ 179.203974226233527, -8.499723713165849 ] } },
 { "type": "Feature", "properties": { "code": "VUT", "name_de": "Vanuatu", "name_en": "Vanuatu" }, "geometry": { "type": "Point", "coordinates": [ 166.927066439598889, -15.367957152169708 ] } },
-{ "type": "Feature", "properties": { "code": "LBN", "name_de": "Libanon", "name_en": "Lebanon" }, "geometry": { "type": "Point", "coordinates": [ 35.808633535679405, 33.874485871955017 ] } },
 { "type": "Feature", "properties": { "code": "MUS", "name_de": "Mauritius", "name_en": "Mauritius" }, "geometry": { "type": "Point", "coordinates": [ 57.585659958168492, -20.302274672122962 ] } },
 { "type": "Feature", "properties": { "code": "ATF", "name_de": "Französische Süd- und Antarktisgebiete", "name_en": "French Southern and Antarctic Lands" }, "geometry": { "type": "Point", "coordinates": [ 69.225139990869252, -49.338781961635448 ] } },
 { "type": "Feature", "properties": { "code": "COM", "name_de": "Komoren", "name_en": "Comoros" }, "geometry": { "type": "Point", "coordinates": [ 43.337943198143535, -11.715555516231973 ] } },
