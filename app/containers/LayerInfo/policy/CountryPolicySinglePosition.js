@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import {
-  FormattedMessage,
-  FormattedDate,
-  injectIntl,
-  intlShape,
-} from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Heading, Box, Text, Button } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import coreMessages from 'messages';
+import formatDate from 'utils/format-date';
 
 import CountryPositionSymbol from './CountryPositionSymbol';
 import FeatureListCollapsable from '../FeatureListCollapsable';
@@ -90,7 +86,10 @@ const CountryPolicySinglePosition = ({
           {source.date && (
             <P>
               <Text size="xsmall" color="textSecondary">
-                <FormattedDate value={new Date(source.date)} />
+                {formatDate(
+                  locale,
+                  new Date(source.date).getTime(),
+                )}
               </Text>
             </P>
           )}
