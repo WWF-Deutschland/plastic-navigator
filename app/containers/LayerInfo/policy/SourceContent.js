@@ -14,7 +14,10 @@ import { intlShape, injectIntl } from 'react-intl';
 import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
-import { getSourcesFromCountryFeaturesWithPosition } from './utils';
+import {
+  getSourcesFromCountryFeaturesWithPosition,
+  exludeCountryFeatures,
+} from './utils';
 
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
 import ListItemHeader from '../ListItemHeader';
@@ -41,7 +44,7 @@ export function SourceContent({
   const [, xSourceId] = sourceId.split('source-');
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
-    layerData.data.features,
+    exludeCountryFeatures(config, layerData.data.features),
     locale,
   );
   const source = sources[xSourceId];
