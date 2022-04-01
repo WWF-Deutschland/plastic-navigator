@@ -45,13 +45,13 @@ import KeyLabel from 'components/KeyFull/KeyLabel';
 
 import coreMessages from 'messages';
 import {
+  excludeCountryFeatures,
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
   getCountryPositionsOverTimeFromCountryFeatures,
   getSourceCountFromPositions,
   getSourcesFromCountryFeaturesWithPosition,
   getFlatCSVFromSources,
-  exludeCountryFeatures,
 } from './utils';
 import messages from '../messages';
 import {
@@ -186,11 +186,9 @@ export function CountryChart({
   ) {
     return <LoadingIndicator />;
   }
+  const featuresEx = excludeCountryFeatures(config, layer.data.features);
 
   // console.log(layer.data.features)
-
-  const featuresEx = exludeCountryFeatures(config, layer.data.features);
-
   const countries = featuresToCountriesWithStrongestPosition(
     config,
     featuresEx,
@@ -216,13 +214,17 @@ export function CountryChart({
       ];
   const positionsCurrentDate = positionsOverTime[currentDate].positions;
   const sourceCount = getSourceCountFromPositions(positionsOverTime);
-
+  const sourceCountCurrent = getSourceCountFromPositions(
+    positionsOverTime,
+    currentDate,
+  );
   const statsForKey = prepChartKey(positionsCurrentDate, config, locale);
   const chartData = prepChartData(positionsOverTime, MINDATE);
   const dataStyles = {
     1: statsForKey.find(s => s.id === '1'),
     2: statsForKey.find(s => s.id === '2'),
     3: statsForKey.find(s => s.id === '3'),
+    4: statsForKey.find(s => s.id === '4'),
   };
   const tickValuesX = getTickValuesX(chartData);
 
@@ -295,8 +297,8 @@ export function CountryChart({
                             key={stat.id}
                             keyStyle={stat.style}
                             style={{
-                              width: '6px',
-                              height: '6px',
+                              width: '4px',
+                              height: '4px',
                             }}
                           />
                         )
@@ -306,6 +308,11 @@ export function CountryChart({
                       <StyledKeyLabel>
                         <FormattedMessage {...messages.countryChartNoSources} />
                       </StyledKeyLabel>
+                      {!!sourceCountCurrent && (
+                        <StyledKeyLabel strong>
+                          {sourceCountCurrent}
+                        </StyledKeyLabel>
+                      )}
                     </KeyLabelWrap>
                   </SquareLabelWrap>
                 </Box>
@@ -403,6 +410,28 @@ export function CountryChart({
                       : 0.1,
                   }}
                 />
+                {/* white background for position 3 series, covering pos 1,2 series */}
+                <AreaSeries
+                  data={chartData[4]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: 'white',
+                    opacity: 1,
+                  }}
+                />
+                {/* position 3 series as area */}
+                <AreaSeries
+                  data={chartData[4]}
+                  style={{
+                    stroke: 'transparent',
+                    fill: dataStyles && dataStyles[4] && dataStyles[4].style
+                      ? dataStyles[4].style.fillColor
+                      : 'blue',
+                    opacity: dataStyles && dataStyles[3] && dataStyles[4].style
+                      ? dataStyles[4].style.fillOpacity
+                      : 0.1,
+                  }}
+                />
                 {/* position 1 series as line */}
                 <LineSeries
                   data={chartData[1]}
@@ -429,6 +458,16 @@ export function CountryChart({
                   style={{
                     stroke: dataStyles && dataStyles[3] && dataStyles[3].style
                       ? dataStyles[3].style.fillColor
+                      : 'blue',
+                    strokeWidth: 0.5,
+                  }}
+                />
+                {/* position 3 series as line  */}
+                <LineSeries
+                  data={chartData[4]}
+                  style={{
+                    stroke: dataStyles && dataStyles[4] && dataStyles[4].style
+                      ? dataStyles[4].style.fillColor
                       : 'blue',
                     strokeWidth: 0.5,
                   }}

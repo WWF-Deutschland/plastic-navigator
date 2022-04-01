@@ -9,7 +9,7 @@ import { POLICY_LAYERS } from 'config';
 
 import quasiEquals from 'utils/quasi-equals';
 import {
-  exludeCountryFeatures,
+  excludeCountryFeatures,
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
 } from 'containers/LayerInfo/policy/utils';
@@ -47,17 +47,16 @@ export function Areas({
   const { key, featureStyle } = config;
   const { locale } = intl;
   let square = { style: { color: 'black' }, title, id: config.id };
-  let countries;
-  let countryStats;
-  if (POLICY_LAYERS.indexOf(config.id) > -1 && layerData) {
-    countries = featuresToCountriesWithStrongestPosition(
+  const countries =
+    POLICY_LAYERS.indexOf(config.id) > -1 &&
+    layerData &&
+    featuresToCountriesWithStrongestPosition(
       config,
-      exludeCountryFeatures(config, layerData.features),
+      excludeCountryFeatures(config, layerData.features),
       locale,
     );
-    countryStats =
-      countries && getPositionStatsFromCountries(config, countries);
-  }
+  const countryStats =
+    countries && getPositionStatsFromCountries(config, countries);
 
   if (featureStyle.multiple === 'true') {
     square = key.values.reduce((memo, val) => {
@@ -82,7 +81,7 @@ export function Areas({
       }
       const stat =
         countryStats && countryStats.find(s => quasiEquals(s.val, val));
-      if (excludeEmpty && !stat) {
+      if (excludeEmpty && (!stat || quasiEquals(stat.count, 0))) {
         return memo;
       }
       return [
@@ -96,7 +95,6 @@ export function Areas({
       ];
     }, []);
   }
-
   return (
     <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
       {asArray(square).map(sq => (
@@ -105,9 +103,9 @@ export function Areas({
             <KeyArea areaStyles={[sq.style]} />
           </KeyAreaWrap>
           <StyledKeyLabel>
-            {!sq.count && sq.title}
-            {!!sq.count && `${sq.title}: `}
-            {!!sq.count && <strong>{sq.count}</strong>}
+            {(!sq.count || simple) && sq.title}
+            {!!sq.count && !simple && `${sq.title}: `}
+            {!!sq.count && !simple && <strong>{sq.count}</strong>}
           </StyledKeyLabel>
         </SquareLabelWrap>
       ))}

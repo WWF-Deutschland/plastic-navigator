@@ -23,8 +23,8 @@ import { setLayerInfo } from 'containers/App/actions';
 
 import coreMessages from 'messages';
 import {
+  excludeCountryFeatures,
   featuresToCountriesWithStrongestPosition,
-  exludeCountryFeatures,
 } from './utils';
 
 import ListItemHeader from '../ListItemHeader';
@@ -62,7 +62,7 @@ export function CountryList({
 
   const countries = featuresToCountriesWithStrongestPosition(
     config,
-    exludeCountryFeatures(config, layer.data.features),
+    excludeCountryFeatures(config, layer.data.features),
     locale,
   );
   return countries ? (

@@ -22,7 +22,7 @@ import { setLayerInfo } from 'containers/App/actions';
 
 import coreMessages from 'messages';
 import {
-  exludeCountryFeatures,
+  excludeCountryFeatures,
   getSourcesFromCountryFeaturesWithPosition,
 } from './utils';
 
@@ -60,7 +60,7 @@ export function SourceList({
 
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
-    exludeCountryFeatures(config, layer.data.features),
+    excludeCountryFeatures(config, layer.data.features),
     locale,
   );
 

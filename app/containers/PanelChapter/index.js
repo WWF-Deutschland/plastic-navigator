@@ -294,6 +294,7 @@ export function PanelChapter({
                                 ? jsonLayers[config.id].data
                                 : null
                             }
+                            excludeEmpty
                           />
                         </LayerFocus>
                       ))}

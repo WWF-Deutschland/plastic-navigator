@@ -15,8 +15,8 @@ import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
 import {
+  excludeCountryFeatures,
   getSourcesFromCountryFeaturesWithPosition,
-  exludeCountryFeatures,
 } from './utils';
 
 import CountryPolicySinglePosition from './CountryPolicySinglePosition';
@@ -44,7 +44,7 @@ export function SourceContent({
   const [, xSourceId] = sourceId.split('source-');
   const sources = getSourcesFromCountryFeaturesWithPosition(
     config,
-    exludeCountryFeatures(config, layerData.data.features),
+    excludeCountryFeatures(config, layerData.data.features),
     locale,
   );
   const source = sources[xSourceId];
