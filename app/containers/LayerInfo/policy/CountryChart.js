@@ -13,6 +13,8 @@ import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
 import { Box, Text, Button, ResponsiveContext } from 'grommet';
 import { Download } from 'grommet-icons';
+import Markdown from 'react-remarkable';
+import { groupBy } from 'lodash/collection';
 import { utcFormat as timeFormat } from 'd3-time-format';
 import {
   FlexibleWidthXYPlot,
@@ -69,12 +71,12 @@ const Styled = styled(p => (
   <Box margin={{ top: 'medium', bottom: 'large' }} {...p} />
 ))``;
 const SquareLabelWrap = styled(p => (
-  <Box direction="row" align="center" gap="xsmall" {...p} />
+  <Box direction="row" align="start" gap="xsmall" {...p} />
 ))`
   min-height: 18px;
 `;
 const KeyLabelWrap = styled(p => (
-  <Box direction="row" align="center" gap="xxsmall" {...p} />
+  <Box direction="row" align="start" alignContent="start" {...p} />
 ))``;
 
 const KeyAreaWrap = styled.div`
@@ -82,6 +84,7 @@ const KeyAreaWrap = styled.div`
   height: 18px;
   width: 18px;
   padding: 0px;
+  top: -2px;
 `;
 
 const KeyStatements = styled(p => (
@@ -94,7 +97,12 @@ const KeyStatements = styled(p => (
 
 const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
-  font-weight: ${({ strong }) => (strong ? 'bold' : 'normal')};
+`;
+const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
+  white-space: normal;
+  width: 22px;
+  font-weight: bold;
+  text-align: right;
 `;
 
 const Title = styled(Text)`
@@ -194,42 +202,78 @@ export function CountryChart({
     featuresEx,
     locale,
   );
-  const sources = getSourcesFromCountryFeaturesWithPosition(
-    config,
-    featuresEx,
-    locale,
-  );
+
+  // figure out data: positions over time
   const countryStats = getPositionStatsFromCountries(config, countries);
   const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures(
     config,
     featuresEx,
   );
-
+  const staticDate = Object.keys(positionsOverTime)[
+    Object.keys(positionsOverTime).length - 1
+  ];
   // prettier-ignore
   const currentDate =
     !mouseOverSource && mouseOver && nearestXDate && positionsOverTime[nearestXDate]
       ? nearestXDate
-      : Object.keys(positionsOverTime)[
-        Object.keys(positionsOverTime).length - 1
+      : staticDate;
+
+  // figure out stats for key if static positions present ----------------------
+  let positionsOverTimeKey = positionsOverTime;
+  if (config.key.static) {
+    positionsOverTimeKey = getCountryPositionsOverTimeFromCountryFeatures(
+      config,
+      featuresEx,
+      true, // excludeStatic
+    );
+  }
+  let currentDateKey = currentDate;
+  if (config.key.static) {
+    if (
+      !mouseOverSource &&
+      mouseOver &&
+      nearestXDate &&
+      positionsOverTimeKey[nearestXDate]
+    ) {
+      currentDateKey = nearestXDate;
+    } else {
+      currentDateKey = Object.keys(positionsOverTimeKey)[
+        Object.keys(positionsOverTimeKey).length - 1
       ];
-  const positionsCurrentDate = positionsOverTime[currentDate].positions;
-  const sourceCount = getSourceCountFromPositions(positionsOverTime);
-  const sourceCountCurrent = getSourceCountFromPositions(
-    positionsOverTime,
-    currentDate,
-  );
+    }
+  }
+  const positionsStaticDate = positionsOverTime[staticDate].positions;
+  const positionsCurrentDate = positionsOverTimeKey[currentDateKey].positions;
   const statsForKey = prepChartKey(positionsCurrentDate, config, locale);
-  const chartData = prepChartData(positionsOverTime, MINDATE);
+  const statsForKeyByStatic = groupBy(statsForKey, s =>
+    config.key.static && config.key.static.indexOf(s.id) > -1
+      ? 'static'
+      : 'dynamic',
+  );
+  const statusTime = new Date(currentDateKey).getTime();
+
+  // styles for each position ==================================================
+  // TODO: should be dynamic
   const dataStyles = {
     1: statsForKey.find(s => s.id === '1'),
     2: statsForKey.find(s => s.id === '2'),
     3: statsForKey.find(s => s.id === '3'),
     4: statsForKey.find(s => s.id === '4'),
   };
-  const tickValuesX = getTickValuesX(chartData);
 
+  // sources/statements
+  const sources = getSourcesFromCountryFeaturesWithPosition(
+    config,
+    featuresEx,
+    locale,
+  );
+  const sourceCount = getSourceCountFromPositions(positionsOverTime);
   const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
-  // console.log(chartDataSources)
+  const activeSource = mouseOverSource && sources[mouseOverSource.sid];
+
+  // chart stuff
+  const chartData = prepChartData(positionsOverTime, MINDATE);
+  const tickValuesX = getTickValuesX(chartData);
   const dataForceYRange = getYRange(chartData, chartDataSources, MINDATE);
   const dataMouseOverCover =
     !mouseOverSource &&
@@ -237,20 +281,7 @@ export function CountryChart({
     nearestXDate &&
     getMouseOverCover(chartData, currentDate);
 
-  // prettier-ignore
-  const statusTime =
-    !mouseOverSource && mouseOver && nearestXDate
-      ? new Date(nearestXDate).getTime()
-      : new Date(
-        Object.keys(positionsOverTime)[
-          Object.keys(positionsOverTime).length - 1
-        ],
-      );
-
-  const activeSource = mouseOverSource && sources[mouseOverSource.sid];
-  // console.log(activeSource)
   // console.log(getFlatCSVFromSources(sources, locale))
-  // console.log(sources);
 
   // prettier-ignore
   return (
@@ -273,23 +304,63 @@ export function CountryChart({
               gap="xxsmall"
               elevation={!mouseOverSource && mouseOver ? 'small' : 'none'}
             >
-              <Box direction={isMinSize(size, 'medium') ? 'row' : 'column'} justify="between" gap="xsmall">
-                <Box gap="xxsmall">
-                  {statsForKey.map(stat => (
-                    <SquareLabelWrap key={stat.id}>
-                      <KeyAreaWrap>
-                        <KeyArea areaStyles={[stat.style]} />
-                      </KeyAreaWrap>
-                      <KeyLabelWrap>
-                        <StyledKeyLabel>
-                          {!stat.count && stat.title}
-                          {!!stat.count && `${stat.title}: `}
-                          {!!stat.count && <strong>{`${stat.count}`}</strong>}
-                        </StyledKeyLabel>
-                      </KeyLabelWrap>
-                    </SquareLabelWrap>
-                  ))}
-                  <SquareLabelWrap>
+              <Box justify="between" gap="xsmall">
+                <Box gap="ms">
+                  {Object.keys(statsForKeyByStatic).map(groupKey => {
+                    const stats = statsForKeyByStatic[groupKey];
+                    const date = groupKey === 'static'
+                      ? formatDate(locale, new Date(
+                        Object.keys(positionsOverTime)[
+                          Object.keys(positionsOverTime).length - 1
+                        ]))
+                      : formatDate(locale, statusTime);
+                    return (
+                      <Box gap="xsmall" key={groupKey}>
+                        <Box
+                          direction="row"
+                          gap="xsmall"
+                          justify="start"
+                          flex={{ shrink: 0 }}
+                        >
+                          <Text
+                            size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
+                            textAlign="end"
+                            color="textSecondary"
+                          >
+                            <FormattedMessage
+                              {...messages.countryChartDateLabel}
+                              values={{ date }}
+                            />
+                          </Text>
+                        </Box>
+                        {stats.map(stat => {
+                          const count = groupKey === 'static'
+                            ? positionsStaticDate[stat.id] && positionsStaticDate[stat.id].length || 0
+                            : stat.count;
+                          return (
+                            <SquareLabelWrap key={stat.id}>
+                              <KeyAreaWrap>
+                                <KeyArea areaStyles={[stat.style]} />
+                              </KeyAreaWrap>
+                              <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+                                {!!count && (
+                                  <StyledKeyCount>
+                                    {count}
+                                  </StyledKeyCount>
+                                )}
+                              </KeyLabelWrap>
+                              <KeyLabelWrap>
+                                <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+                                  <Markdown source={stat.title} />
+                                </StyledKeyLabel>
+                              </KeyLabelWrap>
+                            </SquareLabelWrap>
+                          );
+                        })}
+                      </Box>
+                    )
+                  })}
+                  <SquareLabelWrap align="center">
                     <KeyStatements>
                       {statsForKey.map(
                         stat => (
@@ -308,30 +379,8 @@ export function CountryChart({
                       <StyledKeyLabel>
                         <FormattedMessage {...messages.countryChartNoSources} />
                       </StyledKeyLabel>
-                      {!!sourceCountCurrent && (
-                        <StyledKeyLabel strong>
-                          {sourceCountCurrent}
-                        </StyledKeyLabel>
-                      )}
                     </KeyLabelWrap>
                   </SquareLabelWrap>
-                </Box>
-                <Box
-                  direction="row"
-                  gap="xsmall"
-                  justify={isMinSize(size, 'medium') ? 'end' : 'start'}
-                  flex={{ shrink: 0 }}
-                >
-                  <Text
-                    size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
-                    textAlign="end"
-                    color="textSecondary"
-                  >
-                    <FormattedMessage
-                      {...messages.countryChartDateLabel}
-                      values={{ date: formatDate(locale, statusTime)}}
-                    />
-                  </Text>
                 </Box>
               </Box>
             </Box>

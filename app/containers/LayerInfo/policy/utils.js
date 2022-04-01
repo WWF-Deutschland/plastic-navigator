@@ -377,6 +377,7 @@ const cleanupPositions = positions => {
 export const getCountryPositionsOverTimeFromCountryFeatures = (
   config,
   features,
+  excludeStatic,
 ) => {
   const sources = features
     .filter(excludeDependentCountries)
@@ -391,25 +392,32 @@ export const getCountryPositionsOverTimeFromCountryFeatures = (
         // get country-positions from feature
         const fPositions = f.properties[config.properties.join.as];
         // check each position for the source and remember source in new list m2
-        return fPositions.reduce((m2, p) => {
-          const { source, position } = p;
-          if (source && source.id) {
-            // if new source, remember source with current country code
-            if (!m2[source.id]) {
+        return fPositions
+          .filter(p => {
+            if (excludeStatic && config.key.static) {
+              return config.key.static.indexOf(p.position_id) === -1;
+            }
+            return true;
+          })
+          .reduce((m2, p) => {
+            const { source, position } = p;
+            if (source && source.id) {
+              // if new source, remember source with current country code
+              if (!m2[source.id]) {
+                const sx = Object.assign({}, source, {
+                  position,
+                  countries: [code],
+                });
+                return Object.assign(m2, { [source.id]: sx });
+              }
+              // if known source, add current feature's country code
               const sx = Object.assign({}, source, {
-                position,
-                countries: [code],
+                countries: [...m2[source.id].countries, code],
               });
               return Object.assign(m2, { [source.id]: sx });
             }
-            // if known source, add current feature's country code
-            const sx = Object.assign({}, source, {
-              countries: [...m2[source.id].countries, code],
-            });
-            return Object.assign(m2, { [source.id]: sx });
-          }
-          return m2;
-        }, memo);
+            return m2;
+          }, memo);
       }
       return memo;
     }, {});

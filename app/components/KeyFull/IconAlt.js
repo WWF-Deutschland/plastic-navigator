@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Box } from 'grommet';
 // import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import { intlShape, injectIntl } from 'react-intl';
+import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
@@ -20,16 +21,19 @@ import KeyCircle from 'components/KeyCircle';
 import KeyLabel from './KeyLabel';
 
 const IconLabelWrap = styled(p => (
-  <Box direction="row" align="center" gap="xsmall" {...p} />
+  <Box direction="row" align="start" gap="xsmall" {...p} />
 ))`
   position: relative;
+  min-height: 22px;
 `;
 
-const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
+const IconWrap = styled.div`
+  position: relative;
+  top: -1px;
   display: block;
   height: 22px;
   width: 22px;
-  padding: 2px;
+  padding: 1;
   border-radius: 9999px;
   background: ${({ backgroundColor, theme }) =>
     backgroundColor
@@ -37,8 +41,18 @@ const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
       : 'transparent'};
 `;
 
-const StyledKeyLabel = styled(KeyLabel)`
+const KeyLabelWrap = styled(p => (
+  <Box direction="row" align="start" alignContent="start" {...p} />
+))``;
+
+const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
+`;
+const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
+  white-space: normal;
+  width: 22px;
+  font-weight: bold;
+  text-align: right;
 `;
 
 export function IconAlt({
@@ -122,15 +136,20 @@ export function IconAlt({
   return (
     <Box gap="xsmall">
       {circles.map(circle => (
-        <IconLabelWrap key={circle.val}>
-          <IconWrap backgroundColor={backgroundColor} flex={{ shrink: 0 }}>
+        <IconLabelWrap key={circle.id}>
+          <IconWrap backgroundColor={backgroundColor}>
             <KeyCircle circleStyle={circle.style} radius={8} />
           </IconWrap>
-          <StyledKeyLabel>
-            {(!circle.count || simple) && circle.title}
-            {!!circle.count && !simple && `${circle.title}: `}
-            {!!circle.count && !simple && <strong>{circle.count}</strong>}
-          </StyledKeyLabel>
+          {!!circle.count && !simple && (
+            <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+              <StyledKeyCount>{circle.count}</StyledKeyCount>
+            </KeyLabelWrap>
+          )}
+          <KeyLabelWrap>
+            <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+              <Markdown source={circle.title} />
+            </StyledKeyLabel>
+          </KeyLabelWrap>
         </IconLabelWrap>
       ))}
     </Box>
