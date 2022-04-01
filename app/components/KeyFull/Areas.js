@@ -117,7 +117,9 @@ export function Areas({
             <KeyArea areaStyles={[sq.style]} />
           </KeyAreaWrap>
           <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-            {!!sq.count && <StyledKeyCount>{sq.count}</StyledKeyCount>}
+            {!!sq.count && !simple && (
+              <StyledKeyCount>{sq.count}</StyledKeyCount>
+            )}
           </KeyLabelWrap>
           <KeyLabelWrap>
             <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
