@@ -9,6 +9,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import {
+  exludeCountryFeatures,
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
 } from 'containers/LayerInfo/policy/utils';
@@ -49,7 +50,7 @@ export function IconAlt({ config, intl, dark, layerData }) {
     layerData &&
     featuresToCountriesWithStrongestPosition(
       config,
-      layerData.features,
+      exludeCountryFeatures(config, layerData.features),
       locale,
     );
   const countryStats =
