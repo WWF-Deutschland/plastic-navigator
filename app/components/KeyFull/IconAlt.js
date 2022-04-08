@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import { Box } from 'grommet';
 // import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import { intlShape, injectIntl } from 'react-intl';
+import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYERS } from 'config';
 
 import {
+  excludeCountryFeatures,
   getPositionStatsFromCountries,
   featuresToCountriesWithStrongestPosition,
 } from 'containers/LayerInfo/policy/utils';
@@ -19,16 +21,19 @@ import KeyCircle from 'components/KeyCircle';
 import KeyLabel from './KeyLabel';
 
 const IconLabelWrap = styled(p => (
-  <Box direction="row" align="center" gap="xsmall" {...p} />
+  <Box direction="row" align="start" gap="xsmall" {...p} />
 ))`
   position: relative;
+  min-height: 22px;
 `;
 
-const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
+const IconWrap = styled.div`
+  position: relative;
+  top: -1px;
   display: block;
   height: 22px;
   width: 22px;
-  padding: 2px;
+  padding: 1;
   border-radius: 9999px;
   background: ${({ backgroundColor, theme }) =>
     backgroundColor
@@ -36,11 +41,28 @@ const IconWrap = styled(p => <Box flex={{ shrink: 0 }} {...p} />)`
       : 'transparent'};
 `;
 
-const StyledKeyLabel = styled(KeyLabel)`
+const KeyLabelWrap = styled(p => (
+  <Box direction="row" align="start" alignContent="start" {...p} />
+))``;
+
+const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
 `;
+const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
+  white-space: normal;
+  width: 22px;
+  font-weight: bold;
+  text-align: right;
+`;
 
-export function IconAlt({ config, intl, dark, layerData }) {
+export function IconAlt({
+  config,
+  intl,
+  dark,
+  layerData,
+  simple,
+  excludeEmpty,
+}) {
   const { key } = config;
   const { locale } = intl;
   let circles;
@@ -49,13 +71,14 @@ export function IconAlt({ config, intl, dark, layerData }) {
     layerData &&
     featuresToCountriesWithStrongestPosition(
       config,
-      layerData.features,
+      excludeCountryFeatures(config, layerData.features),
       locale,
     );
+
   const countryStats =
     countries && getPositionStatsFromCountries(config, countries);
   if (key.style && key.style.type === 'circle') {
-    circles = key.iconValue.full.map(val => {
+    circles = key.iconValue.full.reduce((memo, val) => {
       let t;
       if (key.iconTitle) {
         if (key.iconTitle.full) {
@@ -93,13 +116,19 @@ export function IconAlt({ config, intl, dark, layerData }) {
       );
       const stat =
         countryStats && countryStats.find(s => quasiEquals(s.val, val));
-      return {
-        val,
-        title: t,
-        style,
-        count: stat && stat.count,
-      };
-    });
+      if (excludeEmpty && (!stat || quasiEquals(stat.count, 0))) {
+        return memo;
+      }
+      return [
+        ...memo,
+        {
+          id: val,
+          style,
+          title: t,
+          count: stat && stat.count,
+        },
+      ];
+    }, []);
   }
   if (!circles) return null;
   const backgroundColor = dark && key.icon && key.icon.backgroundOnDark;
@@ -107,15 +136,20 @@ export function IconAlt({ config, intl, dark, layerData }) {
   return (
     <Box gap="xsmall">
       {circles.map(circle => (
-        <IconLabelWrap key={circle.val}>
-          <IconWrap backgroundColor={backgroundColor} flex={{ shrink: 0 }}>
+        <IconLabelWrap key={circle.id}>
+          <IconWrap backgroundColor={backgroundColor}>
             <KeyCircle circleStyle={circle.style} radius={8} />
           </IconWrap>
-          <StyledKeyLabel>
-            {!circle.count && circle.title}
-            {!!circle.count && `${circle.title}: `}
-            {!!circle.count && <strong>{circle.count}</strong>}
-          </StyledKeyLabel>
+          {!!circle.count && !simple && (
+            <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+              <StyledKeyCount>{circle.count}</StyledKeyCount>
+            </KeyLabelWrap>
+          )}
+          <KeyLabelWrap>
+            <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+              <Markdown source={circle.title} />
+            </StyledKeyLabel>
+          </KeyLabelWrap>
         </IconLabelWrap>
       ))}
     </Box>
@@ -127,7 +161,8 @@ IconAlt.propTypes = {
   config: PropTypes.object,
   layerData: PropTypes.object,
   // title: PropTypes.string,
-  // simple: PropTypes.bool,
+  simple: PropTypes.bool,
+  excludeEmpty: PropTypes.bool,
   dark: PropTypes.bool,
   intl: intlShape.isRequired,
 };

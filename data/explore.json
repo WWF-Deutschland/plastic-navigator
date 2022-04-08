@@ -39,12 +39,12 @@
       {
         "id": "policy",
         "title": {
-          "en": "What are the countries’ levels of support for a new global agreement on marine plastic pollution?",
-          "de": "In welchem Maße bekennen sich die einzelnen Länder zu einem neuen globalen Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+          "en": "What are UN Member States’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+          "de": "In welchem Maße bekennen sich die UN-Mitgliedsstaaten zu einem neuen globalen Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
         },
         "description": {
-          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans. For small countries, select ‘shown as markers’.",
-          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die einzelnen Länder dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln. Für kleinere Länder am besten 'als Marker angezeigt' anklicken."
+          "en": "Learn about the UN Member States’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans. For small countries, select ‘shown as markers’.",
+          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die UN-Mitgliedsstaaten dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln. Für kleinere Länder am besten 'als Marker angezeigt' anklicken."
         }
       }
     ]

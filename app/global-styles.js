@@ -124,6 +124,10 @@ const GlobalStyle = createGlobalStyle`
       line-height: 20px
     }
   }
+  .mpx-wrap-markdown-stat-title p {
+    margin: 0;
+    line-height: 14px;
+  }
   .mpx-reference {
     color: #606367;
     font-size: 13px;

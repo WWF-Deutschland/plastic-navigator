@@ -430,6 +430,7 @@ export function PanelKey({
                         <KeyFull
                           config={config}
                           layerData={jsonLayerActive && jsonLayerActive.data}
+                          excludeEmpty
                         />
                       </Box>
                     )}

@@ -39,32 +39,46 @@ const addStep = (previous, datum) => {
   return [datum];
 };
 
-const dateBuffer = (nDays = 30) => 24 * 60 * 60 * nDays;
+const dateBuffer = (nDays = 30) => 24 * 60 * 60 * 1000 * nDays;
 export const getXMax = (nDays = 10) => new Date().getTime() + dateBuffer(nDays);
 
 export const prepChartData = (positions, minDate) => {
   const data = Object.keys(positions).reduce(
     (memo, dateKey) => ({
+      4: [
+        ...memo[4],
+        ...addStep(memo[4], getDataForDate(dateKey, positions, 4)),
+      ],
       3: [
         ...memo[3],
-        ...addStep(memo[3], getDataForDate(dateKey, positions, 3)),
+        ...addStep(memo[3], getDataForDate(dateKey, positions, 3, [4])),
       ],
       2: [
         ...memo[2],
-        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, [3])),
+        ...addStep(memo[2], getDataForDate(dateKey, positions, 2, [3, 4])),
       ],
       1: [
         ...memo[1],
-        ...addStep(memo[1], getDataForDate(dateKey, positions, 1, [2, 3])),
+        ...addStep(memo[1], getDataForDate(dateKey, positions, 1, [2, 3, 4])),
       ],
     }),
     {
+      4: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
       3: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
       2: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
       1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
     },
   );
   return {
+    4: [
+      ...data[4],
+      {
+        sdate: 'today',
+        scount: 0,
+        y: data[4][data[4].length - 1].y,
+        x: getXMax(),
+      },
+    ],
     3: [
       ...data[3],
       {
@@ -219,7 +233,7 @@ export const getMouseOverCover = (chartData, minDate) => {
         y: maxY,
       },
       {
-        x: new Date().getTime(),
+        x: getXMax(),
         y: maxY,
       },
     ]
