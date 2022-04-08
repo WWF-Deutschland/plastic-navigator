@@ -91,6 +91,7 @@ export function KeyFull({
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
+          excludeEmpty={excludeEmpty}
         />
       )}
       {isIconAlt && (
@@ -105,6 +106,7 @@ export function KeyFull({
               : null
           }
           layerData={layerData}
+          excludeEmpty={excludeEmpty}
         />
       )}
       {isGradient && (

@@ -94,7 +94,6 @@ FIN,Finland,1,EUCCOS2019
 FRA,France,1,EUCCOS2019
 DEU,Germany,1,EUCCOS2019
 GRC,Greece,1,EUCCOS2019
-GRL,Greenland (Denmark),1,EUCCOS2019
 HUN,Hungary,1,EUCCOS2019
 IRL,Ireland,1,EUCCOS2019
 ITA,Italy,1,EUCCOS2019
@@ -122,7 +121,6 @@ FIN,Finland,2,EUCCOS2020
 FRA,France,2,EUCCOS2020
 DEU,Germany,2,EUCCOS2020
 GRC,Greece,2,EUCCOS2020
-GRL,Greenland (Denmark),2,EUCCOS2020
 HUN,Hungary,2,EUCCOS2020
 IRL,Ireland,2,EUCCOS2020
 ITA,Italy,2,EUCCOS2020
@@ -199,7 +197,6 @@ LKA,Sri Lanka,2,GOF2020e
 DNK,Denmark,2,HELCOM2020
 EST,Estonia,2,HELCOM2020
 FIN,Finland,2,HELCOM2020
-GRL,Greenland (Denmark),2,HELCOM2020
 LVA,Latvia,2,HELCOM2020
 LTU,Lithuania,2,HELCOM2020
 POL,Poland,2,HELCOM2020
@@ -296,7 +293,6 @@ ERI,Eritrea,2,MCONF21-ER
 GTM,Guatemala,2,MCONF21-GT
 DNK,Denmark,2,NORDIC2019
 FIN,Finland,2,NORDIC2019
-GRL,Greenland (Denmark),2,NORDIC2019
 ISL,Iceland,2,NORDIC2019
 NOR,Norway,2,NORDIC2019
 SWE,Sweden,2,NORDIC2019
@@ -556,7 +552,6 @@ KOR,Republic of Korea,3,PERWRES21A
 SYC,Seychelles,3,PERWRES21A
 TLS,Timor-Leste,3,PERWRES21A
 URY,Uruguay,3,PERWRES21A
-URY,Uruguay,3,PERWRES21A
 AFG,Afghanistan,2,G77CPR157
 DZA,Algeria,2,G77CPR157
 AGO,Angola,2,G77CPR157
@@ -700,3 +695,199 @@ MKD,North Macedonia,3,PERWRES21B
 PAK,Pakistan,3,PERWRES21B
 DJI,Djibouti,3,PERWRES21B
 PAN,Panama,3,PERWRES21B
+AFG,Afghanistan,4,UNEA-5.2
+ALB,Albania,4,UNEA-5.2
+DZA,Algeria,4,UNEA-5.2
+AND,Andorra,4,UNEA-5.2
+AGO,Angola,4,UNEA-5.2
+ATG,Antigua and Barbuda,4,UNEA-5.2
+ARG,Argentina,4,UNEA-5.2
+ARM,Armenia,4,UNEA-5.2
+AUS,Australia,4,UNEA-5.2
+AUT,Austria,4,UNEA-5.2
+AZE,Azerbaijan,4,UNEA-5.2
+BHS,Bahamas,4,UNEA-5.2
+BHR,Bahrain,4,UNEA-5.2
+BGD,Bangladesh,4,UNEA-5.2
+BRB,Barbados,4,UNEA-5.2
+BLR,Belarus,4,UNEA-5.2
+BEL,Belgium,4,UNEA-5.2
+BLZ,Belize,4,UNEA-5.2
+BEN,Benin,4,UNEA-5.2
+BTN,Bhutan,4,UNEA-5.2
+BOL,Bolivia,4,UNEA-5.2
+BIH,Bosnia and Herzegovina,4,UNEA-5.2
+BWA,Botswana,4,UNEA-5.2
+BRA,Brazil,4,UNEA-5.2
+BRN,Brunei,4,UNEA-5.2
+BGR,Bulgaria,4,UNEA-5.2
+BFA,Burkina Faso,4,UNEA-5.2
+BDI,Burundi,4,UNEA-5.2
+CPV,Cabo Verde,4,UNEA-5.2
+KHM,Cambodia,4,UNEA-5.2
+CMR,Cameroon,4,UNEA-5.2
+CAN,Canada,4,UNEA-5.2
+CAF,Central African Republic,4,UNEA-5.2
+TCD,Chad,4,UNEA-5.2
+CHL,Chile,4,UNEA-5.2
+CHN,China,4,UNEA-5.2
+COL,Colombia,4,UNEA-5.2
+COM,Comoros,4,UNEA-5.2
+COG,Congo,4,UNEA-5.2
+CRI,Costa Rica,4,UNEA-5.2
+CIV,Côte d'Ivoire,4,UNEA-5.2
+HRV,Croatia,4,UNEA-5.2
+CUB,Cuba,4,UNEA-5.2
+CYP,Cyprus,4,UNEA-5.2
+CZE,Czechia,4,UNEA-5.2
+PRK,Democratic People's Republic of Korea,4,UNEA-5.2
+COD,Democratic Republic of the Congo,4,UNEA-5.2
+DNK,Denmark,4,UNEA-5.2
+DJI,Djibouti,4,UNEA-5.2
+DMA,Dominica,4,UNEA-5.2
+DOM,Dominican Republic,4,UNEA-5.2
+ECU,Ecuador,4,UNEA-5.2
+EGY,Egypt,4,UNEA-5.2
+SLV,El Salvador,4,UNEA-5.2
+GNQ,Equatorial Guinea,4,UNEA-5.2
+ERI,Eritrea,4,UNEA-5.2
+EST,Estonia,4,UNEA-5.2
+SWZ,Eswatini,4,UNEA-5.2
+ETH,Ethiopia,4,UNEA-5.2
+FJI,Fiji,4,UNEA-5.2
+FIN,Finland,4,UNEA-5.2
+FRA,France,4,UNEA-5.2
+GAB,Gabon,4,UNEA-5.2
+GMB,Gambia,4,UNEA-5.2
+GEO,Georgia,4,UNEA-5.2
+DEU,Germany,4,UNEA-5.2
+GHA,Ghana,4,UNEA-5.2
+GRC,Greece,4,UNEA-5.2
+GRD,Grenada,4,UNEA-5.2
+GTM,Guatemala,4,UNEA-5.2
+GIN,Guinea,4,UNEA-5.2
+GNB,Guinea-Bissau,4,UNEA-5.2
+GUY,Guyana,4,UNEA-5.2
+HTI,Haiti,4,UNEA-5.2
+VAT,Holy See,4,UNEA-5.2
+HND,Honduras,4,UNEA-5.2
+HUN,Hungary,4,UNEA-5.2
+ISL,Iceland,4,UNEA-5.2
+IND,India,4,UNEA-5.2
+IDN,Indonesia,4,UNEA-5.2
+IRN,Iran,4,UNEA-5.2
+IRQ,Iraq,4,UNEA-5.2
+IRL,Ireland,4,UNEA-5.2
+ISR,Israel,4,UNEA-5.2
+ITA,Italy,4,UNEA-5.2
+JAM,Jamaica,4,UNEA-5.2
+JPN,Japan,4,UNEA-5.2
+JOR,Jordan,4,UNEA-5.2
+KAZ,Kazakhstan,4,UNEA-5.2
+KEN,Kenya,4,UNEA-5.2
+KIR,Kiribati,4,UNEA-5.2
+KWT,Kuwait,4,UNEA-5.2
+KGZ,Kyrgyzstan,4,UNEA-5.2
+LAO,Lao People's Democratic Republic,4,UNEA-5.2
+LVA,Latvia,4,UNEA-5.2
+LBN,Lebanon,4,UNEA-5.2
+LSO,Lesotho,4,UNEA-5.2
+LBR,Liberia,4,UNEA-5.2
+LBY,Libya,4,UNEA-5.2
+LIE,Liechtenstein,4,UNEA-5.2
+LTU,Lithuania,4,UNEA-5.2
+LUX,Luxembourg,4,UNEA-5.2
+MDG,Madagascar,4,UNEA-5.2
+MWI,Malawi,4,UNEA-5.2
+MYS,Malaysia,4,UNEA-5.2
+MDV,Maldives,4,UNEA-5.2
+MLI,Mali,4,UNEA-5.2
+MLT,Malta,4,UNEA-5.2
+MHL,Marshall Islands,4,UNEA-5.2
+MRT,Mauritania,4,UNEA-5.2
+MUS,Mauritius,4,UNEA-5.2
+MEX,Mexico,4,UNEA-5.2
+FSM,Micronesia,4,UNEA-5.2
+MCO,Monaco,4,UNEA-5.2
+MNG,Mongolia,4,UNEA-5.2
+MNE,Montenegro,4,UNEA-5.2
+MAR,Morocco,4,UNEA-5.2
+MOZ,Mozambique,4,UNEA-5.2
+MMR,Myanmar,4,UNEA-5.2
+NAM,Namibia,4,UNEA-5.2
+NRU,Nauru,4,UNEA-5.2
+NPL,Nepal,4,UNEA-5.2
+NLD,Netherlands,4,UNEA-5.2
+NZL,New Zealand,4,UNEA-5.2
+NIC,Nicaragua,4,UNEA-5.2
+NER,Niger,4,UNEA-5.2
+NGA,Nigeria,4,UNEA-5.2
+MKD,North Macedonia,4,UNEA-5.2
+NOR,Norway,4,UNEA-5.2
+OMN,Oman,4,UNEA-5.2
+PAK,Pakistan,4,UNEA-5.2
+PLW,Palau,4,UNEA-5.2
+PAN,Panama,4,UNEA-5.2
+PNG,Papua New Guinea,4,UNEA-5.2
+PRY,Paraguay,4,UNEA-5.2
+PER,Peru,4,UNEA-5.2
+PHL,Philippines,4,UNEA-5.2
+POL,Poland,4,UNEA-5.2
+PRT,Portugal,4,UNEA-5.2
+QAT,Qatar,4,UNEA-5.2
+KOR,Republic of Korea,4,UNEA-5.2
+MDA,Republic of Moldova,4,UNEA-5.2
+ROU,Romania,4,UNEA-5.2
+RUS,Russian Federation,4,UNEA-5.2
+RWA,Rwanda,4,UNEA-5.2
+KNA,Saint Kitts and Nevis,4,UNEA-5.2
+LCA,Saint Lucia,4,UNEA-5.2
+VCT,Saint Vincent and the Grenadines,4,UNEA-5.2
+WSM,Samoa,4,UNEA-5.2
+SMR,San Marino,4,UNEA-5.2
+STP,Sao Tome and Principe,4,UNEA-5.2
+SAU,Saudi Arabia,4,UNEA-5.2
+SEN,Senegal,4,UNEA-5.2
+SRB,Serbia,4,UNEA-5.2
+SYC,Seychelles,4,UNEA-5.2
+SLE,Sierra Leone,4,UNEA-5.2
+SGP,Singapore,4,UNEA-5.2
+SVK,Slovakia,4,UNEA-5.2
+SVN,Slovenia,4,UNEA-5.2
+SLB,Solomon Islands,4,UNEA-5.2
+SOM,Somalia,4,UNEA-5.2
+ZAF,South Africa,4,UNEA-5.2
+SSD,South Sudan,4,UNEA-5.2
+ESP,Spain,4,UNEA-5.2
+LKA,Sri Lanka,4,UNEA-5.2
+PSE,State of Palestine,4,UNEA-5.2
+SDN,Sudan,4,UNEA-5.2
+SUR,Suriname,4,UNEA-5.2
+SWE,Sweden,4,UNEA-5.2
+CHE,Switzerland,4,UNEA-5.2
+SYR,Syrian Arab Republic,4,UNEA-5.2
+TJK,Tajikistan,4,UNEA-5.2
+THA,Thailand,4,UNEA-5.2
+TLS,Timor-Leste,4,UNEA-5.2
+TGO,Togo,4,UNEA-5.2
+TON,Tonga,4,UNEA-5.2
+TTO,Trinidad and Tobago,4,UNEA-5.2
+TUN,Tunisia,4,UNEA-5.2
+TUR,Turkey,4,UNEA-5.2
+TKM,Turkmenistan,4,UNEA-5.2
+TUV,Tuvalu,4,UNEA-5.2
+UGA,Uganda,4,UNEA-5.2
+UKR,Ukraine,4,UNEA-5.2
+ARE,United Arab Emirates,4,UNEA-5.2
+GBR,United Kingdom,4,UNEA-5.2
+TZA,United Republic of Tanzania,4,UNEA-5.2
+USA,United States of America,4,UNEA-5.2
+URY,Uruguay,4,UNEA-5.2
+UZB,Uzbekistan,4,UNEA-5.2
+VUT,Vanuatu,4,UNEA-5.2
+VEN,Venezuela,4,UNEA-5.2
+VNM,Viet Nam,4,UNEA-5.2
+YEM,Yemen,4,UNEA-5.2
+ZMB,Zambia,4,UNEA-5.2
+ZWE,Zimbabwe,4,UNEA-5.2
+KSV,Kosovo (not a UN member state but added for color only),4,UNEA-5.2

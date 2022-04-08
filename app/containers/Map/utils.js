@@ -3,6 +3,7 @@ import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
 import quasiEquals from 'utils/quasi-equals';
+import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
 import 'leaflet.vectorgrid';
@@ -560,7 +561,16 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
 
   // regular point marker
   if (config.render && config.render.type === 'marker') {
-    return getPointLayer({ data, config, markerEvents, state });
+    return getPointLayer({
+      data: {
+        features: data.features
+          ? excludeCountryFeatures(config, data.features)
+          : [],
+      },
+      config,
+      markerEvents,
+      state,
+    });
   }
   // scaled circle marker
   if (config.render && config.render.type === 'scaledCircle') {
