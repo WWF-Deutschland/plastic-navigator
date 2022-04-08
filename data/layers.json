@@ -345,20 +345,20 @@
     "source": "data",
     "type": "topojson",
     "title": {
-      "en": "Country’s level of support for treaty",
-      "de": "Positionierungen für ein Abkommen nach Ländern"
+      "en": "UN Member States’ level of support for treaty",
+      "de": "Positionierungen für ein Abkommen nach UN-Mitgliedsstaaten"
     },
     "title-short": {
-      "en": "Country’s level of support",
-      "de": "Grad an Engagement nach Ländern"
+      "en": "UN Member States’ level of support",
+      "de": "Grad an Engagement nach UN-Mitgliedsstaaten"
     },
     "title-module": {
-      "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
-      "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+      "en": "What are the UN Member States’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+      "de": "Wie stark ist die Unterstützung einzelner UN-Mitgliedsstaaten für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
     },
     "about": {
-      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
-      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
+      "en": "The visualisation shows the UN Member States’ positions on a global, legally binding agreement based on our own research and various sources.",
+      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen UN-Mitgliedsstaaten hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
     },
     "file": "layers/sov-country-areas-topo.json",
     "mask": "layers/sov-country-areas-mask-topo.json",
@@ -457,8 +457,8 @@
     },
     "tooltip": {
       "supTitle": {
-        "en": "Country’s level of support",
-        "de": "Grad an Engagement nach Ländern"
+        "en": "UN Member States’ level of support",
+        "de": "Grad an Engagement nach UN-Mitgliedsstaaten"
       },
       "values": ["4", "3", "2", "1"],
       "property": "positions.position_id",
@@ -525,16 +525,16 @@
       ]
     },
     "title": {
-      "en": "Country’s level of support for treaty (shown as markers)",
-      "de": "Positionierungen für ein Abkommen nach Ländern (als Marker gezeigt)"
+      "en": "UN Member States’ level of support for treaty (shown as markers)",
+      "de": "Positionierungen für ein Abkommen nach UN-Mitgliedsstaaten (als Marker gezeigt)"
     },
     "title-module": {
-      "en": "What are the countries’ levels of support for negotiating a new global agreement on marine plastic pollution?",
-      "de": "Wie stark ist die Unterstützung einzelner Länder für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+      "en": "What are the UN Member States’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+      "de": "Wie stark ist die Unterstützung einzelner UN-Mitgliedsstaaten für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
     },
     "about": {
-      "en": "The visualisation shows the countries’ positions on a global, legally binding agreement based on our own research and various sources.",
-      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen Länder hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
+      "en": "The visualisation shows the UN Member States’ positions on a global, legally binding agreement based on our own research and various sources.",
+      "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen UN-Mitgliedsstaaten hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
     },
     "data": {
       "type": "location",
