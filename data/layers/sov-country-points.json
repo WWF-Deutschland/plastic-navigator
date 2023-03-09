@@ -858,7 +858,7 @@
       "type": "Feature",
       "properties": {
         "code": "KOR",
-        "name_en": "South Korea",
+        "name_en": "Republic of Korea",
         "name_de": "Südkorea"
       },
       "geometry": { "type": "Point", "coordinates": [127.8391609, 36.38523983] }
@@ -1290,7 +1290,7 @@
       "type": "Feature",
       "properties": {
         "code": "PRK",
-        "name_en": "North Korea",
+        "name_en": "Democratic People's Republic of Korea",
         "name_de": "Nordkorea"
       },
       "geometry": { "type": "Point", "coordinates": [127.1924797, 40.15350311] }
