@@ -221,6 +221,10 @@ export function Map({
       // console.log('zoomstart')
       setTooltip(null);
     },
+    zoomend: () => {
+      // console.log('zoomstart')
+      if (mapRef.current) console.log(mapRef.current.getZoom())
+    },
     movestart: () => {
       // console.log('movestart')
       setTooltip(null);
@@ -456,37 +460,42 @@ export function Map({
                   newMapLayers[id] = { layer, config };
                 }
               }
+              // csv layer
               // geojson layer
               if (
-                (config.type === 'geojson' || config.type === 'topojson') &&
-                config.source === 'data'
+                config.source === 'data' &&
+                (config.type === 'geojson' ||
+                  config.type === 'topojson' ||
+                  config.type === 'csv')
               ) {
                 // kick of loading of vector data for group if not present
                 if (!jsonLayers[id]) {
                   onLoadLayer(id, config);
                 }
-                // kick off loading mask layers
-                const maskId = `${id}-mask`;
-                if (config.mask) {
-                  onLoadLayer(maskId, config, { mask: true });
-                }
-                if (jsonLayers[maskId] && areaMaskRef) {
-                  const layer = getVectorLayer({
-                    jsonLayer: jsonLayers[maskId],
-                    config,
-                    state: 'mask',
-                  });
-                  areaMaskRef.current.addLayer(layer);
-                  // newMapLayers[id] = { layer, config };
-                }
-                if (jsonLayers[id] && mapRef) {
-                  const layer = getVectorLayer({
-                    jsonLayer: jsonLayers[id],
-                    config,
-                    markerEvents,
-                  });
-                  mapRef.current.addLayer(layer);
-                  newMapLayers[id] = { layer, config };
+                if (config.type === 'geojson' || config.type === 'topojson') {
+                  // kick off loading mask layers
+                  const maskId = `${id}-mask`;
+                  if (config.mask) {
+                    onLoadLayer(maskId, config, { mask: true });
+                  }
+                  if (jsonLayers[maskId] && areaMaskRef) {
+                    const layer = getVectorLayer({
+                      jsonLayer: jsonLayers[maskId],
+                      config,
+                      state: 'mask',
+                    });
+                    areaMaskRef.current.addLayer(layer);
+                    // newMapLayers[id] = { layer, config };
+                  }
+                  if (jsonLayers[id] && mapRef) {
+                    const layer = getVectorLayer({
+                      jsonLayer: jsonLayers[id],
+                      config,
+                      markerEvents,
+                    });
+                    mapRef.current.addLayer(layer);
+                    newMapLayers[id] = { layer, config };
+                  }
                 }
               }
             }

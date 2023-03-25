@@ -145,6 +145,7 @@ export function* loadDataSaga({ key, config, args }) {
   if (hasMask) {
     file = config.mask;
   }
+  console.log('loadDataSaga({ key, config, args })', key, args, config)
   if (type && (type === 'geojson' || type === 'topojson' || type === 'csv')) {
     // requestedSelector returns the times that entities where fetched from the API
     const requestedAt = yield select(selectLayerRequestedByKey, key);
@@ -212,23 +213,175 @@ export function* loadDataSaga({ key, config, args }) {
           }
           if (typeof response.text === 'function' && type === 'csv') {
             const text = yield response.text();
+            // console.log('text', text)
             if (text) {
-              const promise = new Promise(resolve => {
-                csv2geojson(
-                  text,
-                  {
-                    latfield: 'latitude',
-                    lonfield: 'longitude',
-                    delimiter: ',',
-                  },
-                  (err, data) => {
-                    resolve(data);
-                  },
-                );
-              });
-              let json = yield promise;
-              json = setFeatureIds(json);
-              yield put(setLayerLoadSuccess(key, config, json, Date.now()));
+              if (config.geometries) {
+                const features = Papa.parse(text, {
+                  header: true,
+                  skipEmptyLines: true,
+                });
+                // console.log('features', features);
+                let geometries;
+                let geometryMasks;
+                let subLayers;
+                let joins;
+                if (config.geometries.length > 0) {
+                  const responses = yield all(
+                    config.geometries.map(x =>
+                      fetch(`${RESOURCES.DATA}/${x.file}`),
+                    ),
+                  );
+                  geometries = yield all(
+                    responses.map(r => {
+                      if (r.json) {
+                        return r.json();
+                      }
+                      throw new Error('error csv-geometry');
+                    }),
+                  );
+                  geometries = geometries.map((x, index) => {
+                    const xconfig = config.geometries[index];
+                    let json = x;
+                    if (xconfig.type === 'topojson') {
+                      json = topojson.feature(
+                        json,
+                        Object.values(json.objects)[0],
+                      );
+                    }
+                    return {
+                      ...json,
+                      config: xconfig,
+                    };
+                  });
+                  const masked = geometries.filter(x => x.config.mask);
+                  const maskResponses = yield all(
+                    masked.map(x =>
+                      fetch(`${RESOURCES.DATA}/${x.config.mask}`),
+                    ),
+                  );
+                  geometryMasks = yield all(
+                    maskResponses.map(r => {
+                      if (r.json) {
+                        return r.json();
+                      }
+                      throw new Error('error csv-geometry');
+                    }),
+                  );
+                  geometryMasks = geometryMasks.map((x, index) => {
+                    const mask = masked[index];
+                    let json = x;
+                    if (mask.config.type === 'topojson') {
+                      json = topojson.feature(
+                        json,
+                        Object.values(json.objects)[0],
+                      );
+                    }
+                    return {
+                      ...json,
+                      config: mask.config,
+                    };
+                  });
+                }
+                if (config.extend) {
+                  const xresponses = yield all(
+                    config.extend.map(x =>
+                      fetch(`${RESOURCES.DATA}/${x.file}`),
+                    ),
+                  );
+                  let attributes = yield all(
+                    xresponses.map(r => {
+                      if (r.ok && typeof r.text === 'function') {
+                        return r.text();
+                      }
+                      throw new Error('error csv-geometry');
+                    }),
+                  );
+                  attributes = attributes.map((x, index) => ({
+                    json: Papa.parse(x, {
+                      header: true,
+                      skipEmptyLines: true,
+                    }),
+                    config: config.extend[index],
+                  }));
+                  // console.log('attributes', attributes)
+                  const attributesJoin = attributes.filter(
+                    x => x.config && x.config['via-join'],
+                  );
+                  // console.log('attributesJoin', attributesJoin)
+                  const joinresponses = yield all(
+                    attributesJoin.map(x =>
+                      fetch(`${RESOURCES.DATA}/${x.config['via-join'].file}`),
+                    ),
+                  );
+                  joins = yield all(
+                    joinresponses.map(r => {
+                      if (r.ok && typeof r.text === 'function') {
+                        return r.text();
+                      }
+                      throw new Error('error csv-geometry');
+                    }),
+                  );
+                  // console.log('joins', joins);
+
+                  joins = joins.map((x, index) => ({
+                    json: Papa.parse(x, {
+                      header: true,
+                      skipEmptyLines: true,
+                    }),
+                    attributes: attributesJoin[index],
+                  }));
+                  // console.log('joins 2', joins);
+                  // features.data = features.data.map(f => {
+                  //
+                  //   return {
+                  //     ...f
+                  //   }
+                  // })
+                }
+                if (
+                  config['sub-layers'] &&
+                  config['sub-layers'].file &&
+                  config['sub-layers'].type === 'csv'
+                ) {
+                  const slresponse = yield fetch(
+                    `${RESOURCES.DATA}/${config['sub-layers'].file}`,
+                  );
+                  const sltext = yield slresponse.text();
+                  if (sltext) {
+                    subLayers = Papa.parse(sltext, {
+                      header: true,
+                      skipEmptyLines: true,
+                    });
+                  }
+                }
+                const json = {
+                  features,
+                  geometries,
+                  geometryMasks,
+                  subLayers,
+                  joins,
+                };
+                // console.log('json', json)
+                yield put(setLayerLoadSuccess(key, config, json, Date.now()));
+              } else {
+                const promise = new Promise(resolve => {
+                  csv2geojson(
+                    text,
+                    {
+                      latfield: 'latitude',
+                      lonfield: 'longitude',
+                      delimiter: ',',
+                    },
+                    (err, data) => {
+                      resolve(data);
+                    },
+                  );
+                });
+                let json = yield promise;
+                // console.log(json)
+                json = setFeatureIds(json);
+                yield put(setLayerLoadSuccess(key, config, json, Date.now()));
+              }
             }
           }
         } else {
