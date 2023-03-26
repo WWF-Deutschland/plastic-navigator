@@ -42,7 +42,12 @@ import {
   showLayerInfoModule,
 } from 'containers/App/actions';
 
-import { PROJECT_CATEGORY, PROJECT_CONFIG } from 'config';
+import {
+  PROJECT_CATEGORY,
+  POLICY_CATEGORY,
+  POLICY_LAYER,
+  PROJECT_CONFIG,
+} from 'config';
 
 import GroupLayers from 'components/GroupLayers';
 import ButtonDeleteLayers from './ButtonDeleteLayers';
@@ -179,7 +184,26 @@ export function PanelExplore({
   }, [uiState]);
 
   const activeCategory = exploreConfig && exploreConfig[tab];
-
+  let activeTabLayers = [];
+  if (layersConfig && activeLayers.length > 0) {
+    if (PROJECT_CATEGORY === activeCategory.id) {
+      activeTabLayers = activeLayers.filter(layer =>
+        startsWith(layer, `${PROJECT_CONFIG.id}-`),
+      );
+    } else if (POLICY_CATEGORY === activeCategory.id) {
+      activeTabLayers = activeLayers.filter(layer =>
+        startsWith(layer, `${POLICY_LAYER}-`),
+      );
+    } else {
+      activeTabLayers = activeLayers.filter(layer => {
+        const layerConfig = layersConfig.find(lc => lc.id === layer);
+        return layerConfig && layerConfig.category === tab;
+      });
+    }
+  }
+  const otherTabLayers = activeLayers.filter(
+    layerId => activeTabLayers.indexOf(layerId) === -1,
+  );
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -203,6 +227,10 @@ export function PanelExplore({
                       if (PROJECT_CATEGORY === category.id) {
                         activeCategoryLayers = activeLayers.filter(
                           layer => startsWith(layer, `${PROJECT_CONFIG.id}-`),
+                        );
+                      } else if (POLICY_CATEGORY === category.id) {
+                        activeCategoryLayers = activeLayers.filter(
+                          layer => startsWith(layer, `${POLICY_LAYER}-`),
                         );
                       } else {
                         activeCategoryLayers = activeLayers.filter(layer => {
@@ -253,7 +281,8 @@ export function PanelExplore({
                           group.description[DEFAULT_LOCALE]}
                       </DescriptionGroup>
                     )}
-                    { activeCategory.id !== PROJECT_CATEGORY && (
+                    {activeCategory.id !== PROJECT_CATEGORY &&
+                      activeCategory.id !== POLICY_CATEGORY &&(
                       <GroupLayers
                         group={group}
                         layersConfig={layersConfig.filter(layer =>
@@ -268,6 +297,7 @@ export function PanelExplore({
                     )}
                     {projects &&
                       activeCategory &&
+                      activeCategory.id !== POLICY_CATEGORY &&
                       activeCategory.id === PROJECT_CATEGORY && (
                       <GroupLayers
                         group={activeCategory.id}
@@ -289,10 +319,31 @@ export function PanelExplore({
                         onToggleLayer={onToggleLayer}
                       />
                     )}
+                    {activeCategory &&
+                      activeCategory.id === POLICY_CATEGORY &&
+                      activeCategory.id !== PROJECT_CATEGORY && (
+                      <GroupLayers
+                        group={group}
+                        showArchived={group.id === 'archive'}
+                        layersConfig={layersConfig.filter(layer =>
+                          layer.category === activeCategory.id
+                        )}
+                        locale={locale}
+                        activeLayers={activeLayers}
+                        onLayerInfo={onLayerInfo}
+                        onToggleLayer={id => {
+                          onSetLayers(activeLayers.indexOf(id) > -1
+                            ? otherTabLayers // remove all active group layers
+                            : [...otherTabLayers, id] // add while removing other active group layers
+                          )
+                        }}
+                      />
+                    )}
                   </SectionLayerGroup>
                 ))}
               {layersConfig &&
                 activeCategory &&
+                activeCategory.id !== POLICY_CATEGORY &&
                 activeCategory.id !== PROJECT_CATEGORY &&
                 !activeCategory.groups && (
                 <SectionLayerGroup>
@@ -310,6 +361,7 @@ export function PanelExplore({
               )}
               {projects &&
                 activeCategory &&
+                activeCategory.id !== POLICY_CATEGORY &&
                 activeCategory.id === PROJECT_CATEGORY &&
                 !activeCategory.groups && (
                 <SectionLayerGroup>

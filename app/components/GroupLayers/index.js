@@ -17,7 +17,7 @@ import { PROJECT_CONFIG } from 'config';
 
 import KeyIcon from 'components/KeyIcon';
 import Checkbox from 'components/Checkbox';
-
+import qe from 'utils/quasi-equals';
 import messages from './messages';
 
 const Styled = styled.div`
@@ -97,7 +97,48 @@ function GroupLayers({
   onLayerInfo,
   locale,
   projects,
+  showArchived,
+  // group,
 }) {
+  const layers = [];
+  if (layersConfig) {
+    layersConfig.forEach(config => {
+      let id;
+      let title;
+      if (!config['sub-layers']) {
+        if (projects) {
+          id = `${PROJECT_CONFIG.id}-${config.project_id}`;
+          title =
+            config[`project_title_${locale}`] ||
+            config[`project_title_${DEFAULT_LOCALE}`];
+        } else {
+          /* eslint-disable prefer-destructuring */
+          id = config.id;
+          title = config.title[locale] || config.title[DEFAULT_LOCALE];
+        }
+        layers.push({ id, title, config });
+      } else if (config['sub-layers'].layers) {
+        config['sub-layers'].layers
+          .filter(layer => {
+            const isArchiveLayer = layer.archive && qe(layer.archive, 1);
+            // console.log(layer, isArchiveLayer, showArchived)
+            return showArchived ? isArchiveLayer : !isArchiveLayer;
+          })
+          .forEach(layer => {
+            layers.push({
+              id: `${config.id}-${layer.id}`,
+              title: layer.short
+                ? layer.short[locale] || layer.short[DEFAULT_LOCALE]
+                : layer.title[locale] || layer.title[DEFAULT_LOCALE],
+              isArchive: layer.archive ? qe(layer.archive, 1) : false,
+              config,
+              configSubLayer: layer,
+            });
+          });
+      }
+    });
+  }
+  // console.log(showArchived, layers, group)
   return (
     <Styled>
       <ListHeader>
@@ -121,41 +162,33 @@ function GroupLayers({
         </ListHeaderRow>
       </ListHeader>
       <ListBody>
-        {layersConfig &&
-          layersConfig.map(config => {
-            const id = projects
-              ? `${PROJECT_CONFIG.id}-${config.project_id}`
-              : config.id;
-            // const contentId = projects ? id : config['content-id'] || config.id;
-            const title = projects
-              ? config[`project_title_${locale}`] ||
-                config[`project_title_${DEFAULT_LOCALE}`]
-              : config.title[locale] || config.title[DEFAULT_LOCALE];
-            return (
-              <ListBodyRow key={id}>
-                <ListBodyCell>
-                  <Checkbox
-                    checked={activeLayers.indexOf(id) > -1}
-                    onToggle={() => onToggleLayer(id)}
-                    label={title}
-                  />
-                </ListBodyCell>
-                <ListBodyCellCenter>
+        {layers &&
+          layers.map(({ id, title, config }) => (
+            <ListBodyRow key={id}>
+              <ListBodyCell>
+                <Checkbox
+                  checked={activeLayers.indexOf(id) > -1}
+                  onToggle={() => onToggleLayer(id)}
+                  label={title}
+                />
+              </ListBodyCell>
+              <ListBodyCellCenter>
+                {config.key && (
                   <KeyWrap>
                     <KeyIcon config={projects ? PROJECT_CONFIG : config} />
                   </KeyWrap>
-                </ListBodyCellCenter>
-                {onLayerInfo && (
-                  <ListBodyCellCenter>
-                    <InfoButton
-                      onClick={() => onLayerInfo(id)}
-                      label={<FormattedMessage {...messages.info} />}
-                    />
-                  </ListBodyCellCenter>
                 )}
-              </ListBodyRow>
-            );
-          })}
+              </ListBodyCellCenter>
+              {onLayerInfo && (
+                <ListBodyCellCenter>
+                  <InfoButton
+                    onClick={() => onLayerInfo(id)}
+                    label={<FormattedMessage {...messages.info} />}
+                  />
+                </ListBodyCellCenter>
+              )}
+            </ListBodyRow>
+          ))}
       </ListBody>
     </Styled>
   );
@@ -169,6 +202,7 @@ GroupLayers.propTypes = {
   onToggleLayer: PropTypes.func,
   onLayerInfo: PropTypes.func,
   locale: PropTypes.string,
+  showArchived: PropTypes.bool,
 };
 
 export default GroupLayers;

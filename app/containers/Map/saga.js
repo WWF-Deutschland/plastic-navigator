@@ -213,175 +213,107 @@ export function* loadDataSaga({ key, config, args }) {
           }
           if (typeof response.text === 'function' && type === 'csv') {
             const text = yield response.text();
-            // console.log('text', text)
             if (text) {
-              if (config.geometries) {
-                const features = Papa.parse(text, {
-                  header: true,
-                  skipEmptyLines: true,
-                });
-                // console.log('features', features);
-                let geometries;
-                let geometryMasks;
-                let subLayers;
-                let joins;
-                if (config.geometries.length > 0) {
-                  const responses = yield all(
-                    config.geometries.map(x =>
-                      fetch(`${RESOURCES.DATA}/${x.file}`),
-                    ),
-                  );
-                  geometries = yield all(
-                    responses.map(r => {
-                      if (r.json) {
-                        return r.json();
-                      }
-                      throw new Error('error csv-geometry');
-                    }),
-                  );
-                  geometries = geometries.map((x, index) => {
-                    const xconfig = config.geometries[index];
-                    let json = x;
-                    if (xconfig.type === 'topojson') {
-                      json = topojson.feature(
-                        json,
-                        Object.values(json.objects)[0],
-                      );
+              // console.log('text', text)
+              const data = {};
+              let geometries;
+              let geometryMasks;
+              const features = Papa.parse(text, {
+                header: true,
+                skipEmptyLines: true,
+              });
+              // console.log('features',features)
+              if (config.geometries && config.geometries.length > 0) {
+                const responses = yield all(
+                  config.geometries.map(x =>
+                    fetch(`${RESOURCES.DATA}/${x.file}`),
+                  ),
+                );
+                geometries = yield all(
+                  responses.map(r => {
+                    if (r.json) {
+                      return r.json();
                     }
-                    return {
-                      ...json,
-                      config: xconfig,
-                    };
-                  });
-                  const masked = geometries.filter(x => x.config.mask);
-                  const maskResponses = yield all(
-                    masked.map(x =>
-                      fetch(`${RESOURCES.DATA}/${x.config.mask}`),
-                    ),
-                  );
-                  geometryMasks = yield all(
-                    maskResponses.map(r => {
-                      if (r.json) {
-                        return r.json();
-                      }
-                      throw new Error('error csv-geometry');
-                    }),
-                  );
-                  geometryMasks = geometryMasks.map((x, index) => {
-                    const mask = masked[index];
-                    let json = x;
-                    if (mask.config.type === 'topojson') {
-                      json = topojson.feature(
-                        json,
-                        Object.values(json.objects)[0],
-                      );
-                    }
-                    return {
-                      ...json,
-                      config: mask.config,
-                    };
-                  });
-                }
-                if (config.extend) {
-                  const xresponses = yield all(
-                    config.extend.map(x =>
-                      fetch(`${RESOURCES.DATA}/${x.file}`),
-                    ),
-                  );
-                  let attributes = yield all(
-                    xresponses.map(r => {
-                      if (r.ok && typeof r.text === 'function') {
-                        return r.text();
-                      }
-                      throw new Error('error csv-geometry');
-                    }),
-                  );
-                  attributes = attributes.map((x, index) => ({
-                    json: Papa.parse(x, {
-                      header: true,
-                      skipEmptyLines: true,
-                    }),
-                    config: config.extend[index],
-                  }));
-                  // console.log('attributes', attributes)
-                  const attributesJoin = attributes.filter(
-                    x => x.config && x.config['via-join'],
-                  );
-                  // console.log('attributesJoin', attributesJoin)
-                  const joinresponses = yield all(
-                    attributesJoin.map(x =>
-                      fetch(`${RESOURCES.DATA}/${x.config['via-join'].file}`),
-                    ),
-                  );
-                  joins = yield all(
-                    joinresponses.map(r => {
-                      if (r.ok && typeof r.text === 'function') {
-                        return r.text();
-                      }
-                      throw new Error('error csv-geometry');
-                    }),
-                  );
-                  // console.log('joins', joins);
-
-                  joins = joins.map((x, index) => ({
-                    json: Papa.parse(x, {
-                      header: true,
-                      skipEmptyLines: true,
-                    }),
-                    attributes: attributesJoin[index],
-                  }));
-                  // console.log('joins 2', joins);
-                  // features.data = features.data.map(f => {
-                  //
-                  //   return {
-                  //     ...f
-                  //   }
-                  // })
-                }
-                if (
-                  config['sub-layers'] &&
-                  config['sub-layers'].file &&
-                  config['sub-layers'].type === 'csv'
-                ) {
-                  const slresponse = yield fetch(
-                    `${RESOURCES.DATA}/${config['sub-layers'].file}`,
-                  );
-                  const sltext = yield slresponse.text();
-                  if (sltext) {
-                    subLayers = Papa.parse(sltext, {
-                      header: true,
-                      skipEmptyLines: true,
-                    });
+                    throw new Error('error csv-geometry');
+                  }),
+                );
+                geometries = geometries.map((x, index) => {
+                  const xconfig = config.geometries[index];
+                  let json = x;
+                  if (xconfig.type === 'topojson') {
+                    json = topojson.feature(
+                      json,
+                      Object.values(json.objects)[0],
+                    );
                   }
-                }
-                const json = {
-                  features,
-                  geometries,
-                  geometryMasks,
-                  subLayers,
-                  joins,
-                };
-                // console.log('json', json)
-                yield put(setLayerLoadSuccess(key, config, json, Date.now()));
-              } else {
-                const promise = new Promise(resolve => {
-                  csv2geojson(
-                    text,
-                    {
-                      latfield: 'latitude',
-                      lonfield: 'longitude',
-                      delimiter: ',',
-                    },
-                    (err, data) => {
-                      resolve(data);
-                    },
-                  );
+                  return {
+                    ...json,
+                    config: xconfig,
+                  };
                 });
-                let json = yield promise;
-                // console.log(json)
-                json = setFeatureIds(json);
-                yield put(setLayerLoadSuccess(key, config, json, Date.now()));
+                const masked = geometries.filter(x => x.config.mask);
+                const maskResponses = yield all(
+                  masked.map(x => fetch(`${RESOURCES.DATA}/${x.config.mask}`)),
+                );
+                geometryMasks = yield all(
+                  maskResponses.map(r => {
+                    if (r.json) {
+                      return r.json();
+                    }
+                    throw new Error('error csv-geometry');
+                  }),
+                );
+                geometryMasks = geometryMasks.map((x, index) => {
+                  const mask = masked[index];
+                  let json = x;
+                  if (mask.config.type === 'topojson') {
+                    json = topojson.feature(
+                      json,
+                      Object.values(json.objects)[0],
+                    );
+                  }
+                  return {
+                    ...json,
+                    config: mask.config,
+                  };
+                });
               }
+
+              // console.log('geomtries',geometries)
+              if (config.tables) {
+                let responsesdata = yield all(
+                  Object.values(config.tables).map(x =>
+                    fetch(`${RESOURCES.DATA}/${x.file}`),
+                  ),
+                );
+                responsesdata = yield all(
+                  responsesdata.map(r => {
+                    if (r.text) {
+                      return r.text();
+                    }
+                    return r;
+                    // throw new Error('error csv-geometry');
+                  }),
+                );
+                // console.log('responsesdata', responsesdata)
+                responsesdata.forEach((x, index) => {
+                  const configKey = Object.keys(config.tables)[index];
+                  data[configKey] = {
+                    data: Papa.parse(x, {
+                      header: true,
+                      skipEmptyLines: true,
+                    }),
+                    config: config.tables[configKey],
+                  };
+                });
+              }
+              const json = {
+                features: features.data,
+                geometries,
+                geometryMasks,
+                data,
+              };
+              yield put(setLayerLoadSuccess(key, config, json, Date.now()));
             }
           }
         } else {

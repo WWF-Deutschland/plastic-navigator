@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { Button, ResponsiveContext } from 'grommet';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { PROJECT_CONFIG, POLICY_LAYERS } from 'config';
+import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 
 import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
@@ -106,18 +106,20 @@ export function LayerInfo({
   //   setOpen(true);
   // }, [view]);
 
-  const isCountry = config && POLICY_LAYERS.indexOf(config.id) > -1;
+  const isPolicy = startsWith(layerId, POLICY_LAYER);
 
   let type;
   if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
     type = 'project';
-  } else if (layerView && layerView === 'countries') {
+  } else if (isPolicy && !layerView) {
+    type = 'policyTopic';
+  } else if (isPolicy && layerView && layerView === 'countries') {
     type = 'countryList';
-  } else if (layerView && startsWith(layerView, 'sources')) {
+  } else if (isPolicy && layerView && startsWith(layerView, 'sources')) {
     type = 'sourceList';
-  } else if (layerView && startsWith(layerView, 'source-')) {
+  } else if (isPolicy && layerView && startsWith(layerView, 'source-')) {
     type = 'source';
-  } else if (config && layerView && isCountry && config.tooltip) {
+  } else if (isPolicy && config && layerView && isPolicy && config.tooltip) {
     type = 'feature';
   } else if (config) {
     type = 'layer';
@@ -144,7 +146,7 @@ export function LayerInfo({
                 location={layerView}
               />
             )}
-            {type === 'feature' && !isCountry && config && (
+            {type === 'feature' && !isPolicy && config && (
               <FeatureContent
                 featureId={layerView}
                 config={config}
@@ -152,7 +154,7 @@ export function LayerInfo({
                 headerFallback={<TitleIcon title={title}/>}
               />
             )}
-            {type === 'feature' && isCountry && config && (
+            {type === 'feature' && isPolicy && config && (
               <CountryFeatureContent
                 featureId={layerView}
                 config={config}
@@ -164,32 +166,42 @@ export function LayerInfo({
                 }
               />
             )}
-            {type === 'source' && config && (
+            {isPolicy && type === 'source' && config && (
               <SourceContent
                 sourceId={layerView}
                 config={config}
                 supTitle={title}
               />
             )}
-            {type === 'countryList' && config && (
+            {isPolicy && type === 'countryList' && config && (
               <CountryList config={config} supTitle={title} />
             )}
-            {type === 'sourceList' && config && (
+            {isPolicy && type === 'sourceList' && config && (
               <SourceList config={config} supTitle={title}/>
             )}
             {type === 'layer' && config && (
               <LayerContent
                 config={config}
                 title={title}
-                header={
-                  (isModule && isCountry)
-                    ? <TitleIconPolicy title={titleHeader}/>
-                    : <TitleIcon title={titleHeader}/>
+                header={isModule
+                  ? <TitleIconPolicy title={titleHeader}/>
+                  : <TitleIcon title={titleHeader}/>
+                }
+              />
+            )}
+            {type === 'policyTopic' && config && (
+              <LayerContent
+                config={config}
+                sublayerId={layerId}
+                title={title}
+                header={isModule
+                  ? <TitleIconPolicy title={titleHeader}/>
+                  : <TitleIcon title={titleHeader}/>
                 }
                 inject={
                   !layerView &&
                   config &&
-                  POLICY_LAYERS.indexOf(config.id) > -1
+                  isPolicy
                     ? [{
                       tag: '[CHART]',
                       el: (<CountryChart config={config} />)
@@ -199,7 +211,8 @@ export function LayerInfo({
                       el: (<Alternates config={config} />)
                     }]
                     : null
-                } />
+                }
+              />
             )}
           </ContentWrap>
           <ButtonClose
@@ -224,7 +237,10 @@ LayerInfo.propTypes = {
 const mapStateToProps = createStructuredSelector({
   config: (state, { view }) => {
     const layerId = getLayerIdFromView(view);
-    return selectSingleLayerContentConfig(state, { key: layerId });
+    const isPolicy = startsWith(layerId, POLICY_LAYER);
+    return selectSingleLayerContentConfig(state, {
+      key: isPolicy ? POLICY_LAYER : layerId,
+    });
   },
   locale: state => selectLocale(state),
 });

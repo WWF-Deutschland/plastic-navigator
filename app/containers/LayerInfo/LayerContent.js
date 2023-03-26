@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { Box, Text } from 'grommet';
 
 import { useInjectSaga } from 'utils/injectSaga';
+import qe from 'utils/quasi-equals';
 
 import saga from 'containers/App/saga';
 import {
@@ -48,13 +49,21 @@ export function LayerContent({
   inject = [],
   title,
   header,
+  sublayerId,
 }) {
   useInjectSaga({ key: 'default', saga });
 
   useEffect(() => {
     // kick off loading of page content
-    onLoadContent(config['content-id'] || config.id);
-  }, [config]);
+    if (sublayerId && config['sub-layers']) {
+      const temp = sublayerId.split('-');
+      const slId = temp[temp.length - 1];
+      const sl = config['sub-layers'].layers.find(l => qe(l.id, slId));
+      onLoadContent(sl['content-id'] || config['content-id'] || config.id);
+    } else {
+      onLoadContent(config['content-id'] || config.id);
+    }
+  }, [config, sublayerId]);
   useEffect(() => {
     // kick off loading of page content
     if (config.render && config.render.type === 'scaledCircle') {
@@ -110,15 +119,26 @@ LayerContent.propTypes = {
   inject: PropTypes.array,
   isActive: PropTypes.bool,
   title: PropTypes.string,
+  sublayerId: PropTypes.string,
   header: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
-  content: (state, { config }) =>
-    selectContentByKey(state, {
+  content: (state, { config, sublayerId }) => {
+    if (sublayerId && config['sub-layers']) {
+      const temp = sublayerId.split('-');
+      const slId = temp[temp.length - 1];
+      const sl = config['sub-layers'].layers.find(l => qe(l.id, slId));
+      return selectContentByKey(state, {
+        contentType: 'layers',
+        key: sl['content-id'] || config['content-id'] || config.id,
+      });
+    }
+    return selectContentByKey(state, {
       contentType: 'layers',
       key: config['content-id'] || config.id,
-    }),
+    });
+  },
   layerData: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
 });

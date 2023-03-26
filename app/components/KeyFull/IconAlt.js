@@ -7,7 +7,7 @@ import { intlShape, injectIntl } from 'react-intl';
 import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYERS } from 'config';
+import { POLICY_LAYER } from 'config';
 
 import {
   excludeCountryFeatures,
@@ -67,7 +67,7 @@ export function IconAlt({
   const { locale } = intl;
   let circles;
   const countries =
-    POLICY_LAYERS.indexOf(config.id) > -1 &&
+    POLICY_LAYER === config.id &&
     layerData &&
     featuresToCountriesWithStrongestPosition(
       config,

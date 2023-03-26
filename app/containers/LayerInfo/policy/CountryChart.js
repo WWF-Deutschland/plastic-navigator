@@ -31,7 +31,7 @@ import { ArrowRightL } from 'components/Icons';
 import LoadingIndicator from 'components/LoadingIndicator';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYERS } from 'config';
+import { POLICY_LAYER } from 'config';
 
 import { setLayerInfo } from 'containers/App/actions';
 import { loadLayer } from 'containers/Map/actions';
@@ -179,7 +179,7 @@ export function CountryChart({
 
   useEffect(() => {
     // kick off loading of page content
-    if (POLICY_LAYERS.indexOf(config.id) > -1) {
+    if (POLICY_LAYER === config.id) {
       onLoadLayer(config.id, config);
     }
   }, [config]);
@@ -187,7 +187,7 @@ export function CountryChart({
   const { locale } = intl;
 
   if (
-    POLICY_LAYERS.indexOf(config.id) === -1 ||
+    POLICY_LAYER.indexOf(config.id) === -1 ||
     !layer ||
     !layer.data ||
     !layer.data.features
@@ -758,7 +758,7 @@ CountryChart.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   layer: (state, { config }) => {
-    if (POLICY_LAYERS.indexOf(config.id) > -1) {
+    if (POLICY_LAYER === config.id) {
       return selectLayerByKey(state, config.id);
     }
     return null;

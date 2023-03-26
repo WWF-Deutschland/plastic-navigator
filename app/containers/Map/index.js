@@ -13,13 +13,15 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
 
-import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
+import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS, POLICY_LAYER } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
+import { startsWith } from 'utils/string';
+
 // import commonMessages from 'messages';
 //
 import {
@@ -223,7 +225,7 @@ export function Map({
     },
     zoomend: () => {
       // console.log('zoomstart')
-      if (mapRef.current) console.log(mapRef.current.getZoom())
+      if (mapRef.current) console.log(mapRef.current.getZoom());
     },
     movestart: () => {
       // console.log('movestart')
@@ -382,7 +384,7 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    // console.log('Map: active layer ids: ', activeLayerIds);
+    console.log('Map: active layer ids: ', activeLayerIds);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
@@ -398,13 +400,18 @@ export function Map({
             const { layer } = mapLayers[id];
             mapRef.current.removeLayer(layer);
           } else {
-            const config = layersConfig.find(c => c.id === id);
+            const config = layersConfig.find(
+              c =>
+                c.id === id ||
+                (c.id === POLICY_LAYER && startsWith(id, POLICY_LAYER)),
+            );
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
-              if (config.type === 'raster-tiles') {
-                mapRef.current.removeLayer(layer);
-              }
-              if (config.type === 'geojson' || config.type === 'topojson') {
+              if (
+                config.type === 'raster-tiles' ||
+                config.type === 'geojson' ||
+                config.type === 'topojson'
+              ) {
                 mapRef.current.removeLayer(layer);
               }
             }
@@ -439,8 +446,13 @@ export function Map({
               newMapLayers[id] = { layer, config };
             }
           } else {
-            const config = layersConfig.find(c => c.id === id);
+            const config = layersConfig.find(
+              c =>
+                c.id === id ||
+                (c.id === POLICY_LAYER && startsWith(id, POLICY_LAYER)),
+            );
             if (config) {
+              // console.log('config', config, jsonLayers[id])
               // raster layer
               if (
                 config.type === 'raster-tiles' &&

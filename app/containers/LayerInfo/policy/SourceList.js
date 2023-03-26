@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { intlShape, injectIntl } from 'react-intl';
 
-import { POLICY_LAYERS } from 'config';
+import { POLICY_LAYER } from 'config';
 import { useInjectSaga } from 'utils/injectSaga';
 import { filterSources } from 'utils/string';
 
@@ -41,7 +41,7 @@ export function SourceList({
 
   useEffect(() => {
     // kick off loading of page content
-    if (config && POLICY_LAYERS.indexOf(config.id) > -1) {
+    if (config && POLICY_LAYER === config.id) {
       onLoadLayer(config.id, config);
     }
   }, [config]);
@@ -50,7 +50,7 @@ export function SourceList({
 
   if (
     !config ||
-    POLICY_LAYERS.indexOf(config.id) === -1 ||
+    POLICY_LAYER.indexOf(config.id) === -1 ||
     !layer ||
     !layer.data ||
     !layer.data.features
@@ -96,7 +96,7 @@ SourceList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   layer: (state, { config }) => {
-    if (config && POLICY_LAYERS.indexOf(config.id) > -1) {
+    if (config && POLICY_LAYER === config.id) {
       return selectLayerByKey(state, config.id);
     }
     return null;

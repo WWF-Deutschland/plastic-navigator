@@ -348,7 +348,7 @@
     "geometries": [
       {
         "default": "all",
-        "join-on": "code",
+        "feature": "code",
         "type": "topojson",
         "feature-type": "Polygon",
         "file": "layers/sov-country-areas-topo.json",
@@ -383,7 +383,7 @@
       },
       {
         "default-max-zoom": ["marker_max_zoom"],
-        "join-on": "code",
+        "feature": "code",
         "type": "geojson",
         "feature-type": "Point",
         "file": "layers/sov-country-points.json",
@@ -433,63 +433,119 @@
       "en": "The visualisation shows the UN Member States’ positions on a global, legally binding agreement based on our own research and various sources.",
       "de": "Die Darstellung zeigt auf Grundlage eigener Recherchen und verschiedener Quellen, wie sich die einzelnen UN-Mitgliedsstaaten hinsichtlich eines global verbindlichen Plastik-Abkommens positionieren."
     },
-    "sub-layers": {
-      "labels": {
-          "single": {
-            "en": "Topic",
-            "de": "Thema"
-          },
-          "plural": {
-            "en": "Topics",
-            "de": "Themen"
-          },
-          "all": {
-            "en": "All topics",
-            "de": "Alle Themen"
-          }
+    "tables": {
+      "topics": {
+        "table-type": "lookup",
+        "file": "layers/policy/topics.csv",
+        "type": "csv",
+        "self": "id",
+        "attributes": ["archived"],
+        "attributes-by-locale": ["title_{locale}", "short_{locale}"]
       },
-      "file": "layers/policy/topics.csv",
-      "type": "csv",
-      "self": "id",
-      "attributes": ["archived"],
-      "attributes-by-locale": ["title_{locale}", "short_{locale}"],
-      "map-attributes": {
-        "by-id-and-value": [{
-          "as": "positions",
-          "file": "layers/policy/positions.csv",
-          "type": "csv",
-          "self": "id",
-          "attributes": ["color"],
-          "attributes-by-locale": ["position_{locale}", "position_short_{locale}"],
-          "via-join": {
-            "file": "layers/policy/topic-positions.csv",
-            "type": "csv",
-            "self": "topic_id",
-            "value": "position_id",
-            "attributes": ["color"],
-            "attributes-by-locale": ["position_{locale}", "position_short_{locale}"]
-          },
-          "value-top-layer-feature-column": "statements[position_t{id}]"
-        }]
-      }
-    },
-    "extend": [
-      {
+      "country-sources": {
+        "table-type": "join",
+        "file": "layers/policy/country-sources.csv",
+        "type": "csv",
+        "feature": "country_code",
+        "related": "source_id"
+      },
+      "sources": {
+        "table-type": "join",
         "file": "layers/policy/sources.csv",
         "type": "csv",
         "self": "id",
-        "as": "statements",
-        "multiple": "true",
         "date": "date",
         "attributes": ["date", "url"],
         "attributes-by-locale": ["title_{locale}", "source_{locale}", "code_{locale}"],
-        "via-join": {
-          "file": "layers/policy/country-sources.csv",
-          "type": "csv",
-          "self": "country_code",
-          "related": "source_id"
+        "feature-value-by-layerid-column": "position_t{id}"
+      },
+      "topic-positions": {
+        "table-type": "join",
+        "file": "layers/policy/topic-positions.csv",
+        "type": "csv",
+        "layer": "topic_id",
+        "value": "position_id",
+        "attributes": ["color"],
+        "attributes-by-locale": ["position_{locale}", "position_short_{locale}"]
+      },
+      "positions": {
+        "table-type": "lookup",
+        "file": "layers/policy/positions.csv",
+        "type": "csv",
+        "self": "id",
+        "attributes": ["color"],
+        "attributes-by-locale": ["position_{locale}", "position_short_{locale}"]
+      }
+    },
+    "sub-layers": {
+      "table": "topics",
+      "layers": [
+        {
+          "id": "0",
+          "content-id": "policy-commitments-0",
+          "archive": "1",
+          "short": {
+            "en" : "Support for global treaty"
+          },
+          "title": {
+            "en" : "UN Member States’ level of support for treaty"
+          }
+        },
+        {
+          "id": "1",
+          "content-id": "policy-commitments-1",
+          "short": {
+            "en" : "Reduce"
+          },
+          "title": {
+            "en" : "Support for treaty’s global, binding measures to minimise total pollution through reduction and elimination of the production of problematic plastics"
+          }
+        },
+        {
+          "id": "2",
+          "content-id": "policy-commitments-2",
+          "short": {
+            "en" : "Circulate"
+          },
+          "title": {
+            "en" : "Support for treaty’s global, binding measures to minimise total pollution through increased and non-toxic circulation of plastic products"
+          }
+        },
+        {
+          "id": "3",
+          "content-id": "policy-commitments-3",
+          "short": {
+            "en" : "Manage"
+          },
+          "title": {
+            "en" : "Support for treaty’s global, binding measures to minimise total pollution through improved waste management, remediation activities, and other measures"
+          }
+        },
+        {
+          "id": "4",
+          "content-id": "policy-commitments-4",
+          "short": {
+            "en": "Implementation support"
+          },
+          "title": {
+            "en": "Support for treaty’s mechanism to provide necessary support to countries for the implementation of the treaty’s obligations"
+          }
+        }
+      ],
+      "labels": {
+        "single": {
+          "en": "Topic",
+          "de": "Thema"
+        },
+        "plural": {
+          "en": "Topics",
+          "de": "Themen"
+        },
+        "all": {
+          "en": "All topics",
+          "de": "Alle Themen"
         }
       }
-    ]
+    }
   }
 ]

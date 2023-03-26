@@ -108,10 +108,6 @@ export function ModulePolicy({
   useEffect(() => {
     if (layersMemo) {
       onSetLayers(layersMemo);
-    } else if (MODULES.policy.layers) {
-      if (!firstLanding || activeLayers.length === 0) {
-        onSetLayers(MODULES.policy.layers);
-      }
     }
     if (firstLanding) {
       onSetLanding();
