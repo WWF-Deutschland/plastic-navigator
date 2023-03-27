@@ -49,21 +49,24 @@ export function LayerContent({
   inject = [],
   title,
   header,
-  sublayerId,
+  fullLayerId,
 }) {
   useInjectSaga({ key: 'default', saga });
 
   useEffect(() => {
     // kick off loading of page content
-    if (sublayerId && config['sub-layers']) {
-      const temp = sublayerId.split('-');
-      const slId = temp[temp.length - 1];
-      const sl = config['sub-layers'].layers.find(l => qe(l.id, slId));
-      onLoadContent(sl['content-id'] || config['content-id'] || config.id);
+    if (fullLayerId && config.indicators) {
+      const [, indiId] = fullLayerId.split('_');
+      const indicatorConfig = config.indicators.indicators.find(l =>
+        qe(l.id, indiId),
+      );
+      onLoadContent(
+        indicatorConfig['content-id'] || config['content-id'] || config.id,
+      );
     } else {
       onLoadContent(config['content-id'] || config.id);
     }
-  }, [config, sublayerId]);
+  }, [config, fullLayerId]);
   useEffect(() => {
     // kick off loading of page content
     if (config.render && config.render.type === 'scaledCircle') {
@@ -119,19 +122,20 @@ LayerContent.propTypes = {
   inject: PropTypes.array,
   isActive: PropTypes.bool,
   title: PropTypes.string,
-  sublayerId: PropTypes.string,
+  fullLayerId: PropTypes.string,
   header: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
-  content: (state, { config, sublayerId }) => {
-    if (sublayerId && config['sub-layers']) {
-      const temp = sublayerId.split('-');
-      const slId = temp[temp.length - 1];
-      const sl = config['sub-layers'].layers.find(l => qe(l.id, slId));
+  content: (state, { config, fullLayerId }) => {
+    if (fullLayerId && config.indicators) {
+      const [, indId] = fullLayerId.split('_');
+      const indicatorConfig = config.indicators.indicators.find(l =>
+        qe(l.id, indId),
+      );
       return selectContentByKey(state, {
         contentType: 'layers',
-        key: sl['content-id'] || config['content-id'] || config.id,
+        key: indicatorConfig['content-id'] || config['content-id'] || config.id,
       });
     }
     return selectContentByKey(state, {

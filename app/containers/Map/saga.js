@@ -145,7 +145,7 @@ export function* loadDataSaga({ key, config, args }) {
   if (hasMask) {
     file = config.mask;
   }
-  console.log('loadDataSaga({ key, config, args })', key, args, config)
+  console.log('loadDataSaga({ key, config, args })', key, config, args)
   if (type && (type === 'geojson' || type === 'topojson' || type === 'csv')) {
     // requestedSelector returns the times that entities where fetched from the API
     const requestedAt = yield select(selectLayerRequestedByKey, key);
@@ -215,7 +215,7 @@ export function* loadDataSaga({ key, config, args }) {
             const text = yield response.text();
             if (text) {
               // console.log('text', text)
-              const data = {};
+              const tables = {};
               let geometries;
               let geometryMasks;
               const features = Papa.parse(text, {
@@ -292,13 +292,12 @@ export function* loadDataSaga({ key, config, args }) {
                       return r.text();
                     }
                     return r;
-                    // throw new Error('error csv-geometry');
                   }),
                 );
                 // console.log('responsesdata', responsesdata)
                 responsesdata.forEach((x, index) => {
                   const configKey = Object.keys(config.tables)[index];
-                  data[configKey] = {
+                  tables[configKey] = {
                     data: Papa.parse(x, {
                       header: true,
                       skipEmptyLines: true,
@@ -311,7 +310,7 @@ export function* loadDataSaga({ key, config, args }) {
                 features: features.data,
                 geometries,
                 geometryMasks,
-                data,
+                tables,
               };
               yield put(setLayerLoadSuccess(key, config, json, Date.now()));
             }

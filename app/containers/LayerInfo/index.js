@@ -192,7 +192,7 @@ export function LayerInfo({
             {type === 'policyTopic' && config && (
               <LayerContent
                 config={config}
-                sublayerId={layerId}
+                fullLayerId={layerId}
                 title={title}
                 header={isModule
                   ? <TitleIconPolicy title={titleHeader}/>

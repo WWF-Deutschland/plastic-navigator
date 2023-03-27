@@ -97,6 +97,7 @@ function GroupLayers({
   onLayerInfo,
   locale,
   projects,
+  isPolicy,
   showArchived,
   // group,
 }) {
@@ -105,7 +106,25 @@ function GroupLayers({
     layersConfig.forEach(config => {
       let id;
       let title;
-      if (!config['sub-layers']) {
+      if (isPolicy && config.indicators) {
+        config.indicators.indicators
+          .filter(indicator => {
+            const isArchive = indicator.archive && qe(indicator.archive, 1);
+            // console.log(layer, isArchiveLayer, showArchived)
+            return showArchived ? isArchive : !isArchive;
+          })
+          .forEach(indicator => {
+            layers.push({
+              id: `${config.id}_${indicator.id}`,
+              title: indicator.short
+                ? indicator.short[locale] || indicator.short[DEFAULT_LOCALE]
+                : indicator.title[locale] || indicator.title[DEFAULT_LOCALE],
+              isArchive: indicator.archive ? qe(indicator.archive, 1) : false,
+              config,
+              configIndicator: indicator,
+            });
+          });
+      } else {
         if (projects) {
           id = `${PROJECT_CONFIG.id}-${config.project_id}`;
           title =
@@ -117,24 +136,6 @@ function GroupLayers({
           title = config.title[locale] || config.title[DEFAULT_LOCALE];
         }
         layers.push({ id, title, config });
-      } else if (config['sub-layers'].layers) {
-        config['sub-layers'].layers
-          .filter(layer => {
-            const isArchiveLayer = layer.archive && qe(layer.archive, 1);
-            // console.log(layer, isArchiveLayer, showArchived)
-            return showArchived ? isArchiveLayer : !isArchiveLayer;
-          })
-          .forEach(layer => {
-            layers.push({
-              id: `${config.id}-${layer.id}`,
-              title: layer.short
-                ? layer.short[locale] || layer.short[DEFAULT_LOCALE]
-                : layer.title[locale] || layer.title[DEFAULT_LOCALE],
-              isArchive: layer.archive ? qe(layer.archive, 1) : false,
-              config,
-              configSubLayer: layer,
-            });
-          });
       }
     });
   }
@@ -146,9 +147,11 @@ function GroupLayers({
           <ListHeaderCell>
             <Box direction="row" gap="small" align="center">
               <Layer color="dark-4" />
-              <FormattedMessage
-                {...messages[projects ? 'columnProject' : 'columnLayer']}
-              />
+              {projects && <FormattedMessage {...messages.columnProject} />}
+              {isPolicy && <FormattedMessage {...messages.columnIndicator} />}
+              {!isPolicy && !projects && (
+                <FormattedMessage {...messages.columnLayer} />
+              )}
             </Box>
           </ListHeaderCell>
           <ListHeaderKey>
@@ -198,6 +201,7 @@ GroupLayers.propTypes = {
   // group: PropTypes.object,
   layersConfig: PropTypes.array,
   projects: PropTypes.bool,
+  isPolicy: PropTypes.bool,
   activeLayers: PropTypes.array,
   onToggleLayer: PropTypes.func,
   onLayerInfo: PropTypes.func,

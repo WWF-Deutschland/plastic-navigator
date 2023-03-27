@@ -384,13 +384,28 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    console.log('Map: active layer ids: ', activeLayerIds);
+    console.log('activelayers (according to url) ', activeLayerIds);
+    console.log('mapLayers (currently on map) ', mapLayers);
+    console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
+      // const removeMapLayers = Object.keys(mapLayers).filter(
+      //   id => activeLayerIds.map(alId => alId.split('_')[0]).indexOf(id) < 0,
+      // );
+      // const addMapLayers = activeLayerIds.filter(id => {
+      //   const [mapLayerId, indicatorId] = id.split('_');
+      //   // also check if map does not have layer,
+      //   // otherwise they will not be adeded when hot reloading
+      //   const llayer = mapLayers[mapLayerId] && mapLayers[mapLayerId].layer;
+      //   const hasLayer = mapRef.current.hasLayer(llayer);
+      //   // layer not yet created
+      //   return !hasLayer || Object.keys(mapLayers).indexOf(mapLayerId) < 0;
+      // });
       // remove layers no longer active
-      Object.keys(mapLayers).forEach(id => {
-        if (activeLayerIds.indexOf(id) < 0) {
+      Object.keys(mapLayers)
+        .filter(id => activeLayerIds.indexOf(id) < 0)
+        .forEach(id => {
           const project =
             projects &&
             projects.find(
@@ -400,31 +415,34 @@ export function Map({
             const { layer } = mapLayers[id];
             mapRef.current.removeLayer(layer);
           } else {
+            const [configLayerId] = id.split('_');
             const config = layersConfig.find(
-              c =>
-                c.id === id ||
-                (c.id === POLICY_LAYER && startsWith(id, POLICY_LAYER)),
+              c => c.id === id || c.id === configLayerId,
             );
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
               if (
                 config.type === 'raster-tiles' ||
                 config.type === 'geojson' ||
-                config.type === 'topojson'
+                config.type === 'topojson' ||
+                config.type === 'csv'
               ) {
                 mapRef.current.removeLayer(layer);
               }
             }
           }
-        }
-      });
+        });
       // add layers not already present
       activeLayerIds.forEach(id => {
+        const [configLayerId, indicatorId] = id.split('_');
         // also check if map does not have layer,
         // otherwise they will not be adeded when hot reloading
         const llayer = mapLayers[id] && mapLayers[id].layer;
-        const hasLayer =
-          mapRef.current.hasLayer(llayer) || mapRef.current.hasLayer(llayer);
+        const hasLayer = mapRef.current.hasLayer(llayer);
+        const config = layersConfig.find(
+          c => c.id === id || c.id === configLayerId,
+        );
+        // layer not yet created
         if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
           // check if this layer is a project
           const project =
@@ -436,79 +454,68 @@ export function Map({
             if (!jsonLayers.projectLocations) {
               onLoadLayer('projectLocations', PROJECT_CONFIG);
             } else {
-              const { config } = jsonLayers.projectLocations;
               const layer = getProjectLayer({
                 jsonLayer: jsonLayers.projectLocations,
                 project,
                 markerEvents,
               });
               mapRef.current.addLayer(layer);
-              newMapLayers[id] = { layer, config };
+              newMapLayers[id] = { layer, config: jsonLayers.projectLocations };
             }
-          } else {
-            const config = layersConfig.find(
-              c =>
-                c.id === id ||
-                (c.id === POLICY_LAYER && startsWith(id, POLICY_LAYER)),
-            );
-            if (config) {
-              // console.log('config', config, jsonLayers[id])
-              // raster layer
-              if (
-                config.type === 'raster-tiles' &&
-                config.source === 'mapbox'
-              ) {
-                if (mapRef) {
-                  const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
-                    id: config.tileset,
-                    accessToken: MAPBOX.TOKEN,
-                    zIndex: config['z-index'] || 1,
-                    opacity: (config.style && config.style.opacity) || 1,
-                  }).on({
-                    loading: () => setTilesLoading(true),
-                    load: () => setTilesLoading(false),
-                  });
-                  mapRef.current.addLayer(layer);
-                  newMapLayers[id] = { layer, config };
-                }
+          } else if (config) {
+            // console.log('config', config, jsonLayers[id])
+            // raster layer
+            if (config.type === 'raster-tiles' && config.source === 'mapbox') {
+              if (mapRef) {
+                const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
+                  id: config.tileset,
+                  accessToken: MAPBOX.TOKEN,
+                  zIndex: config['z-index'] || 1,
+                  opacity: (config.style && config.style.opacity) || 1,
+                }).on({
+                  loading: () => setTilesLoading(true),
+                  load: () => setTilesLoading(false),
+                });
+                mapRef.current.addLayer(layer);
+                newMapLayers[id] = { layer, config };
               }
-              // csv layer
-              // geojson layer
-              if (
-                config.source === 'data' &&
-                (config.type === 'geojson' ||
-                  config.type === 'topojson' ||
-                  config.type === 'csv')
-              ) {
-                // kick of loading of vector data for group if not present
-                if (!jsonLayers[id]) {
-                  onLoadLayer(id, config);
-                }
-                if (config.type === 'geojson' || config.type === 'topojson') {
-                  // kick off loading mask layers
-                  const maskId = `${id}-mask`;
-                  if (config.mask) {
-                    onLoadLayer(maskId, config, { mask: true });
-                  }
-                  if (jsonLayers[maskId] && areaMaskRef) {
-                    const layer = getVectorLayer({
-                      jsonLayer: jsonLayers[maskId],
-                      config,
-                      state: 'mask',
-                    });
-                    areaMaskRef.current.addLayer(layer);
-                    // newMapLayers[id] = { layer, config };
-                  }
-                  if (jsonLayers[id] && mapRef) {
-                    const layer = getVectorLayer({
-                      jsonLayer: jsonLayers[id],
-                      config,
-                      markerEvents,
-                    });
-                    mapRef.current.addLayer(layer);
-                    newMapLayers[id] = { layer, config };
-                  }
-                }
+            }
+            // csv layer
+            // geojson layer
+            if (
+              config.source === 'data' &&
+              (config.type === 'geojson' ||
+                config.type === 'topojson' ||
+                config.type === 'csv')
+            ) {
+              // kick of loading of vector data for group if not present
+              if (!jsonLayers[configLayerId]) {
+                onLoadLayer(configLayerId, config);
+              }
+              // kick off loading mask layers
+              // const maskId = `${id}-mask`;
+              // if (config.mask) {
+              //   onLoadLayer(maskId, config, { mask: true });
+              // }
+              // if (jsonLayers[maskId] && areaMaskRef) {
+              //   const layer = getVectorLayer({
+              //     jsonLayer: jsonLayers[maskId],
+              //     config,
+              //     state: 'mask',
+              //   });
+              //   areaMaskRef.current.addLayer(layer);
+              //   // newMapLayers[id] = { layer, config };
+              // }
+              if (jsonLayers[configLayerId] && mapRef) {
+                const layer = getVectorLayer({
+                  jsonLayer: jsonLayers[configLayerId],
+                  config,
+                  markerEvents,
+                  indicatorId,
+                  // also pass date
+                });
+                mapRef.current.addLayer(layer);
+                newMapLayers[id] = { layer, config };
               }
             }
           }

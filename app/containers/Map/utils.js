@@ -2,7 +2,8 @@ import L from 'leaflet';
 import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
-import quasiEquals from 'utils/quasi-equals';
+import qe from 'utils/quasi-equals';
+import { getCountryPositionForTopicAndDate } from 'utils/policy';
 import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
@@ -89,7 +90,7 @@ const decorateLine = (line, type, options) => {
 };
 
 const filterByProject = (feature, project) =>
-  quasiEquals(feature.properties.project_id, project.project_id);
+  qe(feature.properties.project_id, project.project_id);
 
 const getPolylineLayer = ({ data, config }) => {
   const layer = L.featureGroup(null);
@@ -172,7 +173,12 @@ const getPolylineLayer = ({ data, config }) => {
   });
   return layer;
 };
-export const getVectorGridStyle = (properties, config, state = 'default') => {
+export const getVectorGridStyle = (
+  properties,
+  dataConfig,
+  config,
+  state = 'default',
+) => {
   // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
   if (state === 'mask') {
@@ -186,50 +192,64 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
     };
   }
   let featureStyle = {
-    fillOpacity: 0.4,
-    stroke: true,
+    fillOpacity: 0,
+    stroke: false,
   };
 
+  // if (
+  //   properties &&
+  //   config.featureStyle &&
+  //   config.featureStyle.property &&
+  //   typeof config.featureStyle.style === 'object'
+  // ) {
+  //   if (
+  //     config.featureStyle.multiple &&
+  //     config.featureStyle.multiple === 'true'
+  //   ) {
+  //     const ps = config.featureStyle.property.split('.');
+  //     const propertyArray = properties[ps[0]];
+  //     const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
+  //     if (config.featureStyle.multiplePriority) {
+  //       featureStyle = Object.keys(config.featureStyle.style).reduce(
+  //         (styleMemo, attr) => {
+  //           const attrObject = config.featureStyle.style[attr];
+  //           // prettier-ignore
+  //           const attrValue = values
+  //             ? config.featureStyle.multiplePriority.reduce((memo, value) => {
+  //               if (memo) return memo;
+  //               if (values.indexOf(value) > -1) {
+  //                 return attrObject[value];
+  //               }
+  //               return null;
+  //             }, null )
+  //             : attrObject.default ||
+  //               attrObject.none ||
+  //               attrObject.without ||
+  //               attrObject['0'];
+  //           return {
+  //             ...styleMemo,
+  //             [attr]: attrValue,
+  //           };
+  //         },
+  //         {},
+  //       );
+  //     }
+  //   }
+  // }
   if (
     properties &&
-    config.featureStyle &&
-    config.featureStyle.property &&
-    typeof config.featureStyle.style === 'object'
+    properties.position &&
+    dataConfig &&
+    dataConfig['styles-by-value']
   ) {
-    if (
-      config.featureStyle.multiple &&
-      config.featureStyle.multiple === 'true'
-    ) {
-      const ps = config.featureStyle.property.split('.');
-      const propertyArray = properties[ps[0]];
-      const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
-      if (config.featureStyle.multiplePriority) {
-        featureStyle = Object.keys(config.featureStyle.style).reduce(
-          (styleMemo, attr) => {
-            const attrObject = config.featureStyle.style[attr];
-            // prettier-ignore
-            const attrValue = values
-              ? config.featureStyle.multiplePriority.reduce((memo, value) => {
-                if (memo) return memo;
-                if (values.indexOf(value) > -1) {
-                  return attrObject[value];
-                }
-                return null;
-              }, null )
-              : attrObject.default ||
-                attrObject.none ||
-                attrObject.without ||
-                attrObject['0'];
-            return {
-              ...styleMemo,
-              [attr]: attrValue,
-            };
-          },
-          {},
-        );
-      }
-    }
+    const value = properties.position.value || 0;
+    featureStyle = {
+      ...featureStyle,
+      stroke: true,
+      ...dataConfig['styles-by-value'][value],
+    };
   }
+  // console.log('config', config)
   if (state === 'hover') {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
@@ -263,6 +283,7 @@ const featureInteractive = (e, config) => {
 };
 
 const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
+  console.log('data', data)
   const vectorGrid = L.vectorGrid.slicer(data, {
     data,
     zIndex:
@@ -271,7 +292,8 @@ const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
         : config['z-index'] || 1,
     rendererFactory: L.svg.tile,
     vectorTileLayerStyles: {
-      sliced: properties => getVectorGridStyle(properties, config, state),
+      sliced: properties =>
+        getVectorGridStyle(properties, data.config, config, state),
     },
     interactive: state !== 'hover' && state !== 'active',
     getFeatureId: f => f.properties.f_id,
@@ -548,8 +570,60 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
   return layer;
 };
 
-export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
+const prepareGeometry = ({
+  config,
+  geometry,
+  features,
+  tables,
+  indicatorId,
+  dateString,
+}) => {
+  if (config.indicators) {
+    console.log('geometry', geometry)
+    const geometryX = {
+      type: geometry.type,
+      config: geometry.config,
+      features: geometry.features.map(gf => {
+        const feature = features.find(f =>
+          qe(f[config.self], gf.properties[geometry.config.feature]),
+        );
+        // console.log('gf', gf)
+        // console.log('feature', feature)?
+        if (feature) {
+          const position = getCountryPositionForTopicAndDate({
+            countryCode: feature.code,
+            topicId: indicatorId,
+            dateString,
+            tables,
+          });
+          // console.log('position', position)
+          return {
+            type: gf.type,
+            geometry: gf.geometry,
+            properties: {
+              ...gf.properties,
+              ...feature,
+              position,
+            },
+          };
+        }
+        return gf;
+      }),
+    };
+    return geometryX;
+  }
+  return geometry;
+};
+
+export const getVectorLayer = ({
+  jsonLayer,
+  config,
+  markerEvents,
+  state,
+  indicatorId,
+}) => {
   const { data } = jsonLayer;
+  console.log('getVectorLayer, indicatorId', indicatorId)
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
     return getPolylineLayer({ data, config, state });
@@ -575,6 +649,18 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
   // scaled circle marker
   if (config.render && config.render.type === 'scaledCircle') {
     return getCircleLayer({ data, config, markerEvents, state });
+  }
+  if (data.features && data.geometries && data.geometries.length > 0) {
+    const geometry = data.geometries[0]; // for now take first one
+    const geometryX = prepareGeometry({
+      geometry,
+      config,
+      features: data.features,
+      tables: data.tables,
+      indicatorId,
+      // also pass date
+    });
+    return getPolygonLayer({ data: geometryX, config, markerEvents, state });
   }
   return null;
 };

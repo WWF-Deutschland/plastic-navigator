@@ -343,6 +343,7 @@
     "group": "policy",
     "source": "data",
     "type": "csv",
+    "multipleIndicators": "1",
     "file": "layers/policy/countries.csv",
     "self": "code",
     "geometries": [
@@ -351,6 +352,9 @@
         "feature": "code",
         "type": "topojson",
         "feature-type": "Polygon",
+        "render": {
+          "type": "area"
+        },
         "file": "layers/sov-country-areas-topo.json",
         "mask": "layers/sov-country-areas-mask-topo.json",
         "styles-by-value": {
@@ -378,6 +382,11 @@
             "fillColor": "#dddddd",
             "color": "#bbbbbb",
             "fillOpacity": 0.4
+          },
+          "-1": {
+            "fillColor": "#dddddd",
+            "color": "#bbbbbb",
+            "fillOpacity": 0.4
           }
         }
       },
@@ -387,6 +396,9 @@
         "type": "geojson",
         "feature-type": "Point",
         "file": "layers/sov-country-points.json",
+        "render": {
+          "type": "marker"
+        },
         "size": {
           "x": "28",
           "y": "30"
@@ -477,9 +489,9 @@
         "attributes-by-locale": ["position_{locale}", "position_short_{locale}"]
       }
     },
-    "sub-layers": {
+    "indicators": {
       "table": "topics",
-      "layers": [
+      "indicators": [
         {
           "id": "0",
           "content-id": "policy-commitments-0",
