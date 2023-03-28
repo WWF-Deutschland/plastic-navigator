@@ -36,6 +36,7 @@ import {
   setUIState,
   setLanding,
   setUIURL,
+  setShowKey,
 } from 'containers/App/actions';
 
 import commonMessages from 'messages';
@@ -133,6 +134,7 @@ export function ModuleExplore({
   onShow,
   intl,
   size,
+  onShowKey,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -151,6 +153,9 @@ export function ModuleExplore({
     if (firstLanding) {
       onSetLanding();
     }
+  }, []);
+  useEffect(() => {
+    onShowKey();
   }, []);
 
   useEffect(() => {
@@ -238,6 +243,7 @@ ModuleExplore.propTypes = {
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
   onSetLanding: PropTypes.func,
+  onShowKey: PropTypes.func,
   onShow: PropTypes.func,
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
@@ -258,6 +264,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    onShowKey: () => dispatch(setShowKey(true)),
     onSetLanding: () => dispatch(setLanding()),
     onSetLayers: layers => dispatch(setLayers(layers)),
     onMemoLayers: (layers, uiState) =>

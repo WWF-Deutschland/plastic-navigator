@@ -269,3 +269,8 @@ export const selectLayerInfoVisible = createSelector(
     return true;
   },
 );
+
+export const selectShowKey = createSelector(
+  selectGlobal,
+  global => global.showKey,
+);

@@ -73,4 +73,8 @@ export default defineMessages({
     id: `${scope}.shareCountryLink`,
     defaultMessage: 'Copy link to country view',
   },
+  moduleOverview: {
+    id: `${scope}.moduleOverview`,
+    defaultMessage: 'Overview',
+  },
 });

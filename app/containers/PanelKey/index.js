@@ -276,13 +276,17 @@ export function PanelKey({
 
   const { locale } = intl;
   const allConfig = layersConfig && [...layersConfig, PROJECT_CONFIG];
-  let activeContent = active || activeLayerIds[0];
-  if (startsWith(activeContent, `${PROJECT_CONFIG.id}-`)) {
-    activeContent = PROJECT_CONFIG.id;
+  let activeContentId = active || activeLayerIds[0];
+  let indicatorId = null;
+  [activeContentId, indicatorId] = activeContentId.split('_');
+  if (startsWith(activeContentId, `${PROJECT_CONFIG.id}-`)) {
+    activeContentId = PROJECT_CONFIG.id;
   }
   const config =
-    activeContent && allConfig && allConfig.find(l => l.id === activeContent);
-  const isActiveProject = activeContent === PROJECT_CONFIG.id;
+    activeContentId &&
+    allConfig &&
+    allConfig.find(l => l.id === activeContentId);
+  const isActiveProject = activeContentId === PROJECT_CONFIG.id;
 
   let hasAlreadyProject = false;
   const cleanActiveLayerIds =
@@ -330,16 +334,17 @@ export function PanelKey({
               {cleanActiveLayerIds.length > 0 && (
                 <KeyUL ref={keyULRef} offset={keyIconOffset}>
                   {cleanActiveLayerIds.map(id => {
-                    const conf = allConfig && allConfig.find(l => l.id === id);
+                    const [configLayerId] = id.split('_');
+                    const conf = allConfig && allConfig.find(l => l.id === configLayerId);
                     return (
                       <KeyLI key={id}>
                         <ButtonKey
-                          activeLayer={open && id === activeContent}
+                          activeLayer={open && id.startsWith(activeContentId)}
                           onClick={() => {
                             onSetOpen(true);
                             setActive(id);
                           }}
-                          disabled={open && id === activeContent}
+                          disabled={open && id.startsWith(activeContentId)}
                         >
                           {conf && <KeyIcon config={conf} />}
                         </ButtonKey>
@@ -431,6 +436,7 @@ export function PanelKey({
                           config={config}
                           layerData={jsonLayerActive && jsonLayerActive.data}
                           excludeEmpty
+                          indicatorId={indicatorId}
                         />
                       </Box>
                     )}

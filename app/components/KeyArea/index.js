@@ -27,7 +27,6 @@ export function KeyArea({ areaStyles }) {
     offset: index * rectHeight,
     ...style,
   }));
-
   return (
     <Styled>
       <SVG

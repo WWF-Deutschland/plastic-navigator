@@ -9,11 +9,12 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYER } from 'config';
 
 import quasiEquals from 'utils/quasi-equals';
-import {
-  excludeCountryFeatures,
-  getPositionStatsFromCountries,
-  featuresToCountriesWithStrongestPosition,
-} from 'containers/LayerInfo/policy/utils';
+import { getCountryPositionStatsForTopicAndDate } from 'utils/policy';
+// import {
+//   excludeCountryFeatures,
+//   getPositionStatsFromCountries,
+//   featuresToCountriesWithStrongestPosition,
+// } from 'containers/LayerInfo/policy/utils';
 
 import asArray from 'utils/as-array';
 
@@ -57,23 +58,31 @@ export function Areas({
   simple,
   layerData,
   excludeEmpty,
+  indicatorId,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
-  let square = { style: { color: 'black' }, title, id: config.id };
-  const countries =
-    POLICY_LAYER === config.id &&
-    layerData &&
-    featuresToCountriesWithStrongestPosition(
-      config,
-      excludeCountryFeatures(config, layerData.features),
-      locale,
-    );
+  let squares = [{ style: { color: 'black' }, title, id: config.id }];
+  const isPolicy = POLICY_LAYER === config.id;
+  // const countries =
+  //   isPolicy &&
+  //   layerData &&
+  //   featuresToCountriesWithStrongestPosition(
+  //     config,
+  //     excludeCountryFeatures(config, layerData.features),
+  //     locale,
+  //   );
   const countryStats =
-    countries && getPositionStatsFromCountries(config, countries);
+    isPolicy &&
+    layerData &&
+    getCountryPositionStatsForTopicAndDate({
+      config,
+      layerData,
+      indicatorId,
+    });
 
-  if (featureStyle.multiple === 'true') {
-    square = key.values.reduce((memo, val) => {
+  if (featureStyle && featureStyle.multiple === 'true') {
+    squares = key.values.reduce((memo, val) => {
       let t;
       if (key.title && key.title[val]) {
         t =
@@ -108,16 +117,49 @@ export function Areas({
         },
       ];
     }, []);
+  } else if (config['styles-by-value'] && countryStats) {
+    squares = countryStats
+      .map(stat => ({
+        id: stat.id,
+        title:
+          stat[`position_short_${locale}`] ||
+          stat[`position_short_{DEFAULT_LOCALE}`],
+        style: config['styles-by-value'][stat.id],
+        count: parseInt(stat.count, 10),
+      }))
+      .filter(stat => {
+        if (excludeEmpty && stat.count === 0) {
+          return false;
+        }
+        return parseInt(stat.id, 10) > 0;
+      })
+      .sort((a, b) => (parseInt(a.id, 10) < parseInt(b.id, 10) ? 1 : -1));
+  } else if (config['styles-by-value'] && !countryStats) {
+    squares = Object.keys(config['styles-by-value'])
+      .filter(val => {
+        const style = config['styles-by-value'][val];
+        return typeof style.key === 'undefined' || style.key;
+      })
+      .sort((a, b) => (parseInt(a, 10) < parseInt(b, 10) ? 1 : -1))
+      .map(val => {
+        const t = val;
+        const style = config['styles-by-value'][val];
+        return {
+          id: val,
+          title: t,
+          style,
+        };
+      });
   }
   return (
     <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
-      {asArray(square).map(sq => (
+      {asArray(squares).map(sq => (
         <SquareLabelWrap key={sq.id}>
           <KeyAreaWrap>
             <KeyArea areaStyles={[sq.style]} />
           </KeyAreaWrap>
           <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-            {!!sq.count && !simple && (
+            {typeof sq.count !== 'undefined' && !simple && (
               <StyledKeyCount>{sq.count}</StyledKeyCount>
             )}
           </KeyLabelWrap>
@@ -136,6 +178,7 @@ Areas.propTypes = {
   config: PropTypes.object,
   layerData: PropTypes.object,
   title: PropTypes.string,
+  indicatorId: PropTypes.string,
   simple: PropTypes.bool,
   excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,

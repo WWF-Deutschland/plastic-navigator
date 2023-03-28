@@ -21,7 +21,12 @@ import {
   selectFirstLanding,
 } from 'containers/App/selectors';
 // import { setUIState, setChapter, setStory } from 'containers/App/actions';
-import { setChapter, setStory, setLanding } from 'containers/App/actions';
+import {
+  setChapter,
+  setStory,
+  setLanding,
+  setShowKey,
+} from 'containers/App/actions';
 
 import PanelChapter from 'containers/PanelChapter';
 import ModuleWrap from 'components/ModuleWrap';
@@ -43,6 +48,7 @@ export function ModuleStories({
   onSetLanding,
   firstLanding,
   intl,
+  onHideKey,
 }) {
   useEffect(() => {
     if (firstLanding) {
@@ -57,6 +63,9 @@ export function ModuleStories({
       onSetChapter(0);
     }
   });
+  useEffect(() => {
+    onHideKey();
+  }, []);
 
   if (!storiesConfig) return null;
 
@@ -106,6 +115,7 @@ ModuleStories.propTypes = {
   onNext: PropTypes.func,
   onSetChapter: PropTypes.func,
   onSetStory: PropTypes.func,
+  onHideKey: PropTypes.func,
   story: PropTypes.number,
   chapter: PropTypes.number,
   onSetLanding: PropTypes.func,
@@ -123,6 +133,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    onHideKey: () => dispatch(setShowKey(false)),
     onNext: (current, max) => dispatch(setChapter(Math.min(current + 1, max))),
     onPrevious: current => dispatch(setChapter(Math.max(current - 1, 0))),
     onSetChapter: chapter => dispatch(setChapter(chapter)),

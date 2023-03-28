@@ -59,22 +59,6 @@
           "gyres"
         ],
         "layersFocus": ["currents", "gyres"]
-      },
-      {
-        "title": {
-          "en": "Towards a global agreement on marine plastic pollution",
-          "de": "Abkommen zur Bekämpfung der Vermüllung der Meere"
-        },
-        "description": {
-          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans.",
-          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die einzelnen Länder dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln."
-        },
-        "layers": [
-          "surface-concentration",
-          "policy-commitments-area",
-          "policy-commitments"
-        ],
-        "layersFocus": ["policy-commitments-area"]
       }
     ]
   }

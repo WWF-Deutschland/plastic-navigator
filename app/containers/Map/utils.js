@@ -179,7 +179,6 @@ export const getVectorGridStyle = (
   config,
   state = 'default',
 ) => {
-  // console.log(properties, config)
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
   if (state === 'mask') {
     return {
@@ -195,59 +194,32 @@ export const getVectorGridStyle = (
     fillOpacity: 0,
     stroke: false,
   };
-
-  // if (
-  //   properties &&
-  //   config.featureStyle &&
-  //   config.featureStyle.property &&
-  //   typeof config.featureStyle.style === 'object'
-  // ) {
-  //   if (
-  //     config.featureStyle.multiple &&
-  //     config.featureStyle.multiple === 'true'
-  //   ) {
-  //     const ps = config.featureStyle.property.split('.');
-  //     const propertyArray = properties[ps[0]];
-  //     const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
-  //     if (config.featureStyle.multiplePriority) {
-  //       featureStyle = Object.keys(config.featureStyle.style).reduce(
-  //         (styleMemo, attr) => {
-  //           const attrObject = config.featureStyle.style[attr];
-  //           // prettier-ignore
-  //           const attrValue = values
-  //             ? config.featureStyle.multiplePriority.reduce((memo, value) => {
-  //               if (memo) return memo;
-  //               if (values.indexOf(value) > -1) {
-  //                 return attrObject[value];
-  //               }
-  //               return null;
-  //             }, null )
-  //             : attrObject.default ||
-  //               attrObject.none ||
-  //               attrObject.without ||
-  //               attrObject['0'];
-  //           return {
-  //             ...styleMemo,
-  //             [attr]: attrValue,
-  //           };
-  //         },
-  //         {},
-  //       );
-  //     }
-  //   }
-  // }
-  if (
-    properties &&
-    properties.position &&
-    dataConfig &&
-    dataConfig['styles-by-value']
-  ) {
-    const value = properties.position.value || 0;
-    featureStyle = {
-      ...featureStyle,
-      stroke: true,
-      ...dataConfig['styles-by-value'][value],
-    };
+  if (properties && properties.indicator) {
+    if (
+      dataConfig &&
+      dataConfig['styles-by-value'] &&
+      dataConfig['styles-by-value'] !== 'inherit'
+    ) {
+      const value = properties.indicator.value || 0;
+      featureStyle = {
+        ...featureStyle,
+        stroke: true,
+        ...dataConfig['styles-by-value'][value],
+      };
+    } else if (
+      dataConfig &&
+      dataConfig['styles-by-value'] &&
+      dataConfig['styles-by-value'] === 'inherit' &&
+      config &&
+      config['styles-by-value']
+    ) {
+      const value = properties.indicator.value || 0;
+      featureStyle = {
+        ...featureStyle,
+        stroke: true,
+        ...config['styles-by-value'][value],
+      };
+    }
   }
   // console.log('config', config)
   if (state === 'hover') {
@@ -283,7 +255,6 @@ const featureInteractive = (e, config) => {
 };
 
 const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
-  console.log('data', data)
   const vectorGrid = L.vectorGrid.slicer(data, {
     data,
     zIndex:
@@ -579,7 +550,6 @@ const prepareGeometry = ({
   dateString,
 }) => {
   if (config.indicators) {
-    console.log('geometry', geometry)
     const geometryX = {
       type: geometry.type,
       config: geometry.config,
@@ -603,7 +573,7 @@ const prepareGeometry = ({
             properties: {
               ...gf.properties,
               ...feature,
-              position,
+              indicator: position,
             },
           };
         }
@@ -623,7 +593,6 @@ export const getVectorLayer = ({
   indicatorId,
 }) => {
   const { data } = jsonLayer;
-  console.log('getVectorLayer, indicatorId', indicatorId)
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
     return getPolylineLayer({ data, config, state });

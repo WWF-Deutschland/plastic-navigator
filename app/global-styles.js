@@ -49,6 +49,7 @@ const GlobalStyle = createGlobalStyle`
     min-width: 100%;
   }
 
+  .mpx-content li,
   p,
   label {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -153,6 +154,12 @@ const GlobalStyle = createGlobalStyle`
     &:hover{
       color: #08586C;
     }
+  }
+  .mpx-module-overview .mpx-layer-content > p:first-child {
+    font-size: 18px;
+  }
+  .mpx-topic-select p {
+    margin: 0;
   }
   .leaflet-layer .leaflet-mask.leaflet-interactive {
     cursor: initial !important;

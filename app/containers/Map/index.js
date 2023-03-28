@@ -13,14 +13,14 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
 
-import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS, POLICY_LAYER } from 'config';
+import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
-import { startsWith } from 'utils/string';
+// import { startsWith } from 'utils/string';
 
 // import commonMessages from 'messages';
 //
@@ -28,6 +28,7 @@ import {
   selectActiveLayers,
   selectConfigByKey,
   selectInfoSearch,
+  selectShowKey,
 } from 'containers/App/selectors';
 
 import {
@@ -384,9 +385,9 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    console.log('activelayers (according to url) ', activeLayerIds);
-    console.log('mapLayers (currently on map) ', mapLayers);
-    console.log('jsonLayers (loaded into state) ', jsonLayers);
+    // console.log('activelayers (according to url) ', activeLayerIds);
+    // console.log('mapLayers (currently on map) ', mapLayers);
+    // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
       const newMapLayers = {};
@@ -416,9 +417,7 @@ export function Map({
             mapRef.current.removeLayer(layer);
           } else {
             const [configLayerId] = id.split('_');
-            const config = layersConfig.find(
-              c => c.id === id || c.id === configLayerId,
-            );
+            const config = layersConfig.find(c => c.id === configLayerId);
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
               if (
@@ -527,6 +526,23 @@ export function Map({
       onSetMapLayers(newMapLayers);
     }
   }, [activeLayerIds, layersConfig, jsonLayers, projects]);
+  // preload featured layers
+  useEffect(() => {
+    // console.log('activelayers (according to url) ', activeLayerIds);
+    // console.log('mapLayers (currently on map) ', mapLayers);
+    // console.log('jsonLayers (loaded into state) ', jsonLayers);
+    // console.log('Map: layers config present ', !!layersConfig);
+    if (currentModule && currentModule.featuredLayer && layersConfig) {
+      if (!jsonLayers[currentModule.featuredLayer]) {
+        const config = layersConfig.find(
+          c => c.id === currentModule.featuredLayer,
+        );
+        if (config) {
+          onLoadLayer(currentModule.featuredLayer, config);
+        }
+      }
+    }
+  }, [currentModule, layersConfig, jsonLayers]);
 
   // update icon/marker states for mouse over, tooltip and info panel
   useEffect(() => {
@@ -888,6 +904,7 @@ const mapStateToProps = createStructuredSelector({
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
   mview: state => selectMapPosition(state),
+  hasKey: state => selectShowKey(state),
 });
 
 function mapDispatchToProps(dispatch, ownProps) {

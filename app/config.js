@@ -1,4 +1,13 @@
-import { Explore, Intro, Policy } from 'components/Icons';
+import {
+  Explore,
+  Intro,
+  Policy,
+  PolicyTopic0,
+  PolicyTopic1,
+  PolicyTopic2,
+  PolicyTopic3,
+  PolicyTopic4,
+} from 'components/Icons';
 import React from 'react';
 
 // application routes and paths
@@ -18,6 +27,15 @@ export const PAGES = {
     footer: true,
   },
 };
+
+export const POLICY_TOPIC_ICONS = {
+  0: c => <PolicyTopic0 color={c || 'black'} />,
+  1: c => <PolicyTopic1 color={c || 'black'} />,
+  2: c => <PolicyTopic2 color={c || 'black'} />,
+  3: c => <PolicyTopic3 color={c || 'black'} />,
+  4: c => <PolicyTopic4 color={c || 'black'} />,
+};
+
 export const MODULES = {
   stories: {
     path: ROUTES.INTRO,
@@ -28,13 +46,12 @@ export const MODULES = {
   },
   policy: {
     path: ROUTES.POLICY,
-    featuredLayer: 'policy-commitments-area',
+    featuredLayer: 'policy-commitments',
     icon: <Policy color="white" />,
     iconActive: <Policy color="black" />,
     iconS: <Policy color="white" size="26px" />,
     iconActiveS: <Policy color="black" size="26px" />,
-    layers: ['surface-concentration', 'policy-commitments-area'],
-    hasKey: true,
+    layers: ['surface-concentration'],
   },
   explore: {
     path: ROUTES.EXPLORE,
@@ -43,7 +60,6 @@ export const MODULES = {
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
-    hasKey: true,
   },
 };
 

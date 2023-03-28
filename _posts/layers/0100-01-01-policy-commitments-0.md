@@ -6,8 +6,6 @@ lang: en
 title: Support for global treaty
 ---
 
-[CHART]
-
 Marine plastic pollution has reached crisis levels. It is estimated that eleven million tonnes of plastic enter the world’s oceans every year, threatening marine life, coastal livelihoods and potentially even human health. It is a global problem that urgently requires a global response: it is time to begin negotiations on a new legally binding global agreement.
 
 As of today, there is no international treaty dedicated to fully tackling this issue. The existing legal framework covering marine plastic pollution is fragmented and ineffective and does not provide the necessary tools for an effective global response to the problem. This issue cannot be solved on a national or regional level or through non-binding, voluntary measures alone. It requires coordinated international action, shared responsibility and a common approach.
@@ -25,8 +23,6 @@ The visualisation shows the level of support publicly expressed by United Nation
 * Grey indicates countries for which no public statement or commitment of support (for a new global agreement) has been documented.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
-
-[LAYERS-ALTERNATE]
 
 ### About the data
 

@@ -40,6 +40,7 @@ import {
   SET_CHAPTER,
   SET_LANDING,
   SET_MAP_POSITION,
+  SET_SHOW_KEY,
 } from './constants';
 
 export function setLocale(locale) {
@@ -235,5 +236,11 @@ export function setMapPosition(position) {
   return {
     type: SET_MAP_POSITION,
     position,
+  };
+}
+export function setShowKey(value) {
+  return {
+    type: SET_SHOW_KEY,
+    value,
   };
 }

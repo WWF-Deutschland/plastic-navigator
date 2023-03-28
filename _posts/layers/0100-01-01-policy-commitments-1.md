@@ -6,27 +6,26 @@ lang: en
 title: Reduce
 ---
 
-[CHART]
+Where possible, production and consumption of problematic plastics should be significantly reduced. In line with the risk-based approach, initial emphasis should be on the product categories, additives or materials that generate the largest pressure on the system, most frequently end up in the environment, and obstruct the transition towards a non-toxic circular economy. These include, _inter alia_, packaging, and other single-use plastic items, fishing gear and other maritime equipment, and microplastics. Priority lists of such products, additives or materials should urgently be developed
 
-Marine plastic pollution has reached crisis levels. It is estimated that eleven million tonnes of plastic enter the world’s oceans every year, threatening marine life, coastal livelihoods and potentially even human health. It is a global problem that urgently requires a global response: it is time to begin negotiations on a new legally binding global agreement.
+Example (non-exhaustive) measures:
 
-As of today, there is no international treaty dedicated to fully tackling this issue. The existing legal framework covering marine plastic pollution is fragmented and ineffective and does not provide the necessary tools for an effective global response to the problem. This issue cannot be solved on a national or regional level or through non-binding, voluntary measures alone. It requires coordinated international action, shared responsibility and a common approach.
+*	Bans and phase-outs of certain product categories, materials or substances deemed to pose a significant risk, including probability of leakage and potential harm to human health and the environment
+*	Market-based instruments such as taxes and fees to reduce production, consumption and trade of certain product categories, materials, or substances
 
-Discussions on how the international community should respond to the problem have already started, including under the auspices of the United Nations Environment Programme. WWF is calling on states to use this opportunity to begin negotiations as soon as possible on a new international legally binding agreement to tackle marine plastic pollution.
 
 ## How to read the data
 
-The visualisation shows the level of support publicly expressed by United Nations (UN) Member States for a new global agreement to address marine plastic pollution.
+TODO
 
-* Blue represents the historic moment when on 2 March 2022, the United Nations Environment Assembly, with its 193 Members States, adopted resolution [UNEP/EA.5/Res.14](https://wedocs.unep.org/bitstream/handle/20.500.11822/39640/K2200733%20-%20UNEP-EA-5-RES-14%20-%20ADVANCE.pdf?sequence=1&isAllowed=y) titled 'End Plastic Pollution: Towards an international legally binding instrument', by which it decided to establish an intergovernmental negotiating committee (INC) with a mandate to negotiate an international legally binding instrument to address plastic pollution.
-* The darkest green indicates UN Member States that have officially co-sponsored the [Draft Resolution by Peru and Rwanda](https://wedocs.unep.org/bitstream/handle/20.500.11822/37395/UNEA5.2%20Global_Agreement_Explanatory%20note%20and%20Resolution%2027%20October.pdf?sequence=1&isAllowed=y) to establish an intergovernmental negotiating committee (INC) with a mandate to negotiate a legally binding global agreement to address plastic pollution.
+The visualisation shows the level of support publicly expressed by United Nations (UN) Member States related to a new global agreement to address marine plastic pollution.
+
+* The darkest green indicates ...
 * The less dark green indicates UN Member States that have officially called for a new agreement.
 * The lightest green shows UN Member States that have expressed — including through regional declarations or decisions — a willingness to explore the option of a new global agreement.
 * Grey indicates countries for which no public statement or commitment of support (for a new global agreement) has been documented.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
-
-[LAYERS-ALTERNATE]
 
 ### About the data
 

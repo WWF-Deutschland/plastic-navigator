@@ -68,9 +68,23 @@ export const getStrongestCountryPositionStatement = ({
     value: parseInt(strongestStatement[`position_t${topicId}`], 10),
   };
 };
+
+const mergePositions = ({ topicPosition, position }) => {
+  let merged = position;
+  Object.keys(topicPosition).forEach(key => {
+    const val = topicPosition[key];
+    if (val && val.trim() !== '') {
+      merged = {
+        ...merged,
+        [key]: val,
+      };
+    }
+  });
+  return merged;
+};
 export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
   // get position from positions table, contains generic descriptions for each position
-  let position =
+  const position =
     tables.positions && tables.positions.data.data.find(p => qe(p.id, value));
   // get position from topic-positions table, optionally containing topic-specific descriptions for each position
   const topicPosition =
@@ -78,17 +92,7 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
     tables['topic-positions'].data.data.find(
       tp => qe(tp.position_id, value) && qe(tp.topic_id, topicId),
     );
-  // overwrite values
-  Object.keys(topicPosition).forEach(key => {
-    const val = topicPosition[key];
-    if (val && val.trim() !== '') {
-      position = {
-        ...position,
-        [key]: val,
-      };
-    }
-  });
-  return position;
+  return mergePositions({ topicPosition, position });
 };
 export const getCountryPositionForTopicAndDate = ({
   countryCode,
@@ -148,4 +152,115 @@ export const getCountryPositionForTopicAndDate = ({
   return {
     value: 0,
   };
+};
+
+export const getCountryPositionStatsForTopicAndDate = ({
+  indicatorId,
+  layerData,
+  dateString,
+}) => {
+  const topicPositions =
+    layerData.tables &&
+    layerData.tables['topic-positions'] &&
+    layerData.tables['topic-positions'].data.data.filter(tp =>
+      qe(tp.topic_id, indicatorId),
+    );
+  const positions = topicPositions.map(tp => {
+    const pos = layerData.tables.positions
+      ? layerData.tables.positions.data.data.find(p => qe(p.id, tp.position_id))
+      : null;
+    return pos ? mergePositions({ topicPosition: tp, position: pos }) : tp;
+  });
+  const countryPositions =
+    layerData.features &&
+    layerData.features.map(country => ({
+      code: country.code,
+      position: getCountryPositionForTopicAndDate({
+        countryCode: country.code,
+        topicId: indicatorId,
+        dateString,
+        tables: layerData.tables,
+      }),
+    }));
+  return (
+    positions &&
+    Object.values(countryPositions).reduce((statsMemo, countryPosition) => {
+      const value = countryPosition.position.value || 0;
+      return statsMemo.map(stat => {
+        if (qe(stat.id, value)) {
+          return { ...stat, count: stat.count ? stat.count + 1 : 1 };
+        }
+        return { ...stat, count: stat.count || 0 };
+      });
+    }, positions)
+  );
+};
+
+export const getTopicsFromData = layerData => {
+  if (
+    layerData &&
+    layerData.data &&
+    layerData.data.tables &&
+    layerData.data.tables.topics &&
+    layerData.data.tables.topics.data.data
+  ) {
+    return [...layerData.data.tables.topics.data.data].sort((a, b) => {
+      if (a.archived === '1' && b.archived !== '1') {
+        return 1;
+      }
+      if (a.archived !== '1' && b.archived === '1') {
+        return -1;
+      }
+      return a.id > b.id ? 1 : -1;
+    });
+  }
+  return null;
+};
+export const getTopicFromData = ({ indicatorId, layerData }) => {
+  if (
+    layerData &&
+    layerData.data &&
+    layerData.data.tables &&
+    layerData.data.tables.topics &&
+    layerData.data.tables.topics.data.data
+  ) {
+    return layerData.data.tables.topics.data.data[indicatorId];
+  }
+  return null;
+};
+export const getPreviousTopicFromData = ({ indicatorId, layerData }) => {
+  if (
+    layerData &&
+    layerData.data &&
+    layerData.data.tables &&
+    layerData.data.tables.topics &&
+    layerData.data.tables.topics.data.data
+  ) {
+    const validTopicIds = layerData.data.tables.topics.data.data
+      .filter(t => t.archived !== '1')
+      .map(t => parseInt(t.id, 10));
+    const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
+    const prevIndex =
+      currentIndex === 0 ? validTopicIds.length - 1 : currentIndex - 1;
+    return layerData.data.tables.topics.data.data[validTopicIds[prevIndex]];
+  }
+  return null;
+};
+export const getNextTopicFromData = ({ indicatorId, layerData }) => {
+  if (
+    layerData &&
+    layerData.data &&
+    layerData.data.tables &&
+    layerData.data.tables.topics &&
+    layerData.data.tables.topics.data.data
+  ) {
+    const validTopicIds = layerData.data.tables.topics.data.data
+      .filter(t => t.archived !== '1')
+      .map(t => parseInt(t.id, 10));
+    const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
+    const nextIndex =
+      currentIndex === validTopicIds.length - 1 ? 0 : currentIndex + 1;
+    return layerData.data.tables.topics.data.data[validTopicIds[nextIndex]];
+  }
+  return null;
 };

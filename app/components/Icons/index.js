@@ -26,6 +26,11 @@ import Plus from './Plus';
 import WWFLogoHeader from './WWFLogoHeader';
 import WWFLogoSmall from './WWFLogoSmall';
 import Policy from './Policy';
+import PolicyTopic0 from './PolicyTopic0';
+import PolicyTopic1 from './PolicyTopic1';
+import PolicyTopic2 from './PolicyTopic2';
+import PolicyTopic3 from './PolicyTopic3';
+import PolicyTopic4 from './PolicyTopic4';
 
 export {
   ArrowDown,
@@ -56,4 +61,9 @@ export {
   WWFLogoHeader,
   WWFLogoSmall,
   Policy,
+  PolicyTopic0,
+  PolicyTopic1,
+  PolicyTopic2,
+  PolicyTopic3,
+  PolicyTopic4,
 };

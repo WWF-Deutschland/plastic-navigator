@@ -30,6 +30,7 @@ const SubTitleWrap = styled.div`
 export function KeyFull({
   config,
   id,
+  indicatorId,
   simple,
   intl,
   dark,
@@ -41,7 +42,9 @@ export function KeyFull({
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
-  const isArea = key && render && render.type === 'area' && !!featureStyle;
+  const isArea =
+    (key && render && render.type === 'area' && !!featureStyle) ||
+    config['styles-by-value'];
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
@@ -129,6 +132,7 @@ export function KeyFull({
           dark={dark}
           layerData={layerData}
           excludeEmpty={excludeEmpty}
+          indicatorId={indicatorId}
         />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
@@ -151,6 +155,7 @@ KeyFull.propTypes = {
   config: PropTypes.object,
   layerData: PropTypes.object,
   id: PropTypes.string,
+  indicatorId: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
   excludeEmpty: PropTypes.bool,

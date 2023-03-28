@@ -38,7 +38,7 @@ export const dimensions = {
   header: {
     // by breakpoint
     height: [50, 50, 60, 60, 60],
-    zIndex: 3000,
+    zIndex: 3003,
   },
   // layer select
   aside: {
@@ -51,6 +51,10 @@ export const dimensions = {
     // by breakpoint
     width: [0, 0, 480, 500, 600],
     zIndex: 1150,
+  },
+  modal: {
+    // by breakpoint
+    width: [300, 600, 800, 1000, 1200],
   },
 };
 
@@ -98,7 +102,7 @@ const text = {
   large: { size: '18px', height: '24px', maxWidth: '800px' },
   xlarge: { size: '22px', height: '30px', maxWidth: '800px' },
   xxlarge: { size: '30px', height: '36px', maxWidth: '800px' },
-  xxxlarge: { size: '60px', height: '75px', maxWidth: '800px' },
+  xxxlarge: { size: '48px', height: '65px', maxWidth: '800px' },
 };
 // grommet paddings and margins
 const edgeSize = {
