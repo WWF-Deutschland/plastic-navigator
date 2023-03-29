@@ -1,6 +1,7 @@
-id,color,position_en,position_de,position_short_en,position_short_de
-0,,No public statement of support recorded,No public statement of support recorded,No public statement of support recorded,No public statement of support recorded
-1,,Low,Low,Low,Low
-2,,Medium,Medium,Medium,Medium
-3,,High,High,High,High
-4,,Full,Full,Full,Full
+id,position_en,position_de,position_short_en,position_short_de
+-1,Opposing,Opposing,Opposing,Opposing
+0,No public statement of support recorded,No public statement of support recorded,No public statement of support recorded,No public statement of support recorded
+1,Low,Low,Low,Low
+2,Medium,Medium,Medium,Medium
+3,High,High,High,High
+4,Full,Full,Full,Full

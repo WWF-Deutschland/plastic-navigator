@@ -132,7 +132,7 @@ export function TopicCard({
             <Teaser isHover={isHover}>
               <Markdown
                 source={
-                  topic[`title_${locale}`] || topic[`title_${DEFAULT_LOCALE}`]
+                  topic[`teaser_${locale}`] || topic[`teaser_${DEFAULT_LOCALE}`]
                 }
               />
             </Teaser>
