@@ -278,66 +278,70 @@ export const getCountriesWithStrongestPosition = ({
   indicatorId,
   layerData,
   locale,
-}) => {
-  const countryPositions =
-    layerData.data &&
-    layerData.data.features &&
-    layerData.data.features
-      .filter(f => excludeCountries(f))
-      .reduce((listMemo, country) => {
-        const position = getCountryPositionForTopicAndDate({
-          countryCode: country.code,
-          topicId: indicatorId,
-          tables: layerData.data.tables,
-        });
-        if (position && position.value === 0) {
-          return listMemo;
-        }
-        return [
-          ...listMemo,
-          {
-            id: country.code,
-            label:
-              country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
-            position,
-          },
-        ];
-      }, []);
-  return countryPositions;
-};
-
-export const getStatementsForTopic = ({ indicatorId, layerData, locale }) => {
-  console.log(indicatorId, layerData, locale);
-  const topicStatements =
-    layerData &&
-    layerData.data &&
-    layerData.data.tables &&
-    layerData.data.tables.sources &&
-    layerData.data.tables.sources.data.data.reduce((listMemo, statement) => {
-      if (
-        statement[`position_t${indicatorId}`] !== '' &&
-        !qe(statement[`position_t${indicatorId}`], 0)
-      ) {
-        // const position = getPositionForValueAndTopic({
-        //   value: statement[`position_t${indicatorId}`],
-        //   topicId: indicatorId,
-        //   tables: layerData.data.tables,
-        // });
-        return [
-          ...listMemo,
-          {
-            id: statement.id,
-            label:
-              statement[`title_${locale}`] ||
-              statement[`title_${DEFAULT_LOCALE}`],
-            date: statement.date,
-            position: {
-              value: parseInt(statement[`position_t${indicatorId}`], 10),
-            },
-          },
-        ];
+}) =>
+  layerData.data &&
+  layerData.data.features &&
+  layerData.data.features
+    .filter(f => excludeCountries(f))
+    .reduce((listMemo, country) => {
+      const position = getCountryPositionForTopicAndDate({
+        countryCode: country.code,
+        topicId: indicatorId,
+        tables: layerData.data.tables,
+      });
+      if (position && position.value === 0) {
+        return listMemo;
       }
-      return listMemo;
+      return [
+        ...listMemo,
+        {
+          id: country.code,
+          label: country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
+          position,
+        },
+      ];
     }, []);
-  return topicStatements;
+
+export const getStatementsForTopic = ({ indicatorId, layerData, locale }) =>
+  layerData &&
+  layerData.data &&
+  layerData.data.tables &&
+  layerData.data.tables.sources &&
+  layerData.data.tables.sources.data.data.reduce((listMemo, statement) => {
+    if (
+      statement[`position_t${indicatorId}`] !== '' &&
+      !qe(statement[`position_t${indicatorId}`], 0)
+    ) {
+      // const position = getPositionForValueAndTopic({
+      //   value: statement[`position_t${indicatorId}`],
+      //   topicId: indicatorId,
+      //   tables: layerData.data.tables,
+      // });
+      return [
+        ...listMemo,
+        {
+          id: statement.id,
+          label:
+            statement[`title_${locale}`] ||
+            statement[`title_${DEFAULT_LOCALE}`],
+          date: statement.date,
+          position: {
+            value: parseInt(statement[`position_t${indicatorId}`], 10),
+          },
+        },
+      ];
+    }
+    return listMemo;
+  }, []);
+
+export const getIndicatorScoresForCountry = ({ country, layerData }) => {
+  const topics = getTopicsFromData(layerData);
+  return topics.map(t => ({
+    ...t,
+    position: getCountryPositionForTopicAndDate({
+      countryCode: country.code,
+      topicId: t.id,
+      tables: layerData.data.tables,
+    }),
+  }));
 };

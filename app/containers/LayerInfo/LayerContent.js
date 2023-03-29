@@ -60,9 +60,11 @@ export function LayerContent({
       const indicatorConfig = config.indicators.indicators.find(l =>
         qe(l.id, indiId),
       );
-      onLoadContent(
-        indicatorConfig['content-id'] || config['content-id'] || config.id,
-      );
+      if (indicatorConfig) {
+        onLoadContent(
+          indicatorConfig['content-id'] || config['content-id'] || config.id,
+        );
+      }
     } else {
       onLoadContent(config['content-id'] || config.id);
     }

@@ -81,4 +81,12 @@ export default defineMessages({
     id: `${scope}.hidePanel`,
     defaultMessage: 'Hide panel',
   },
+  scoreCardLabel: {
+    id: `${scope}.scoreCardLabel`,
+    defaultMessage: 'Policy position by topic',
+  },
+  scoreCardSelect: {
+    id: `${scope}.scoreCardSelect`,
+    defaultMessage: 'Select a topic to view statements and show on map',
+  },
 });

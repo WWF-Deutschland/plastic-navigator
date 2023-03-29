@@ -233,7 +233,7 @@ export function PolicyContent({
       layerData,
       archived: topic.archived === '1',
     });
-  const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p.color);
+  const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
 
   return (
     <>

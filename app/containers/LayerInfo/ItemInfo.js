@@ -20,7 +20,7 @@ import { selectLayerByKey } from 'containers/Map/selectors';
 
 import SourceContent from './policy/SourceContent';
 import CountryFeatureContent from './policy/CountryFeatureContent';
-
+import ButtonClose from './ButtonClose';
 const Styled = styled.div`
   position: fixed;
   right: 0;
@@ -40,7 +40,15 @@ const Styled = styled.div`
     left: auto;
   }
 `;
-
+const ContentWrap = styled.div`
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  overflow-y: scroll;
+`;
 export function ItemInfo({
   onClose,
   item,
@@ -56,33 +64,45 @@ export function ItemInfo({
   if (!layerIndicator || !itemType) {
     return null;
   }
-  const [, indicatorId] = layerIndicator.split('_');
-  const [type, itemId] = itemType.split('-');
+  const [layerIdX, indicatorId] = layerIndicator.split('_');
+  const [type, itemId] = itemType.split(/-(.*)/s);
 
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
       {size => (
         <Styled panelWidth={getAsideInfoWidth(size)}>
-          {type === 'source' && (
-            <SourceContent
-              sourceId={itemId}
-              indicatorId={indicatorId}
-              onSetIndicator={onSetTopic}
-              layerData={layerData}
-              onClose={onClose}
-            />
-          )}
-          {type === 'country' && (
-            <CountryFeatureContent
-              featureId={itemId}
-              indicatorId={indicatorId}
-              onSetIndicator={onSetTopic}
-              layerData={layerData}
-              onClose={onClose}
-            />
-          )}
-          {item}
+          <ContentWrap ref={cRef}>
+            {type === 'source' && (
+              <SourceContent
+                sourceId={itemId}
+                indicatorId={indicatorId}
+                onSetIndicator={topicId => onSetTopic({
+                  topicId,
+                  itemId,
+                  type,
+                  layerIdX,
+                })}
+                layerData={layerData}
+                onClose={onClose}
+              />
+            )}
+            {type === 'country' && (
+              <CountryFeatureContent
+                featureId={itemId}
+                indicatorId={indicatorId}
+                layerData={layerData}
+                onSetIndicator={topicId => onSetTopic({
+                  topicId,
+                  itemId,
+                  type,
+                  layerIdX,
+                })}
+                onClose={onClose}
+              />
+            )}
+          </ContentWrap>
+          <ButtonClose onClick={onClose} />
         </Styled>
       )}
     </ResponsiveContext.Consumer>

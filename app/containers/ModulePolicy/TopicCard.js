@@ -101,7 +101,7 @@ export function TopicCard({
 }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
-  const Icon = p => POLICY_TOPIC_ICONS[topic.id](p.color);
+  const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
   return (
     <TopicButtonWrap
       className="mpx-topic-select"

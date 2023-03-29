@@ -29,11 +29,11 @@ export const PAGES = {
 };
 
 export const POLICY_TOPIC_ICONS = {
-  0: c => <PolicyTopic0 color={c || 'black'} />,
-  1: c => <PolicyTopic1 color={c || 'black'} />,
-  2: c => <PolicyTopic2 color={c || 'black'} />,
-  3: c => <PolicyTopic3 color={c || 'black'} />,
-  4: c => <PolicyTopic4 color={c || 'black'} />,
+  0: p => <PolicyTopic0 color={p.color || 'black'} {...p} />,
+  1: p => <PolicyTopic1 color={p.color || 'black'} {...p} />,
+  2: p => <PolicyTopic2 color={p.color || 'black'} {...p} />,
+  3: p => <PolicyTopic3 color={p.color || 'black'} {...p} />,
+  4: p => <PolicyTopic4 color={p.color || 'black'} {...p} />,
 };
 
 export const MODULES = {

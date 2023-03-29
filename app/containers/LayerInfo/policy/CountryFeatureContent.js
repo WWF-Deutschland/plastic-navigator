@@ -4,81 +4,200 @@
  *
  */
 
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Button, Text, TextInput } from 'grommet';
-import { Link as LinkIcon, Close } from 'grommet-icons';
+import { Box, Button, Text } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
-import { ROUTES } from 'config';
-import { findFeature } from 'utils/layers';
+import { POLICY_TOPIC_ICONS } from 'config';
+import { DEFAULT_LOCALE } from 'i18n';
 
-import { getPropertyByLocale } from 'containers/Map/utils';
+// import { findFeature } from 'utils/layers';
+import qe from 'utils/quasi-equals';
+import { getIndicatorScoresForCountry } from 'utils/policy';
+
+// import { getPropertyByLocale } from 'containers/Map/utils';
 
 import Title from '../Title';
-import LayerContent from '../LayerContent';
-import ListItemHeader from '../ListItemHeader';
 import messages from '../messages';
-import CountryPolicyCommitments from './CountryPolicyCommitments';
-const ButtonShare = styled(props => <Button plain {...props} />)`
-  color: ${({ theme }) => theme.global.colors.dark};
-  stroke: ${({ theme }) => theme.global.colors.dark};
-  text-decoration: underline;
-  opacity: 0.5;
+// import CountryPolicyCommitments from './CountryPolicyCommitments';
+// const ButtonShare = styled(props => <Button plain {...props} />)`
+//   color: ${({ theme }) => theme.global.colors.dark};
+//   stroke: ${({ theme }) => theme.global.colors.dark};
+//   text-decoration: underline;
+//   opacity: 0.5;
+//   position: relative;
+//   top: 3px;
+//   &:hover {
+//     opacity: 1;
+//     color: ${({ theme }) => theme.global.colors.brand};
+//     stroke: ${({ theme }) => theme.global.colors.brand};
+//   }
+// `;
+// const StyledTextInput = styled(TextInput)`
+//   border: 1px solid #dddddd !important;
+//   padding: 3px;
+// `;
+// const StyledTitle = styled(Title)`
+//   margin-bottom: 0;
+// `;
+
+const PanelHeader = styled(p => (
+  <Box justify="between" {...p} responsive={false} />
+))``;
+
+// const PanelBody = styled.div`
+//   padding: 12px 12px 96px;
+// `;
+
+const IndicatorLinksAKAScoreCard = styled(p => (
+  <Box
+    direction="row"
+    elevation="small"
+    pad={{ horizontal: 'xsmall' }}
+    {...p}
+  />
+))``;
+const IndicatorLinkWrapper = styled(p => (
+  <Box
+    margin={{ right: 'xsmall' }}
+    elevation={p.active ? 'small' : 'none'}
+    {...p}
+  />
+))`
   position: relative;
-  top: 3px;
+  margin-bottom: -6px;
+`;
+
+const IndicatorLink = styled(p => <Button plain {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 ${({ theme }) => theme.global.edgeSize.small};
+  color: ${({ theme, active }) =>
+    theme.global.colors[active ? 'brand' : 'textSecondary']};
+  opacity: 1;
+  border-bottom: 6px solid;
+  border-color: ${({ theme, active }) =>
+    active ? theme.global.colors.brand : 'transparent'};
+  padding: 10px;
   &:hover {
-    opacity: 1;
-    color: ${({ theme }) => theme.global.colors.brand};
-    stroke: ${({ theme }) => theme.global.colors.brand};
+    color: ${({ theme }) => theme.global.colors.brandDark};
   }
 `;
-const StyledTextInput = styled(TextInput)`
-  border: 1px solid #dddddd !important;
-  padding: 3px;
-`;
-const StyledTitle = styled(Title)`
-  margin-bottom: 0;
-`;
+// const IndicatorLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
 
-const getTitle = (feature, config, locale) => {
-  if (config.tooltip.title.propertyByLocale) {
-    return getPropertyByLocale(
-      feature.properties,
-      config.tooltip.title,
-      locale,
-    );
+const TitleWrap = styled(p => (
+  <Box margin={{ top: 'small', bottom: 'small' }} {...p} />
+))`
+  padding: 12px 12px 0;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 24px 12px 0;
   }
-  return config.tooltip.title[locale];
-};
+`;
+const IconWrap = styled.div`
+  border-radius: 99999px;
+  background: ${({ color, theme }) => color || theme.global.colors.brand};
+  padding: 7px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+`;
+// const getCountryPath = (info, locale) =>
+//   `${window.location.origin}${window.location.pathname}#/${locale}/${
+//     ROUTES.POLICY
+//   }/?info=${info}`;
 
-const getCountryPath = (info, locale) =>
-  `${window.location.origin}${window.location.pathname}#/${locale}/${
-    ROUTES.POLICY
-  }/?info=${info}`;
+const ScoreCardLabel = styled(Text)`
+  font-weight: bold;
+  text-transform: uppercase;
+`;
+const ScoreCardSelect = styled(p => <Text size="xsmall" {...p} />)`
+  color: ${({ theme }) => theme.global.colors.textSecondary};
+`;
 
 export function CountryFeatureContent({
   featureId,
-  indicatorId,
-  config, // layer config
   layerData,
+  indicatorId,
   onSetIndicator,
-  // intl,
+  intl,
 }) {
-  const [showLink, setShowLink] = useState(false);
-  const inputRef = useRef();
-  useEffect(() => {
-    if (inputRef && inputRef.current) {
-      inputRef.current.select();
-    }
-  }, [showLink, inputRef]);
+  // const [showLink, setShowLink] = useState(false);
+  // const inputRef = useRef();
+  // useEffect(() => {
+  //   if (inputRef && inputRef.current) {
+  //     inputRef.current.select();
+  //   }
+  // }, [showLink, inputRef]);
+  const { locale } = intl;
+  if (!featureId || !layerData) return null;
+  const country = layerData.data.features.find(f => f.code === featureId);
+  if (!country) return null;
+  const title = country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`];
+  const indicatorPositions = getIndicatorScoresForCountry({
+    country,
+    layerData,
+    indicatorId,
+  });
+  return (
+    <PanelHeader>
+      <TitleWrap>
+        <Title>{title}</Title>
+        <Box gap="xsmall">
+          <ScoreCardLabel>
+            <FormattedMessage {...messages.scoreCardLabel} />
+          </ScoreCardLabel>
+          <ScoreCardSelect>
+            <FormattedMessage {...messages.scoreCardSelect} />
+          </ScoreCardSelect>
+        </Box>
+      </TitleWrap>
+      <IndicatorLinksAKAScoreCard>
+        {indicatorPositions &&
+          indicatorPositions.map(indicator => {
+            const Icon = p => POLICY_TOPIC_ICONS[indicator.id](p);
+            return (
+              <IndicatorLinkWrapper
+                key={indicator.id}
+                active={qe(indicator.id, indicatorId)}
+              >
+                <IndicatorLink
+                  onClick={() => onSetIndicator(indicator.id)}
+                  active={qe(indicator.id, indicatorId)}
+                  disabled={qe(indicator.id, indicatorId)}
+                >
+                  <IconWrap
+                    color={
+                      layerData.config['styles-by-value'] &&
+                      layerData.config['styles-by-value'][
+                        indicator.position.value
+                      ] &&
+                      layerData.config['styles-by-value'][
+                        indicator.position.value
+                      ].fillColor
+                    }
+                  >
+                    <Icon color="white" size="48px" />
+                  </IconWrap>
+                </IndicatorLink>
+              </IndicatorLinkWrapper>
+            );
+          })}
+      </IndicatorLinksAKAScoreCard>
+    </PanelHeader>
+  );
 
-  console.log(featureId)
-  console.log(indicatorId)
-  console.log(layerData)
-  if (!featureId || !config || !layerData) return null;
-  return null;
+  // <IndicatorLink
+  //   onClick={() => onSetIndicator('details', layerId)}
+  //   active={qe(tab, 'details')}
+  //   disabled={qe(tab, 'details')}
+  //   label={
+  //     <IndicatorLinkAnchor active={qe(tab, 'details')}>
+  //       Details
+  //     </IndicatorLinkAnchor>
+  //   }
+  // />
   // const feature = findFeature(layerData.data.features, featureId);
   //
   // if (!feature) return <LayerContent config={config} header={headerFallback} />;
@@ -149,6 +268,8 @@ CountryFeatureContent.propTypes = {
   locale: PropTypes.string,
   supTitle: PropTypes.string,
   info: PropTypes.string,
+  indicatorId: PropTypes.object,
+  onSetIndicator: PropTypes.object,
   layerData: PropTypes.object,
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,

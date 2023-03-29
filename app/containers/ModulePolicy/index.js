@@ -372,7 +372,8 @@ export function ModulePolicy({
             isModule
             item={itemInfo}
             onClose={() => onSetItemInfo()}
-            onSetTopic={topicId => {
+            onSetTopic={({ layerIdX, topicId, itemId, type }) => {
+              onSetItemInfo(`${layerIdX}_${topicId}|${type}-${itemId}`);
               onSetLayers([
                 MODULES.policy.layers,
                 `${POLICY_LAYER}_${topicId}`,
