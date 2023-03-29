@@ -77,4 +77,8 @@ export default defineMessages({
     id: `${scope}.moduleOverview`,
     defaultMessage: 'Overview',
   },
+  hidePanel: {
+    id: `${scope}.hidePanel`,
+    defaultMessage: 'Hide panel',
+  },
 });

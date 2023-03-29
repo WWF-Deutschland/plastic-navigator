@@ -102,7 +102,7 @@ const text = {
   large: { size: '18px', height: '24px', maxWidth: '800px' },
   xlarge: { size: '22px', height: '30px', maxWidth: '800px' },
   xxlarge: { size: '30px', height: '36px', maxWidth: '800px' },
-  xxxlarge: { size: '48px', height: '65px', maxWidth: '800px' },
+  xxxlarge: { size: '48px', height: '75px', maxWidth: '800px' },
 };
 // grommet paddings and margins
 const edgeSize = {

@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import styled, { withTheme } from 'styled-components';
 import { Box, Text, Button, DropButton } from 'grommet';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import qe from 'utils/quasi-equals';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_TOPIC_ICONS } from 'config';
@@ -23,6 +24,7 @@ import {
   DropdownDown,
   DropdownUp,
 } from 'components/Icons';
+import { setLayerInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { decodeInfoView } from 'utils/layers';
 import {
@@ -30,10 +32,12 @@ import {
   getTopicsFromData,
   getPreviousTopicFromData,
   getNextTopicFromData,
+  getCountriesWithStrongestPosition,
+  getStatementsForTopic,
 } from 'utils/policy';
 // import CountryChart from './policy/CountryChart';
-// import CountryList from './policy/CountryList';
-// import SourceList from './policy/SourceList';
+import CountryList from './policy/CountryList';
+import SourceList from './policy/SourceList';
 // import SourceContent from './policy/SourceContent';
 // import CountryFeatureContent from './policy/CountryFeatureContent';
 // import FeatureContent from './FeatureContent';
@@ -41,6 +45,8 @@ import {
 // import TitleIconPolicy from './TitleIconPolicy';
 // import LayerReference from './LayerReference';
 import LayerContent from './LayerContent';
+import ButtonHide from './ButtonHide';
+import ButtonClose from './ButtonClose';
 import messages from './messages';
 
 const ContentWrap = styled.div`
@@ -51,10 +57,19 @@ const ContentWrap = styled.div`
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
-  padding: 12px 12px 64px;
+`;
+
+const PanelHeader = styled(p => (
+  <Box justify="between" {...p} elevation="small" responsive={false} />
+))`
+  padding: 12px 12px 0;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 24px 24px 64px;
+    padding: 24px 12px 0;
   }
+`;
+
+const PanelBody = styled.div`
+  padding: 12px 12px 96px;
 `;
 
 const IconWrap = styled.div`
@@ -80,13 +95,14 @@ const TopicNav = styled(p => <Button plain {...p} />)`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
 `;
 
-const BackButton = styled(p => <Button {...p} plain />)`
+const ButtonBack = styled(p => <Button {...p} plain />)`
   padding: 5px;
   position: absolute;
   left: 0;
   top: 0;
 `;
-const BackText = styled(p => <Text size="medium" {...p} />)`
+
+const HeaderButtonText = styled(p => <Text size="medium" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
@@ -99,10 +115,13 @@ const StyledDropButton = styled(DropButton)`
   background: transparent;
   vertical-align: middle;
   min-width: 50px;
+  min-height: 50px;
   &:hover {
     text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
 `;
+
+const Description = styled(p => <Text {...p} />)``;
 
 // prettier-ignore
 const DropOption = styled(p => <Button plain {...p} />)`
@@ -131,6 +150,29 @@ const DropOption = styled(p => <Button plain {...p} />)`
     font-size: ${({ theme }) => theme.text.medium.size};
   }
 `;
+
+const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
+const TabLinkWrapper = styled(p => <Box {...p} margin={{ right: 'xsmall' }} />)`
+  position: relative;
+`;
+
+const TabLink = styled(p => <Button plain {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 ${({ theme }) => theme.global.edgeSize.small};
+  color: ${({ theme, active }) =>
+    theme.global.colors[active ? 'brand' : 'textSecondary']};
+  opacity: 1;
+  border-bottom: 4px solid;
+  border-color: ${({ theme, active }) =>
+    active ? theme.global.colors.brand : 'transparent'};
+  &:hover {
+    color: ${({ theme }) => theme.global.colors.brandDark};
+  }
+`;
+const TabLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
 
 const DropContent = ({ active, options, onSelect, locale }) => (
   <Box margin="small" background="white" elevation="small">
@@ -163,6 +205,8 @@ export function PolicyContent({
   onHome,
   onSetTopic,
   theme,
+  onClose,
+  onSetTab,
 }) {
   const { locale } = intl;
   const cRef = useRef();
@@ -172,95 +216,192 @@ export function PolicyContent({
   }, [view]);
   const [layerId, subView] = decodeInfoView(view);
   const [, indicatorId] = layerId.split('_');
-
+  const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerData);
-  const topic = getTopicFromData({ indicatorId, layerData });
-  const nextTopic = getNextTopicFromData({ indicatorId, layerData });
-  const prevTopic = getPreviousTopicFromData({ indicatorId, layerData });
+  const topic = layerData && getTopicFromData({ indicatorId, layerData });
+  const nextTopic =
+    topic &&
+    getNextTopicFromData({
+      indicatorId,
+      layerData,
+      archived: topic.archived === '1',
+    });
+  const prevTopic =
+    topic &&
+    getPreviousTopicFromData({
+      indicatorId,
+      layerData,
+      archived: topic.archived === '1',
+    });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p.color);
 
   return (
-    <ContentWrap ref={cRef}>
-      {config && !subView && topic && (
-        <Box>
-          <Box align="center" style={{ position: 'relative' }}>
-            <BackButton plain onClick={() => onHome()}>
-              <Box direction="row" align="center" gap="xsmall">
-                <Back size="12px" />
-                <BackText>
-                  <FormattedMessage {...messages.moduleOverview} />
-                </BackText>
+    <>
+      <ContentWrap ref={cRef}>
+        {config && topic && (
+          <PanelHeader>
+            <Box align="center" style={{ position: 'relative' }}>
+              {isModule && (
+                <ButtonBack plain onClick={() => onHome()}>
+                  <Box direction="row" align="center" gap="xsmall">
+                    <Back size="12px" />
+                    <HeaderButtonText>
+                      <FormattedMessage {...messages.moduleOverview} />
+                    </HeaderButtonText>
+                  </Box>
+                </ButtonBack>
+              )}
+              <IconWrap>
+                <Icon color="white" />
+              </IconWrap>
+              {isModule && <ButtonHide onClick={onClose} />}
+            </Box>
+            {onSetTopic && isModule && topicOptions && (
+              <Box
+                margin={{ top: 'small', bottom: 'small' }}
+                direction="row"
+                justify={topic.archived !== '1' ? 'between' : 'center'}
+                align="center"
+              >
+                {topic.archived !== '1' && (
+                  <TopicNav onClick={() => onSetTopic(prevTopic.id)}>
+                    <ArrowLeft color={theme.global.colors.brand} size="24px" />
+                  </TopicNav>
+                )}
+                <StyledDropButton
+                  plain
+                  reverse
+                  gap="xxsmall"
+                  open={showTopicDrop}
+                  fill="vertical"
+                  onClose={() => setShowTopicDrop(false)}
+                  onOpen={() => setShowTopicDrop(true)}
+                  dropProps={{
+                    align: { top: 'bottom' },
+                    plain: true,
+                  }}
+                  icon={
+                    showTopicDrop ? (
+                      <DropdownUp color={theme.global.colors.brand} />
+                    ) : (
+                      <DropdownDown color={theme.global.colors.brand} />
+                    )
+                  }
+                  label={
+                    <TitleShort>
+                      {topic[`short_${locale}`] ||
+                        topic[`short_${DEFAULT_LOCALE}`]}
+                    </TitleShort>
+                  }
+                  dropContent={
+                    <DropContent
+                      locale={locale}
+                      active={topic.id}
+                      options={topicOptions}
+                      onSelect={id => {
+                        setShowTopicDrop(false);
+                        onSetTopic(id);
+                      }}
+                    />
+                  }
+                />
+                {topic.archived !== '1' && (
+                  <TopicNav onClick={() => onSetTopic(nextTopic.id)}>
+                    <ArrowRight color={theme.global.colors.brand} size="24px" />
+                  </TopicNav>
+                )}
               </Box>
-            </BackButton>
-            <IconWrap>
-              <Icon color="white" />
-            </IconWrap>
-          </Box>
-          {(topic.archive === '1' || !onSetTopic || !isModule) && (
-            <Box align="center">
-              <TitleShort>
-                {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
-              </TitleShort>
+            )}
+            {!isModule && (
+              <Box margin={{ top: 'small', bottom: 'small' }} align="center">
+                <TitleShort>
+                  {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
+                </TitleShort>
+              </Box>
+            )}
+            <Box margin={{ vertical: 'small' }}>
+              <Description>
+                {topic[`description_${locale}`] ||
+                  topic[`description_${DEFAULT_LOCALE}`]}
+              </Description>
             </Box>
-          )}
-          {topic.archive !== '1' && onSetTopic && isModule && topicOptions && (
-            <Box
-              margin={{ top: 'small', bottom: 'small' }}
-              direction="row"
-              justify="between"
-              align="center"
-            >
-              <TopicNav onClick={() => onSetTopic(prevTopic.id)}>
-                <ArrowLeft color="" size="24px" />
-              </TopicNav>
-              <StyledDropButton
-                plain
-                reverse
-                gap="xxsmall"
-                open={showTopicDrop}
-                fill="vertical"
-                onClose={() => setShowTopicDrop(false)}
-                onOpen={() => setShowTopicDrop(true)}
-                dropProps={{
-                  align: { top: 'bottom' },
-                  plain: true,
-                }}
-                icon={
-                  showTopicDrop ? (
-                    <DropdownUp color={theme.global.colors.brand} />
-                  ) : (
-                    <DropdownDown color={theme.global.colors.brand} />
-                  )
-                }
-                label={
-                  <TitleShort>
-                    {topic[`short_${locale}`] ||
-                      topic[`short_${DEFAULT_LOCALE}`]}
-                  </TitleShort>
-                }
-                dropContent={
-                  <DropContent
-                    locale={locale}
-                    active={topic.id}
-                    options={topicOptions}
-                    onSelect={id => {
-                      setShowTopicDrop(false);
-                      onSetTopic(id);
-                    }}
-                  />
-                }
-              />
-              <TopicNav onClick={() => onSetTopic(nextTopic.id)}>
-                <ArrowRight size="24px" />
-              </TopicNav>
+            <Tabs>
+              <TabLinkWrapper>
+                <TabLink
+                  onClick={() => onSetTab('details', layerId)}
+                  active={qe(tab, 'details')}
+                  disabled={qe(tab, 'details')}
+                  label={
+                    <TabLinkAnchor active={qe(tab, 'details')}>
+                      Details
+                    </TabLinkAnchor>
+                  }
+                />
+              </TabLinkWrapper>
+              <TabLinkWrapper>
+                <TabLink
+                  onClick={() => onSetTab('countries', layerId)}
+                  active={qe(tab, 'countries')}
+                  disabled={qe(tab, 'countries')}
+                  label={
+                    <TabLinkAnchor active={qe(tab, 'countries')}>
+                      States
+                    </TabLinkAnchor>
+                  }
+                />
+              </TabLinkWrapper>
+              <TabLinkWrapper>
+                <TabLink
+                  onClick={() => onSetTab('statements', layerId)}
+                  active={qe(tab, 'statements')}
+                  disabled={qe(tab, 'statements')}
+                  label={
+                    <TabLinkAnchor active={qe(tab, 'statements')}>
+                      Statements
+                    </TabLinkAnchor>
+                  }
+                />
+              </TabLinkWrapper>
+            </Tabs>
+          </PanelHeader>
+        )}
+        {config && tab === 'countries' && layerData && (
+          <PanelBody>
+            <CountryList
+              countries={getCountriesWithStrongestPosition({
+                indicatorId,
+                layerData,
+                locale,
+              })}
+              topic={topic}
+              config={config}
+            />
+          </PanelBody>
+        )}
+        {config && tab === 'statements' && layerData && (
+          <PanelBody>
+            <SourceList
+              sources={getStatementsForTopic({
+                indicatorId,
+                layerData,
+                locale,
+              })}
+              topic={topic}
+              config={config}
+            />
+          </PanelBody>
+        )}
+        {config && tab === 'details' && (
+          <PanelBody>
+            <Box margin={{ vertical: 'medium' }}>
+              <strong>TODO: CHART</strong>
             </Box>
-          )}
-        </Box>
-      )}
-      {config && !subView && (
-        <LayerContent fullLayerId={layerId} config={config} />
-      )}
-    </ContentWrap>
+            <LayerContent fullLayerId={layerId} config={config} />
+          </PanelBody>
+        )}
+      </ContentWrap>
+      {!isModule && <ButtonClose onClick={onClose} />}
+    </>
   );
 }
 
@@ -271,7 +412,9 @@ PolicyContent.propTypes = {
   theme: PropTypes.object,
   intl: intlShape,
   onHome: PropTypes.func,
+  onClose: PropTypes.func,
   onSetTopic: PropTypes.func,
+  onSetTab: PropTypes.func,
   isModule: PropTypes.bool,
 };
 
@@ -279,9 +422,17 @@ const mapStateToProps = createStructuredSelector({
   layerData: (state, { config }) => selectLayerByKey(state, config.id),
 });
 
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetTab: (tab, view) => {
+      dispatch(setLayerInfo(view, tab));
+    },
+  };
+}
+
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export default compose(withConnect)(injectIntl(withTheme(PolicyContent)));

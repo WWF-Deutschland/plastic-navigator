@@ -1,4 +1,7 @@
 import qe from 'utils/quasi-equals';
+import { DEFAULT_LOCALE } from 'i18n';
+
+const excludeCountries = country => country.display !== 'inactive';
 
 export const getCountryStatements = ({
   countryCode,
@@ -71,15 +74,17 @@ export const getStrongestCountryPositionStatement = ({
 
 const mergePositions = ({ topicPosition, position }) => {
   let merged = position;
-  Object.keys(topicPosition).forEach(key => {
-    const val = topicPosition[key];
-    if (val && val.trim() !== '') {
-      merged = {
-        ...merged,
-        [key]: val,
-      };
-    }
-  });
+  if (topicPosition) {
+    Object.keys(topicPosition).forEach(key => {
+      const val = topicPosition[key];
+      if (val && val.trim() !== '') {
+        merged = {
+          ...merged,
+          [key]: val,
+        };
+      }
+    });
+  }
   return merged;
 };
 export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
@@ -228,7 +233,11 @@ export const getTopicFromData = ({ indicatorId, layerData }) => {
   }
   return null;
 };
-export const getPreviousTopicFromData = ({ indicatorId, layerData }) => {
+export const getPreviousTopicFromData = ({
+  indicatorId,
+  layerData,
+  archived,
+}) => {
   if (
     layerData &&
     layerData.data &&
@@ -237,7 +246,7 @@ export const getPreviousTopicFromData = ({ indicatorId, layerData }) => {
     layerData.data.tables.topics.data.data
   ) {
     const validTopicIds = layerData.data.tables.topics.data.data
-      .filter(t => t.archived !== '1')
+      .filter(t => (archived ? t.archived === '1' : t.archived !== '1'))
       .map(t => parseInt(t.id, 10));
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const prevIndex =
@@ -246,7 +255,7 @@ export const getPreviousTopicFromData = ({ indicatorId, layerData }) => {
   }
   return null;
 };
-export const getNextTopicFromData = ({ indicatorId, layerData }) => {
+export const getNextTopicFromData = ({ indicatorId, layerData, archived }) => {
   if (
     layerData &&
     layerData.data &&
@@ -255,7 +264,7 @@ export const getNextTopicFromData = ({ indicatorId, layerData }) => {
     layerData.data.tables.topics.data.data
   ) {
     const validTopicIds = layerData.data.tables.topics.data.data
-      .filter(t => t.archived !== '1')
+      .filter(t => (archived ? t.archived === '1' : t.archived !== '1'))
       .map(t => parseInt(t.id, 10));
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const nextIndex =
@@ -263,4 +272,72 @@ export const getNextTopicFromData = ({ indicatorId, layerData }) => {
     return layerData.data.tables.topics.data.data[validTopicIds[nextIndex]];
   }
   return null;
+};
+
+export const getCountriesWithStrongestPosition = ({
+  indicatorId,
+  layerData,
+  locale,
+}) => {
+  const countryPositions =
+    layerData.data &&
+    layerData.data.features &&
+    layerData.data.features
+      .filter(f => excludeCountries(f))
+      .reduce((listMemo, country) => {
+        const position = getCountryPositionForTopicAndDate({
+          countryCode: country.code,
+          topicId: indicatorId,
+          tables: layerData.data.tables,
+        });
+        if (position && position.value === 0) {
+          return listMemo;
+        }
+        return [
+          ...listMemo,
+          {
+            id: country.code,
+            label:
+              country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
+            position,
+          },
+        ];
+      }, []);
+  return countryPositions;
+};
+
+export const getStatementsForTopic = ({ indicatorId, layerData, locale }) => {
+  console.log(indicatorId, layerData, locale);
+  const topicStatements =
+    layerData &&
+    layerData.data &&
+    layerData.data.tables &&
+    layerData.data.tables.sources &&
+    layerData.data.tables.sources.data.data.reduce((listMemo, statement) => {
+      if (
+        statement[`position_t${indicatorId}`] !== '' &&
+        !qe(statement[`position_t${indicatorId}`], 0)
+      ) {
+        // const position = getPositionForValueAndTopic({
+        //   value: statement[`position_t${indicatorId}`],
+        //   topicId: indicatorId,
+        //   tables: layerData.data.tables,
+        // });
+        return [
+          ...listMemo,
+          {
+            id: statement.id,
+            label:
+              statement[`title_${locale}`] ||
+              statement[`title_${DEFAULT_LOCALE}`],
+            date: statement.date,
+            position: {
+              value: parseInt(statement[`position_t${indicatorId}`], 10),
+            },
+          },
+        ];
+      }
+      return listMemo;
+    }, []);
+  return topicStatements;
 };

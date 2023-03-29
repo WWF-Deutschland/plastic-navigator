@@ -34,7 +34,7 @@ const ListTitle = styled(p => <Heading level={4} {...p} />)`
 `;
 
 const FeatureListWrap = styled(Box)`
-  margin-top: 30px;
+  margin-top: 5px;
 `;
 
 const FeatureButton = styled(p => (

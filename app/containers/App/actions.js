@@ -190,6 +190,7 @@ export function setUIURL(key, newState) {
   };
 }
 export function setLayerInfo(layer, view, copy) {
+  console.log('setLayerInfo', layer, view)
   return {
     type: SET_LAYER_INFO,
     layer,

@@ -19,7 +19,7 @@ import {
   Paragraph,
   ResponsiveContext,
 } from 'grommet';
-import { Close, ExploreS as Layer } from 'components/Icons';
+import { ExploreS as Layer } from 'components/Icons';
 import { getAsideWidth } from 'utils/responsive';
 import { sortLabels, startsWith } from 'utils/string';
 import qe from 'utils/quasi-equals';
@@ -50,6 +50,7 @@ import {
 } from 'config';
 
 import GroupLayers from 'components/GroupLayers';
+import ButtonHide from 'containers/LayerInfo/ButtonHide';
 import ButtonDeleteLayers from './ButtonDeleteLayers';
 
 import messages from './messages';
@@ -141,21 +142,6 @@ const DescriptionGroup = styled(Paragraph)`
   margin-bottom: 8px;
 `;
 
-const ButtonClose = styled(p => (
-  <Button icon={<Close />} plain alignSelf="end" {...p} />
-))`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  padding: 10px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.brandDark};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.brandDarker};
-  }
-`;
-
 const COMPONENT_KEY = 'px';
 
 const DEFAULT_UI_URL_STATE = {
@@ -229,7 +215,7 @@ export function PanelExplore({
         <Styled background="white" panelWidth={getAsideWidth(size)}>
           <div>
             <PanelHeader>
-              <ButtonClose onClick={() => onClose()} />
+              <ButtonHide onClick={() => onClose()} hasPadding />
               <TitleWrap>
                 <Layer />
                 <Title>

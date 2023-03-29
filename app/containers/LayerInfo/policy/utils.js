@@ -51,6 +51,18 @@ export const getPositionIcon = (position, config) => {
   return null;
 };
 
+export const getCountryPositionSquareStyle = ({ positionValue, config }) => {
+  if (config['styles-by-value'] && typeof positionValue !== 'undefined') {
+    const style = config['styles-by-value'][positionValue.toString()];
+    return {
+      stroke: true,
+      weight: 1,
+      fill: true,
+      ...style,
+    };
+  }
+  return null;
+};
 export const getPositionSquareStyle = (positionOrValue, config) => {
   let positionStyle;
   let positionProperty;

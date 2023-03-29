@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, ResponsiveContext } from 'grommet';
+import { ResponsiveContext } from 'grommet';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
@@ -23,12 +23,11 @@ import {
   selectLocale,
 } from 'containers/App/selectors';
 
-import { Close } from 'components/Icons';
-
 import LayerContent from './LayerContent';
 import PolicyContent from './PolicyContent';
 import ProjectContent from './ProjectContent';
 import TitleIcon from './TitleIcon';
+import ButtonClose from './ButtonClose';
 
 const ContentWrap = styled.div`
   position: absolute;
@@ -61,23 +60,6 @@ const Styled = styled.div`
     position: absolute;
     width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
-  }
-`;
-
-const ButtonClose = styled(p => <Button plain alignSelf="end" {...p} />)`
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  padding: 5px;
-  border-radius: 99999px;
-  background: ${({ theme }) => theme.global.colors.black};
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.dark};
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 10px;
-    right: 30px;
   }
 `;
 
@@ -126,6 +108,7 @@ export function LayerInfo({
               view={view}
               onHome={onHome}
               onSetTopic={onSetTopic}
+              onClose={onClose}
             />
           )}
           {type !== 'policyTopic' && (
@@ -143,12 +126,9 @@ export function LayerInfo({
                   header={<TitleIcon title={title}/>}
                 />
               )}
+              <ButtonClose onClick={onClose} />
             </ContentWrap>
           )}
-          <ButtonClose
-            onClick={onClose}
-            icon={<Close color="white" />}
-          />
         </Styled>
       )}
     </ResponsiveContext.Consumer>

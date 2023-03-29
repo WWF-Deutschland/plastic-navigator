@@ -17,7 +17,7 @@ import styled from 'styled-components';
 // import { Box, Button, ResponsiveContext } from 'grommet';
 import { Text, Box, Button, Layer as Modal } from 'grommet';
 // import { getAsideWidth, isMaxSize } from 'utils/responsive';
-
+import { decodeInfoView } from 'utils/layers';
 import { MODULES, POLICY_LAYER } from 'config';
 
 import ModuleWrap from 'components/ModuleWrap';
@@ -197,8 +197,11 @@ export function ModulePolicy({
     }
     if (isModuleLayerActive(activeLayers)) {
       const activeModuleLayer = getActiveModuleLayer(activeLayers);
-      // console.log(activeModuleLayer);
-      onSetLayerInfo(activeModuleLayer);
+      console.log(activeModuleLayer, info);
+      const [infoLayerId] = decodeInfoView(info);
+      if (infoLayerId !== activeModuleLayer) {
+        onSetLayerInfo(activeModuleLayer);
+      }
     }
   }, [info, activeLayers]);
 
