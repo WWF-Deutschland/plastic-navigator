@@ -39,6 +39,10 @@ export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('info') ? search.get('info') : ''),
 );
+export const selectItemInfoSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('item') ? search.get('item') : ''),
+);
 export const selectChapterSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('ch') ? parseInt(search.get('ch'), 10) : null),

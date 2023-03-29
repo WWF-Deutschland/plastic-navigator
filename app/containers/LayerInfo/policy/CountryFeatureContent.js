@@ -6,9 +6,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
-import { compose } from 'redux';
 import styled from 'styled-components';
 import { Box, Button, Text, TextInput } from 'grommet';
 import { Link as LinkIcon, Close } from 'grommet-icons';
@@ -16,11 +13,6 @@ import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
 import { ROUTES } from 'config';
 import { findFeature } from 'utils/layers';
-
-import { selectLocale, selectInfoSearch } from 'containers/App/selectors';
-import { setLayerInfo } from 'containers/App/actions';
-import { selectLayerByKey } from 'containers/Map/selectors';
-import { loadLayer } from 'containers/Map/actions';
 
 import { getPropertyByLocale } from 'containers/Map/utils';
 
@@ -68,88 +60,84 @@ const getCountryPath = (info, locale) =>
 
 export function CountryFeatureContent({
   featureId,
+  indicatorId,
   config, // layer config
-  locale,
   layerData,
-  onLoadLayer,
-  supTitle,
-  onSetLayerInfo,
-  headerFallback,
-  info,
-  intl,
+  onSetIndicator,
+  // intl,
 }) {
   const [showLink, setShowLink] = useState(false);
   const inputRef = useRef();
-  useEffect(() => {
-    onLoadLayer(config.id, config);
-  }, [config]);
   useEffect(() => {
     if (inputRef && inputRef.current) {
       inputRef.current.select();
     }
   }, [showLink, inputRef]);
 
+  console.log(featureId)
+  console.log(indicatorId)
+  console.log(layerData)
   if (!featureId || !config || !layerData) return null;
-
-  const feature = findFeature(layerData.data.features, featureId);
-
-  if (!feature) return <LayerContent config={config} header={headerFallback} />;
-  return (
-    <>
-      <ListItemHeader
-        supTitle={supTitle}
-        onClick={() => onSetLayerInfo(config.id, 'countries')}
-      />
-      <Box margin={{ bottom: 'large' }}>
-        <Box
-          direction="row"
-          justify="between"
-          align="center"
-          margin={{ bottom: 'xsmall' }}
-        >
-          <StyledTitle>{getTitle(feature, config, locale)}</StyledTitle>
-          <ButtonShare
-            plain
-            reverse
-            icon={
-              showLink ? (
-                <Close color="inherit" size="large" />
-              ) : (
-                <LinkIcon color="inherit" size="xlarge" />
-              )
-            }
-            gap="xsmall"
-            onClick={() => setShowLink(!showLink)}
-            title={intl.formatMessage(messages.showCountryLink)}
-          />
-        </Box>
-        {showLink && (
-          <Box
-            margin={{ top: 'small', bottom: 'small' }}
-            justify="start"
-            align="start"
-            gap="xsmall"
-          >
-            <Text size="xxsmall" color="textSecondary">
-              <FormattedMessage {...messages.shareCountryLink} />
-            </Text>
-            <StyledTextInput
-              ref={inputRef}
-              readOnly
-              focusIndicator
-              value={getCountryPath(info, locale)}
-              onFocus={() => {
-                if (inputRef && inputRef.current) {
-                  inputRef.current.select();
-                }
-              }}
-            />
-          </Box>
-        )}
-      </Box>
-      <CountryPolicyCommitments feature={feature} config={config} />
-    </>
-  );
+  return null;
+  // const feature = findFeature(layerData.data.features, featureId);
+  //
+  // if (!feature) return <LayerContent config={config} header={headerFallback} />;
+  // return (
+  //   <>
+  //     <ListItemHeader
+  //       supTitle={supTitle}
+  //       onClick={() => onSetLayerInfo(config.id, 'countries')}
+  //     />
+  //     <Box margin={{ bottom: 'large' }}>
+  //       <Box
+  //         direction="row"
+  //         justify="between"
+  //         align="center"
+  //         margin={{ bottom: 'xsmall' }}
+  //       >
+  //         <StyledTitle>{getTitle(feature, config, locale)}</StyledTitle>
+  //         <ButtonShare
+  //           plain
+  //           reverse
+  //           icon={
+  //             showLink ? (
+  //               <Close color="inherit" size="large" />
+  //             ) : (
+  //               <LinkIcon color="inherit" size="xlarge" />
+  //             )
+  //           }
+  //           gap="xsmall"
+  //           onClick={() => setShowLink(!showLink)}
+  //           title={intl.formatMessage(messages.showCountryLink)}
+  //         />
+  //       </Box>
+  //       {showLink && (
+  //         <Box
+  //           margin={{ top: 'small', bottom: 'small' }}
+  //           justify="start"
+  //           align="start"
+  //           gap="xsmall"
+  //         >
+  //           <Text size="xxsmall" color="textSecondary">
+  //             <FormattedMessage {...messages.shareCountryLink} />
+  //           </Text>
+  //           <StyledTextInput
+  //             ref={inputRef}
+  //             readOnly
+  //             focusIndicator
+  //             value={getCountryPath(info, locale)}
+  //             onFocus={() => {
+  //               if (inputRef && inputRef.current) {
+  //                 inputRef.current.select();
+  //               }
+  //             }}
+  //           />
+  //         </Box>
+  //       )}
+  //     </Box>
+  //     <CountryPolicyCommitments feature={feature} config={config} />
+  //   </>
+  // );
 }
 // <FormattedMessage {...messages.downloadPolicyData} />
 
@@ -165,27 +153,4 @@ CountryFeatureContent.propTypes = {
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,
 };
-
-const mapStateToProps = createStructuredSelector({
-  locale: state => selectLocale(state),
-  layerData: (state, { config }) => selectLayerByKey(state, config.id),
-  info: state => selectInfoSearch(state),
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onLoadLayer: (key, config) => {
-      dispatch(loadLayer(key, config));
-    },
-    onSetLayerInfo: (id, view) => {
-      dispatch(setLayerInfo(id, view));
-    },
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export default compose(withConnect)(injectIntl(CountryFeatureContent));
+export default injectIntl(CountryFeatureContent);

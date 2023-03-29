@@ -13,7 +13,7 @@ import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { ArrowRightL, CloseXS } from 'components/Icons';
 
-import { setLayerInfo } from 'containers/App/actions';
+import { setItemInfo } from 'containers/App/actions';
 
 import { sortLabels } from 'utils/string';
 import { isMinSize } from 'utils/responsive';
@@ -53,7 +53,7 @@ export function FeatureList({
   title,
   items,
   layerId,
-  onSetLayerInfo,
+  onSetItemInfo,
   config,
   isSourceList,
   search,
@@ -133,8 +133,8 @@ export function FeatureList({
                   key={item.id}
                   onClick={() =>
                     isSourceList
-                      ? onSetLayerInfo(layerId, `source-${item.id}`)
-                      : onSetLayerInfo(layerId, item.id)
+                      ? onSetItemInfo(`${layerId}|source-${item.id}`)
+                      : onSetItemInfo(`${layerId}|country-${item.id}`)
                   }
                   label={
                     <Box
@@ -190,7 +190,7 @@ export function FeatureList({
 }
 
 FeatureList.propTypes = {
-  onSetLayerInfo: PropTypes.func.isRequired,
+  onSetItemInfo: PropTypes.func.isRequired,
   items: PropTypes.array,
   config: PropTypes.object,
   layerId: PropTypes.string,
@@ -203,8 +203,8 @@ FeatureList.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetLayerInfo: (id, location) => {
-      dispatch(setLayerInfo(id, location));
+    onSetItemInfo: (id, location) => {
+      dispatch(setItemInfo(id, location));
     },
   };
 }

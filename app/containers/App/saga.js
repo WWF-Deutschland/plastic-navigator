@@ -23,6 +23,7 @@ import {
   CHANGE_LOCALE,
   LOAD_CONFIG,
   SET_LAYER_INFO,
+  SET_ITEM_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
   SET_STORY,
@@ -422,6 +423,32 @@ function* setLayerInfoSaga({ layer, view, copy }) {
     yield (navPending = false);
   }
 }
+function* setItemInfoSaga({ item }) {
+  if (navPending) {
+    throw new Error({
+      function: 'setItemInfoSaga',
+    });
+  } else {
+    navPending = 'setItemInfoSaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const searchParams = new URLSearchParams(currentLocation.search);
+    // only update if not already active
+    if (searchParams.get('item') !== item) {
+      if (typeof item === 'undefined' || item === '') {
+        searchParams.delete('item');
+      } else {
+        searchParams.set('item', item);
+      }
+      // convert to string and append if necessary
+      const newSearch = searchParams.toString();
+      const search = newSearch.length > 0 ? `?${newSearch}` : '';
+      if (search !== currentLocation.search) {
+        yield put(push(`${currentLocation.pathname}${search}`));
+      }
+    }
+    yield (navPending = false);
+  }
+}
 
 function* setLayersSaga({ layers }) {
   if (navPending) {
@@ -647,6 +674,15 @@ export default function* defaultSaga() {
     SET_LAYER_INFO,
     autoRestart(
       setLayerInfoSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
+    SET_ITEM_INFO,
+    autoRestart(
+      setItemInfoSaga,
       navigateErrorHandler,
       MAX_NAV_ATTEMPTS,
       RETRY_NAV_DELAY,

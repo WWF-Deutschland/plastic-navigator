@@ -17,12 +17,13 @@ import styled from 'styled-components';
 // import { Box, Button, ResponsiveContext } from 'grommet';
 import { Text, Box, Button, Layer as Modal } from 'grommet';
 // import { getAsideWidth, isMaxSize } from 'utils/responsive';
-import { decodeInfoView } from 'utils/layers';
+import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 import { MODULES, POLICY_LAYER } from 'config';
 
 import ModuleWrap from 'components/ModuleWrap';
 import { Policy } from 'components/Icons';
 import LayerInfo from 'containers/LayerInfo';
+import ItemInfo from 'containers/LayerInfo/ItemInfo';
 import LayerContent from 'containers/LayerInfo/LayerContent';
 
 import {
@@ -31,6 +32,7 @@ import {
   selectFirstLanding,
   selectInfoSearch,
   selectUIURLByKey,
+  selectItemInfoSearch,
 } from 'containers/App/selectors';
 import { selectLayerConfig, selectLayerByKey } from 'containers/Map/selectors';
 import {
@@ -38,12 +40,12 @@ import {
   setUIState,
   setLanding,
   setLayerInfo,
+  setItemInfo,
   showLayerInfoModule,
   setUIURL,
   setShowKey,
 } from 'containers/App/actions';
 
-import { getLayerIdFromView } from 'utils/layers';
 import { startsWith } from 'utils/string';
 
 import commonMessages from 'messages';
@@ -148,6 +150,7 @@ export function ModulePolicy({
   onSetLanding,
   intl,
   onSetLayerInfo,
+  onSetItemInfo,
   info,
   uiURL,
   onShow,
@@ -155,6 +158,7 @@ export function ModulePolicy({
   onShowKey,
   config,
   moduleLayer,
+  itemInfo,
 }) {
   const { locale } = intl;
   const layerId = getLayerIdFromView(info);
@@ -197,7 +201,6 @@ export function ModulePolicy({
     }
     if (isModuleLayerActive(activeLayers)) {
       const activeModuleLayer = getActiveModuleLayer(activeLayers);
-      console.log(activeModuleLayer, info);
       const [infoLayerId] = decodeInfoView(info);
       if (infoLayerId !== activeModuleLayer) {
         onSetLayerInfo(activeModuleLayer);
@@ -364,6 +367,20 @@ export function ModulePolicy({
             currentModule={MODULES.policy}
           />
         )}
+        {topicSelected && itemInfo && (
+          <ItemInfo
+            isModule
+            item={itemInfo}
+            onClose={() => onSetItemInfo()}
+            onSetTopic={topicId => {
+              onSetLayers([
+                MODULES.policy.layers,
+                `${POLICY_LAYER}_${topicId}`,
+              ]);
+            }}
+            currentModule={MODULES.policy}
+          />
+        )}
       </ModuleWrap>
     </div>
   );
@@ -382,7 +399,9 @@ ModulePolicy.propTypes = {
   firstLanding: PropTypes.bool,
   infoVisible: PropTypes.bool,
   info: PropTypes.string,
+  itemInfo: PropTypes.string,
   onSetLayerInfo: PropTypes.func,
+  onSetItemInfo: PropTypes.func,
   onHideLayerInfo: PropTypes.func,
   onShow: PropTypes.func,
   intl: intlShape.isRequired,
@@ -394,6 +413,7 @@ const mapStateToProps = createStructuredSelector({
   activeLayers: state => selectActiveLayers(state),
   firstLanding: state => selectFirstLanding(state),
   info: state => selectInfoSearch(state),
+  itemInfo: state => selectItemInfoSearch(state),
   uiURL: state => selectUIURLByKey(state, { key: COMPONENT_KEY }),
   config: state => selectLayerConfig(state),
   moduleLayer: state => selectLayerByKey(state, MODULES.policy.featuredLayer),
@@ -406,6 +426,9 @@ function mapDispatchToProps(dispatch) {
     onSetLayers: layers => dispatch(setLayers(layers)),
     onSetLayerInfo: id => {
       dispatch(setLayerInfo(id));
+    },
+    onSetItemInfo: id => {
+      dispatch(setItemInfo(id));
     },
     onShow: (show, uiURL) =>
       dispatch(

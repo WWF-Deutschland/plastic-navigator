@@ -1,6 +1,6 @@
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import * as topojson from 'topojson-client';
-import { csv2geojson } from 'csv2geojson';
+// import { csv2geojson } from 'csv2geojson';
 import Papa from 'papaparse';
 import 'whatwg-fetch';
 import 'url-search-params-polyfill';
@@ -145,7 +145,7 @@ export function* loadDataSaga({ key, config, args }) {
   if (hasMask) {
     file = config.mask;
   }
-  console.log('loadDataSaga({ key, config, args })', key, config, args)
+  // console.log('loadDataSaga({ key, config, args })', key, config, args)
   if (type && (type === 'geojson' || type === 'topojson' || type === 'csv')) {
     // requestedSelector returns the times that entities where fetched from the API
     const requestedAt = yield select(selectLayerRequestedByKey, key);
