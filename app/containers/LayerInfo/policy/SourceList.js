@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 import { intlShape, injectIntl } from 'react-intl';
 
-import { filterSources } from 'utils/string';
+import { filterSources } from 'utils/policy';
 
 import coreMessages from 'messages';
 

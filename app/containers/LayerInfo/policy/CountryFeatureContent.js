@@ -17,39 +17,16 @@ import { DEFAULT_LOCALE } from 'i18n';
 import qe from 'utils/quasi-equals';
 import { getIndicatorScoresForCountry } from 'utils/policy';
 
-// import { getPropertyByLocale } from 'containers/Map/utils';
+import MarkdownText from 'components/MarkdownText';
+import CountryPositionSymbol from './CountryPositionSymbol';
+import CountryPolicyCommitments from './CountryPolicyCommitments';
 
 import Title from '../Title';
 import messages from '../messages';
-// import CountryPolicyCommitments from './CountryPolicyCommitments';
-// const ButtonShare = styled(props => <Button plain {...props} />)`
-//   color: ${({ theme }) => theme.global.colors.dark};
-//   stroke: ${({ theme }) => theme.global.colors.dark};
-//   text-decoration: underline;
-//   opacity: 0.5;
-//   position: relative;
-//   top: 3px;
-//   &:hover {
-//     opacity: 1;
-//     color: ${({ theme }) => theme.global.colors.brand};
-//     stroke: ${({ theme }) => theme.global.colors.brand};
-//   }
-// `;
-// const StyledTextInput = styled(TextInput)`
-//   border: 1px solid #dddddd !important;
-//   padding: 3px;
-// `;
-// const StyledTitle = styled(Title)`
-//   margin-bottom: 0;
-// `;
 
 const PanelHeader = styled(p => (
   <Box justify="between" {...p} responsive={false} />
 ))``;
-
-// const PanelBody = styled.div`
-//   padding: 12px 12px 96px;
-// `;
 
 const IndicatorLinksAKAScoreCard = styled(p => (
   <Box
@@ -116,6 +93,23 @@ const ScoreCardSelect = styled(p => <Text size="xsmall" {...p} />)`
   color: ${({ theme }) => theme.global.colors.textSecondary};
 `;
 
+const CountryPositionLabel = styled(p => <Text size="xsmall" {...p} />)`
+  font-weight: bold;
+  text-transform: uppercase;
+`;
+const PanelBody = styled.div`
+  padding: 24px 12px 96px;
+`;
+
+const IndicatorTitle = styled(p => <Text size="xxlarge" {...p} />)`
+  font-family: 'wwfregular';
+  text-transform: uppercase;
+  font-weight: normal;
+  line-height: 1;
+  text-transform: uppercase;
+`;
+const IndicatorDescription = styled(p => <MarkdownText {...p} />)``;
+
 export function CountryFeatureContent({
   featureId,
   layerData,
@@ -140,52 +134,114 @@ export function CountryFeatureContent({
     layerData,
     indicatorId,
   });
+  const currentIndicator =
+    indicatorPositions && indicatorPositions.find(i => qe(i.id, indicatorId));
   return (
-    <PanelHeader>
-      <TitleWrap>
-        <Title>{title}</Title>
-        <Box gap="xsmall">
-          <ScoreCardLabel>
-            <FormattedMessage {...messages.scoreCardLabel} />
-          </ScoreCardLabel>
-          <ScoreCardSelect>
-            <FormattedMessage {...messages.scoreCardSelect} />
-          </ScoreCardSelect>
-        </Box>
-      </TitleWrap>
-      <IndicatorLinksAKAScoreCard>
-        {indicatorPositions &&
-          indicatorPositions.map(indicator => {
-            const Icon = p => POLICY_TOPIC_ICONS[indicator.id](p);
-            return (
-              <IndicatorLinkWrapper
-                key={indicator.id}
-                active={qe(indicator.id, indicatorId)}
-              >
-                <IndicatorLink
-                  onClick={() => onSetIndicator(indicator.id)}
+    <>
+      <PanelHeader>
+        <TitleWrap>
+          <Title>{title}</Title>
+          <Box gap="xsmall">
+            <ScoreCardLabel>
+              <FormattedMessage {...messages.scoreCardLabel} />
+            </ScoreCardLabel>
+            <ScoreCardSelect>
+              <FormattedMessage {...messages.scoreCardSelect} />
+            </ScoreCardSelect>
+          </Box>
+        </TitleWrap>
+        <IndicatorLinksAKAScoreCard>
+          {indicatorPositions &&
+            indicatorPositions.map(indicator => {
+              const Icon = p => POLICY_TOPIC_ICONS[indicator.id](p);
+              return (
+                <IndicatorLinkWrapper
+                  key={indicator.id}
                   active={qe(indicator.id, indicatorId)}
-                  disabled={qe(indicator.id, indicatorId)}
                 >
-                  <IconWrap
-                    color={
-                      layerData.config['styles-by-value'] &&
-                      layerData.config['styles-by-value'][
-                        indicator.position.value
-                      ] &&
-                      layerData.config['styles-by-value'][
-                        indicator.position.value
-                      ].fillColor
-                    }
+                  <IndicatorLink
+                    onClick={() => onSetIndicator(indicator.id)}
+                    active={qe(indicator.id, indicatorId)}
+                    disabled={qe(indicator.id, indicatorId)}
                   >
-                    <Icon color="white" size="48px" />
-                  </IconWrap>
-                </IndicatorLink>
-              </IndicatorLinkWrapper>
-            );
-          })}
-      </IndicatorLinksAKAScoreCard>
-    </PanelHeader>
+                    <IconWrap
+                      color={
+                        layerData.config['styles-by-value'] &&
+                        layerData.config['styles-by-value'][
+                          indicator.position.value
+                        ] &&
+                        layerData.config['styles-by-value'][
+                          indicator.position.value
+                        ].fillColor
+                      }
+                    >
+                      <Icon color="white" size="48px" />
+                    </IconWrap>
+                  </IndicatorLink>
+                </IndicatorLinkWrapper>
+              );
+            })}
+        </IndicatorLinksAKAScoreCard>
+      </PanelHeader>
+      <PanelBody>
+        {currentIndicator && (
+          <>
+            <Box gap="small">
+              <IndicatorTitle>
+                {currentIndicator[`short_${locale}`] ||
+                  currentIndicator[`short_${DEFAULT_LOCALE}`]}
+              </IndicatorTitle>
+              <IndicatorDescription
+                content={
+                  currentIndicator[`description_${locale}`] ||
+                  currentIndicator[`description_${DEFAULT_LOCALE}`]
+                }
+              />
+            </Box>
+            {currentIndicator && currentIndicator.position && (
+              <Box gap="xsmall" margin={{ top: 'medium' }}>
+                <CountryPositionLabel>
+                  <FormattedMessage {...messages.latestPositionLabel} />
+                </CountryPositionLabel>
+                <Box
+                  direction="row"
+                  justify="start"
+                  gap="small"
+                  align="center"
+                  margin={{
+                    horizontal: 'small',
+                  }}
+                >
+                  <CountryPositionSymbol
+                    position={currentIndicator.position}
+                    config={layerData.config}
+                  />
+                  <Box flex={{ grow: 1, shrink: 1 }}>
+                    {currentIndicator.position.latestPosition && (
+                      <MarkdownText
+                        content={
+                          currentIndicator.position.latestPosition[
+                            `position_${locale}`
+                          ] ||
+                          currentIndicator.position.latestPosition[
+                            `position_${DEFAULT_LOCALE}`
+                          ]
+                        }
+                      />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            )}
+          </>
+        )}
+        <CountryPolicyCommitments
+          country={country}
+          layerData={layerData}
+          indicatorId={indicatorId}
+        />
+      </PanelBody>
+    </>
   );
 
   // <IndicatorLink
@@ -268,8 +324,8 @@ CountryFeatureContent.propTypes = {
   locale: PropTypes.string,
   supTitle: PropTypes.string,
   info: PropTypes.string,
-  indicatorId: PropTypes.object,
-  onSetIndicator: PropTypes.object,
+  indicatorId: PropTypes.string,
+  onSetIndicator: PropTypes.func,
   layerData: PropTypes.object,
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,

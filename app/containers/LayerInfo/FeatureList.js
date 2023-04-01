@@ -63,7 +63,6 @@ export function FeatureList({
   const [test, setTest] = useState('');
   const textInputRef = useRef(null);
   const { locale } = intl;
-
   const itemsFiltered =
     search && test.length > 0
       ? items.filter(item => search(item, test))

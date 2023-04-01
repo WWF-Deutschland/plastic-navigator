@@ -59,32 +59,3 @@ export const regExMultipleWords = str => {
     ? chunks.reduce((words, s) => `${words}(?=.*${s})`, '')
     : sanitise(str);
 };
-
-export const filterCountries = (item, test) => {
-  if (!test || test.length < 2) return true;
-  try {
-    // try code
-    if (
-      item.position &&
-      item.position.country_code &&
-      startsWith(lowerCase(item.position.country_code), lowerCase(test))
-    ) {
-      return true;
-    }
-    // try full label as multiple words
-    const regex = new RegExp(regExMultipleWords(test), 'i');
-    return regex.test(cleanupSearchTarget(item.label));
-  } catch (e) {
-    return true;
-  }
-};
-export const filterSources = (item, test) => {
-  if (!test || test.length < 2) return true;
-  try {
-    const label = item.label || item.id;
-    const regex = new RegExp(regExMultipleWords(test), 'i');
-    return regex.test(cleanupSearchTarget(label));
-  } catch (e) {
-    return true;
-  }
-};

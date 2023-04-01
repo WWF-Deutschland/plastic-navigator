@@ -161,6 +161,9 @@ const GlobalStyle = createGlobalStyle`
   .mpx-topic-select p {
     margin: 0;
   }
+  .mpx-markdown-text p {
+    margin: 0;
+  }
   .leaflet-layer .leaflet-mask.leaflet-interactive {
     cursor: initial !important;
   }

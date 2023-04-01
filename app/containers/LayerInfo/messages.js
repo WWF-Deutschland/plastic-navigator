@@ -13,13 +13,25 @@ export default defineMessages({
     id: `${scope}.titleReference`,
     defaultMessage: 'Reference',
   },
-  multiplePositions: {
-    id: `${scope}.multiplePositions`,
-    defaultMessage: 'Multiple Positions',
+  multipleStatements: {
+    id: `${scope}.multipleStatements`,
+    defaultMessage: 'Statements for selected topic',
+  },
+  singleStatement: {
+    id: `${scope}.singleStatement`,
+    defaultMessage: 'Statement for selected topic',
+  },
+  noStatement: {
+    id: `${scope}.noStatement`,
+    defaultMessage: 'No statement recorded',
   },
   position: {
     id: `${scope}.position`,
     defaultMessage: 'Position',
+  },
+  statementPosition: {
+    id: `${scope}.statementPosition`,
+    defaultMessage: 'Statement position',
   },
   quote: {
     id: `${scope}.quote`,
@@ -88,5 +100,9 @@ export default defineMessages({
   scoreCardSelect: {
     id: `${scope}.scoreCardSelect`,
     defaultMessage: 'Select a topic to view statements and show on map',
+  },
+  latestPositionLabel: {
+    id: `${scope}.latestPositionLabel`,
+    defaultMessage: 'Current position',
   },
 });
