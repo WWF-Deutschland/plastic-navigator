@@ -215,6 +215,7 @@ export function CountryFeatureContent({
                   <CountryPositionSymbol
                     position={currentIndicator.position}
                     config={layerData.config}
+                    inKey={false}
                   />
                   <Box flex={{ grow: 1, shrink: 1 }}>
                     {currentIndicator.position.latestPosition && (

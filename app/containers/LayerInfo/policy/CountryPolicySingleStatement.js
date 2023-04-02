@@ -109,6 +109,7 @@ const CountryPolicySingleStatement = ({
             <CountryPositionSymbol
               position={{ value: position.id }}
               config={config}
+              inKey={false}
             />
             <Box flex={{ grow: 1, shrink: 1 }}>
               <MarkdownText

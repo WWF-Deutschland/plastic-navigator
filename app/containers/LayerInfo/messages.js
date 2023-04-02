@@ -15,11 +15,11 @@ export default defineMessages({
   },
   multipleStatements: {
     id: `${scope}.multipleStatements`,
-    defaultMessage: 'Statements for selected topic',
+    defaultMessage: 'Statement positions by topic',
   },
   singleStatement: {
     id: `${scope}.singleStatement`,
-    defaultMessage: 'Statement for selected topic',
+    defaultMessage: 'Statement position for topic',
   },
   noStatement: {
     id: `${scope}.noStatement`,
@@ -92,6 +92,14 @@ export default defineMessages({
   hidePanel: {
     id: `${scope}.hidePanel`,
     defaultMessage: 'Hide panel',
+  },
+  statementPositionsLabel: {
+    id: `${scope}.statementPositionsLabel`,
+    defaultMessage: 'Statement positions for topics',
+  },
+  statementSinglePositionLabel: {
+    id: `${scope}.statementSinglePositionLabel`,
+    defaultMessage: 'Statement positions for topic',
   },
   scoreCardLabel: {
     id: `${scope}.scoreCardLabel`,

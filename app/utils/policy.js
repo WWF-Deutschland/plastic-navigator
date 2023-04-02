@@ -15,6 +15,38 @@ export const getPositionForStatement = ({ topicId, statement, tables }) => {
   return getPositionForValueAndTopic({ value, topicId, tables });
 };
 
+export const getStatementWithPositionsAndCountries = ({
+  layerData,
+  statementId,
+  locale,
+}) => {
+  const { tables, features } = layerData.data;
+  console.log(tables)
+  const statement = tables.sources.data.data.find(s => qe(s.id, statementId));
+  const statementCountries = tables['country-sources'].data.data
+    .filter(cs => qe(cs.source_id, statementId))
+    .map(cs => {
+      const country = features.find(f => qe(f.code, cs.country_code));
+      return {
+        id: country.code,
+        label: country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
+      };
+    });
+  return {
+    ...statement,
+    positions: tables.topics.data.data.reduce((memoPositions, topic) => {
+      const p = getPositionForStatement({
+        topicId: topic.id,
+        statement,
+        tables,
+      });
+      if (p) return [...memoPositions, { ...p, topic }];
+      return memoPositions;
+    }, []),
+    countries: statementCountries,
+  };
+};
+
 export const getCountryStatements = ({
   countryCode,
   tables,
@@ -86,7 +118,7 @@ export const getStrongestCountryPositionStatement = ({
 
 const mergePositions = ({ topicPosition, position }) => {
   let merged = position;
-  if (topicPosition) {
+  if (merged && topicPosition) {
     Object.keys(topicPosition).forEach(key => {
       const val = topicPosition[key];
       if (val && val.trim() !== '') {
@@ -96,8 +128,9 @@ const mergePositions = ({ topicPosition, position }) => {
         };
       }
     });
+    return { ...merged, value: parseInt(merged.id, 10) };
   }
-  return merged;
+  return null;
 };
 export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
   // get position from positions table, contains generic descriptions for each position

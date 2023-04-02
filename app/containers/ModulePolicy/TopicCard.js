@@ -7,8 +7,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { DEFAULT_LOCALE } from 'i18n';
 import Markdown from 'react-remarkable';
+import { DEFAULT_LOCALE } from 'i18n';
 
 import styled, { withTheme } from 'styled-components';
 import { Text, Box, Button } from 'grommet';
@@ -105,7 +105,6 @@ export function TopicCard({
   return (
     <TopicButtonWrap
       className="mpx-topic-select"
-      key={topic.id}
       count={count}
       secondary={secondary}
     >

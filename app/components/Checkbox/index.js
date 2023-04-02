@@ -16,10 +16,15 @@ const CheckButton = styled(p => <Button round="3px" plain {...p} />)`
     background: ${({ theme }) => theme.global.colors.light};
   }
 `;
+// prettier-ignore
 const ActiveCheckButton = styled(CheckButton)`
-  background: black;
+  background: ${({ activeColor, theme }) =>
+    activeColor ? theme.global.colors[activeColor] : 'black'};
+  border: 1px solid
+    ${({ theme, activeColor }) => theme.global.colors[activeColor || 'dark-4']};
   &:hover {
-    background: ${({ theme }) => theme.global.colors.dark};
+    background: ${({ activeColor, theme }) =>
+    activeColor ? theme.global.colors[activeColor] : 'dark'};
   }
 `;
 const LabelButton = styled(p => <Button plain {...p} />)`
@@ -28,7 +33,13 @@ const LabelButton = styled(p => <Button plain {...p} />)`
 
 const Label = styled(p => <Text size="small" {...p} />)``;
 
-export function Checkbox({ label, styledLabel, checked, onToggle }) {
+export function Checkbox({
+  label,
+  styledLabel,
+  checked,
+  onToggle,
+  activeColor,
+}) {
   return (
     <Box
       direction="row"
@@ -40,11 +51,12 @@ export function Checkbox({ label, styledLabel, checked, onToggle }) {
       <Box flex={{ shrink: 0 }}>
         {checked && (
           <ActiveCheckButton
+            activeColor={activeColor}
             icon={<Checkmark color="white" />}
-            onClick={() => onToggle()}
+            onClick={() => onToggle && onToggle()}
           />
         )}
-        {!checked && <CheckButton onClick={() => onToggle()} />}
+        {!checked && <CheckButton onClick={() => onToggle && onToggle()} />}
       </Box>
       {label && (
         <LabelButton
@@ -62,6 +74,7 @@ export function Checkbox({ label, styledLabel, checked, onToggle }) {
 Checkbox.propTypes = {
   onToggle: PropTypes.func,
   label: PropTypes.string,
+  activeColor: PropTypes.string,
   checked: PropTypes.bool,
   styledLabel: PropTypes.node,
 };

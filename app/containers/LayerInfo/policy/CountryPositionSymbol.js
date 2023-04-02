@@ -7,7 +7,6 @@ import { Box } from 'grommet';
 import { getCountryPositionSquareStyle } from './utils';
 
 const Styled = styled(p => <Box flex={false} {...p} />)`
-  width: 20px;
   margin: 0 auto;
 `;
 
@@ -15,16 +14,16 @@ const AreaWrap = styled(p => <Box {...p} />)`
   position: relative;
 `;
 
-export function CountryPositionSymbol({ position, config }) {
+export function CountryPositionSymbol({ position, config, inKey = true }) {
   const square = getCountryPositionSquareStyle({
     positionValue: position.value,
     config,
   });
 
   return (
-    <Styled>
+    <Styled isLarge={inKey}>
       <AreaWrap>
-        <KeyArea areaStyles={[square]} />
+        <KeyArea areaStyles={[square]} isLarge={!inKey} />
       </AreaWrap>
     </Styled>
   );
@@ -33,6 +32,7 @@ export function CountryPositionSymbol({ position, config }) {
 CountryPositionSymbol.propTypes = {
   position: PropTypes.object,
   config: PropTypes.object,
+  inKey: PropTypes.bool,
 };
 
 export default CountryPositionSymbol;

@@ -14,7 +14,7 @@
   "app.common.page_glossary": "Glossary",
   "app.common.page_privacy": "Privacy",
   "app.common.projectLocation": "Project location",
-  "app.common.countries": "{count} States",
+  "app.common.countries": "{count} {isSingle, select, true {State} false {States}}",
   "app.common.sources": "{count} {isSingle, select, true {Statement} false {Statements}}",
   "app.components.GroupLayers.columnInfo": "Read more",
   "app.components.GroupLayers.columnKey": "Key",
