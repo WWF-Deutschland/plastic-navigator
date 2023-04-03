@@ -510,10 +510,10 @@
           "id": "1",
           "content-id": "policy-commitments-1",
           "short": {
-            "en" : "Reduce"
+            "en" : "Ban & phase out"
           },
           "title": {
-            "en" : "Support for treaty’s global, binding measures to minimise total pollution through reduction and elimination of the production of problematic plastics"
+            "en" : "Support for global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern"
           }
         },
         {
@@ -523,17 +523,17 @@
             "en" : "Circulate"
           },
           "title": {
-            "en" : "Support for treaty’s global, binding measures to minimise total pollution through increased and non-toxic circulation of plastic products"
+            "en" : "Support for global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy"
           }
         },
         {
           "id": "3",
           "content-id": "policy-commitments-3",
           "short": {
-            "en" : "Manage"
+            "en" : "Safely manage"
           },
           "title": {
-            "en" : "Support for treaty’s global, binding measures to minimise total pollution through improved waste management, remediation activities, and other measures"
+            "en" : "Support for global requirements and standards to ensure environmentally sound management of the plastics that becomes waste"
           }
         },
         {
@@ -543,7 +543,7 @@
             "en": "Implementation support"
           },
           "title": {
-            "en": "Support for treaty’s mechanism to provide necessary support to countries for the implementation of the treaty’s obligations"
+            "en": "Support for treaty’s mechanisms to provide necessary support to countries for the effective implementation of their obligations"
           }
         }
       ],
