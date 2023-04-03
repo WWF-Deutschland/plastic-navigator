@@ -202,8 +202,8 @@ FeatureList.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetItemInfo: (id, location) => {
-      dispatch(setItemInfo(id, location));
+    onSetItemInfo: id => {
+      dispatch(setItemInfo(id));
     },
   };
 }

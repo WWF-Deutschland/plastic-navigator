@@ -39,6 +39,7 @@ export function Checkbox({
   checked,
   onToggle,
   activeColor,
+  inButton,
 }) {
   return (
     <Box
@@ -48,15 +49,25 @@ export function Checkbox({
       flex={false}
       justify="start"
     >
-      <Box flex={{ shrink: 0 }}>
+      <Box flex={{ shrink: 0 }} style={{ position: 'relative' }}>
         {checked && (
           <ActiveCheckButton
+            as={inButton ? 'span' : 'button'}
             activeColor={activeColor}
-            icon={<Checkmark color="white" />}
+            onClick={() => onToggle && onToggle()}
+          >
+            <Checkmark
+              color="white"
+              style={{ position: 'relative', top: '-3px' }}
+            />
+          </ActiveCheckButton>
+        )}
+        {!checked && (
+          <CheckButton
+            as={inButton ? 'span' : 'button'}
             onClick={() => onToggle && onToggle()}
           />
         )}
-        {!checked && <CheckButton onClick={() => onToggle && onToggle()} />}
       </Box>
       {label && (
         <LabelButton
@@ -74,6 +85,7 @@ export function Checkbox({
 Checkbox.propTypes = {
   onToggle: PropTypes.func,
   label: PropTypes.string,
+  inButton: PropTypes.bool,
   activeColor: PropTypes.string,
   checked: PropTypes.bool,
   styledLabel: PropTypes.node,

@@ -116,6 +116,7 @@ export function CountryFeatureContent({
   indicatorId,
   onSetIndicator,
   intl,
+  onSelectStatement,
 }) {
   // const [showLink, setShowLink] = useState(false);
   // const inputRef = useRef();
@@ -240,80 +241,11 @@ export function CountryFeatureContent({
           country={country}
           layerInfo={layerInfo}
           indicatorId={indicatorId}
+          onSelectStatement={onSelectStatement}
         />
       </PanelBody>
     </>
   );
-
-  // <IndicatorLink
-  //   onClick={() => onSetIndicator('details', layerId)}
-  //   active={qe(tab, 'details')}
-  //   disabled={qe(tab, 'details')}
-  //   label={
-  //     <IndicatorLinkAnchor active={qe(tab, 'details')}>
-  //       Details
-  //     </IndicatorLinkAnchor>
-  //   }
-  // />
-  // const feature = findFeature(layerInfo.data.features, featureId);
-  //
-  // if (!feature) return <LayerContent config={config} header={headerFallback} />;
-  // return (
-  //   <>
-  //     <ListItemHeader
-  //       supTitle={supTitle}
-  //       onClick={() => onSetLayerInfo(config.id, 'countries')}
-  //     />
-  //     <Box margin={{ bottom: 'large' }}>
-  //       <Box
-  //         direction="row"
-  //         justify="between"
-  //         align="center"
-  //         margin={{ bottom: 'xsmall' }}
-  //       >
-  //         <StyledTitle>{getTitle(feature, config, locale)}</StyledTitle>
-  //         <ButtonShare
-  //           plain
-  //           reverse
-  //           icon={
-  //             showLink ? (
-  //               <Close color="inherit" size="large" />
-  //             ) : (
-  //               <LinkIcon color="inherit" size="xlarge" />
-  //             )
-  //           }
-  //           gap="xsmall"
-  //           onClick={() => setShowLink(!showLink)}
-  //           title={intl.formatMessage(messages.showCountryLink)}
-  //         />
-  //       </Box>
-  //       {showLink && (
-  //         <Box
-  //           margin={{ top: 'small', bottom: 'small' }}
-  //           justify="start"
-  //           align="start"
-  //           gap="xsmall"
-  //         >
-  //           <Text size="xxsmall" color="textSecondary">
-  //             <FormattedMessage {...messages.shareCountryLink} />
-  //           </Text>
-  //           <StyledTextInput
-  //             ref={inputRef}
-  //             readOnly
-  //             focusIndicator
-  //             value={getCountryPath(info, locale)}
-  //             onFocus={() => {
-  //               if (inputRef && inputRef.current) {
-  //                 inputRef.current.select();
-  //               }
-  //             }}
-  //           />
-  //         </Box>
-  //       )}
-  //     </Box>
-  //     <CountryPolicyCommitments feature={feature} config={config} />
-  //   </>
-  // );
 }
 // <FormattedMessage {...messages.downloadPolicyData} />
 
@@ -327,6 +259,7 @@ CountryFeatureContent.propTypes = {
   info: PropTypes.string,
   indicatorId: PropTypes.string,
   onSetIndicator: PropTypes.func,
+  onSelectStatement: PropTypes.func,
   layerInfo: PropTypes.object,
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,

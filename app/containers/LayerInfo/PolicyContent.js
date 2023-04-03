@@ -234,7 +234,6 @@ export function PolicyContent({
       archived: topic.archived === '1',
     });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
-console.log('layerInfo', layerInfo)
   return (
     <>
       <ContentWrap ref={cRef}>

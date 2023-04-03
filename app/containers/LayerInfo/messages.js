@@ -113,4 +113,8 @@ export default defineMessages({
     id: `${scope}.latestPositionLabel`,
     defaultMessage: 'Current position',
   },
+  countryStatementLinkLabel: {
+    id: `${scope}.countryStatementLinkLabel`,
+    defaultMessage: 'Go to statement',
+  },
 });

@@ -313,7 +313,6 @@ export function PanelKey({
     activeContentIdRoot = PROJECT_CONFIG.id;
     isActiveProject = true;
   }
-  console.log(activeContentId, indicatorId)
   const config =
     activeContentIdRoot &&
     allConfig &&

@@ -113,9 +113,11 @@ export function SourceContent({
   layerInfo,
   onSetIndicator,
   intl,
+  layerId,
 }) {
   const { locale } = intl;
   if (!sourceId || !layerInfo) return null;
+
   const sourceWithPositions = getStatementWithPositionsAndCountries({
     layerInfo,
     statementId: sourceId,
@@ -172,7 +174,7 @@ export function SourceContent({
                       </TopicTitleShort>
                       <Box direction="row" align="center" gap="small">
                         <Icon color="black" />
-                        <Checkbox checked={active} activeColor="brand" />
+                        <Checkbox inButton checked={active} activeColor="brand" />
                       </Box>
                     </Box>
                     <Box margin={{ top: 'xsmall' }}>
@@ -261,7 +263,9 @@ export function SourceContent({
         {sourceWithPositions && sourceWithPositions.countries && sourceWithPositions.countries.length > 0 && (
           <Section>
             <FeatureListCollapsable
+              isSourceList={false}
               items={sourceWithPositions.countries}
+              layerId={layerId}
               title={
                 intl.formatMessage(
                   coreMessages.countries,
@@ -282,6 +286,7 @@ export function SourceContent({
 SourceContent.propTypes = {
   indicatorId: PropTypes.string,
   sourceId: PropTypes.string,
+  layerId: PropTypes.string,
   layerInfo: PropTypes.object,
   onSetIndicator: PropTypes.func,
   intl: intlShape.isRequired,

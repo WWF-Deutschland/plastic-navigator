@@ -6,7 +6,12 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import styled from 'styled-components';
+
+import { setItemInfo } from 'containers/App/actions';
 import { Button, Box, Heading, Text } from 'grommet';
 
 import { ArrowDown, ArrowUp } from 'components/Icons';
@@ -21,7 +26,13 @@ const ListTitleCollapsable = styled(p => <Heading level="5" {...p} />)`
 const FeatureListWrap = styled(Box)`
   margin: 30px 0 50px;
 `;
-
+const FeatureButton = styled(p => (
+  <Button {...p} plain fill="horizontal" alignSelf="start" />
+))`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 const TitleButton = styled(Button)`
   border-bottom: 1px solid ${({ theme }) => theme.global.colors.dark};
 `;
@@ -34,7 +45,13 @@ const IconWrap = styled(p => <Box {...p} responsive={false} />)`
     over || expand ? theme.global.colors.light : 'transparent'};
 `;
 
-export function FeatureListCollapsable({ title, items }) {
+export function FeatureListCollapsable({
+  title,
+  items,
+  layerId,
+  isSourceList,
+  onSetItemInfo,
+}) {
   const [expand, setExpand] = useState(false);
   const [over, setOver] = useState(false);
   const sorted = items.sort((a, b) =>
@@ -65,7 +82,7 @@ export function FeatureListCollapsable({ title, items }) {
           </Box>
         }
       />
-      {expand && (
+      {expand && sorted.lenght > 0 && (
         <Box>
           {sorted.map(item => (
             <Box
@@ -83,6 +100,25 @@ export function FeatureListCollapsable({ title, items }) {
           ))}
         </Box>
       )}
+      {expand && sorted.length > 0 && (
+        <Box>
+          {sorted.map(item => (
+            <FeatureButton
+              key={item.id}
+              onClick={() =>
+                isSourceList
+                  ? onSetItemInfo(`${layerId}|source-${item.id}`)
+                  : onSetItemInfo(`${layerId}|country-${item.id}`)
+              }
+              label={
+                <Box margin={{ vertical: 'xsmall' }}>
+                  <Text>{item.label || item.id}</Text>
+                </Box>
+              }
+            />
+          ))}
+        </Box>
+      )}
     </FeatureListWrap>
   );
 }
@@ -90,6 +126,22 @@ export function FeatureListCollapsable({ title, items }) {
 FeatureListCollapsable.propTypes = {
   items: PropTypes.array,
   title: PropTypes.string,
+  layerId: PropTypes.string,
+  isSourceList: PropTypes.bool,
+  onSetItemInfo: PropTypes.func,
 };
 
-export default FeatureListCollapsable;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetItemInfo: id => {
+      dispatch(setItemInfo(id));
+    },
+  };
+}
+
+const withConnect = connect(
+  null,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(FeatureListCollapsable);

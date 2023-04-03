@@ -16,6 +16,7 @@ import { POLICY_LAYER } from 'config';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { startsWith } from 'utils/string';
 import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
+import { setItemInfo } from 'containers/App/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 
 import SourceContent from './policy/SourceContent';
@@ -54,6 +55,7 @@ export function ItemInfo({
   item,
   layerInfo,
   onSetTopic,
+  onSetItemInfo,
   // onShowLayerPanel,
 }) {
   const cRef = useRef();
@@ -66,7 +68,6 @@ export function ItemInfo({
   }
   const [layerIdX, indicatorId] = layerIndicator.split('_');
   const [type, itemId] = itemType.split(/-(.*)/s);
-
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -83,6 +84,7 @@ export function ItemInfo({
                   type,
                   layerIdX,
                 })}
+                layerId={layerIndicator}
                 layerInfo={layerInfo}
                 onClose={onClose}
               />
@@ -98,6 +100,9 @@ export function ItemInfo({
                   type,
                   layerIdX,
                 })}
+                onSelectStatement={statementId =>
+                  onSetItemInfo(`${layerIndicator}|source-${statementId}`)
+                }
                 onClose={onClose}
               />
             )}
@@ -113,6 +118,7 @@ ItemInfo.propTypes = {
   item: PropTypes.string,
   onClose: PropTypes.func,
   onSetTopic: PropTypes.func,
+  onSetItemInfo: PropTypes.func,
   layerInfo: PropTypes.object,
 };
 
@@ -123,10 +129,17 @@ const mapStateToProps = createStructuredSelector({
     return selectLayerByKey(state, isPolicy ? POLICY_LAYER : layerId);
   },
 });
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetItemInfo: (id, location) => {
+      dispatch(setItemInfo(id, location));
+    },
+  };
+}
 
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export default compose(withConnect)(ItemInfo);

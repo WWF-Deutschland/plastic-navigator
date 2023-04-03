@@ -63,6 +63,7 @@ const CountryPolicySingleStatement = ({
   multiple,
   intl,
   listCountries,
+  onSelectStatement,
 }) => {
   const { locale } = intl;
   const position = getPositionForStatement({
@@ -137,6 +138,16 @@ const CountryPolicySingleStatement = ({
           </Quote>
         </Section>
       )}
+      <Section>
+        <StyledButton
+          onClick={() => onSelectStatement(statement.id)}
+          label={
+            <Text size="xsmall">
+              <FormattedMessage {...messages.countryStatementLinkLabel} />
+            </Text>
+          }
+        />
+      </Section>
       {listCountries && statement && statement.countries && statement.countries.length > 0 && (
         <FeatureListCollapsable
           items={statement.countries}
@@ -191,11 +202,12 @@ const CountryPolicySingleStatement = ({
 
 CountryPolicySingleStatement.propTypes = {
   config: PropTypes.object, // the layer configuration
-  tables: PropTypes.object, // the feature
-  statement: PropTypes.object, // the feature
-  listCountries: PropTypes.bool, // the feature
-  multiple: PropTypes.bool, // the feature
-  indicatorId: PropTypes.string, // the feature
+  tables: PropTypes.object,
+  statement: PropTypes.object,
+  listCountries: PropTypes.bool,
+  multiple: PropTypes.bool,
+  indicatorId: PropTypes.string,
+  onSelectStatement: PropTypes.func,
   intl: intlShape.isRequired,
 };
 
