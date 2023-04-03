@@ -16,12 +16,11 @@ export const getPositionForStatement = ({ topicId, statement, tables }) => {
 };
 
 export const getStatementWithPositionsAndCountries = ({
-  layerData,
+  layerInfo,
   statementId,
   locale,
 }) => {
-  const { tables, features } = layerData.data;
-  console.log(tables)
+  const { tables, features } = layerInfo.data;
   const statement = tables.sources.data.data.find(s => qe(s.id, statementId));
   const statementCountries = tables['country-sources'].data.data
     .filter(cs => qe(cs.source_id, statementId))
@@ -211,32 +210,44 @@ export const getCountryPositionForTopicAndDate = ({
 
 export const getCountryPositionStatsForTopicAndDate = ({
   indicatorId,
-  layerData,
+  layerInfo,
   dateString,
+  includeOpposing = false,
+  includeWithout = false,
+  includeHidden = false,
 }) => {
   const topicPositions =
-    layerData.tables &&
-    layerData.tables['topic-positions'] &&
-    layerData.tables['topic-positions'].data.data.filter(tp =>
+    layerInfo.data.tables &&
+    layerInfo.data.tables['topic-positions'] &&
+    layerInfo.data.tables['topic-positions'].data.data.filter(tp =>
       qe(tp.topic_id, indicatorId),
     );
   const positions = topicPositions.map(tp => {
-    const pos = layerData.tables.positions
-      ? layerData.tables.positions.data.data.find(p => qe(p.id, tp.position_id))
+    // prettier-ignore
+    const pos = layerInfo.data.tables.positions
+      ? layerInfo.data.tables.positions.data.data.find(p =>
+        qe(p.id, tp.position_id),
+      )
       : null;
     return pos ? mergePositions({ topicPosition: tp, position: pos }) : tp;
   });
-  const countryPositions =
-    layerData.features &&
-    layerData.features.map(country => ({
-      code: country.code,
-      position: getCountryPositionForTopicAndDate({
-        countryCode: country.code,
-        topicId: indicatorId,
-        dateString,
-        tables: layerData.tables,
-      }),
-    }));
+  const countryPositions = getCountriesWithStrongestPosition({
+    indicatorId,
+    layerInfo,
+    dateString,
+    includeOpposing,
+    includeWithout,
+    includeHidden,
+  });
+  let positionsClean = positions;
+  if (!includeOpposing || !includeWithout) {
+    positionsClean = positions.filter(
+      p =>
+        (p.value === 0 && includeWithout) ||
+        (p.value < 0 && includeOpposing) ||
+        p.value > 0,
+    );
+  }
   return (
     positions &&
     Object.values(countryPositions).reduce((statsMemo, countryPosition) => {
@@ -247,19 +258,19 @@ export const getCountryPositionStatsForTopicAndDate = ({
         }
         return { ...stat, count: stat.count || 0 };
       });
-    }, positions)
+    }, positionsClean)
   );
 };
 
-export const getTopicsFromData = layerData => {
+export const getTopicsFromData = layerInfo => {
   if (
-    layerData &&
-    layerData.data &&
-    layerData.data.tables &&
-    layerData.data.tables.topics &&
-    layerData.data.tables.topics.data.data
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data.data
   ) {
-    return [...layerData.data.tables.topics.data.data].sort((a, b) => {
+    return [...layerInfo.data.tables.topics.data.data].sort((a, b) => {
       if (a.archived === '1' && b.archived !== '1') {
         return 1;
       }
@@ -271,78 +282,80 @@ export const getTopicsFromData = layerData => {
   }
   return null;
 };
-export const getTopicFromData = ({ indicatorId, layerData }) => {
+export const getTopicFromData = ({ indicatorId, layerInfo }) => {
   if (
-    layerData &&
-    layerData.data &&
-    layerData.data.tables &&
-    layerData.data.tables.topics &&
-    layerData.data.tables.topics.data.data
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data.data
   ) {
-    return layerData.data.tables.topics.data.data[indicatorId];
+    return layerInfo.data.tables.topics.data.data[indicatorId];
   }
   return null;
 };
 export const getPreviousTopicFromData = ({
   indicatorId,
-  layerData,
+  layerInfo,
   archived,
 }) => {
   if (
-    layerData &&
-    layerData.data &&
-    layerData.data.tables &&
-    layerData.data.tables.topics &&
-    layerData.data.tables.topics.data.data
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data.data
   ) {
-    const validTopicIds = layerData.data.tables.topics.data.data
+    const validTopicIds = layerInfo.data.tables.topics.data.data
       .filter(t => (archived ? t.archived === '1' : t.archived !== '1'))
       .map(t => parseInt(t.id, 10));
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const prevIndex =
       currentIndex === 0 ? validTopicIds.length - 1 : currentIndex - 1;
-    return layerData.data.tables.topics.data.data[validTopicIds[prevIndex]];
+    return layerInfo.data.tables.topics.data.data[validTopicIds[prevIndex]];
   }
   return null;
 };
-export const getNextTopicFromData = ({ indicatorId, layerData, archived }) => {
+export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
   if (
-    layerData &&
-    layerData.data &&
-    layerData.data.tables &&
-    layerData.data.tables.topics &&
-    layerData.data.tables.topics.data.data
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data.data
   ) {
-    const validTopicIds = layerData.data.tables.topics.data.data
+    const validTopicIds = layerInfo.data.tables.topics.data.data
       .filter(t => (archived ? t.archived === '1' : t.archived !== '1'))
       .map(t => parseInt(t.id, 10));
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const nextIndex =
       currentIndex === validTopicIds.length - 1 ? 0 : currentIndex + 1;
-    return layerData.data.tables.topics.data.data[validTopicIds[nextIndex]];
+    return layerInfo.data.tables.topics.data.data[validTopicIds[nextIndex]];
   }
   return null;
 };
 
 export const getCountriesWithStrongestPosition = ({
   indicatorId,
-  layerData,
+  layerInfo,
   locale,
+  dateString,
   includeOpposing = true,
   includeWithout = false,
   includeHidden = false,
 }) =>
-  layerData.data &&
-  layerData.data.features &&
-  layerData.data.features.reduce((listMemo, country) => {
+  layerInfo.data &&
+  layerInfo.data.features &&
+  layerInfo.data.features.reduce((listMemo, country) => {
     if (!includeHidden && !excludeHiddenCountries(country)) {
       return listMemo;
     }
     const position = getCountryPositionForTopicAndDate({
       countryCode: country.code,
       topicId: indicatorId,
-      tables: layerData.data.tables,
+      tables: layerInfo.data.tables,
       includeOpposing,
+      dateString,
     });
     // console.log('country', country.code)
     // console.log('position', position.value)
@@ -356,18 +369,21 @@ export const getCountriesWithStrongestPosition = ({
       ...listMemo,
       {
         id: country.code,
-        label: country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
+        code: country.code,
+        label:
+          (locale && country[`name_${locale}`]) ||
+          country[`name_${DEFAULT_LOCALE}`],
         position,
       },
     ];
   }, []);
 
-export const getStatementsForTopic = ({ indicatorId, layerData, locale }) =>
-  layerData &&
-  layerData.data &&
-  layerData.data.tables &&
-  layerData.data.tables.sources &&
-  layerData.data.tables.sources.data.data.reduce((listMemo, statement) => {
+export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
+  layerInfo &&
+  layerInfo.data &&
+  layerInfo.data.tables &&
+  layerInfo.data.tables.sources &&
+  layerInfo.data.tables.sources.data.data.reduce((listMemo, statement) => {
     if (
       statement[`position_t${indicatorId}`] !== '' &&
       !qe(statement[`position_t${indicatorId}`], 0)
@@ -389,14 +405,14 @@ export const getStatementsForTopic = ({ indicatorId, layerData, locale }) =>
     return listMemo;
   }, []);
 
-export const getIndicatorScoresForCountry = ({ country, layerData }) => {
-  const topics = getTopicsFromData(layerData);
+export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
+  const topics = getTopicsFromData(layerInfo);
   return topics.map(t => ({
     ...t,
     position: getCountryPositionForTopicAndDate({
       countryCode: country.code,
       topicId: t.id,
-      tables: layerData.data.tables,
+      tables: layerInfo.data.tables,
     }),
   }));
 };
@@ -431,4 +447,48 @@ export const filterSources = (item, test) => {
   } catch (e) {
     return true;
   }
+};
+
+export const getTopicTitle = ({ layerInfo, indicatorId, locale }) => {
+  if (
+    typeof indicatorId !== 'undefined' &&
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data
+  ) {
+    const topic = layerInfo.data.tables.topics.data.data.find(t =>
+      qe(t.id, indicatorId),
+    );
+    if (topic) {
+      return (
+        topic[`short_${locale}`] ||
+        topic[`title_${locale}`] ||
+        topic[`short_${DEFAULT_LOCALE}`] ||
+        topic[`title_${DEFAULT_LOCALE}`]
+      );
+    }
+  }
+
+  return 'Topic not found';
+};
+export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
+  if (
+    typeof indicatorId !== 'undefined' &&
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data
+  ) {
+    const topic = layerInfo.data.tables.topics.data.data.find(t =>
+      qe(t.id, indicatorId),
+    );
+    if (topic) {
+      return topic[`annotation_${locale}`] || topic[`annotation_${locale}`];
+    }
+  }
+
+  return null;
 };

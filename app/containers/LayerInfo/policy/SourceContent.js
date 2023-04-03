@@ -110,14 +110,14 @@ const StyledButton = styled(p => (
 export function SourceContent({
   sourceId,
   indicatorId,
-  layerData,
+  layerInfo,
   onSetIndicator,
   intl,
 }) {
   const { locale } = intl;
-  if (!sourceId || !layerData) return null;
+  if (!sourceId || !layerInfo) return null;
   const sourceWithPositions = getStatementWithPositionsAndCountries({
-    layerData,
+    layerInfo,
     statementId: sourceId,
     locale,
   });
@@ -196,7 +196,7 @@ export function SourceContent({
                     >
                       <CountryPositionSymbol
                         position={p}
-                        config={layerData.config}
+                        config={layerInfo.config}
                         inKey={false}
                       />
                       <Box flex={{ grow: 1, shrink: 1 }}>
@@ -282,7 +282,7 @@ export function SourceContent({
 SourceContent.propTypes = {
   indicatorId: PropTypes.string,
   sourceId: PropTypes.string,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   onSetIndicator: PropTypes.func,
   intl: intlShape.isRequired,
 };

@@ -52,7 +52,7 @@ const ContentWrap = styled.div`
 export function ItemInfo({
   onClose,
   item,
-  layerData,
+  layerInfo,
   onSetTopic,
   // onShowLayerPanel,
 }) {
@@ -83,7 +83,7 @@ export function ItemInfo({
                   type,
                   layerIdX,
                 })}
-                layerData={layerData}
+                layerInfo={layerInfo}
                 onClose={onClose}
               />
             )}
@@ -91,7 +91,7 @@ export function ItemInfo({
               <CountryFeatureContent
                 featureId={itemId}
                 indicatorId={indicatorId}
-                layerData={layerData}
+                layerInfo={layerInfo}
                 onSetIndicator={topicId => onSetTopic({
                   topicId,
                   itemId,
@@ -113,11 +113,11 @@ ItemInfo.propTypes = {
   item: PropTypes.string,
   onClose: PropTypes.func,
   onSetTopic: PropTypes.func,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  layerData: (state, { item }) => {
+  layerInfo: (state, { item }) => {
     const layerId = getLayerIdFromView(item);
     const isPolicy = startsWith(layerId, POLICY_LAYER);
     return selectLayerByKey(state, isPolicy ? POLICY_LAYER : layerId);

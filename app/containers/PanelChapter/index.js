@@ -289,7 +289,7 @@ export function PanelChapter({
                             config={config}
                             simple
                             dark
-                            layerData={
+                            layerInfo={
                               config && jsonLayers[config.id]
                                 ? jsonLayers[config.id].data
                                 : null

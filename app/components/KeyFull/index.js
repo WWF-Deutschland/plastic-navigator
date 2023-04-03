@@ -28,13 +28,13 @@ const SubTitleWrap = styled.div`
 `;
 
 export function KeyFull({
-  config,
   id,
   indicatorId,
   simple,
   intl,
   dark,
-  layerData,
+  layerInfo,
+  config,
   excludeEmpty,
 }) {
   const { key, render, style, data, icon, featureStyle } = config;
@@ -52,8 +52,12 @@ export function KeyFull({
   /* eslint-disable react/no-danger */
   // prettier-ignore
   const range =
-    isCircle && layerData && layerData.features && render.attribute
-      ? getRange(layerData.features, render.attribute)
+    isCircle &&
+    render.attribute &&
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.features
+      ? getRange(layerInfo.data.features, render.attribute)
       : null;
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
@@ -108,7 +112,7 @@ export function KeyFull({
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
-          layerData={layerData}
+          layerInfo={layerInfo}
           excludeEmpty={excludeEmpty}
         />
       )}
@@ -130,7 +134,7 @@ export function KeyFull({
           config={config}
           simple={simple}
           dark={dark}
-          layerData={layerData}
+          layerInfo={layerInfo}
           excludeEmpty={excludeEmpty}
           indicatorId={indicatorId}
         />
@@ -152,8 +156,8 @@ export function KeyFull({
 }
 
 KeyFull.propTypes = {
-  config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object, // { config, data }
+  config: PropTypes.object, // { config, data }
   id: PropTypes.string,
   indicatorId: PropTypes.string,
   simple: PropTypes.bool,

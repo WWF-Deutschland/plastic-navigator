@@ -54,33 +54,24 @@ const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
 export function Areas({
   config,
   intl,
-  title,
   simple,
-  layerData,
+  layerInfo,
   excludeEmpty,
   indicatorId,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
-  let squares = [{ style: { color: 'black' }, title, id: config.id }];
+  let squares = [];
   const isPolicy = POLICY_LAYER === config.id;
-  // const countries =
-  //   isPolicy &&
-  //   layerData &&
-  //   featuresToCountriesWithStrongestPosition(
-  //     config,
-  //     excludeCountryFeatures(config, layerData.features),
-  //     locale,
-  //   );
+
   const countryStats =
     isPolicy &&
-    layerData &&
+    layerInfo &&
     getCountryPositionStatsForTopicAndDate({
       config,
-      layerData,
+      layerInfo,
       indicatorId,
     });
-
   if (featureStyle && featureStyle.multiple === 'true') {
     squares = key.values.reduce((memo, val) => {
       let t;
@@ -134,7 +125,7 @@ export function Areas({
         return parseInt(stat.id, 10) > 0;
       })
       .sort((a, b) => (parseInt(a.id, 10) < parseInt(b.id, 10) ? 1 : -1));
-  } else if (config['styles-by-value'] && !countryStats) {
+  } else if (config['styles-by-value'] && !countryStats && !isPolicy) {
     squares = Object.keys(config['styles-by-value'])
       .filter(val => {
         const style = config['styles-by-value'][val];
@@ -176,8 +167,7 @@ export function Areas({
 
 Areas.propTypes = {
   config: PropTypes.object,
-  layerData: PropTypes.object,
-  title: PropTypes.string,
+  layerInfo: PropTypes.object,
   indicatorId: PropTypes.string,
   simple: PropTypes.bool,
   excludeEmpty: PropTypes.bool,

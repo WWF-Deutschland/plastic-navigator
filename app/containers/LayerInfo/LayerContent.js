@@ -44,7 +44,7 @@ export function LayerContent({
   config,
   onToggleLayer,
   isActive,
-  layerData,
+  layerInfo,
   onLoadLayer,
   inject = [],
   title,
@@ -74,7 +74,7 @@ export function LayerContent({
     if (config.render && config.render.type === 'scaledCircle') {
       onLoadLayer(config.id, config);
     }
-  }, [layerData]);
+  }, [layerInfo]);
 
   // prettier-ignore
   return (
@@ -99,7 +99,7 @@ export function LayerContent({
                   <Box margin={{ left: '30px', }} flex={false}>
                     <KeyFull
                       config={config}
-                      layerData={layerData && layerData.data}
+                      layerInfo={layerInfo && layerInfo.data}
                     />
                   </Box>
                 </Box>
@@ -120,7 +120,7 @@ LayerContent.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   inject: PropTypes.array,
   isActive: PropTypes.bool,
   title: PropTypes.string,
@@ -145,7 +145,7 @@ const mapStateToProps = createStructuredSelector({
       key: config['content-id'] || config.id,
     });
   },
-  layerData: (state, { config }) => selectLayerByKey(state, config.id),
+  layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
 });
 

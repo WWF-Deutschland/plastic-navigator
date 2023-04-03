@@ -199,7 +199,7 @@ DropContent.propTypes = {
 export function PolicyContent({
   view,
   config,
-  layerData,
+  layerInfo,
   intl,
   isModule,
   onHome,
@@ -217,24 +217,24 @@ export function PolicyContent({
   const [layerId, subView] = decodeInfoView(view);
   const [, indicatorId] = layerId.split('_');
   const tab = subView || 'details';
-  const topicOptions = getTopicsFromData(layerData);
-  const topic = layerData && getTopicFromData({ indicatorId, layerData });
+  const topicOptions = getTopicsFromData(layerInfo);
+  const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
   const nextTopic =
     topic &&
     getNextTopicFromData({
       indicatorId,
-      layerData,
+      layerInfo,
       archived: topic.archived === '1',
     });
   const prevTopic =
     topic &&
     getPreviousTopicFromData({
       indicatorId,
-      layerData,
+      layerInfo,
       archived: topic.archived === '1',
     });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
-
+console.log('layerInfo', layerInfo)
   return (
     <>
       <ContentWrap ref={cRef}>
@@ -365,12 +365,12 @@ export function PolicyContent({
             </Tabs>
           </PanelHeader>
         )}
-        {config && tab === 'countries' && layerData && (
+        {config && tab === 'countries' && layerInfo && (
           <PanelBody>
             <CountryList
               countries={getCountriesWithStrongestPosition({
                 indicatorId,
-                layerData,
+                layerInfo,
                 locale,
               })}
               topic={topic}
@@ -378,12 +378,12 @@ export function PolicyContent({
             />
           </PanelBody>
         )}
-        {config && tab === 'statements' && layerData && (
+        {config && tab === 'statements' && layerInfo && (
           <PanelBody>
             <SourceList
               sources={getStatementsForTopic({
                 indicatorId,
-                layerData,
+                layerInfo,
                 locale,
               })}
               topic={topic}
@@ -408,7 +408,7 @@ export function PolicyContent({
 PolicyContent.propTypes = {
   view: PropTypes.string,
   config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   theme: PropTypes.object,
   intl: intlShape,
   onHome: PropTypes.func,
@@ -419,7 +419,7 @@ PolicyContent.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  layerData: (state, { config }) => selectLayerByKey(state, config.id),
+  layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
 });
 
 function mapDispatchToProps(dispatch) {

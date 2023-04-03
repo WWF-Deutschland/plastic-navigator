@@ -59,7 +59,7 @@ export function IconAlt({
   config,
   intl,
   dark,
-  layerData,
+  layerInfo,
   simple,
   excludeEmpty,
 }) {
@@ -68,10 +68,11 @@ export function IconAlt({
   let circles;
   const countries =
     POLICY_LAYER === config.id &&
-    layerData &&
+    layerInfo &&
+    layerInfo.data &&
     featuresToCountriesWithStrongestPosition(
       config,
-      excludeCountryFeatures(config, layerData.features),
+      excludeCountryFeatures(config, layerInfo.data.features),
       locale,
     );
 
@@ -159,7 +160,7 @@ export function IconAlt({
 IconAlt.propTypes = {
   // data: PropTypes.object,
   config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   // title: PropTypes.string,
   simple: PropTypes.bool,
   excludeEmpty: PropTypes.bool,

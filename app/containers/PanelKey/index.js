@@ -23,10 +23,11 @@ import {
 } from 'components/Icons';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { PROJECT_CONFIG } from 'config';
+import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 
 import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
+import { getTopicTitle, getTopicMapAnnotation } from 'utils/policy';
 
 import { selectUIStateByKey } from 'containers/App/selectors';
 import {
@@ -232,6 +233,33 @@ const OFFSET_STEP = 80;
 const MIN_EXPAND = 'xlarge';
 const MAX_FOLD = 'large';
 
+const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
+  const { locale } = intl;
+  let title = config.title[locale] || config.title[DEFAULT_LOCALE];
+  const isActivePolicyTopic = config.id === POLICY_LAYER;
+  if (isActivePolicyTopic && jsonLayerInfo) {
+    title = `${title}: ${getTopicTitle({
+      layerInfo: jsonLayerInfo,
+      indicatorId,
+      locale,
+    })}`;
+  }
+  return title;
+};
+const getLayerAbout = ({ intl, config, jsonLayerInfo, indicatorId }) => {
+  const { locale } = intl;
+  let title = config.about[locale] || config.about[DEFAULT_LOCALE];
+  const isActivePolicyTopic = config.id === POLICY_LAYER;
+  if (isActivePolicyTopic && jsonLayerInfo) {
+    title = getTopicMapAnnotation({
+      layerInfo: jsonLayerInfo,
+      indicatorId,
+      locale,
+    });
+  }
+  return title;
+};
+
 export function PanelKey({
   onLayerInfo,
   layersConfig,
@@ -276,17 +304,20 @@ export function PanelKey({
 
   const { locale } = intl;
   const allConfig = layersConfig && [...layersConfig, PROJECT_CONFIG];
-  let activeContentId = active || activeLayerIds[0];
+  const activeContentId = active || activeLayerIds[0];
   let indicatorId = null;
-  [activeContentId, indicatorId] = activeContentId.split('_');
+  let activeContentIdRoot = null;
+  [activeContentIdRoot, indicatorId] = activeContentId.split('_');
+  let isActiveProject;
   if (startsWith(activeContentId, `${PROJECT_CONFIG.id}-`)) {
-    activeContentId = PROJECT_CONFIG.id;
+    activeContentIdRoot = PROJECT_CONFIG.id;
+    isActiveProject = true;
   }
+  console.log(activeContentId, indicatorId)
   const config =
-    activeContentId &&
+    activeContentIdRoot &&
     allConfig &&
-    allConfig.find(l => l.id === activeContentId);
-  const isActiveProject = activeContentId === PROJECT_CONFIG.id;
+    allConfig.find(l => l.id === activeContentIdRoot);
 
   let hasAlreadyProject = false;
   const cleanActiveLayerIds =
@@ -299,7 +330,7 @@ export function PanelKey({
       return pass ? [...memo, cleanId] : memo;
     }, []);
 
-  const jsonLayerActive = config ? jsonLayers[config.id] : null;
+  const activeJsonLayerInfo = config ? jsonLayers[config.id] : null;
   const isModuleLayer =
     config &&
     currentModule &&
@@ -339,12 +370,12 @@ export function PanelKey({
                     return (
                       <KeyLI key={id}>
                         <ButtonKey
-                          activeLayer={open && id.startsWith(activeContentId)}
+                          activeLayer={open && id.startsWith(activeContentIdRoot)}
                           onClick={() => {
                             onSetOpen(true);
                             setActive(id);
                           }}
-                          disabled={open && id.startsWith(activeContentId)}
+                          disabled={open && id.startsWith(activeContentIdRoot)}
                         >
                           {conf && <KeyIcon config={conf} />}
                         </ButtonKey>
@@ -420,13 +451,18 @@ export function PanelKey({
                             {isActiveProject ? (
                               <FormattedMessage {...messages.keyProjectsTitle} />
                             ) : (
-                              config.title[locale] || config.title[DEFAULT_LOCALE]
+                              getLayerTitle({
+                                intl,
+                                config,
+                                jsonLayerInfo: activeJsonLayerInfo,
+                                indicatorId,
+                              })
                             )}
                           </LayerTitle>
                           {!isActiveProject && !isModuleLayer && (
                             <LayerButtonInfo
                               onClick={() => {
-                                onLayerInfo(config['content-default'] || config.id);
+                                onLayerInfo(activeContentId);
                               }}
                               icon={<Info />}
                             />
@@ -434,7 +470,7 @@ export function PanelKey({
                         </LayerTitleWrap>
                         <KeyFull
                           config={config}
-                          layerData={jsonLayerActive && jsonLayerActive.data}
+                          layerInfo={activeJsonLayerInfo}
                           excludeEmpty
                           indicatorId={indicatorId}
                         />
@@ -444,20 +480,25 @@ export function PanelKey({
                 )}
                 {tab === 1 && isMaxSize(size, MAX_FOLD) && (
                   <Tab>
-                    {config && locale && (
+                    {activeJsonLayerInfo && locale && (
                       <Box flex={false}>
                         <LayerTitleWrap>
                           <LayerTitle>
                             {isActiveProject ? (
                               <FormattedMessage {...messages.keyProjectsTitle} />
                             ) : (
-                              config.title[locale] || config.title[DEFAULT_LOCALE]
+                              getLayerTitle({
+                                intl,
+                                config,
+                                jsonLayerInfo: activeJsonLayerInfo,
+                                indicatorId,
+                              })
                             )}
                           </LayerTitle>
                           {!isActiveProject && !isModuleLayer && (
                             <LayerButtonInfo
                               onClick={() => {
-                                onLayerInfo(config.id);
+                                onLayerInfo(activeContentId);
                               }}
                               icon={<Info />}
                             />
@@ -495,9 +536,13 @@ export function PanelKey({
                       <Text>
                         {isActiveProject ? (
                           <FormattedMessage {...messages.keyProjectsAbout} />
-                        ) : (
-                          config.about[locale] || config.about[DEFAULT_LOCALE]
-                        )}
+                        ) :
+                          getLayerAbout({
+                            intl,
+                            config,
+                            jsonLayerInfo: activeJsonLayerInfo,
+                            indicatorId,
+                          })}
                       </Text>
                     )}
                   </Box>

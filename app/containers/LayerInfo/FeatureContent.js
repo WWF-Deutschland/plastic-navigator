@@ -39,7 +39,7 @@ export function FeatureContent({
   featureId,
   config, // layer config
   locale,
-  layerData,
+  layerInfo,
   onLoadLayer,
   supTitle,
   onSetLayerInfo,
@@ -48,9 +48,9 @@ export function FeatureContent({
   useEffect(() => {
     onLoadLayer(config.id, config);
   }, [config]);
-  if (!featureId || !config || !layerData) return null;
+  if (!featureId || !config || !layerInfo) return null;
 
-  const feature = findFeature(layerData.data.features, featureId);
+  const feature = findFeature(layerInfo.data.features, featureId);
   if (!feature) return <LayerContent config={config} header={headerFallback} />;
   return (
     <>
@@ -70,13 +70,13 @@ FeatureContent.propTypes = {
   featureId: PropTypes.string,
   locale: PropTypes.string,
   supTitle: PropTypes.string,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   headerFallback: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
   locale: state => selectLocale(state),
-  layerData: (state, { config }) => selectLayerByKey(state, config.id),
+  layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
 });
 
 function mapDispatchToProps(dispatch) {

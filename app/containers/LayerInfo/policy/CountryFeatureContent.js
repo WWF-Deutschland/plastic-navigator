@@ -112,7 +112,7 @@ const IndicatorDescription = styled(p => <MarkdownText {...p} />)``;
 
 export function CountryFeatureContent({
   featureId,
-  layerData,
+  layerInfo,
   indicatorId,
   onSetIndicator,
   intl,
@@ -125,13 +125,13 @@ export function CountryFeatureContent({
   //   }
   // }, [showLink, inputRef]);
   const { locale } = intl;
-  if (!featureId || !layerData) return null;
-  const country = layerData.data.features.find(f => f.code === featureId);
+  if (!featureId || !layerInfo) return null;
+  const country = layerInfo.data.features.find(f => f.code === featureId);
   if (!country) return null;
   const title = country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`];
   const indicatorPositions = getIndicatorScoresForCountry({
     country,
-    layerData,
+    layerInfo,
     indicatorId,
   });
   const currentIndicator =
@@ -166,11 +166,11 @@ export function CountryFeatureContent({
                   >
                     <IconWrap
                       color={
-                        layerData.config['styles-by-value'] &&
-                        layerData.config['styles-by-value'][
+                        layerInfo.config['styles-by-value'] &&
+                        layerInfo.config['styles-by-value'][
                           indicator.position.value
                         ] &&
-                        layerData.config['styles-by-value'][
+                        layerInfo.config['styles-by-value'][
                           indicator.position.value
                         ].fillColor
                       }
@@ -214,7 +214,7 @@ export function CountryFeatureContent({
                 >
                   <CountryPositionSymbol
                     position={currentIndicator.position}
-                    config={layerData.config}
+                    config={layerInfo.config}
                     inKey={false}
                   />
                   <Box flex={{ grow: 1, shrink: 1 }}>
@@ -238,7 +238,7 @@ export function CountryFeatureContent({
         )}
         <CountryPolicyCommitments
           country={country}
-          layerData={layerData}
+          layerInfo={layerInfo}
           indicatorId={indicatorId}
         />
       </PanelBody>
@@ -255,7 +255,7 @@ export function CountryFeatureContent({
   //     </IndicatorLinkAnchor>
   //   }
   // />
-  // const feature = findFeature(layerData.data.features, featureId);
+  // const feature = findFeature(layerInfo.data.features, featureId);
   //
   // if (!feature) return <LayerContent config={config} header={headerFallback} />;
   // return (
@@ -327,7 +327,7 @@ CountryFeatureContent.propTypes = {
   info: PropTypes.string,
   indicatorId: PropTypes.string,
   onSetIndicator: PropTypes.func,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,
 };
