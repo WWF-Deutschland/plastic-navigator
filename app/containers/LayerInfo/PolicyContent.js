@@ -24,7 +24,8 @@ import {
   DropdownDown,
   DropdownUp,
 } from 'components/Icons';
-import { setLayerInfo } from 'containers/App/actions';
+import { setLayerInfo, setItemInfo } from 'containers/App/actions';
+import { loadLayer } from 'containers/Map/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { decodeInfoView } from 'utils/layers';
 import {
@@ -35,7 +36,7 @@ import {
   getCountriesWithStrongestPosition,
   getStatementsForTopic,
 } from 'utils/policy';
-// import CountryChart from './policy/CountryChart';
+import CountryChart from './policy/CountryChart';
 import CountryList from './policy/CountryList';
 import SourceList from './policy/SourceList';
 // import SourceContent from './policy/SourceContent';
@@ -207,10 +208,16 @@ export function PolicyContent({
   theme,
   onClose,
   onSetTab,
+  onSelectStatement,
+  onLoadLayer,
 }) {
   const { locale } = intl;
   const cRef = useRef();
   const [showTopicDrop, setShowTopicDrop] = useState(false);
+  useEffect(() => {
+    // kick off loading of page content
+    onLoadLayer(config.id, config);
+  }, [config]);
   useEffect(() => {
     if (cRef && cRef.current) cRef.current.scrollTop = 0;
   }, [view]);
@@ -390,10 +397,15 @@ export function PolicyContent({
             />
           </PanelBody>
         )}
-        {config && tab === 'details' && (
+        {layerInfo && tab === 'details' && (
           <PanelBody>
             <Box margin={{ vertical: 'medium' }}>
-              <strong>TODO: CHART</strong>
+              <CountryChart
+                config={config}
+                indicatorId={indicatorId}
+                layerInfo={layerInfo}
+                onSelectStatement={sid => onSelectStatement(sid, layerId)}
+              />
             </Box>
             <LayerContent fullLayerId={layerId} config={config} />
           </PanelBody>
@@ -414,6 +426,8 @@ PolicyContent.propTypes = {
   onClose: PropTypes.func,
   onSetTopic: PropTypes.func,
   onSetTab: PropTypes.func,
+  onSelectStatement: PropTypes.func,
+  onLoadLayer: PropTypes.func,
   isModule: PropTypes.bool,
 };
 
@@ -425,6 +439,12 @@ function mapDispatchToProps(dispatch) {
   return {
     onSetTab: (tab, view) => {
       dispatch(setLayerInfo(view, tab));
+    },
+    onLoadLayer: (id, config) => {
+      dispatch(loadLayer(id, config));
+    },
+    onSelectStatement: (statementId, layerId) => {
+      dispatch(setItemInfo(`${layerId}|source-${statementId}`));
     },
   };
 }

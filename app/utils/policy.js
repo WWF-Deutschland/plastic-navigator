@@ -492,3 +492,177 @@ export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
 
   return null;
 };
+
+const concatIfMissing = (arr, values) =>
+  values.reduce((memo, val) => {
+    if (memo.indexOf(val) > -1) {
+      return memo;
+    }
+    return memo.concat([val]);
+  }, arr);
+
+const cleanupPositions = positions => {
+  const cleaned = Object.keys(positions)
+    // lowest first
+    .sort((a, b) => (parseInt(a, 10) > parseInt(b, 10) ? 1 : -1))
+    .reduce((memoPositions, posValue) => {
+      const posCountryCodes = positions[posValue];
+      const val = parseInt(posValue, 10);
+      const higherPosCountryCodes = Object.keys(positions).reduce(
+        (memo, otherPosValue) => {
+          if (parseInt(otherPosValue, 10) > val) {
+            return [...memo, ...positions[otherPosValue]];
+          }
+          return memo;
+        },
+        [],
+      );
+      const cleanedCodes = posCountryCodes.filter(
+        code => higherPosCountryCodes.indexOf(code) < 0,
+      );
+      return Object.assign({}, memoPositions, { [posValue]: cleanedCodes });
+    }, {});
+  return cleaned;
+};
+
+export const getPositionForTopicAndValue = ({
+  tables,
+  positionValue,
+  indicatorId,
+}) => {
+  const position = tables.positions.data.data.find(p =>
+    qe(p.id, positionValue),
+  );
+  // get position from topic-positions table, optionally containing topic-specific descriptions for each position
+  const topicPosition = tables['topic-positions'].data.data.find(
+    tp => qe(tp.position_id, positionValue) && qe(tp.topic_id, indicatorId),
+  );
+  return topicPosition ? mergePositions({ topicPosition, position }) : position;
+};
+
+export const getCountryPositionsOverTimeFromCountryFeatures = ({
+  layerInfo,
+  indicatorId,
+  includeHidden = false,
+  includeWithout = false,
+  includeOpposing = false,
+}) => {
+  if (
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.features && // countries
+    layerInfo.data.tables &&
+    layerInfo.data.tables.sources &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.positions &&
+    layerInfo.data.tables['topic-positions'] &&
+    layerInfo.data.tables['country-sources']
+  ) {
+    const { tables, features } = layerInfo.data;
+    const positionValues = tables.positions.data.data.reduce(
+      (memoPosValues, p) => {
+        const value = parseInt(p.id, 10);
+        if (value === 0 && !includeWithout) {
+          return memoPosValues;
+        }
+        if (value < 0 && !includeOpposing) {
+          return memoPosValues;
+        }
+        return [...memoPosValues, value];
+      },
+      [],
+    );
+    // console.log('getCountryPositionsOverTimeFromCountryFeatures', positionValues, indicatorId)
+    const statementsWithCountryCodes = tables.sources.data.data
+      .reduce((statementsMemo, statement) => {
+        // check relevance for current topic
+        const positionValue = parseInt(
+          statement[`position_t${indicatorId}`],
+          10,
+        );
+        // console.log(statement.id, positionValue)
+        if (positionValues.indexOf(positionValue) < 0) {
+          return statementsMemo;
+        }
+        const countryCodes = tables['country-sources'].data.data.reduce(
+          (memoCountries, cs) => {
+            if (cs.source_id !== statement.id) {
+              return memoCountries;
+            }
+            const country = features.find(c => c.code === cs.country_code);
+            if (!country) return memoCountries;
+            if (!excludeHiddenCountries(country) && !includeHidden) {
+              return memoCountries;
+            }
+            return [...memoCountries, cs.country_code];
+          },
+          [],
+        );
+        const positionClean = getPositionForTopicAndValue({
+          tables,
+          indicatorId,
+          positionValue,
+        });
+        return [
+          ...statementsMemo,
+          Object.assign({}, statement, {
+            countryCodes,
+            position: positionClean,
+          }),
+        ];
+      }, [])
+      .sort((a, b) => {
+        const aDate = new Date(a.date).getTime();
+        const bDate = new Date(b.date).getTime();
+        return aDate > bDate ? 1 : -1;
+      });
+    // console.log('statementsWithCountryCodes', statementsWithCountryCodes)
+
+    const positionsByDate = statementsWithCountryCodes.reduce(
+      (memo, source) => {
+        // console.log(memo, source);
+        const previousPositions =
+          Object.keys(memo).length > 0
+            ? Object.values(memo)[Object.keys(memo).length - 1].positions
+            : null;
+        let positions;
+        if (previousPositions) {
+          // prettier-ignore
+          positions = Object.assign({}, previousPositions, {
+            [source.position.id]: previousPositions[source.position.id]
+              ? concatIfMissing(
+                previousPositions[source.position.id],
+                source.countryCodes,
+              )
+              : source.countryCodes,
+          });
+          positions = cleanupPositions(positions);
+        } else {
+          positions = { [source.position.id]: source.countryCodes };
+        }
+        if (!memo[source.date]) {
+          // remember source
+          const date = {
+            sources: { [source.id]: source },
+            positions,
+          };
+          return Object.assign({}, memo, { [source.date]: date });
+        }
+        if (memo[source.date]) {
+          const dateSources = Object.assign({}, memo[source.date].sources, {
+            [source.id]: source,
+          });
+          const date = Object.assign({}, memo[source.date], {
+            sources: dateSources,
+            positions,
+          });
+          return Object.assign({}, memo, { [source.date]: date });
+        }
+        return memo;
+      },
+      {},
+    );
+    return positionsByDate;
+  }
+  return [];
+};

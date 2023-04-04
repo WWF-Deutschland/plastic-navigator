@@ -226,7 +226,7 @@ export function Map({
     },
     zoomend: () => {
       // console.log('zoomstart')
-      if (mapRef.current) console.log(mapRef.current.getZoom());
+      if (mapRef.current) console.log('zoomend', mapRef.current.getZoom());
     },
     movestart: () => {
       // console.log('movestart')

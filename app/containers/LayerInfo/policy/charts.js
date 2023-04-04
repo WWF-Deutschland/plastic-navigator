@@ -1,5 +1,6 @@
 import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
+import { getPositionForTopicAndValue } from 'utils/policy';
 
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
@@ -117,12 +118,27 @@ const Y_OFFSET_MIN = 9;
 export const prepChartDataSources = (positions, dataStyles) => {
   const data = Object.keys(positions).reduce((memo, dateKey) => {
     const positionsForDate = positions[dateKey];
-    const sourcesForDate = positionsForDate.sources;
-    if (sourcesForDate) {
-      return Object.keys(sourcesForDate).reduce((m2, key) => {
-        const source = sourcesForDate[key];
+    if (positionsForDate && positionsForDate.sources) {
+      const statementsForDate = positionsForDate.sources;
+      const statementsByPosition = Object.keys(statementsForDate).reduce(
+        (m2, statementId) => {
+          const statement = statementsForDate[statementId];
+          const posValue = statement.position.value;
+          if (m2[posValue]) {
+            return Object.assign({}, m2, {
+              [posValue]: [...m2[posValue], statement],
+            });
+          }
+          return {
+            ...m2,
+            [posValue]: [statement],
+          };
+        },
+        {},
+      );
+      return Object.keys(statementsByPosition).reduce((m2, posValue) => {
         let y = Y_OFFSET_MIN * -1;
-        const x = getXTime(source.date);
+        const x = getXTime(dateKey);
         const prev = m2.length > 0 ? m2[m2.length - 1] : null;
         if (prev && x - prev.x < X_THRESHOLD) {
           y = prev.y - Y_OFFSET;
@@ -130,14 +146,15 @@ export const prepChartDataSources = (positions, dataStyles) => {
         return [
           ...m2,
           {
-            sdate: source.date,
-            sposition: source.position_id,
-            sid: source.id,
+            sdate: dateKey,
+            sposition: posValue,
+            sid: posValue,
             y,
             x,
+            sources: statementsByPosition[posValue],
             color:
-              dataStyles && dataStyles[source.position_id]
-                ? dataStyles[source.position_id].style.fillColor
+              dataStyles && dataStyles[posValue]
+                ? dataStyles[posValue].fillColor
                 : 'red',
           },
         ];
@@ -148,43 +165,41 @@ export const prepChartDataSources = (positions, dataStyles) => {
   return data;
 };
 
-export const prepChartKey = (positionsCurrentDate, config, locale) => {
-  const { key, featureStyle } = config;
-  return key.values.reduce((memo, val) => {
-    if (val === '0') return memo;
-    let t;
-    if (key.title && key.title[val]) {
-      t =
-        key.title[val][locale] ||
-        key.title[val][DEFAULT_LOCALE] ||
-        key.title[val];
-    }
-    let style;
-    if (featureStyle && featureStyle.style) {
-      style = Object.keys(featureStyle.style).reduce(
-        (memo2, attr) => ({
-          ...memo2,
-          [attr]: featureStyle.style[attr][val],
-        }),
-        {
-          fillOpacity: 0.4,
-        },
-      );
-    }
-    const count =
-      positionsCurrentDate && positionsCurrentDate[val]
-        ? positionsCurrentDate[val].length.toString()
-        : '0';
-    return [
-      ...memo,
-      {
-        id: val,
-        style,
-        title: t,
-        count,
-      },
-    ];
-  }, []);
+export const prepChartKey = ({
+  positionsCurrentDate,
+  positionsLatestDate, // includes all positions
+  indicatorId,
+  tables,
+  config,
+  locale,
+}) => {
+  if (positionsCurrentDate && config['styles-by-value']) {
+    return Object.keys(positionsLatestDate)
+      .reduce((memo, posValue) => {
+        const count = positionsCurrentDate[posValue]
+          ? positionsCurrentDate[posValue].length
+          : 0;
+        const positionClean = getPositionForTopicAndValue({
+          tables,
+          indicatorId,
+          positionValue: posValue,
+        });
+        return [
+          ...memo,
+          {
+            id: posValue,
+            value: posValue,
+            style: config['styles-by-value'][posValue],
+            title:
+              positionClean[`position_short_${locale}`] ||
+              positionClean[`position_short_${DEFAULT_LOCALE}`],
+            count,
+          },
+        ];
+      }, [])
+      .sort((a, b) => (parseInt(a.value, 10) < parseInt(b.value, 10) ? 1 : -1));
+  }
+  return null;
 };
 
 export const getTickValuesX = chartData => {
@@ -204,14 +219,12 @@ export const getTickValuesX = chartData => {
 };
 
 const Y_BUFFER = 8;
-export const getYRange = (chartData, chartDataSources, minDate) => {
-  const yMax =
-    chartData && chartData[2] && chartData[2].length > 0
-      ? chartData[2][chartData[2].length - 1].y
-      : 0;
+export const getYRange = ({ countryCount, chartDataSources, minDate }) => {
+  const yMax = countryCount + 5;
   const yMin = chartDataSources
     ? chartDataSources.reduce((min, s) => Math.min(min, s.y), 0)
     : 0;
+  // console.log(yMin)
   return [
     {
       x: new Date(minDate).getTime(),
