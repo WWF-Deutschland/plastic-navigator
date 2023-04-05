@@ -42,6 +42,7 @@ import {
   SET_LANDING,
   SET_MAP_POSITION,
   SET_SHOW_KEY,
+  SET_CHART_DATE,
 } from './constants';
 
 export function setLocale(locale) {
@@ -249,5 +250,11 @@ export function setShowKey(value) {
   return {
     type: SET_SHOW_KEY,
     value,
+  };
+}
+export function setChartDate(dateString) {
+  return {
+    type: SET_CHART_DATE,
+    dateString,
   };
 }

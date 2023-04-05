@@ -24,7 +24,12 @@ import {
   DropdownDown,
   DropdownUp,
 } from 'components/Icons';
-import { setLayerInfo, setItemInfo } from 'containers/App/actions';
+import {
+  setLayerInfo,
+  setItemInfo,
+  setChartDate,
+} from 'containers/App/actions';
+import { selectChartDate } from 'containers/App/selectors';
 import { loadLayer } from 'containers/Map/actions';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { decodeInfoView } from 'utils/layers';
@@ -210,6 +215,8 @@ export function PolicyContent({
   onSetTab,
   onSelectStatement,
   onLoadLayer,
+  onSetChartDate,
+  chartDate,
 }) {
   const { locale } = intl;
   const cRef = useRef();
@@ -405,6 +412,8 @@ export function PolicyContent({
                 indicatorId={indicatorId}
                 layerInfo={layerInfo}
                 onSelectStatement={sid => onSelectStatement(sid, layerId)}
+                onSetChartDate={onSetChartDate}
+                chartDate={chartDate}
               />
             </Box>
             <LayerContent fullLayerId={layerId} config={config} />
@@ -429,16 +438,22 @@ PolicyContent.propTypes = {
   onSelectStatement: PropTypes.func,
   onLoadLayer: PropTypes.func,
   isModule: PropTypes.bool,
+  onSetChartDate: PropTypes.func,
+  chartDate: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
+  chartDate: state => selectChartDate(state),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     onSetTab: (tab, view) => {
       dispatch(setLayerInfo(view, tab));
+    },
+    onSetChartDate: dateString => {
+      dispatch(setChartDate(dateString));
     },
     onLoadLayer: (id, config) => {
       dispatch(loadLayer(id, config));

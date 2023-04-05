@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box } from 'grommet';
+import { Box, Text } from 'grommet';
 import { intlShape, injectIntl } from 'react-intl';
 import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_LAYER } from 'config';
 
+import formatDate from 'utils/format-date';
 import quasiEquals from 'utils/quasi-equals';
 import { getCountryPositionStatsForTopicAndDate } from 'utils/policy';
 // import {
@@ -58,6 +59,7 @@ export function Areas({
   layerInfo,
   excludeEmpty,
   indicatorId,
+  chartDate,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
@@ -71,7 +73,9 @@ export function Areas({
       config,
       layerInfo,
       indicatorId,
+      dateString: chartDate,
     });
+  console.log('countryStats', chartDate, countryStats)
   if (featureStyle && featureStyle.multiple === 'true') {
     squares = key.values.reduce((memo, val) => {
       let t;
@@ -144,6 +148,14 @@ export function Areas({
   }
   return (
     <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
+      {config['styles-by-value'] && countryStats && (
+        <Text color="textSecondary" size="xxxsmall">
+          {formatDate(
+            locale,
+            chartDate ? new Date(chartDate).getTime() : new Date().getTime(),
+          )}
+        </Text>
+      )}
       {asArray(squares).map(sq => (
         <SquareLabelWrap key={sq.id}>
           <KeyAreaWrap>
@@ -169,6 +181,7 @@ Areas.propTypes = {
   config: PropTypes.object,
   layerInfo: PropTypes.object,
   indicatorId: PropTypes.string,
+  chartDate: PropTypes.string,
   simple: PropTypes.bool,
   excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,

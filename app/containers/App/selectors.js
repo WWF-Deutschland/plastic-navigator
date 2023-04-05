@@ -278,3 +278,7 @@ export const selectShowKey = createSelector(
   selectGlobal,
   global => global.showKey,
 );
+export const selectChartDate = createSelector(
+  selectGlobal,
+  global => global.chartDate,
+);

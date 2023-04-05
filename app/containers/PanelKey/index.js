@@ -29,7 +29,7 @@ import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
 import { getTopicTitle, getTopicMapAnnotation } from 'utils/policy';
 
-import { selectUIStateByKey } from 'containers/App/selectors';
+import { selectUIStateByKey, selectChartDate } from 'containers/App/selectors';
 import {
   setUIState,
   setLayerInfo,
@@ -269,6 +269,7 @@ export function PanelKey({
   uiState,
   onSetOpen,
   currentModule,
+  chartDate,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -472,6 +473,7 @@ export function PanelKey({
                           layerInfo={activeJsonLayerInfo}
                           excludeEmpty
                           indicatorId={indicatorId}
+                          chartDate={chartDate}
                         />
                       </Box>
                     )}
@@ -564,10 +566,12 @@ PanelKey.propTypes = {
   uiState: PropTypes.object,
   currentModule: PropTypes.object,
   onSetOpen: PropTypes.func,
+  chartDate: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
+  chartDate: state => selectChartDate(state),
 });
 
 function mapDispatchToProps(dispatch) {

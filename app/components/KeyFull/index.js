@@ -36,6 +36,7 @@ export function KeyFull({
   layerInfo,
   config,
   excludeEmpty,
+  chartDate,
 }) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
@@ -136,6 +137,7 @@ export function KeyFull({
           dark={dark}
           layerInfo={layerInfo}
           excludeEmpty={excludeEmpty}
+          chartDate={chartDate}
           indicatorId={indicatorId}
         />
       )}
@@ -160,6 +162,7 @@ KeyFull.propTypes = {
   config: PropTypes.object, // { config, data }
   id: PropTypes.string,
   indicatorId: PropTypes.string,
+  chartDate: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
   excludeEmpty: PropTypes.bool,

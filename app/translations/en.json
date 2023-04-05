@@ -46,7 +46,7 @@
   "app.containers.Header.navSectionLanguages": "Languages",
   "app.containers.Header.navSectionModules": "Sections",
   "app.containers.Header.navSectionPages": "Pages",
-  "app.containers.LayerInfo.countryChartDateLabel": "As of {date}",
+  "app.containers.LayerInfo.countryChartDateLabel": "{date}",
   "app.containers.LayerInfo.countryChartNoSources": "Statements",
   "app.containers.LayerInfo.countryChartTitle": "Number of States by policy position",
   "app.containers.LayerInfo.downloadPolicyData": "Download all country positions (CSV)",

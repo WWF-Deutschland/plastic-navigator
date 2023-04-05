@@ -591,6 +591,7 @@ export const getVectorLayer = ({
   markerEvents,
   state,
   indicatorId,
+  dateString,
 }) => {
   const { data } = jsonLayer;
   // polyline
@@ -627,6 +628,7 @@ export const getVectorLayer = ({
       features: data.features,
       tables: data.tables,
       indicatorId,
+      dateString,
       // also pass date
     });
     return getPolygonLayer({ data: geometryX, config, markerEvents, state });

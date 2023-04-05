@@ -13,14 +13,14 @@ import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
 
-import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
+import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS, POLICY_LAYER } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
-// import { startsWith } from 'utils/string';
+import { startsWith } from 'utils/string';
 
 // import commonMessages from 'messages';
 //
@@ -29,6 +29,7 @@ import {
   selectConfigByKey,
   selectInfoSearch,
   selectShowKey,
+  selectChartDate,
 } from 'containers/App/selectors';
 
 import {
@@ -139,6 +140,7 @@ export function Map({
   onMapMove,
   mview,
   layerInfoActive,
+  chartDate,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -390,6 +392,7 @@ export function Map({
     // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
+      console.log('chartDate', chartDate)
       const newMapLayers = {};
       // const removeMapLayers = Object.keys(mapLayers).filter(
       //   id => activeLayerIds.map(alId => alId.split('_')[0]).indexOf(id) < 0,
@@ -405,7 +408,9 @@ export function Map({
       // });
       // remove layers no longer active
       Object.keys(mapLayers)
-        .filter(id => activeLayerIds.indexOf(id) < 0)
+        .filter(
+          id => activeLayerIds.indexOf(id) < 0 || startsWith(id, POLICY_LAYER),
+        )
         .forEach(id => {
           const project =
             projects &&
@@ -441,8 +446,11 @@ export function Map({
         const config = layersConfig.find(
           c => c.id === id || c.id === configLayerId,
         );
+        const isPolicy = startsWith(id, POLICY_LAYER);
         // layer not yet created
-        if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
+        console.log('t1', id)
+        if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer || isPolicy) {
+          console.log('t2')
           // check if this layer is a project
           const project =
             projects &&
@@ -511,6 +519,7 @@ export function Map({
                   config,
                   markerEvents,
                   indicatorId,
+                  dateString: chartDate,
                   // also pass date
                 });
                 mapRef.current.addLayer(layer);
@@ -525,7 +534,7 @@ export function Map({
       // remember new layers
       onSetMapLayers(newMapLayers);
     }
-  }, [activeLayerIds, layersConfig, jsonLayers, projects]);
+  }, [activeLayerIds, layersConfig, jsonLayers, projects, chartDate]);
   // preload featured layers
   useEffect(() => {
     // console.log('activelayers (according to url) ', activeLayerIds);
@@ -891,6 +900,7 @@ Map.propTypes = {
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
   layerInfoActive: PropTypes.bool,
+  chartDate: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -905,6 +915,7 @@ const mapStateToProps = createStructuredSelector({
   loading: state => selectLayersLoading(state),
   mview: state => selectMapPosition(state),
   hasKey: state => selectShowKey(state),
+  chartDate: state => selectChartDate(state),
 });
 
 function mapDispatchToProps(dispatch, ownProps) {

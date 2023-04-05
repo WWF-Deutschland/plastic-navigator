@@ -49,7 +49,7 @@ export const getStatementWithPositionsAndCountries = ({
 export const getCountryStatements = ({
   countryCode,
   tables,
-  date,
+  dateString,
   topicId,
 }) => {
   const countryStatementIds =
@@ -64,9 +64,9 @@ export const getCountryStatements = ({
     countryStatementIds.map(id =>
       tables.sources.data.data.find(s => qe(id, s.id)),
     );
-  if (date) {
+  if (dateString) {
     countryStatements = countryStatements.filter(
-      s => new Date(s.date).getTime() < date,
+      s => new Date(s.date) <= new Date(dateString),
     );
   }
   if (topicId) {
@@ -150,13 +150,11 @@ export const getCountryPositionForTopicAndDate = ({
   // countries,
   tables,
 }) => {
-  const date = dateString && new Date(dateString).getTime();
-
   // const country = countries.find(c => c.code === countryCode);
   const countryStatements = getCountryStatements({
     countryCode,
     tables,
-    date,
+    dateString,
     topicId,
   });
   if (countryStatements && countryStatements.length > 0) {
@@ -248,10 +246,12 @@ export const getCountryPositionStatsForTopicAndDate = ({
         p.value > 0,
     );
   }
+  // TODO compare/fix key stats, make consistent
   return (
     positions &&
     Object.values(countryPositions).reduce((statsMemo, countryPosition) => {
       const value = countryPosition.position.value || 0;
+      // console.log('statsMemo, countryPosition')
       return statsMemo.map(stat => {
         if (qe(stat.id, value)) {
           return { ...stat, count: stat.count ? stat.count + 1 : 1 };

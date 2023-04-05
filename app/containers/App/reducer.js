@@ -20,6 +20,7 @@ import {
   SET_UI_STATE,
   SET_LANDING,
   SET_SHOW_KEY,
+  SET_CHART_DATE,
 } from './constants';
 
 /* eslint-disable no-param-reassign */
@@ -58,6 +59,7 @@ export const initialState = {
   uiState: {},
   landing: false,
   showKey: false,
+  chartDate: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -113,6 +115,9 @@ const appReducer = (state = initialState, action) =>
         break;
       case SET_SHOW_KEY:
         draft.showKey = action.value;
+        break;
+      case SET_CHART_DATE:
+        draft.chartDate = action.dateString;
         break;
     }
   });
