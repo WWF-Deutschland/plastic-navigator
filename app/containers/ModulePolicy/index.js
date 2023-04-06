@@ -243,7 +243,7 @@ export function ModulePolicy({
     <div>
       <Helmet>
         <title>{`${intl.formatMessage(
-          commonMessages.module_explore_metaTitle,
+          commonMessages.module_policy_metaTitle,
         )}`}</title>
       </Helmet>
       <ModuleWrap ref={ref}>

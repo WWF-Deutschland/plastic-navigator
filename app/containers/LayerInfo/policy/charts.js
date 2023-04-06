@@ -118,58 +118,51 @@ export const prepChartData = ({ positions, minDate, maxDate }) => {
 };
 
 // TODO: figure out a way to express in pixels rather than scaled values
-const X_THRESHOLD = 1600000000;
-const Y_OFFSET = 9;
+// const X_THRESHOLD = 1600000000;
+// const Y_OFFSET = 9;
 const Y_OFFSET_MIN = 9;
 
-export const prepChartDataSources = (positions, dataStyles) => {
-  const data = Object.keys(positions).reduce((memo, dateKey) => {
-    const positionsForDate = positions[dateKey];
-    if (positionsForDate && positionsForDate.sources) {
-      const statementsForDate = positionsForDate.sources;
-      const statementsByPosition = Object.keys(statementsForDate).reduce(
-        (m2, statementId) => {
-          const statement = statementsForDate[statementId];
-          const posValue = statement.position.value;
-          if (m2[posValue]) {
-            return Object.assign({}, m2, {
-              [posValue]: [...m2[posValue], statement],
-            });
-          }
-          return {
-            ...m2,
-            [posValue]: [statement],
-          };
-        },
-        {},
-      );
-      return Object.keys(statementsByPosition).reduce((m2, posValue) => {
-        let y = Y_OFFSET_MIN * -1;
+export const prepChartDataSources = (positionsByDate, dataStyles) => {
+  const sourceMarkers = Object.keys(positionsByDate).reduce(
+    (memoSourceMarkers, dateKey) => {
+      const positionsForDate = positionsByDate[dateKey];
+      if (positionsForDate && positionsForDate.sources) {
+        const statementsForDate = positionsForDate.sources;
+        const y = Y_OFFSET_MIN * -1;
         const x = getXTime(dateKey);
-        const prev = m2.length > 0 ? m2[m2.length - 1] : null;
-        if (prev && x - prev.x < X_THRESHOLD) {
-          y = prev.y - Y_OFFSET;
-        }
+        const sortedStatements = Object.values(statementsForDate).sort(
+          (a, b) => {
+            // const posValueA = parseInt(a.position.value, 10);
+            // const posValueB = parseInt(b.position.value, 10);
+            // return posValueA < posValueB ? 1 : -1;
+            const countA = a.countryCodes.length;
+            const countB = b.countryCodes.length;
+            return countA < countB ? 1 : -1;
+          },
+          -99,
+        );
         return [
-          ...m2,
+          ...memoSourceMarkers,
           {
             sdate: dateKey,
-            sposition: posValue,
-            sid: posValue,
+            sposition: sortedStatements[0].position.value,
+            sid: sortedStatements[0].id,
             y,
             x,
-            sources: statementsByPosition[posValue],
+            sources: sortedStatements,
+            opacity: 0.66,
             color:
-              dataStyles && dataStyles[posValue]
-                ? dataStyles[posValue].fillColor
+              dataStyles && dataStyles[sortedStatements[0].position.value]
+                ? dataStyles[sortedStatements[0].position.value].fillColor
                 : 'red',
           },
         ];
-      }, memo);
-    }
-    return memo;
-  }, []);
-  return data;
+      }
+      return memoSourceMarkers;
+    },
+    [],
+  );
+  return sourceMarkers;
 };
 
 export const prepChartKey = ({
@@ -243,7 +236,7 @@ export const getTickValuesX = ({ chartData, maxDate, minDate }) => {
       const step = m * MONTH_INTERVAL;
       const dateMin = new Date(minDateX.getTime());
       const date = new Date(dateMin.setMonth(dateMin.getMonth() + step));
-      values.push(date.getTime());
+      if (date.getTime() < new Date().getTime()) values.push(date.getTime());
     }
   }
   return values;
@@ -291,7 +284,7 @@ export const getMouseOverCover = ({ chartData, minDate, maxDate }) => {
 }
 
 export const getPlotHeight = ({ size, hasStatements }) => {
-  if (isMinSize(size, 'large')) return hasStatements ? 250 : 180;
-  if (isMinSize(size, 'medium')) return hasStatements ? 240 : 170;
+  if (isMinSize(size, 'large')) return hasStatements ? 220 : 180;
+  if (isMinSize(size, 'medium')) return hasStatements ? 200 : 170;
   return 230;
 };

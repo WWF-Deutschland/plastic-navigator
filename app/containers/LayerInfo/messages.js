@@ -117,4 +117,9 @@ export default defineMessages({
     id: `${scope}.countryStatementLinkLabel`,
     defaultMessage: 'Go to statement',
   },
+  otherStatements: {
+    id: `${scope}.otherStatements`,
+    defaultMessage:
+      '{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)',
+  },
 });

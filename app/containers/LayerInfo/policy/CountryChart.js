@@ -18,15 +18,15 @@ import {
   AreaSeries,
   XAxis,
   VerticalGridLines,
-  // MarkSeries,
-  // Hint,
+  MarkSeries,
+  Hint,
 } from 'react-vis';
 // import CsvDownloader from 'react-csv-downloader';
 //
 // import { ArrowRightL } from 'components/Icons';
 // import LoadingIndicator from 'components/LoadingIndicator';
 //
-// import { DEFAULT_LOCALE } from 'i18n';
+import { DEFAULT_LOCALE } from 'i18n';
 // import { POLICY_LAYER } from 'config';
 
 import saga from 'containers/Map/saga';
@@ -42,31 +42,29 @@ import {
 import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
 
-// import coreMessages from 'messages';
+import coreMessages from 'messages';
 // import {
-//   excludeCountryFeatures,
-//   getPositionStatsFromCountries,
-//   featuresToCountriesWithStrongestPosition,
-//   // getCountryPositionsOverTimeFromCountryFeatures,
-//   getSourceCountFromPositions,
-//   getSourcesFromCountryFeaturesWithPosition,
-//   getFlatCSVFromSources,
+//   // excludeCountryFeatures,
+//   // getPositionStatsFromCountries,
+//   // featuresToCountriesWithStrongestPosition,
+//   // // getCountryPositionsOverTimeFromCountryFeatures,
+//   // getSourceCountFromPositions,
+//   // getSourcesFromCountryFeaturesWithPosition,
+//   // getFlatCSVFromSources,
 // } from './utils';
 import messages from '../messages';
 import {
   getXMax,
   prepChartKey,
   prepChartData,
-  // prepChartDataSources,
+  prepChartDataSources,
   getTickValuesX,
   getYRange,
   getMouseOverCover,
   getPlotHeight,
 } from './charts';
 
-const Styled = styled(p => (
-  <Box margin={{ top: 'medium', bottom: 'small' }} {...p} />
-))``;
+const Styled = styled(p => <Box margin={{ bottom: 'small' }} {...p} />)``;
 const SquareLabelWrap = styled(p => (
   <Box direction="row" align="start" gap="xsmall" {...p} />
 ))`
@@ -84,13 +82,13 @@ const KeyAreaWrap = styled.div`
   top: -2px;
 `;
 
-// const KeyStatements = styled(p => (
-//   <Box direction="row" align="center" {...p} />
-// ))`
-//   height: 18px;
-//   width: 18px;
-//   padding: 0px;
-// `;
+const KeyStatements = styled(p => (
+  <Box direction="row" align="center" {...p} />
+))`
+  height: 18px;
+  width: 18px;
+  padding: 0px;
+`;
 
 const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
@@ -133,14 +131,14 @@ const YearLabel = styled.text`
   text-anchor: start;
 `;
 
-// const KeySourceMarker = styled.div`
-//   display: block;
-//   width: 8px;
-//   height: 8px;
-//   background: ${({ keyStyle }) => keyStyle.fillColor || 'red'};
-//   border-radius: 9999px;
-//   opacity: 0.7;
-// `;
+const KeySourceMarker = styled.div`
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: ${({ keyStyle }) => keyStyle.fillColor || 'red'};
+  border-radius: 9999px;
+  opacity: 0.7;
+`;
 
 const myTimeFormat = (value, intl) => {
   let formatted;
@@ -186,7 +184,7 @@ export function CountryChart({
   const [nearestXDate, setNearestXDate] = useState(null);
   // const nearestXDate = chartDate || null;
   // const setNearestXDate = onSetChartDate || null;
-  // const [mouseOverSource, setMouseOverSource] = useState(null);
+  const [mouseOverSource, setMouseOverSource] = useState(null);
 
   const { locale } = intl;
   if (!layerInfo || !layerInfo.data) {
@@ -224,11 +222,11 @@ export function CountryChart({
     Object.keys(positionsOverTime).length - 1
   ];
   // prettier-ignore
+  const mouseOverEffect = mouseOver;
   const currentDate =
     mouseOverEffect && nearestXDate && positionsOverTime[nearestXDate]
       ? nearestXDate
       : lastDate;
-  const mouseOverEffect = mouseOver;
   // const mouseOverEffect = !mouseOverSource && mouseOver
   // // figure out stats for key if static positions present ----------------------
   // let positionsOverTimeKey = positionsOverTime;
@@ -270,7 +268,6 @@ export function CountryChart({
   //     : 'dynamic',
   // );
   const statusTime = new Date(currentDate).getTime();
-
   // styles for each position ==================================================
   const dataStyles = config['styles-by-value'];
   // {
@@ -286,7 +283,13 @@ export function CountryChart({
   //   featuresEx,
   //   locale,
   // );
-  // const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
+  const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
+  // console.log('mouseOverSoure', mouseOverSource)
+  const activeSource =
+    mouseOverSource &&
+    mouseOverSource.sources &&
+    mouseOverSource.sources[Object.keys(mouseOverSource.sources)[0]];
+  // mouseOverSource && chartDataSources[mouseOverSource.sid];
   // const activePositions = mouseOverSource && positionsOverTime[mouseOverSource.sdate];
   //
   // chart stuff
@@ -298,9 +301,11 @@ export function CountryChart({
   });
   const tickValuesX = getTickValuesX({ chartData, minDate, maxDate: lastDate });
   // console.log('tickValuesX', tickValuesX)
+
+  // console.log('chartDataSources', chartDataSources)
   const dataForceYRange = getYRange({
     countryCount: layerInfo.data.features.length,
-    chartDataSources: null,
+    chartDataSources,
     minDate,
     maxDate: lastDate,
   });
@@ -309,27 +314,7 @@ export function CountryChart({
     nearestXDate &&
     getMouseOverCover({ chartData, currentDate, maxDate: lastDate });
   // console.log(getFlatCSVFromSources(sources, locale))
-  // <SquareLabelWrap align="center">
-  //   <KeyStatements>
-  //     {statsForKey.map(
-  //       stat => (
-  //         <KeySourceMarker
-  //           key={stat.id}
-  //           keyStyle={stat.style}
-  //           style={{
-  //             width: '4px',
-  //             height: '4px',
-  //           }}
-  //         />
-  //       )
-  //     )}
-  //   </KeyStatements>
-  //   <KeyLabelWrap>
-  //     <StyledKeyLabel>
-  //       <FormattedMessage {...messages.countryChartNoSources} />
-  //     </StyledKeyLabel>
-  //   </KeyLabelWrap>
-  // </SquareLabelWrap>
+
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -394,6 +379,27 @@ export function CountryChart({
                       );
                     })}
                   </Box>
+                  <SquareLabelWrap align="center">
+                    <KeyStatements>
+                      {statsForKey.map(
+                        stat => (
+                          <KeySourceMarker
+                            key={stat.id}
+                            keyStyle={stat.style}
+                            style={{
+                              width: '4px',
+                              height: '4px',
+                            }}
+                          />
+                        )
+                      )}
+                    </KeyStatements>
+                    <KeyLabelWrap>
+                      <StyledKeyLabel>
+                        <FormattedMessage {...messages.countryChartNoSources} />
+                      </StyledKeyLabel>
+                    </KeyLabelWrap>
+                  </SquareLabelWrap>
                 </Box>
               </Box>
             </Box>
@@ -401,7 +407,7 @@ export function CountryChart({
           <div style={{ position: 'relative' }}>
             {chartData && dataForceYRange && (
               <FlexibleWidthXYPlot
-                height={getPlotHeight({ size, hasStatements: false })}
+                height={getPlotHeight({ size, hasStatements: true })}
                 xType="time"
                 style={{ fill: 'transparent' }}
                 margin={{
@@ -538,6 +544,12 @@ export function CountryChart({
                     opacity: 1,
                   }}
                 />
+                {/* source dots */}
+                <MarkSeries
+                  data={chartDataSources}
+                  colorType="literal"
+                  size={3}
+                />
                 {/* cover chart beyond current date */}
                 {dataMouseOverCover && (
                   <AreaSeries
@@ -546,6 +558,15 @@ export function CountryChart({
                       stroke: 'none',
                       fill: 'white',
                       opacity: 0.7,
+                    }}
+                  />
+                )}
+                {/* indicate current date */}
+                {dataMouseOverCover && (
+                  <VerticalGridLines
+                    tickValues={[new Date(currentDate).getTime()]}
+                    style={{
+                      stroke: 'black',
                     }}
                   />
                 )}
@@ -584,6 +605,77 @@ export function CountryChart({
                   }}
                   tickValues={tickValuesX}
                   tickPadding={-12}
+                />
+                {/* highlight source dot */}
+                {mouseOverSource && (
+                  <MarkSeries
+                    data={[mouseOverSource]}
+                    size={6}
+                    colorType="literal"
+                    style={{ pointerEvents: 'none' }}
+                  />
+                )}
+                {mouseOverSource && activeSource && (
+                  <Hint
+                    value={mouseOverSource}
+                    align={{ vertical: 'top', horizontal: 'auto' }}
+                    style={{
+                      transform: 'translateY(-10px)',
+                      minWidth: '100px',
+                      maxWidth: '180px',
+                    }}
+                  >
+                    <Box elevation="small" background="white" pad="xsmall">
+                      <Box gap="xsmall">
+                        <Text size="xxxsmall" color="textSecondary">
+                          {formatDate(locale, new Date(mouseOverSource.sdate).getTime())}
+                        </Text>
+                        <Text size="xxsmall" weight="bold">
+                          {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
+                        </Text>
+                        <Text size="xxsmall">
+                          <FormattedMessage
+                            {...coreMessages.countries}
+                            values={{
+                              count: activeSource.countryCodes.length,
+                              isSingle: activeSource.countryCodes.length === 1,
+                            }}
+                          />
+                        </Text>
+                      </Box>
+                      {Object.keys(mouseOverSource.sources) && Object.keys(mouseOverSource.sources).length > 1 && (
+                        <Box margin={{ top: 'xsmall' }}>
+                          <Text size="xxxsmall" color="textSecondary">
+                            <FormattedMessage
+                              {...messages.otherStatements}
+                              values={{
+                                isSingle: Object.keys(mouseOverSource.sources).length === 2,
+                                countOther: Object.keys(mouseOverSource.sources).length - 1,
+                              }}
+                            />
+                          </Text>
+                        </Box>
+                      )}
+                    </Box>
+                  </Hint>
+                )}
+                {/* source dots interactions */}
+                <MarkSeries
+                  data={chartDataSources}
+                  size={5}
+                  colorType="literal"
+                  style={{ opacity: 0, cursor: 'pointer' }}
+                  onNearestX={point => {
+                    if (point) {
+                      setNearestXDate(point.sdate)
+                    }
+                  }}
+                  onValueMouseOver={point => {
+                    setMouseOverSource(point)
+                  }}
+                  onValueMouseOut={() => {
+                    setMouseOverSource(null)
+                  }}
                 />
               </FlexibleWidthXYPlot>
             )}

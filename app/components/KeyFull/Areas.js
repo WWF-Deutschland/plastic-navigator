@@ -75,7 +75,7 @@ export function Areas({
       indicatorId,
       dateString: chartDate,
     });
-  console.log('countryStats', chartDate, countryStats)
+  // console.log('countryStats', chartDate, countryStats)
   if (featureStyle && featureStyle.multiple === 'true') {
     squares = key.values.reduce((memo, val) => {
       let t;

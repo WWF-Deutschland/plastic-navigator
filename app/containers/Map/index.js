@@ -392,7 +392,7 @@ export function Map({
     // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
-      console.log('chartDate', chartDate)
+      // console.log('chartDate', chartDate)
       const newMapLayers = {};
       // const removeMapLayers = Object.keys(mapLayers).filter(
       //   id => activeLayerIds.map(alId => alId.split('_')[0]).indexOf(id) < 0,
@@ -448,9 +448,9 @@ export function Map({
         );
         const isPolicy = startsWith(id, POLICY_LAYER);
         // layer not yet created
-        console.log('t1', id)
+        // console.log('t1', id)
         if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer || isPolicy) {
-          console.log('t2')
+          // console.log('t2')
           // check if this layer is a project
           const project =
             projects &&
