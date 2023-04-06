@@ -433,8 +433,8 @@
     "attributes": ["display", "status"],
     "attributes-by-locale": ["name_{locale}"],
     "title": {
-      "en": "Tracking policies",
-      "de": "Tracking policies"
+      "en": "Tracking the global treaty negotiation",
+      "de": "Tracking the global treaty negotiation"
     },
     "title-short": {
       "en": "Policy",
