@@ -173,7 +173,7 @@ const MINDATE = {
 export function CountryChart({
   config,
   layerInfo,
-  // onSelectStatement,
+  onSelectStatement,
   indicatorId,
   intl,
   // onSetChartDate,
@@ -670,12 +670,9 @@ export function CountryChart({
                       setNearestXDate(point.sdate)
                     }
                   }}
-                  onValueMouseOver={point => {
-                    setMouseOverSource(point)
-                  }}
-                  onValueMouseOut={() => {
-                    setMouseOverSource(null)
-                  }}
+                  onValueMouseOver={point => setMouseOverSource(point)}
+                  onValueMouseOut={() => setMouseOverSource(null)}
+                  onValueClick={point => onSelectStatement(point.sid)}
                 />
               </FlexibleWidthXYPlot>
             )}
