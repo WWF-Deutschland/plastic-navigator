@@ -22,16 +22,16 @@ import { WWFLogoSmall } from 'components/Icons';
 import { selectSingleProjectConfig } from 'containers/App/selectors';
 import { selectLayerByKey } from 'containers/Map/selectors';
 import { loadLayer } from 'containers/Map/actions';
+import {
+  setLayerInfo,
+  setItemInfo,
+  showLayerInfoModule,
+} from 'containers/App/actions';
 
 import commonMessages from 'messages';
 import messages from './messages';
-import ProjectLocationContent from './ProjectLocationContent';
 import FeatureList from './FeatureList';
 import Title from './Title';
-
-const Styled = styled(p => (
-  <Box flex={false} margin={{ bottom: 'large' }} {...p} />
-))``;
 
 const TitleWrap = styled(p => (
   <Box margin={{ top: 'small' }} {...p} align="center" flex={false} />
@@ -58,7 +58,7 @@ export function ProjectContent({
   intl,
   onLoadLocations,
   locations,
-  location,
+  onSetItemInfo,
 }) {
   useEffect(() => {
     onLoadLocations();
@@ -83,80 +83,68 @@ export function ProjectContent({
     locations.data.features
       .filter(l => l.properties.project_id === project.project_id)
       .map(l => l.properties);
-  const theLocation =
-    location &&
-    locations &&
-    locations.data &&
-    locations.data.features.find(
-      feature => feature.properties.f_id === location,
-    );
+
+  const layerId = `${PROJECT_CONFIG.id}_${
+    project[PROJECT_CONFIG.data['layer-id']]
+  }`;
   return (
     <>
-      {theLocation && projectLocations.length > 1 && (
-        <ProjectLocationContent location={theLocation} project={project} />
-      )}
-      {(!theLocation || projectLocations.length <= 1) && (
-        <Styled>
-          <TitleWrap>
-            <WWFLogoSmall size="30px" />
-            <Title>{title}</Title>
-          </TitleWrap>
-          {exists(project.image_url) && (
-            <div>
-              <figure className="mpx-figure">
-                <div className="mpx-image-wrap">
-                  <img
-                    className="mpx-img"
-                    src={project.image_url}
-                    alt={imageAttribution}
-                  />
-                </div>
-                {exists(imageAttribution) && (
-                  <figcaption className="mpx-figcaption">
-                    {imageAttribution}
-                  </figcaption>
-                )}
-              </figure>
-            </div>
-          )}
-          <div className="mpx-content">
-            <Markdown
-              options={{
-                html: true,
-              }}
-              source={prepMarkdown(projectInfo, { para: true })}
-            />
-          </div>
-          {projectLocations && projectLocations.length > 1 && (
-            <FeatureList
-              title={intl.formatMessage(commonMessages.locations)}
-              layerId={`${PROJECT_CONFIG.id}-${
-                project[PROJECT_CONFIG.data['layer-id']]
-              }`}
-              items={projectLocations
-                .map(l => ({
-                  id: l.f_id,
-                  label:
-                    l[`location_title_${locale}`] ||
-                    l[`location_title_${DEFAULT_LOCALE}`],
-                }))
-                .sort((a, b) => sortLabels(a.label, b.label))}
-            />
-          )}
-          {exists(projectLink) && (
-            <div style={{ textAlign: 'center', marginTop: '30px' }}>
-              <ButtonExternal
-                href={projectLink}
-                target="_blank"
-                label={
-                  <Box margin={{ top: '-4px' }}>
-                    <FormattedMessage {...messages.projectLinkExternal} />
-                  </Box>
-                }
+      <TitleWrap>
+        <WWFLogoSmall size="30px" />
+        <Title>{title}</Title>
+      </TitleWrap>
+      {exists(project.image_url) && (
+        <div>
+          <figure className="mpx-figure">
+            <div className="mpx-image-wrap">
+              <img
+                className="mpx-img"
+                src={project.image_url}
+                alt={imageAttribution}
               />
             </div>
-          )}
-        </Styled>
+            {exists(imageAttribution) && (
+              <figcaption className="mpx-figcaption">
+                {imageAttribution}
+              </figcaption>
+            )}
+          </figure>
+        </div>
+      )}
+      <div className="mpx-content">
+        <Markdown
+          options={{
+            html: true,
+          }}
+          source={prepMarkdown(projectInfo, { para: true })}
+        />
+      </div>
+      {projectLocations && projectLocations.length > 1 && (
+        <FeatureList
+          title={intl.formatMessage(commonMessages.locations)}
+          onSetItemInfo={id => onSetItemInfo(`${layerId}|location-${id}`)}
+          items={projectLocations
+            .map(l => ({
+              id: l.location_id,
+              label:
+                l[`location_title_${locale}`] ||
+                l[`location_title_${DEFAULT_LOCALE}`],
+            }))
+            .sort((a, b) => sortLabels(a.label, b.label))}
+        />
+      )}
+      {exists(projectLink) && (
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <ButtonExternal
+            href={projectLink}
+            target="_blank"
+            label={
+              <Box margin={{ top: '-4px' }}>
+                <FormattedMessage {...messages.projectLinkExternal} />
+              </Box>
+            }
+          />
+        </div>
       )}
     </>
   );
@@ -167,6 +155,8 @@ ProjectContent.propTypes = {
   project: PropTypes.object,
   locations: PropTypes.object, // geojson
   onLoadLocations: PropTypes.func.isRequired,
+  onSetItemInfo: PropTypes.func.isRequired,
+  onLayerInfo: PropTypes.func.isRequired,
   // layerCategory: PropTypes.object,
   // layerGroup: PropTypes.object,
   intl: intlShape.isRequired,
@@ -181,6 +171,13 @@ function mapDispatchToProps(dispatch) {
   return {
     onLoadLocations: () => {
       dispatch(loadLayer('projectLocations', PROJECT_CONFIG));
+    },
+    onSetItemInfo: id => {
+      dispatch(setItemInfo(id));
+    },
+    onLayerInfo: id => {
+      dispatch(setLayerInfo({ layerId: id }));
+      dispatch(showLayerInfoModule());
     },
   };
 }

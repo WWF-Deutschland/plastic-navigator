@@ -32,7 +32,7 @@ export function ListItemHeader({ onClick, supTitle }) {
         right: 'xlarge',
         bottom: 'medium',
         left: '-12px',
-        top: 'xsmall',
+        top: 'ms',
       }}
     >
       <BackButton plain onClick={() => onClick()} icon={<Back />} />

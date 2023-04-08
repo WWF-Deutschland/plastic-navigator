@@ -205,8 +205,8 @@ export const selectSingleProjectConfig = createSelector(
   (state, { key }) => key,
   state => selectConfigByKey(state, { key: 'projects' }),
   (key, projects) => {
-    const pid = startsWith(key, `${PROJECT_CONFIG.id}-`)
-      ? key.replace(`${PROJECT_CONFIG.id}-`, '')
+    const pid = startsWith(key, `${PROJECT_CONFIG.id}_`)
+      ? key.replace(`${PROJECT_CONFIG.id}_`, '')
       : key;
     return projects && projects.find(p => p.project_id === pid);
   },

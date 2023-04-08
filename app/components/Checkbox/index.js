@@ -12,6 +12,7 @@ const CheckButton = styled(p => <Button round="3px" plain {...p} />)`
   border-radius: 3px;
   padding: 0 0 0 0;
   border: 1px solid ${({ theme }) => theme.global.colors['dark-4']};
+  cursor: pointer;
   &:hover {
     background: ${({ theme }) => theme.global.colors.light};
   }
@@ -24,7 +25,7 @@ const ActiveCheckButton = styled(CheckButton)`
     ${({ theme, activeColor }) => theme.global.colors[activeColor || 'dark-4']};
   &:hover {
     background: ${({ activeColor, theme }) =>
-    activeColor ? theme.global.colors[activeColor] : 'dark'};
+    theme.global.colors[activeColor || 'dark']};
   }
 `;
 const LabelButton = styled(p => <Button plain {...p} />)`

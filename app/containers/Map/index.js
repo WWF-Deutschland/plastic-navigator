@@ -34,6 +34,7 @@ import {
 
 import {
   setLayerInfo,
+  setItemInfo,
   setMapPosition,
   showLayerInfoModule,
 } from 'containers/App/actions';
@@ -129,7 +130,8 @@ export function Map({
   onLoadLayer,
   jsonLayers,
   projects,
-  onLayerInfo,
+  onSetLayerInfo,
+  onSetItemInfo,
   layerInfo,
   size,
   onFeatureHighlight,
@@ -163,6 +165,7 @@ export function Map({
     // console.log('click', e, config, tooltip);
     L.DomEvent.stopPropagation(e);
     const { target, layer } = e;
+    console.log(e)
     const feature = layer || target.feature;
     const eLayerId = target.options.layerId || config.id;
     const eFeatureId = feature.properties.f_id;
@@ -331,7 +334,6 @@ export function Map({
           jsonLayers[infoLayerId].data.features,
           infoFeatureId,
         );
-
         if (feature && feature.geometry && feature.geometry.coordinates) {
           let featureBounds;
           if (feature.properties && feature.properties.bounds_nwse) {
@@ -415,7 +417,7 @@ export function Map({
           const project =
             projects &&
             projects.find(
-              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}_`, ''),
             );
           if (project && mapLayers[id]) {
             const { layer } = mapLayers[id];
@@ -455,7 +457,7 @@ export function Map({
           const project =
             projects &&
             projects.find(
-              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}_`, ''),
             );
           if (project) {
             if (!jsonLayers.projectLocations) {
@@ -466,6 +468,7 @@ export function Map({
                 project,
                 markerEvents,
               });
+              console.log('add project layer', layer)
               mapRef.current.addLayer(layer);
               newMapLayers[id] = { layer, config: jsonLayers.projectLocations };
             }
@@ -522,6 +525,7 @@ export function Map({
                   dateString: chartDate,
                   // also pass date
                 });
+                console.log('add json layer', layer)
                 mapRef.current.addLayer(layer);
                 newMapLayers[id] = { layer, config };
               }
@@ -823,8 +827,9 @@ export function Map({
         <PanelKey
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
-          onLayerInfo={args => {
-            onLayerInfo(args, layersConfig);
+          onSetLayerInfo={args => {
+            console.log('args', args)
+            onSetLayerInfo(args, layersConfig);
           }}
           jsonLayers={jsonLayers}
           currentModule={currentModule}
@@ -838,9 +843,34 @@ export function Map({
           config={tooltip.config}
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
-          onFeatureClick={args => {
+          onFeatureClick={() => {
             setTooltip(null);
-            onLayerInfo(args, layersConfig);
+            // let item = ''
+            const { id } = tooltip.config;
+            console.log('tooltip', tooltip);
+            if (tooltip.feature && tooltip.feature.properties) {
+              if (id === PROJECT_CONFIG.id) {
+                // onSetProjectInfo({ projectId, locationId });
+                const { infoPath, infoArg } = tooltip.feature;
+                if (infoArg === 'item') {
+                  onSetItemInfo(infoPath);
+                } else {
+                  onSetLayerInfo({
+                    infoPath,
+                    copy: tooltip.options ? tooltip.options.copy : null,
+                  });
+                }
+              } else {
+                // TODO country
+                // TODO river, gyre etc
+                onSetLayerInfo({
+                  layerId: id,
+                  copy: tooltip.options ? tooltip.options.copy : null,
+                  infoArg: 'info',
+                  infoPath: id,
+                });
+              }
+            }
           }}
         />
       )}
@@ -890,7 +920,8 @@ Map.propTypes = {
   currentModule: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
-  onLayerInfo: PropTypes.func,
+  onSetLayerInfo: PropTypes.func,
+  onSetItemInfo: PropTypes.func,
   onFeatureHighlight: PropTypes.func,
   onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
@@ -918,7 +949,8 @@ const mapStateToProps = createStructuredSelector({
   chartDate: state => selectChartDate(state),
 });
 
-function mapDispatchToProps(dispatch, ownProps) {
+// function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
     onLoadLayer: (key, config, args) => {
       dispatch(loadLayer(key, config, args));
@@ -926,19 +958,23 @@ function mapDispatchToProps(dispatch, ownProps) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onLayerInfo: ({ layer, feature, copy }, layersConfig) => {
-      dispatch(setLayerInfo(layer, feature, copy));
-      const { currentModule } = ownProps;
-      const config = layersConfig && layersConfig.find(l => l.id === layer);
-      const isModuleLayer =
-        config &&
-        currentModule &&
-        currentModule.featuredLayer &&
-        (currentModule.featuredLayer === config['content-default'] ||
-          currentModule.featuredLayer === layer);
-      if (!isModuleLayer) {
-        dispatch(showLayerInfoModule());
-      }
+    onSetItemInfo: infoPath => {
+      dispatch(setItemInfo(infoPath));
+      dispatch(showLayerInfoModule());
+    },
+    onSetLayerInfo: args => {
+      dispatch(setLayerInfo(args));
+      dispatch(showLayerInfoModule());
+      // const { currentModule } = ownProps;
+      // const config = layersConfig && layersConfig.find(l => l.id === layerId);
+      // const isModuleLayer =
+      //   config &&
+      //   currentModule &&
+      //   currentModule.featuredLayer &&
+      //   (currentModule.featuredLayer === config['content-default'] ||
+      //     currentModule.featuredLayer === layerId);
+      // if (!isModuleLayer) {
+      // }
     },
     onFeatureHighlight: args => {
       const layer = args ? args.layer : null;

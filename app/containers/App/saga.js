@@ -388,7 +388,7 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ layer, view, copy }) {
+function* setLayerInfoSaga({ layerId, view, copy, infoPath }) {
   if (navPending) {
     // console.log('setLayerInfoSaga waiting for', navPending, view);
     throw new Error({
@@ -398,17 +398,22 @@ function* setLayerInfoSaga({ layer, view, copy }) {
     navPending = 'setLayerInfoSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
-    // only update if not already active
-    let infoId = layer;
-    if (view) {
-      infoId = `${layer}|${view}`;
-      if (copy) {
-        // // console.log('COPY INFO', layer, view, copy);
-        infoId = `${layer}|${view}|${copy}`;
+    let infoId = infoPath;
+    if (!infoId) {
+      infoId = layerId;
+      if (view) {
+        infoId = `${infoId}|${view}`;
+        if (copy) {
+          // // console.log('COPY INFO', layer, view, copy);
+          infoId = `${infoId}|${copy}`;
+        }
       }
     }
+    // console.log('layerId', layerId, searchParams.get('info'))
+    console.log('infoId', infoId)
+    // only update if not already active
     if (searchParams.get('info') !== infoId) {
-      if (typeof layer === 'undefined' || layer === '') {
+      if (typeof infoId === 'undefined' || infoId === '') {
         searchParams.delete('info');
       } else {
         searchParams.set('info', infoId);
@@ -423,7 +428,8 @@ function* setLayerInfoSaga({ layer, view, copy }) {
     yield (navPending = false);
   }
 }
-function* setItemInfoSaga({ item }) {
+function* setItemInfoSaga({ infoPath }) {
+  console.log(infoPath)
   if (navPending) {
     throw new Error({
       function: 'setItemInfoSaga',
@@ -433,11 +439,11 @@ function* setItemInfoSaga({ item }) {
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
     // only update if not already active
-    if (searchParams.get('item') !== item) {
-      if (typeof item === 'undefined' || item === '') {
+    if (searchParams.get('item') !== infoPath) {
+      if (typeof infoPath === 'undefined' || infoPath === '') {
         searchParams.delete('item');
       } else {
-        searchParams.set('item', item);
+        searchParams.set('item', infoPath);
       }
       // convert to string and append if necessary
       const newSearch = searchParams.toString();

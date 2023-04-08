@@ -26,6 +26,7 @@ import {
 import LayerContent from './LayerContent';
 import PolicyContent from './PolicyContent';
 import ProjectContent from './ProjectContent';
+import PanelBody from './PanelBody';
 import TitleIcon from './TitleIcon';
 import ButtonClose from './ButtonClose';
 
@@ -37,10 +38,6 @@ const ContentWrap = styled.div`
   width: 100%;
   bottom: 0;
   overflow-y: scroll;
-  padding: 12px 12px 64px;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 12px 24px 64px;
-  }
 `;
 
 const Styled = styled.div`
@@ -73,7 +70,7 @@ export function LayerInfo({
   isModule,
   // onShowLayerPanel,
 }) {
-  const [layerId, layerView] = decodeInfoView(view);
+  const [layerId] = decodeInfoView(view);
 
   const cRef = useRef();
   useEffect(() => {
@@ -84,7 +81,7 @@ export function LayerInfo({
   // }, [view]);
 
   let type;
-  if (startsWith(layerId, `${PROJECT_CONFIG.id}-`)) {
+  if (startsWith(layerId, `${PROJECT_CONFIG.id}_`)) {
     type = 'project';
   } else if (startsWith(layerId, POLICY_LAYER)) {
     type = 'policyTopic';
@@ -112,22 +109,23 @@ export function LayerInfo({
             />
           )}
           {type !== 'policyTopic' && (
-            <ContentWrap ref={cRef}>
-              {type === 'project' && (
-                <ProjectContent
-                  id={layerId}
-                  location={layerView}
-                />
-              )}
-              {type === 'layer' && config && (
-                <LayerContent
-                  config={config}
-                  title={title}
-                  header={<TitleIcon title={title}/>}
-                />
-              )}
+            <>
+              <ContentWrap ref={cRef}>
+                <PanelBody>
+                  {type === 'project' && (
+                    <ProjectContent id={layerId} />
+                  )}
+                  {type === 'layer' && config && (
+                    <LayerContent
+                      config={config}
+                      title={title}
+                      header={<TitleIcon title={title}/>}
+                    />
+                  )}
+                </PanelBody>
+              </ContentWrap>
               <ButtonClose onClick={onClose} />
-            </ContentWrap>
+            </>
           )}
         </Styled>
       )}

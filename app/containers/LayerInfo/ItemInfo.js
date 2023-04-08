@@ -21,6 +21,7 @@ import { selectLayerByKey } from 'containers/Map/selectors';
 
 import SourceContent from './policy/SourceContent';
 import CountryFeatureContent from './policy/CountryFeatureContent';
+import ProjectLocationContent from './ProjectLocationContent';
 import ButtonClose from './ButtonClose';
 const Styled = styled.div`
   position: fixed;
@@ -103,6 +104,14 @@ export function ItemInfo({
                 onSelectStatement={statementId =>
                   onSetItemInfo(`${layerIndicator}|source-${statementId}`)
                 }
+                onClose={onClose}
+              />
+            )}
+            {type === 'location' && (
+              <ProjectLocationContent
+                locationId={itemId}
+                projectId={indicatorId}
+                layerInfo={layerInfo}
                 onClose={onClose}
               />
             )}

@@ -151,7 +151,7 @@ const DEFAULT_UI_URL_STATE = {
 const getLayersForTab = (tabId, layers, layersConfig) => {
   if (layers.length > 0) {
     if (tabId === PROJECT_CATEGORY) {
-      return layers.filter(layer => startsWith(layer, `${PROJECT_CONFIG.id}-`));
+      return layers.filter(layer => startsWith(layer, `${PROJECT_CONFIG.id}_`));
     }
     if (tabId === POLICY_CATEGORY) {
       return layers.filter(layer => startsWith(layer, POLICY_LAYER));
@@ -207,7 +207,7 @@ export function PanelExplore({
 
   const isProjectTab = activeCategory && activeCategory.id === PROJECT_CATEGORY;
   const isPolicyTab = activeCategory && activeCategory.id === POLICY_CATEGORY;
-
+  console.log()
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -290,7 +290,7 @@ export function PanelExplore({
                         onToggleLayer={onToggleLayer}
                       />
                     )}
-                    {isProjectTab && (
+                    {projects && isProjectTab && (
                       <GroupLayers
                         group={group}
                         projects
@@ -379,7 +379,7 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => {
-      dispatch(setLayerInfo(id));
+      dispatch(setLayerInfo({ layerId: id }));
       dispatch(showLayerInfoModule());
     },
     onSetLayers: layers => dispatch(setLayers(layers)),

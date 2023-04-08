@@ -635,6 +635,32 @@ export const getVectorLayer = ({
   }
   return null;
 };
+const getProjectData = ({ data, project }) => {
+  console.log('data, project', data, project);
+  const projectFeatures = data.features.filter(feature =>
+    filterByProject(feature, project),
+  );
+  return {
+    ...data,
+    features: projectFeatures.map(feature => {
+      let infoArg = 'info';
+      let infoPath = `${PROJECT_CONFIG.id}_${project.project_id}`;
+      if (projectFeatures.length > 1) {
+        infoArg = 'item';
+        // item=projects_7|location-7.1
+        infoPath = `${infoPath}|location-${feature.properties.location_id}`;
+      }
+      console.log('infoPath', infoPath);
+      console.log('infoArg', infoArg);
+      console.log('feature', feature);
+      return {
+        ...feature,
+        infoArg,
+        infoPath,
+      };
+    }),
+  };
+};
 
 export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const { data, config } = jsonLayer;
@@ -650,13 +676,15 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
     const options = {
       icon: divIcon,
       layer: project,
-      layerId: `${PROJECT_CONFIG.id}-${
+      layerId: `${PROJECT_CONFIG.id}_${
         project[PROJECT_CONFIG.data['layer-id']]
       }`,
       ...config.style,
     };
-    const jsonLlayer = L.geoJSON(data, {
-      filter: feature => filterByProject(feature, project),
+    const dataX = getProjectData({ data, project });
+    console.log('dataX', dataX)
+    const jsonLlayer = L.geoJSON(dataX, {
+      // filter: feature => filterByProject(feature, project),
       pointToLayer: (feature, latlng) => L.marker(latlng, options).on(events),
     });
     layer.addLayer(jsonLlayer);

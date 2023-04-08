@@ -53,6 +53,7 @@ import SourceList from './policy/SourceList';
 import LayerContent from './LayerContent';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
+import PanelBody from './PanelBody';
 import messages from './messages';
 
 const ContentWrap = styled.div`
@@ -72,10 +73,6 @@ const PanelHeader = styled(p => (
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 24px 12px 0;
   }
-`;
-
-const PanelBody = styled.div`
-  padding: 12px 12px 96px;
 `;
 
 const IconWrap = styled.div`
@@ -449,8 +446,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSetTab: (tab, view) => {
-      dispatch(setLayerInfo(view, tab));
+    onSetTab: (tab, layerId) => {
+      dispatch(setLayerInfo({ layerId, view: tab }));
     },
     onSetChartDate: dateString => {
       dispatch(setChartDate(dateString));

@@ -191,18 +191,30 @@ export function setUIURL(key, newState) {
     newState,
   };
 }
-export function setLayerInfo(layer, view, copy) {
+export function setLayerInfo(args) {
+  if (args) {
+    const { layerId, view, copy, infoPath } = args;
+    return {
+      type: SET_LAYER_INFO,
+      layerId,
+      view,
+      copy,
+      infoPath,
+    };
+  }
   return {
     type: SET_LAYER_INFO,
-    layer,
-    view,
-    copy,
   };
 }
-export function setItemInfo(item) {
+export function setItemInfo(infoPath) {
+  if (infoPath) {
+    return {
+      type: SET_ITEM_INFO,
+      infoPath,
+    };
+  }
   return {
     type: SET_ITEM_INFO,
-    item,
   };
 }
 export function showLayerInfoModule(visible = true) {

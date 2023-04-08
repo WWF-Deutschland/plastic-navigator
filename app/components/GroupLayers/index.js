@@ -126,7 +126,7 @@ function GroupLayers({
           });
       } else {
         if (projects) {
-          id = `${PROJECT_CONFIG.id}-${config.project_id}`;
+          id = `${PROJECT_CONFIG.id}_${config.project_id}`;
           title =
             config[`project_title_${locale}`] ||
             config[`project_title_${DEFAULT_LOCALE}`];

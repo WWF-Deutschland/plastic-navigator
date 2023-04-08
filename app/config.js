@@ -102,6 +102,8 @@ export const PROJECT_CONFIG = {
   id: 'projects',
   type: 'csv',
   source: 'data',
+  isGeometry: true,
+  latlonColumns: ['latitude', 'longitude'],
   file: 'layers/project_locations.csv',
   data: {
     'layer-id': 'project_id',

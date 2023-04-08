@@ -235,7 +235,10 @@ const MAX_FOLD = 'large';
 
 const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
   const { locale } = intl;
-  let title = config.title[locale] || config.title[DEFAULT_LOCALE];
+  let title = 'no title';
+  if (config && config.title) {
+    title = config.title[locale] || config.title[DEFAULT_LOCALE];
+  }
   const isActivePolicyTopic = config.id === POLICY_LAYER;
   if (isActivePolicyTopic && jsonLayerInfo) {
     title = `${title}: ${getTopicTitle({
@@ -248,7 +251,10 @@ const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
 };
 const getLayerAbout = ({ intl, config, jsonLayerInfo, indicatorId }) => {
   const { locale } = intl;
-  let title = config.about[locale] || config.about[DEFAULT_LOCALE];
+  let title = 'no about';
+  if (config && config.about) {
+    title = config.about[locale] || config.about[DEFAULT_LOCALE];
+  }
   const isActivePolicyTopic = config.id === POLICY_LAYER;
   if (isActivePolicyTopic && jsonLayerInfo) {
     title = getTopicMapAnnotation({
@@ -292,7 +298,7 @@ export function PanelKey({
       activeLayerIds.indexOf(active) < 0
     ) {
       const latestActive = activeLayerIds[0];
-      const isProject = startsWith(latestActive, `${PROJECT_CONFIG.id}-`);
+      const isProject = startsWith(latestActive, `${PROJECT_CONFIG.id}_`);
       if (isProject) {
         setActive(PROJECT_CONFIG.id);
       } else {
@@ -310,7 +316,7 @@ export function PanelKey({
   let activeContentIdRoot = null;
   [activeContentIdRoot, indicatorId] = activeContentId.split('_');
   let isActiveProject;
-  if (startsWith(activeContentId, `${PROJECT_CONFIG.id}-`)) {
+  if (startsWith(activeContentId, `${PROJECT_CONFIG.id}_`)) {
     activeContentIdRoot = PROJECT_CONFIG.id;
     isActiveProject = true;
   }
@@ -323,7 +329,7 @@ export function PanelKey({
   const cleanActiveLayerIds =
     activeLayerIds &&
     activeLayerIds.reduce((memo, id) => {
-      const isProject = startsWith(id, `${PROJECT_CONFIG.id}-`);
+      const isProject = startsWith(id, `${PROJECT_CONFIG.id}_`);
       const cleanId = isProject ? PROJECT_CONFIG.id : id;
       const pass = !isProject || !hasAlreadyProject;
       hasAlreadyProject = hasAlreadyProject || isProject;
@@ -584,7 +590,7 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => {
-      dispatch(setLayerInfo(id));
+      dispatch(setLayerInfo({ layerId: id }));
       dispatch(showLayerInfoModule(true));
     },
   };

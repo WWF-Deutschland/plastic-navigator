@@ -117,6 +117,20 @@ export default defineMessages({
     id: `${scope}.countryStatementLinkLabel`,
     defaultMessage: 'Go to statement',
   },
+  parentProjectLinkLabel: {
+    id: `${scope}.parentProjectLinkLabel`,
+    defaultMessage: 'Go to project: {title}',
+  },
+  noLocationInfo: {
+    id: `${scope}.noLocationInfo`,
+    defaultMessage:
+      'There is currently no information available for the selected project location, but you can use the link above to learn more about the project',
+  },
+  moreLocationInfo: {
+    id: `${scope}.moreLocationInfo`,
+    defaultMessage:
+      "You can use the link above to learn more about the selected location's project",
+  },
   otherStatements: {
     id: `${scope}.otherStatements`,
     defaultMessage:

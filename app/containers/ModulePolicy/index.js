@@ -426,7 +426,7 @@ function mapDispatchToProps(dispatch) {
     onSetLanding: () => dispatch(setLanding()),
     onSetLayers: layers => dispatch(setLayers(layers)),
     onSetLayerInfo: id => {
-      dispatch(setLayerInfo(id));
+      dispatch(setLayerInfo({ layerId: id }));
     },
     onSetItemInfo: id => {
       dispatch(setItemInfo(id));

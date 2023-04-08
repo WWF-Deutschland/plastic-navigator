@@ -5,15 +5,12 @@
  */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
+
 import styled from 'styled-components';
 import { Button, Box, Heading, Text, ResponsiveContext } from 'grommet';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { ArrowRightL, CloseXS } from 'components/Icons';
-
-import { setItemInfo } from 'containers/App/actions';
 
 import { sortLabels } from 'utils/string';
 import { isMinSize } from 'utils/responsive';
@@ -52,12 +49,11 @@ const FeatureButton = styled(p => (
 export function FeatureList({
   title,
   items,
-  layerId,
   onSetItemInfo,
   config,
-  isSourceList,
   search,
   placeholder,
+  isSourceList,
   intl,
 }) {
   const [test, setTest] = useState('');
@@ -131,9 +127,7 @@ export function FeatureList({
                 <FeatureButton
                   key={item.id}
                   onClick={() =>
-                    isSourceList
-                      ? onSetItemInfo(`${layerId}|source-${item.id}`)
-                      : onSetItemInfo(`${layerId}|country-${item.id}`)
+                    onSetItemInfo ? onSetItemInfo(item.id) : null
                   }
                   label={
                     <Box
@@ -200,17 +194,4 @@ FeatureList.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSetItemInfo: id => {
-      dispatch(setItemInfo(id));
-    },
-  };
-}
-
-const withConnect = connect(
-  null,
-  mapDispatchToProps,
-);
-
-export default compose(withConnect)(injectIntl(FeatureList));
+export default injectIntl(FeatureList);

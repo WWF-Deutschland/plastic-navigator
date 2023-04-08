@@ -26,28 +26,27 @@ import CountryPositionSymbol from './CountryPositionSymbol';
 import FeatureListCollapsable from '../FeatureListCollapsable';
 
 import Title from '../Title';
+
+import PanelBody from '../PanelBody';
 import messages from '../messages';
 
 const TitleWrap = styled(p => (
   <Box margin={{ top: 'small', bottom: 'small' }} {...p} />
-))`
-  padding: 12px 12px 0;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 24px 12px 0;
-  }
-`;
+))``;
 const PanelHeader = styled(p => (
   <Box justify="between" {...p} responsive={false} />
-))``;
+))`
+  padding: 12px 24px 0;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 24px 24px 0;
+  }
+`;
 
 const OptionsLabel = styled(Text)`
   font-weight: bold;
   text-transform: uppercase;
 `;
 
-const PanelBody = styled.div`
-  padding: 0 12px 96px;
-`;
 const DateWrapper = styled.div`
   margin-bottom: 5px;
 `;
@@ -146,7 +145,7 @@ export function SourceContent({
           <Title>{title}</Title>
         </TitleWrap>
       </PanelHeader>
-      <PanelBody>
+      <PanelBody hasHeader>
         <OptionsLabel>
           <FormattedMessage
             {...messages[

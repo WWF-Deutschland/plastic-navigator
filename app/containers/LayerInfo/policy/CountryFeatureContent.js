@@ -22,12 +22,20 @@ import CountryPositionSymbol from './CountryPositionSymbol';
 import CountryPolicyCommitments from './CountryPolicyCommitments';
 
 import Title from '../Title';
+import PanelBody from '../PanelBody';
 import messages from '../messages';
 
 const PanelHeader = styled(p => (
   <Box justify="between" {...p} responsive={false} />
 ))``;
-
+const TitleWrap = styled(p => (
+  <Box margin={{ top: 'small', bottom: 'small' }} {...p} />
+))`
+  padding: 12px 24px 0;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 24px 24px 0;
+  }
+`;
 const IndicatorLinksAKAScoreCard = styled(p => (
   <Box
     direction="row"
@@ -66,14 +74,6 @@ const IndicatorLink = styled(p => <Button plain {...p} />)`
 `;
 // const IndicatorLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
 
-const TitleWrap = styled(p => (
-  <Box margin={{ top: 'small', bottom: 'small' }} {...p} />
-))`
-  padding: 12px 12px 0;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 24px 12px 0;
-  }
-`;
 const IconWrap = styled.div`
   border-radius: 99999px;
   background: ${({ color, theme }) => color || theme.global.colors.brand};
@@ -97,10 +97,6 @@ const CountryPositionLabel = styled(p => <Text size="xsmall" {...p} />)`
   font-weight: bold;
   text-transform: uppercase;
 `;
-const PanelBody = styled.div`
-  padding: 24px 12px 96px;
-`;
-
 const IndicatorTitle = styled(p => <Text size="xxlarge" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
@@ -184,7 +180,7 @@ export function CountryFeatureContent({
             })}
         </IndicatorLinksAKAScoreCard>
       </PanelHeader>
-      <PanelBody>
+      <PanelBody hasHeader>
         {currentIndicator && (
           <>
             <Box gap="small">

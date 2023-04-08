@@ -91,10 +91,10 @@ const ProjectButton = ({ showAll, lids, pids, onClick, small, ...rest }) => {
       onClick={() => {
         if (showAll) {
           onClick(
-            uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}-${pid}`)]),
+            uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}_${pid}`)]),
           );
         } else {
-          onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}-`)));
+          onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}_`)));
         }
       }}
       label={<FormattedMessage {...label} />}
@@ -172,13 +172,13 @@ export function ModuleExplore({
   const projectIds = projects ? projects.map(p => p.project_id) : [];
   const activeProjects = layerIds
     .filter(id => {
-      if (startsWith(id, `${PROJECT_CONFIG.id}-`)) {
-        const pid = id.replace(`${PROJECT_CONFIG.id}-`, '');
+      if (startsWith(id, `${PROJECT_CONFIG.id}_`)) {
+        const pid = id.replace(`${PROJECT_CONFIG.id}_`, '');
         return projectIds.indexOf(pid) > -1;
       }
       return false;
     })
-    .map(id => id.replace(`${PROJECT_CONFIG.id}-`, ''));
+    .map(id => id.replace(`${PROJECT_CONFIG.id}_`, ''));
   // const hasActiveProjects = activeProjects.length > 0;
   const hasAllProjectsActive =
     projects && activeProjects.length >= projects.length;
