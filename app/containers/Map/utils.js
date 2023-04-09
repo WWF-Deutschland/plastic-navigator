@@ -341,7 +341,11 @@ const getPolygonLayer = ({ data, config, markerEvents, state }) => {
   return layer;
 };
 
-export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
+export const getIcon = (
+  config,
+  { feature, latlng, state = 'default' } = {},
+) => {
+  const { icon } = config;
   if (icon && icon.datauri) {
     const sizeForState = icon.size[state] || icon.size.default || icon.size;
     const iconSize = [
@@ -412,7 +416,53 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       html: `<img style="width:100%;" src="${iconForState}">`,
     });
   }
+  const iconsByValue = config['icons-by-value'];
+  if (iconsByValue && config.size) {
+    // console.log('feature',feature)
+    // const sizeForState =
+    //   config.size[state] || config.size.default || config.size;
+    const iconSize = [
+      // (sizeForState && sizeForState.x) || 25,
+      // (sizeForState && sizeForState.y) || 50,
+      24,
+      25.5,
+    ];
+    // off set from top left
+    const iconAnchor = [iconSize[0] / 2, iconSize[1]]; // bottom
+    const options = {
+      className: 'mpx-map-icon-uri',
+      iconSize,
+      iconAnchor,
+    };
+    const value =
+      (feature &&
+        feature.properties &&
+        feature.properties.indicator &&
+        feature.properties.indicator.value) ||
+      0;
+    // console.log('value', value, state)
+
+    // check for property dependent icon
+    const uri = iconsByValue[value] ? iconsByValue[value][state] : '';
+    // console.log('uri', uri)
+    return L.divIcon({
+      ...options,
+      html: `<img style="width:100%;" src="${uri}">`,
+    });
+  }
   return L.icon();
+};
+
+const filterFeatureMaxZoom = ({ feature, zoom, config }) => {
+  if (
+    config &&
+    config['default-max-zoom'] &&
+    feature.properties[config['default-max-zoom']] &&
+    feature.properties[config['default-max-zoom']] !== ''
+  ) {
+    return zoom <= parseInt(feature.properties[config['default-max-zoom']], 10);
+  }
+  return false;
 };
 
 const getPointLayer = ({ data, config, markerEvents }) => {
@@ -428,11 +478,17 @@ const getPointLayer = ({ data, config, markerEvents }) => {
       markerEvents.mouseout ? markerEvents.mouseout(e, config) : null,
     click: e => (markerEvents.click ? markerEvents.click(e, config) : null),
   };
+  // prettier-ignore
   const jsonLayer = L.geoJSON(data, {
+    config,
+    checkZoom: config['default-max-zoom']
+      ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config})
+      : null,
     pointToLayer: (feature, latlng) =>
       L.marker(latlng, {
         ...options,
-        icon: getIcon(config.icon, { feature, latlng }),
+        icon: getIcon(config, { feature, latlng }),
+        opacity: config['default-max-zoom'] ? 0.666 : 1,
       }).on(events),
   });
   layer.addLayer(jsonLayer);
@@ -444,11 +500,16 @@ const getPointLayer = ({ data, config, markerEvents }) => {
   ) {
     const layerWest = L.geoJSON(data, {
       copy: 'west',
+      config,
+      checkZoom: config['default-max-zoom']
+        ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config })
+        : null,
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng - 360], {
           ...options,
           copy: 'west',
-          icon: getIcon(config.icon, { feature, latlng }),
+          icon: getIcon(config, { feature, latlng }),
+          opacity: config['default-max-zoom'] ? 0.666 : 1,
         }).on(events),
     });
     layer.addLayer(layerWest);
@@ -460,11 +521,16 @@ const getPointLayer = ({ data, config, markerEvents }) => {
   ) {
     const layerEast = L.geoJSON(data, {
       copy: 'east',
+      config,
+      checkZoom: config['default-max-zoom']
+        ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config })
+        : null,
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng + 360], {
           ...options,
           copy: 'east',
-          icon: getIcon(config.icon, { feature, latlng }),
+          icon: getIcon(config, { feature, latlng }),
+          opacity: config['default-max-zoom'] ? 0.666 : 1,
         }).on(events),
     });
     layer.addLayer(layerEast);
@@ -566,7 +632,6 @@ const prepareGeometry = ({
             dateString,
             tables,
           });
-          // console.log('position', position)
           return {
             type: gf.type,
             geometry: gf.geometry,
@@ -621,22 +686,39 @@ export const getVectorLayer = ({
     return getCircleLayer({ data, config, markerEvents, state });
   }
   if (data.features && data.geometries && data.geometries.length > 0) {
-    const geometry = data.geometries[0]; // for now take first one
-    const geometryX = prepareGeometry({
-      geometry,
-      config,
-      features: data.features,
-      tables: data.tables,
-      indicatorId,
-      dateString,
-      // also pass date
+    // cons/t geometry = data.geometries[0]; // for now take first one
+    const layers = data.geometries.map(geometry => {
+      const geometryX = prepareGeometry({
+        geometry,
+        config,
+        features: data.features,
+        tables: data.tables,
+        indicatorId,
+        dateString,
+      });
+      if (geometry.config.render.type === 'area') {
+        return getPolygonLayer({
+          data: geometryX,
+          config,
+          markerEvents,
+          state,
+        });
+      }
+      if (geometry.config.render.type === 'marker') {
+        return getPointLayer({
+          data: geometryX,
+          config: geometry.config,
+          markerEvents,
+          state,
+        });
+      }
+      return null;
     });
-    return getPolygonLayer({ data: geometryX, config, markerEvents, state });
+    return L.layerGroup(layers);
   }
   return null;
 };
 const getProjectData = ({ data, project }) => {
-  console.log('data, project', data, project);
   const projectFeatures = data.features.filter(feature =>
     filterByProject(feature, project),
   );
@@ -650,9 +732,6 @@ const getProjectData = ({ data, project }) => {
         // item=projects_7|location-7.1
         infoPath = `${infoPath}|location-${feature.properties.location_id}`;
       }
-      console.log('infoPath', infoPath);
-      console.log('infoArg', infoArg);
-      console.log('feature', feature);
       return {
         ...feature,
         infoArg,
@@ -672,7 +751,7 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const layer = L.featureGroup(null);
   const { icon } = PROJECT_CONFIG;
   if (icon && icon.datauri) {
-    const divIcon = getIcon(icon);
+    const divIcon = getIcon(PROJECT_CONFIG);
     const options = {
       icon: divIcon,
       layer: project,
@@ -783,4 +862,42 @@ export const padBounds = (latlngBounds, padding, map) => {
 export const getMapPaddedBounds = (map, padding) => {
   const bounds = map.getBounds();
   return padBounds(bounds, padding, map);
+};
+
+export const hideForZoom = ({ layer, zoom }) => {
+  if (layer && layer.getLayers() && layer.getLayers().length > 0) {
+    layer.eachLayer(sublayer => {
+      if (sublayer.getLayers && sublayer.getLayers().length > 0) {
+        if (sublayer.options && sublayer.options.checkZoom) {
+          sublayer.eachLayer(feature => {
+            if (sublayer.options.checkZoom(feature.feature, zoom)) {
+              feature.setIcon(
+                getIcon(sublayer.options.config, { feature: feature.feature }),
+              );
+            } else {
+              feature.setIcon(getIcon(sublayer.options.config));
+            }
+          });
+        } else {
+          sublayer.eachLayer(sublayer2 => {
+            if (sublayer2.getLayers && sublayer2.getLayers().length > 0) {
+              if (sublayer2.options && sublayer2.options.checkZoom) {
+                sublayer2.eachLayer(feature => {
+                  if (sublayer2.options.checkZoom(feature.feature, zoom)) {
+                    feature.setIcon(
+                      getIcon(sublayer2.options.config, {
+                        feature: feature.feature,
+                      }),
+                    );
+                  } else {
+                    feature.setIcon(getIcon(sublayer2.options.config));
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  }
 };

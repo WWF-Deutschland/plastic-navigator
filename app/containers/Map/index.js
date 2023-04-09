@@ -53,6 +53,7 @@ import {
   getVectorLayer,
   getIcon,
   getMapPaddedBounds,
+  hideForZoom,
 } from './utils';
 
 import reducer from './reducer';
@@ -296,6 +297,27 @@ export function Map({
     if (mapRef.current.getZoom() !== zoom) {
       mapRef.current.setZoom(zoom);
     }
+    if (activeLayerIds && layersConfig) {
+      activeLayerIds.forEach(id => {
+        const [configLayerId] = id.split('_');
+        const layer = mapLayers[id] && mapLayers[id].layer;
+        const config = layersConfig.find(
+          c => c.id === id || c.id === configLayerId,
+        );
+        if (config) {
+          if (
+            config.source === 'data' &&
+            (config.type === 'geojson' ||
+              config.type === 'topojson' ||
+              config.type === 'csv' ||
+              config.geometries)
+          ) {
+            // console.log('hideForZoom', config)
+            hideForZoom({ layer, zoom });
+          }
+        }
+      });
+    }
   }, [zoom]);
 
   useEffect(() => {
@@ -468,7 +490,6 @@ export function Map({
                 project,
                 markerEvents,
               });
-              console.log('add project layer', layer)
               mapRef.current.addLayer(layer);
               newMapLayers[id] = { layer, config: jsonLayers.projectLocations };
             }
@@ -516,16 +537,18 @@ export function Map({
               //   areaMaskRef.current.addLayer(layer);
               //   // newMapLayers[id] = { layer, config };
               // }
+              // console.log(jsonLayers[configLayerId]);
               if (jsonLayers[configLayerId] && mapRef) {
                 const layer = getVectorLayer({
                   jsonLayer: jsonLayers[configLayerId],
                   config,
-                  markerEvents,
+                  // markerEvents,
                   indicatorId,
                   dateString: chartDate,
                   // also pass date
                 });
-                console.log('add json layer', layer)
+                // console.log('add json layer', layer, zoom)
+                hideForZoom({ layer, zoom });
                 mapRef.current.addLayer(layer);
                 newMapLayers[id] = { layer, config };
               }
@@ -539,6 +562,7 @@ export function Map({
       onSetMapLayers(newMapLayers);
     }
   }, [activeLayerIds, layersConfig, jsonLayers, projects, chartDate]);
+
   // preload featured layers
   useEffect(() => {
     // console.log('activelayers (according to url) ', activeLayerIds);
@@ -546,6 +570,7 @@ export function Map({
     // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (currentModule && currentModule.featuredLayer && layersConfig) {
+      // console.log('currentModule', currentModule)
       if (!jsonLayers[currentModule.featuredLayer]) {
         const config = layersConfig.find(
           c => c.id === currentModule.featuredLayer,
@@ -600,19 +625,19 @@ export function Map({
                   ((!mcopy && !highlightCopy) || mcopy === highlightCopy);
                 if (active || infoLayerActive || highlight) {
                   if (highlight) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'hover',
                     });
                   } else if (active) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'active',
                     });
                   } else if (infoLayerActive) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'semi-active',
@@ -621,7 +646,7 @@ export function Map({
                   // if (active) marker.setZIndexOffset(1000);
                 } else {
                   marker.setZIndexOffset(0);
-                  icon = getIcon(config.icon, {
+                  icon = getIcon(config, {
                     feature: marker.feature,
                     latlng: marker.getLatLng(),
                     state: 'default',
@@ -778,6 +803,7 @@ export function Map({
   }, [layersConfig, mapLayers, layerInfo]);
 
   // move active marker into view
+  // TODO: re-enable
   useEffect(() => {
     if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
@@ -828,7 +854,6 @@ export function Map({
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
           onSetLayerInfo={args => {
-            console.log('args', args)
             onSetLayerInfo(args, layersConfig);
           }}
           jsonLayers={jsonLayers}
@@ -845,9 +870,7 @@ export function Map({
           onClose={() => setTooltip(null)}
           onFeatureClick={() => {
             setTooltip(null);
-            // let item = ''
             const { id } = tooltip.config;
-            console.log('tooltip', tooltip);
             if (tooltip.feature && tooltip.feature.properties) {
               if (id === PROJECT_CONFIG.id) {
                 // onSetProjectInfo({ projectId, locationId });
