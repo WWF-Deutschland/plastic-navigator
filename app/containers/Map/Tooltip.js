@@ -226,7 +226,13 @@ const Tooltip = ({
   onClose,
   onFeatureClick,
 }) => {
-  const { tooltip } = config;
+  const tooltip =
+    (feature && feature.properties && feature.properties.tooltip) ||
+    config.tooltip;
+  // console.log('tooltip', tooltip)
+  // console.log('feature', feature)
+  // console.log('config', config)
+  if (!tooltip) return null;
   const { locale } = intl;
   const markerSize = getMarkerSize(config, feature, layerOptions);
   const offset = getOffset(config, feature, markerSize);
@@ -242,12 +248,21 @@ const Tooltip = ({
         >
           <Box margin="small" responsive={false}>
             {tooltip.supTitle && (
-              <SupTitle>{getSupTitle(feature, config, layer, locale)}</SupTitle>
+              <SupTitle>{typeof tooltip.supTitle === 'string'
+                ? tooltip.supTitle
+                : getSupTitle(feature, config, layer, locale)}
+              </SupTitle>
             )}
             {tooltip.title && (
-              <Title>{getTitle(feature, config, layer, intl)}</Title>
+              <Title>{typeof tooltip.title === 'string'
+                ? tooltip.title
+                : getTitle(feature, config, layer, intl)}
+              </Title>
             )}
-            {tooltip.content && (
+            {tooltip.content && typeof tooltip.content === 'string' && (
+              <TooltipContent content={tooltip.content} />
+            )}
+            {tooltip.content && typeof tooltip.content !== 'string' && (
               <TooltipContent feature={feature} config={config} layer={layer} />
             )}
             {config.id === PROJECT_CONFIG.id && (

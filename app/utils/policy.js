@@ -149,6 +149,7 @@ export const getCountryPositionForTopicAndDate = ({
   dateString,
   // countries,
   tables,
+  locale,
 }) => {
   // const country = countries.find(c => c.code === countryCode);
   const countryStatements = getCountryStatements({
@@ -192,6 +193,7 @@ export const getCountryPositionForTopicAndDate = ({
         latestCountryPositionStatement.value <
         strongestCountryPositionStatement.value,
       value: latestCountryPositionStatement.value,
+      topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
     };
   }
   const positionWithoutStatement = getPositionForValueAndTopic({
@@ -203,6 +205,7 @@ export const getCountryPositionForTopicAndDate = ({
     latestPosition: positionWithoutStatement,
     strongestPosition: positionWithoutStatement,
     value: 0,
+    topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
   };
 };
 
@@ -449,18 +452,16 @@ export const filterSources = (item, test) => {
   }
 };
 
-export const getTopicTitle = ({ layerInfo, indicatorId, locale }) => {
+export const getTopicTitle = ({ layerInfo, indicatorId, locale, tables }) => {
+  const xtables =
+    tables || (layerInfo && layerInfo.data && layerInfo.data.tables);
   if (
     typeof indicatorId !== 'undefined' &&
-    layerInfo &&
-    layerInfo.data &&
-    layerInfo.data.tables &&
-    layerInfo.data.tables.topics &&
-    layerInfo.data.tables.topics.data
+    xtables &&
+    xtables.topics &&
+    xtables.topics.data
   ) {
-    const topic = layerInfo.data.tables.topics.data.data.find(t =>
-      qe(t.id, indicatorId),
-    );
+    const topic = xtables.topics.data.data.find(t => qe(t.id, indicatorId));
     if (topic) {
       return (
         topic[`short_${locale}`] ||

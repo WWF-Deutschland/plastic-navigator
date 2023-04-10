@@ -410,7 +410,7 @@ function* setLayerInfoSaga({ layerId, view, copy, infoPath }) {
       }
     }
     // console.log('layerId', layerId, searchParams.get('info'))
-    console.log('infoId', infoId)
+    // console.log('infoId', infoId)
     // only update if not already active
     if (searchParams.get('info') !== infoId) {
       if (typeof infoId === 'undefined' || infoId === '') {
@@ -429,7 +429,7 @@ function* setLayerInfoSaga({ layerId, view, copy, infoPath }) {
   }
 }
 function* setItemInfoSaga({ infoPath }) {
-  console.log(infoPath)
+  // console.log(infoPath)
   if (navPending) {
     throw new Error({
       function: 'setItemInfoSaga',
