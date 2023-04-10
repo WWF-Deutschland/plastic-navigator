@@ -239,31 +239,35 @@ const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
   if (config && config.title) {
     title = config.title[locale] || config.title[DEFAULT_LOCALE];
   }
-  const isActivePolicyTopic = config.id === POLICY_LAYER;
-  if (isActivePolicyTopic && jsonLayerInfo) {
+  // append
+  if (config.id === POLICY_LAYER && jsonLayerInfo) {
     title = `${title}: ${getTopicTitle({
       layerInfo: jsonLayerInfo,
       indicatorId,
       locale,
     })}`;
   }
+  if (config.id === PROJECT_CONFIG.id) {
+    title = intl.formatMessage(messages.keyProjectsTitle);
+  }
   return title;
 };
 const getLayerAbout = ({ intl, config, jsonLayerInfo, indicatorId }) => {
   const { locale } = intl;
-  let title = 'no about';
   if (config && config.about) {
-    title = config.about[locale] || config.about[DEFAULT_LOCALE];
+    return config.about[locale] || config.about[DEFAULT_LOCALE];
   }
-  const isActivePolicyTopic = config.id === POLICY_LAYER;
-  if (isActivePolicyTopic && jsonLayerInfo) {
-    title = getTopicMapAnnotation({
+  if (jsonLayerInfo && config.id === POLICY_LAYER) {
+    return getTopicMapAnnotation({
       layerInfo: jsonLayerInfo,
       indicatorId,
       locale,
     });
   }
-  return title;
+  if (config.id === PROJECT_CONFIG.id) {
+    return intl.formatMessage(messages.keyProjectsAbout);
+  }
+  return 'about';
 };
 
 export function PanelKey({
@@ -316,7 +320,7 @@ export function PanelKey({
   let activeContentIdRoot = null;
   [activeContentIdRoot, indicatorId] = activeContentId.split('_');
   let isActiveProject;
-  if (startsWith(activeContentId, `${PROJECT_CONFIG.id}_`)) {
+  if (startsWith(activeContentId, PROJECT_CONFIG.id)) {
     activeContentIdRoot = PROJECT_CONFIG.id;
     isActiveProject = true;
   }
@@ -540,7 +544,7 @@ export function PanelKey({
                   </TabLabel>
                   <Box margin={{ top: 'small'}}>
                     {config && locale && (
-                      <Text>
+                      <Text size="small">
                         {isActiveProject ? (
                           <FormattedMessage {...messages.keyProjectsAbout} />
                         ) :
