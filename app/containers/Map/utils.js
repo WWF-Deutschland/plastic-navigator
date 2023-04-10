@@ -276,7 +276,11 @@ const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
     interactive: state !== 'hover' && state !== 'active',
     getFeatureId: f => f.properties.f_id,
   });
-  if (markerEvents) {
+  if (state === 'mask') {
+    vectorGrid.on({
+      click: () => null,
+    });
+  } else if (markerEvents) {
     vectorGrid.on({
       mouseover: e => {
         if (featureInteractive(e, config) && markerEvents.mouseover) {
@@ -350,9 +354,16 @@ const getPolygonLayer = ({ data, config, markerEvents, state }) => {
 
 export const getIcon = (
   config,
-  { feature, latlng, state = 'default' } = {},
+  { feature, latlng, state = 'default', hide } = {},
 ) => {
   const { icon } = config;
+  if (hide) {
+    return L.divIcon({
+      className: 'mpx-map-icon-uri',
+      iconSize: [0, 0],
+      html: '<img style="width:100%;" src="">',
+    });
+  }
   if (icon && icon.datauri) {
     const sizeForState = icon.size[state] || icon.size.default || icon.size;
     const iconSize = [
@@ -447,14 +458,20 @@ export const getIcon = (
         feature.properties.indicator &&
         feature.properties.indicator.value) ||
       0;
-    // console.log('value', value, state)
 
     // check for property dependent icon
-    const uri = iconsByValue[value] ? iconsByValue[value][state] : '';
-    // console.log('uri', uri)
+    if (iconsByValue[value]) {
+      const uri = iconsByValue[value][state];
+      // console.log('uri', uri)
+      return L.divIcon({
+        ...options,
+        html: `<img style="width:100%;" src="${uri}">`,
+      });
+    }
     return L.divIcon({
       ...options,
-      html: `<img style="width:100%;" src="${uri}">`,
+      iconSize: [0, 0],
+      html: '<img style="width:100%;" src="">',
     });
   }
   return L.icon();
@@ -712,9 +729,10 @@ export const getVectorLayer = ({
   if (config.render && config.render.type === 'scaledCircle') {
     return getCircleLayer({ data, config, markerEvents, state });
   }
+  let layers;
   if (data.features && data.geometries && data.geometries.length > 0) {
     // cons/t geometry = data.geometries[0]; // for now take first one
-    const layers = data.geometries.map(geometry => {
+    layers = data.geometries.map(geometry => {
       const geometryX = prepareGeometry({
         geometry,
         config,
@@ -740,11 +758,23 @@ export const getVectorLayer = ({
           state,
         });
       }
-      return null;
+      return [];
     });
-    return L.layerGroup(layers);
+    if (data.features && data.geometryMasks && data.geometryMasks.length > 0) {
+      const maskLayers = data.geometryMasks.map(geometry => {
+        if (geometry.config.render.type === 'area') {
+          return getPolygonLayer({
+            data: geometry,
+            config,
+            state: 'mask',
+          });
+        }
+        return null;
+      });
+      layers = [...layers, ...maskLayers];
+    }
   }
-  return null;
+  return layers ? L.layerGroup(layers) : null;
 };
 const getProjectData = ({ data, project }) => {
   const projectFeatures = data.features.filter(feature =>
@@ -902,7 +932,7 @@ export const hideForZoom = ({ layer, zoom }) => {
                 getIcon(sublayer.options.config, { feature: feature.feature }),
               );
             } else {
-              feature.setIcon(getIcon(sublayer.options.config));
+              feature.setIcon(getIcon(sublayer.options.config, { hide: true }));
             }
           });
         } else {
@@ -917,7 +947,9 @@ export const hideForZoom = ({ layer, zoom }) => {
                       }),
                     );
                   } else {
-                    feature.setIcon(getIcon(sublayer2.options.config));
+                    feature.setIcon(
+                      getIcon(sublayer2.options.config, { hide: true }),
+                    );
                   }
                 });
               }

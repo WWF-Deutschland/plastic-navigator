@@ -157,7 +157,7 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
-  const areaMaskRef = useRef(null);
+  // const areaMaskRef = useRef(null);
   const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(layerInfo);
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
@@ -285,11 +285,11 @@ export function Map({
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
     areaInfoRef.current = L.layerGroup();
-    areaMaskRef.current = L.layerGroup();
+    // areaMaskRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
     areaInfoRef.current.addTo(mapRef.current);
-    areaMaskRef.current.addTo(mapRef.current);
+    // areaMaskRef.current.addTo(mapRef.current);
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
@@ -537,21 +537,6 @@ export function Map({
               if (!jsonLayers[configLayerId]) {
                 onLoadLayer(configLayerId, config);
               }
-              // kick off loading mask layers
-              // const maskId = `${id}-mask`;
-              // if (config.mask) {
-              //   onLoadLayer(maskId, config, { mask: true });
-              // }
-              // if (jsonLayers[maskId] && areaMaskRef) {
-              //   const layer = getVectorLayer({
-              //     jsonLayer: jsonLayers[maskId],
-              //     config,
-              //     state: 'mask',
-              //   });
-              //   areaMaskRef.current.addLayer(layer);
-              //   // newMapLayers[id] = { layer, config };
-              // }
-              // console.log(jsonLayers[configLayerId]);
               if (jsonLayers[configLayerId] && mapRef) {
                 const layer = getVectorLayer({
                   jsonLayer: jsonLayers[configLayerId],
@@ -562,7 +547,6 @@ export function Map({
                   locale,
                   // also pass date
                 });
-                // console.log('add json layer', layer, zoom)
                 hideForZoom({ layer, zoom });
                 mapRef.current.addLayer(layer);
                 newMapLayers[id] = { layer, config };

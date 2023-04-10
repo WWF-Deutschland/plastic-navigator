@@ -304,9 +304,9 @@ export function* loadDataSaga({ key, config, args }) {
                     config: xconfig,
                   };
                 });
-                const masked = geometries.filter(x => x.config.mask);
+                const masked = config.geometries.filter(x => x.mask);
                 const maskResponses = yield all(
-                  masked.map(x => fetch(`${RESOURCES.DATA}/${x.config.mask}`)),
+                  masked.map(x => fetch(`${RESOURCES.DATA}/${x.mask}`)),
                 );
                 geometryMasks = yield all(
                   maskResponses.map(r => {
@@ -317,9 +317,9 @@ export function* loadDataSaga({ key, config, args }) {
                   }),
                 );
                 geometryMasks = geometryMasks.map((x, index) => {
-                  const mask = masked[index];
+                  const maskConfig = masked[index];
                   let xjson = x;
-                  if (mask.config.type === 'topojson') {
+                  if (maskConfig.type === 'topojson') {
                     xjson = topojson.feature(
                       xjson,
                       Object.values(xjson.objects)[0],
@@ -327,9 +327,10 @@ export function* loadDataSaga({ key, config, args }) {
                   }
                   return {
                     ...xjson,
-                    config: mask.config,
+                    config: maskConfig,
                   };
                 });
+                // console.log('geometryMasks', masked, geometryMasks)
                 json = {
                   ...json,
                   geometries,
