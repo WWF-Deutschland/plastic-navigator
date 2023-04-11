@@ -27,7 +27,6 @@ import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 
 import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
-import { getTopicTitle, getTopicMapAnnotation } from 'utils/policy';
 
 import {
   selectUIStateByKey,
@@ -46,6 +45,8 @@ import KeyFull from 'components/KeyFull';
 
 // import commonMessages from 'messages';
 import LayerSettings from './LayerSettings';
+import LayerButtonInfo from './LayerButtonInfo';
+import { getLayerTitle, getLayerAbout } from './utils';
 import messages from './messages';
 
 // prettier-ignore
@@ -199,15 +200,6 @@ const TabLabel = styled(p => <Text size="xxsmall" {...p} />)`
   font-weight: 700;
 `;
 
-const LayerButtonInfo = styled(p => <Button plain {...p} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
-  border-radius: 9999px;
-  margin-left: auto;
-  &:hover {
-    background: ${({ theme }) => theme.global.colors.lightHover};
-  }
-`;
-
 // figure out how far to scroll down
 const getScrollOffsetBottom = (
   itemCount,
@@ -238,43 +230,6 @@ const OFFSET_STEP = 80;
 
 const MIN_EXPAND = 'xlarge';
 const MAX_FOLD = 'large';
-
-const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
-  const { locale } = intl;
-  let title = 'no title';
-  if (config && config.title) {
-    title = config.title[locale] || config.title[DEFAULT_LOCALE];
-  }
-  // append
-  if (config.id === POLICY_LAYER && jsonLayerInfo) {
-    title = `${title}: ${getTopicTitle({
-      layerInfo: jsonLayerInfo,
-      indicatorId,
-      locale,
-    })}`;
-  }
-  if (config.id === PROJECT_CONFIG.id) {
-    title = intl.formatMessage(messages.keyProjectsTitle);
-  }
-  return title;
-};
-const getLayerAbout = ({ intl, config, jsonLayerInfo, indicatorId }) => {
-  const { locale } = intl;
-  if (config && config.about) {
-    return config.about[locale] || config.about[DEFAULT_LOCALE];
-  }
-  if (jsonLayerInfo && config.id === POLICY_LAYER) {
-    return getTopicMapAnnotation({
-      layerInfo: jsonLayerInfo,
-      indicatorId,
-      locale,
-    });
-  }
-  if (config.id === PROJECT_CONFIG.id) {
-    return intl.formatMessage(messages.keyProjectsAbout);
-  }
-  return 'about';
-};
 
 export function PanelKey({
   onLayerInfo,

@@ -501,7 +501,7 @@ const getPointLayer = ({ data, config, markerEvents, layerGeoSettings }) => {
   if (doZoomCheck) {
     doZoomCheck = config.settings.zoom.default;
   }
-  if (doZoomCheck) {
+  if (doZoomCheck && layerGeoSettings.zoom) {
     doZoomCheck =
       qe(layerGeoSettings.zoom, 1) || layerGeoSettings.zoom === 'true';
   }
@@ -984,7 +984,6 @@ export const hideForZoom = ({ layer, zoom }) => {
   if (layer && layer.getLayers() && layer.getLayers().length > 0) {
     layer.eachLayer(sublayer => {
       if (sublayer.getLayers && sublayer.getLayers().length > 0) {
-        console.log('sublayer.options', sublayer.options)
         if (sublayer.options && sublayer.options.checkZoom) {
           sublayer.eachLayer(feature => {
             if (sublayer.options.checkZoom(feature.feature, zoom)) {
@@ -997,7 +996,6 @@ export const hideForZoom = ({ layer, zoom }) => {
           });
         } else {
           sublayer.eachLayer(sublayer2 => {
-            console.log('sublayer2.options', sublayer2.options)
             if (sublayer2.getLayers && sublayer2.getLayers().length > 0) {
               if (sublayer2.options && sublayer2.options.checkZoom) {
                 sublayer2.eachLayer(feature => {

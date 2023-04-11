@@ -12,7 +12,6 @@ const ToggleButton = styled(p => <Button plain {...p} />)`
   border-radius: 99px;
   padding: 0 0 0 0;
   border: 1px solid ${({ theme }) => theme.global.colors['dark-4']};
-  cursor: pointer;
   &:hover {
     background: ${({ theme }) => theme.global.colors.light};
   }
@@ -21,7 +20,7 @@ const LabelButton = styled(p => <Button plain {...p} />)`
   margin-top: -1px;
 `;
 
-const Label = styled(p => <Text size="small" {...p} />)``;
+const Label = styled(p => <Text size={p.labelSize || 'small'} {...p} />)``;
 
 const Knob = styled.div`
   display: block;
@@ -35,7 +34,15 @@ const Knob = styled.div`
   right: ${({ isActive }) => (!isActive ? '1px' : 'auto')};
 `;
 
-export function ToggleOnOff({ labelOn, labelOff, value, onChange }) {
+export function ToggleOnOff({
+  labelOn,
+  labelOff,
+  value,
+  onChange,
+  labelSize,
+  isDisabled,
+}) {
+  console.log('isDisabled', isDisabled)
   return (
     <Box
       direction="row"
@@ -46,22 +53,27 @@ export function ToggleOnOff({ labelOn, labelOff, value, onChange }) {
     >
       {labelOn && (
         <LabelButton
+          disabled={isDisabled}
           isActive={qe(value, 1)}
-          label={<Label>{labelOn}</Label>}
-          onClick={() => onChange('1')}
+          label={<Label labelSize={labelSize}>{labelOn}</Label>}
+          onClick={() => !isDisabled && onChange && onChange('1')}
         />
       )}
       <ToggleButton
-        onClick={() => onChange(qe(value, 1) ? '0' : '1')}
+        disabled={isDisabled}
+        onClick={() =>
+          !isDisabled && onChange && onChange(qe(value, 1) ? '0' : '1')
+        }
         isActive={qe(value, 1)}
       >
         <Knob isActive={qe(value, 1)} />
       </ToggleButton>
       {labelOff && (
         <LabelButton
+          disabled={isDisabled}
           isActive={qe(value, 0)}
-          label={<Label>{labelOff}</Label>}
-          onClick={() => onChange('0')}
+          label={<Label labelSize={labelSize}>{labelOff}</Label>}
+          onClick={() => !isDisabled && onChange && onChange('0')}
         />
       )}
     </Box>
@@ -70,9 +82,11 @@ export function ToggleOnOff({ labelOn, labelOff, value, onChange }) {
 
 ToggleOnOff.propTypes = {
   onChange: PropTypes.func,
+  labelSize: PropTypes.string,
   labelOn: PropTypes.string,
   labelOff: PropTypes.string,
   value: PropTypes.string,
+  isDisabled: PropTypes.bool,
 };
 
 export default ToggleOnOff;

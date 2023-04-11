@@ -25,4 +25,8 @@ export default defineMessages({
     id: `${scope}.keyProjectsAbout`,
     defaultMessage: 'About the WWF Projects',
   },
+  settingsTabTitle: {
+    id: `${scope}.settingsTabTitle`,
+    defaultMessage: 'Settings for layer:',
+  },
 });

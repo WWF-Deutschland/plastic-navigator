@@ -163,7 +163,7 @@ export function ModulePolicy({
   const { locale } = intl;
   const layerId = getLayerIdFromView(info);
   // const { layersMemo, viewMemo } = uiState
-  const { viewMemo } = uiState
+  const { layersMemo, viewMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
     : DEFAULT_UI_STATE;
   const { show } = uiURL
@@ -171,9 +171,13 @@ export function ModulePolicy({
     : DEFAULT_UI_URL_STATE;
 
   useEffect(() => {
-    // if (layersMemo) {
-    //   onSetLayers(layersMemo);
-    // }
+    if (layersMemo) {
+      onSetLayers(layersMemo);
+    } else if (MODULES.policy.layers) {
+      if (!firstLanding || activeLayers.length === 0) {
+        onSetLayers(MODULES.policy.layers);
+      }
+    }
     if (firstLanding) {
       onSetLanding();
     }

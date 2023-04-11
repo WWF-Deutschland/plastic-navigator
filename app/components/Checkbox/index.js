@@ -6,8 +6,8 @@ import { Box, Button, Text } from 'grommet';
 import { Checkmark } from 'components/Icons';
 
 const CheckButton = styled(p => <Button round="3px" plain {...p} />)`
-  width: 18px;
-  height: 18px;
+  width: ${({ small }) => (small ? 15 : 18)}px;
+  height: ${({ small }) => (small ? 15 : 18)}px;
   background: ${({ theme }) => theme.global.colors.light};
   border-radius: 3px;
   padding: 0 0 0 0;
@@ -32,7 +32,7 @@ const LabelButton = styled(p => <Button plain {...p} />)`
   margin-top: -1px;
 `;
 
-const Label = styled(p => <Text size="small" {...p} />)``;
+const Label = styled(p => <Text size={p.labelSize || 'small'} {...p} />)``;
 
 export function Checkbox({
   label,
@@ -41,11 +41,13 @@ export function Checkbox({
   onToggle,
   activeColor,
   inButton,
+  labelSize,
+  isDisabled,
 }) {
   return (
     <Box
       direction="row"
-      gap="small"
+      gap={labelSize || 'small'}
       align="center"
       flex={false}
       justify="start"
@@ -55,29 +57,38 @@ export function Checkbox({
           <ActiveCheckButton
             as={inButton ? 'span' : 'button'}
             activeColor={activeColor}
-            onClick={() => onToggle && onToggle()}
+            onClick={() => !isDisabled && onToggle && onToggle()}
+            small={labelSize === 'xsmall'}
           >
             <Checkmark
               color="white"
-              style={{ position: 'relative', top: '-3px' }}
+              style={{
+                position: 'relative',
+                top: labelSize === 'xsmall' ? '-5px' : '-3px',
+              }}
+              size={labelSize === 'xsmall' ? '12px' : '16px'}
             />
           </ActiveCheckButton>
         )}
         {!checked && (
           <CheckButton
             as={inButton ? 'span' : 'button'}
-            onClick={() => onToggle && onToggle()}
+            onClick={() => !isDisabled && onToggle && onToggle()}
+            small={labelSize === 'xsmall'}
           />
         )}
       </Box>
       {label && (
         <LabelButton
-          label={<Label>{label}</Label>}
-          onClick={() => onToggle()}
+          label={<Label labelSize={labelSize}>{label}</Label>}
+          onClick={() => !isDisabled && onToggle && onToggle()}
         />
       )}
       {styledLabel && (
-        <LabelButton label={styledLabel} onClick={() => onToggle()} />
+        <LabelButton
+          label={styledLabel}
+          onClick={() => !isDisabled && onToggle && onToggle()}
+        />
       )}
     </Box>
   );
@@ -86,9 +97,11 @@ export function Checkbox({
 Checkbox.propTypes = {
   onToggle: PropTypes.func,
   label: PropTypes.string,
+  labelSize: PropTypes.string,
   inButton: PropTypes.bool,
   activeColor: PropTypes.string,
   checked: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   styledLabel: PropTypes.node,
 };
 

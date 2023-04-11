@@ -387,8 +387,8 @@
             "default": true,
             "type": "checkbox",
             "label": {
-              "en": "Show areas",
-              "de": "Show areas"
+              "en": "Show areas for states",
+              "de": "Show areas for states"
             }
           }
         },
@@ -408,8 +408,8 @@
             "default": true,
             "type": "checkbox",
             "label": {
-              "en": "Show markers",
-              "de": "Show markers"
+              "en": "Show markers for supporting states",
+              "de": "Show markers for supporting states"
             }
           },
           "zoom": {
