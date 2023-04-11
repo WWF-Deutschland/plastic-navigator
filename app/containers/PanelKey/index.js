@@ -29,17 +29,23 @@ import { startsWith, prepMarkdown } from 'utils/string';
 import { isMaxSize, isMinSize } from 'utils/responsive';
 import { getTopicTitle, getTopicMapAnnotation } from 'utils/policy';
 
-import { selectUIStateByKey, selectChartDate } from 'containers/App/selectors';
+import {
+  selectUIStateByKey,
+  selectChartDate,
+  selectLayerGeometries,
+} from 'containers/App/selectors';
 import {
   setUIState,
   setLayerInfo,
   showLayerInfoModule,
+  setLayerGeometries,
 } from 'containers/App/actions';
 
 import KeyIcon from 'components/KeyIcon';
 import KeyFull from 'components/KeyFull';
 
 // import commonMessages from 'messages';
+import LayerSettings from './LayerSettings';
 import messages from './messages';
 
 // prettier-ignore
@@ -280,6 +286,8 @@ export function PanelKey({
   onSetOpen,
   currentModule,
   chartDate,
+  layerGeometries,
+  onSetLayerGeometries,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -564,7 +572,11 @@ export function PanelKey({
                     <Tab>
                       {config && locale && (
                         <Box flex={false}>
-                          TODO Settings
+                          <LayerSettings
+                            config={config}
+                            layerGeometries={layerGeometries}
+                            onSetLayerGeometries={onSetLayerGeometries}
+                          />
                         </Box>
                       )}
                     </Tab>
@@ -611,11 +623,14 @@ PanelKey.propTypes = {
   currentModule: PropTypes.object,
   onSetOpen: PropTypes.func,
   chartDate: PropTypes.string,
+  layerGeometries: PropTypes.array,
+  onSetLayerGeometries: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
   chartDate: state => selectChartDate(state),
+  layerGeometries: state => selectLayerGeometries(state),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -630,6 +645,9 @@ function mapDispatchToProps(dispatch) {
     onLayerInfo: id => {
       dispatch(setLayerInfo({ layerId: id }));
       dispatch(showLayerInfoModule(true));
+    },
+    onSetLayerGeometries: geometries => {
+      dispatch(setLayerGeometries(geometries));
     },
   };
 }

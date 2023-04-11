@@ -382,7 +382,16 @@
     },
     "geometries": [
       {
-        "default": "all",
+        "settings": {
+          "active": {
+            "default": true,
+            "type": "checkbox",
+            "label": {
+              "en": "Show areas",
+              "de": "Show areas"
+            }
+          }
+        },
         "feature": "code",
         "type": "topojson",
         "feature-type": "Polygon",
@@ -394,7 +403,35 @@
         "styles-by-value": "inherit"
       },
       {
-        "default-max-zoom": ["marker_max_zoom"],
+        "settings": {
+          "active": {
+            "default": true,
+            "type": "checkbox",
+            "label": {
+              "en": "Show markers",
+              "de": "Show markers"
+            }
+          },
+          "zoom": {
+            "default": true,
+            "type": "toggle",
+            "options": {
+              "true": {
+                "label": {
+                  "en": "Small states only",
+                  "de": "Small states only"
+                }
+              },
+              "false": {
+                "label": {
+                  "en": "All states",
+                  "de": "All states"
+                }
+              }
+            }
+          }
+        },
+        "default-max-zoom": "marker_max_zoom",
         "feature": "code",
         "type": "geojson",
         "feature-type": "Point",

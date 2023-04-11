@@ -55,6 +55,10 @@ export const selectIFrameSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('iframe') ? search.get('iframe') : null),
 );
+export const selectLayerGeographySearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('lgeo') ? search.get('lgeo') : ''),
+);
 
 /**
  * Get the language locale
@@ -253,6 +257,10 @@ export const selectActiveLayers = createSelector(
   selectLayersSearch,
   layersSearch =>
     layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
+);
+export const selectLayerGeometries = createSelector(
+  selectLayerGeographySearch,
+  search => (search === '' ? [] : search.split(URL_SEARCH_SEPARATOR)),
 );
 export const selectIsActiveLayer = createSelector(
   (state, id) => id,

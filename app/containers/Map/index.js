@@ -30,6 +30,7 @@ import {
   selectInfoSearch,
   selectShowKey,
   selectChartDate,
+  selectLayerGeometries,
 } from 'containers/App/selectors';
 
 import {
@@ -144,6 +145,7 @@ export function Map({
   mview,
   layerInfoActive,
   chartDate,
+  layerGeometrySettings,
   intl,
 }) {
   useInjectReducer({ key: 'map', reducer });
@@ -545,6 +547,7 @@ export function Map({
                   indicatorId,
                   dateString: chartDate,
                   locale,
+                  layerGeometrySettings,
                   // also pass date
                 });
                 hideForZoom({ layer, zoom });
@@ -560,7 +563,14 @@ export function Map({
       // remember new layers
       onSetMapLayers(newMapLayers);
     }
-  }, [activeLayerIds, layersConfig, jsonLayers, projects, chartDate]);
+  }, [
+    activeLayerIds,
+    layersConfig,
+    jsonLayers,
+    projects,
+    chartDate,
+    layerGeometrySettings,
+  ]);
 
   // preload featured layers
   useEffect(() => {
@@ -962,6 +972,7 @@ Map.propTypes = {
   loading: PropTypes.bool,
   layerInfoActive: PropTypes.bool,
   chartDate: PropTypes.string,
+  layerGeometrySettings: PropTypes.array,
   intl: intlShape,
 };
 
@@ -978,6 +989,7 @@ const mapStateToProps = createStructuredSelector({
   mview: state => selectMapPosition(state),
   hasKey: state => selectShowKey(state),
   chartDate: state => selectChartDate(state),
+  layerGeometrySettings: state => selectLayerGeometries(state),
 });
 
 // function mapDispatchToProps(dispatch, ownProps) {

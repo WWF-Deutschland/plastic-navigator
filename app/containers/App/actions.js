@@ -43,6 +43,7 @@ import {
   SET_MAP_POSITION,
   SET_SHOW_KEY,
   SET_CHART_DATE,
+  SET_LAYER_GEOGRAPHIES,
 } from './constants';
 
 export function setLocale(locale) {
@@ -233,6 +234,12 @@ export function setLayers(layers) {
   return {
     type: SET_LAYERS,
     layers,
+  };
+}
+export function setLayerGeometries(geometries) {
+  return {
+    type: SET_LAYER_GEOGRAPHIES,
+    geometries,
   };
 }
 export function setChapter(index) {

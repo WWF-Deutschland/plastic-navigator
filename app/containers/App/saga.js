@@ -31,6 +31,7 @@ import {
   SET_MAP_POSITION,
   SET_UI_URL,
   SHOW_LAYER_INFO_MODULE,
+  SET_LAYER_GEOGRAPHIES,
 } from './constants';
 
 import {
@@ -479,6 +480,30 @@ function* setLayersSaga({ layers }) {
     yield (navPending = false);
   }
 }
+function* setLayerGeometriesSaga({ geometries }) {
+  if (navPending) {
+    // console.log('setLayersSaga waiting for: ', navPending);
+    throw new Error({
+      function: 'setLayerGeometriesSaga',
+    });
+  } else {
+    console.log('setLayerGeometriesSaga geometries', geometries)
+    navPending = 'setLayerGeometriesSaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const searchParams = new URLSearchParams(currentLocation.search);
+    searchParams.delete('lgeo');
+
+    if (geometries && geometries.length > 0) {
+      searchParams.set('lgeo', geometries.join(URL_SEARCH_SEPARATOR));
+    }
+    const newSearch = searchParams.toString();
+    const search = newSearch.length > 0 ? `?${newSearch}` : '';
+    if (search !== currentLocation.search) {
+      yield put(push(`${currentLocation.pathname}${search}`));
+    }
+    yield (navPending = false);
+  }
+}
 
 function* setStorySaga({ index }) {
   if (navPending) {
@@ -671,6 +696,15 @@ export default function* defaultSaga() {
     SET_LAYERS,
     autoRestart(
       setLayersSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
+    SET_LAYER_GEOGRAPHIES,
+    autoRestart(
+      setLayerGeometriesSaga,
       navigateErrorHandler,
       MAX_NAV_ATTEMPTS,
       RETRY_NAV_DELAY,
