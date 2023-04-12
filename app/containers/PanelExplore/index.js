@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
+import Markdown from 'react-remarkable';
 import styled from 'styled-components';
 import {
   Box,
@@ -19,9 +20,10 @@ import {
   Paragraph,
   ResponsiveContext,
 } from 'grommet';
+
 import { ExploreS as Layer } from 'components/Icons';
 import { getAsideWidth } from 'utils/responsive';
-import { sortLabels, startsWith } from 'utils/string';
+import { sortLabels, startsWith, prepMarkdown } from 'utils/string';
 import qe from 'utils/quasi-equals';
 
 import { DEFAULT_LOCALE } from 'i18n';
@@ -273,8 +275,15 @@ export function PanelExplore({
                     </TitleGroup>
                     {group.description && (
                       <DescriptionGroup>
-                        {group.description[locale] ||
-                          group.description[DEFAULT_LOCALE]}
+                        <Markdown
+                          options={{
+                            html: true,
+                          }}
+                          source={prepMarkdown(
+                            group.description[locale] || group.description[DEFAULT_LOCALE],
+                            { para: true },
+                          )}
+                        />
                       </DescriptionGroup>
                     )}
                     {!isProjectTab && (
@@ -315,8 +324,15 @@ export function PanelExplore({
                     </TitleGroup>
                     {group.description && (
                       <DescriptionGroup>
-                        {group.description[locale] ||
-                          group.description[DEFAULT_LOCALE]}
+                        <Markdown
+                          options={{
+                            html: true,
+                          }}
+                          source={prepMarkdown(
+                            group.description[locale] || group.description[DEFAULT_LOCALE],
+                            { para: true },
+                          )}
+                        />
                       </DescriptionGroup>
                     )}
                     <GroupLayers
