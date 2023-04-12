@@ -93,14 +93,6 @@ export default defineMessages({
     id: `${scope}.hidePanel`,
     defaultMessage: 'Hide panel',
   },
-  statementPositionsLabel: {
-    id: `${scope}.statementPositionsLabel`,
-    defaultMessage: 'Statement positions for topics',
-  },
-  statementSinglePositionLabel: {
-    id: `${scope}.statementSinglePositionLabel`,
-    defaultMessage: 'Statement positions for topic',
-  },
   scoreCardLabel: {
     id: `${scope}.scoreCardLabel`,
     defaultMessage: 'Policy position by topic',
@@ -116,10 +108,6 @@ export default defineMessages({
   countryStatementLinkLabel: {
     id: `${scope}.countryStatementLinkLabel`,
     defaultMessage: 'Go to statement',
-  },
-  parentProjectLinkLabel: {
-    id: `${scope}.parentProjectLinkLabel`,
-    defaultMessage: 'Go to project: {title}',
   },
   noLocationInfo: {
     id: `${scope}.noLocationInfo`,

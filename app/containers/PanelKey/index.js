@@ -424,7 +424,7 @@ export function PanelKey({
                           onClick={() => tabAll ? setTab(2) : setTab(1)}
                           label={
                             <TabLabel>
-                              Settings
+                              <FormattedMessage {...messages.keyTabSettings} />
                             </TabLabel>
                           }
                           activeTab={tabAll ? tab === 2 : tab === 1 }

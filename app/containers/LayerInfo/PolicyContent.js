@@ -187,7 +187,7 @@ const DropContent = ({ active, options, onSelect, locale }) => (
           active={active === option.id}
           disabled={active === option.id}
         >
-          {option[`short_${locale}`]}
+          {option[`short_${locale}`] || option[`short_${DEFAULT_LOCALE}`]}
         </DropOption>
       ))}
   </Box>
