@@ -343,7 +343,7 @@ export function PolicyContent({
                   disabled={qe(tab, 'details')}
                   label={
                     <TabLinkAnchor active={qe(tab, 'details')}>
-                      Details
+                      <FormattedMessage {...messages.tabDetails} />
                     </TabLinkAnchor>
                   }
                 />
@@ -355,7 +355,7 @@ export function PolicyContent({
                   disabled={qe(tab, 'countries')}
                   label={
                     <TabLinkAnchor active={qe(tab, 'countries')}>
-                      States
+                      <FormattedMessage {...messages.tabCountries} />
                     </TabLinkAnchor>
                   }
                 />
@@ -367,7 +367,7 @@ export function PolicyContent({
                   disabled={qe(tab, 'statements')}
                   label={
                     <TabLinkAnchor active={qe(tab, 'statements')}>
-                      Statements
+                      <FormattedMessage {...messages.tabStatements} />
                     </TabLinkAnchor>
                   }
                 />

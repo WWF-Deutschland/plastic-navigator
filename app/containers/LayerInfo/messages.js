@@ -124,4 +124,16 @@ export default defineMessages({
     defaultMessage:
       '{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)',
   },
+  tabDetails: {
+    id: `${scope}.tabDetails`,
+    defaultMessage: 'Details',
+  },
+  tabCountries: {
+    id: `${scope}.tabCountries`,
+    defaultMessage: 'States',
+  },
+  tabStatements: {
+    id: `${scope}.tabStatements`,
+    defaultMessage: 'Statements',
+  },
 });

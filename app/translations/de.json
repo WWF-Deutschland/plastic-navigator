@@ -73,6 +73,9 @@
   "app.containers.LayerInfo.source": "Quelle",
   "app.containers.LayerInfo.sourceLinkExternal": "Zur Quelle",
   "app.containers.LayerInfo.statementPosition": "Position",
+  "app.containers.LayerInfo.tabCountries": "Staaten",
+  "app.containers.LayerInfo.tabDetails": "Übersicht",
+  "app.containers.LayerInfo.tabStatements": "Erklärungen",
   "app.containers.LayerInfo.titleReference": "Quellenangaben",
   "app.containers.Map.tooltipMore": "Mehr",
   "app.containers.ModuleExplore.hideProjects": "WWF-Projekte ausblenden",
@@ -92,5 +95,5 @@
   "app.containers.PanelKey.keyTabAbout": "Erläuterung",
   "app.containers.PanelKey.keyTabKey": "Legende",
   "app.containers.PanelKey.keyTabSettings": "Einstellungen",
-  "app.containers.PanelKey.settingsTabTitle": "Einstellungen für Ebene"
+  "app.containers.PanelKey.settingsTabTitle": "Einstellungen für Ebene: "
 }
