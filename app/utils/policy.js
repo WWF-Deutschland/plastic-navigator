@@ -487,7 +487,9 @@ export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
       qe(t.id, indicatorId),
     );
     if (topic) {
-      return topic[`annotation_${locale}`] || topic[`annotation_${locale}`];
+      return (
+        topic[`annotation_${locale}`] || topic[`annotation_${DEFAULT_LOCALE}`]
+      );
     }
   }
 
