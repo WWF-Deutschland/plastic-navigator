@@ -86,7 +86,6 @@ const TitleShort = styled(p => <Text size="xxlarge" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
-  margin-top: 3px;
   text-align: center;
   color: ${({ theme }) => theme.global.colors.brand};
 `;
@@ -329,7 +328,9 @@ export function PolicyContent({
                 </TitleShort>
               </Box>
             )}
-            <Box margin={{ vertical: 'small' }}>
+            <Box
+              margin={{ top: 'small', horizontal: 'small', bottom: 'medium' }}
+            >
               <Description>
                 {topic[`description_${locale}`] ||
                   topic[`description_${DEFAULT_LOCALE}`]}
