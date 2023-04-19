@@ -81,7 +81,7 @@ const Styled = styled(p => <Box {...p} direction="row" gap="hair" />)`
   bottom: 35px;
   height: 200px;
   pointer-events: all;
-  z-index: 2500;
+  z-index: 1999;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     bottom: 40px;
   }
@@ -260,7 +260,7 @@ export function PanelKey({
 
   const keyULRef = useRef(null);
   const keyWrapperRef = useRef(null);
-
+  const size = React.useContext(ResponsiveContext);
   // update key when new layers are added or previous layer has become invalid
   useEffect(() => {
     if (
@@ -283,6 +283,7 @@ export function PanelKey({
 
   const { locale } = intl;
   const allConfig = layersConfig && [...layersConfig, PROJECT_CONFIG];
+
   const activeContentId = active || activeLayerIds[0];
   let config;
   let indicatorId = null;
@@ -317,259 +318,264 @@ export function PanelKey({
     currentModule.featuredLayer &&
     (currentModule.featuredLayer === config['content-default'] ||
       currentModule.featuredLayer === config.id);
+
+  const tabAll = isMaxSize(size, MAX_FOLD);
+  const keyTabId = 0;
+  const aboutTabId = tabAll ? 1 : 2;
+  const settingsTabId = tabAll ? 2 : 1;
+  const hasSettingsTab = isActivePolicy;
+  const hasTabs = tabAll || hasSettingsTab;
+  let tabClean = tab;
+  if (tab === settingsTabId && !hasSettingsTab) {
+    tabClean = 1;
+  }
   // prettier-ignore
   return (
-    <ResponsiveContext.Consumer>
-      {size => {
-        const tabAll = isMaxSize(size, MAX_FOLD);
-        const hasTabs = tabAll || isActivePolicy;
-        return (
-          <Styled>
-            <ToggleWrap>
-              <ButtonToggleWrap>
-                <ButtonToggle
-                  icon={open ? <Collapse /> : <Expand />}
-                  onClick={() => onSetOpen(!open)}
+    <Styled>
+      <ToggleWrap>
+        <ButtonToggleWrap>
+          <ButtonToggle
+            icon={open ? <Collapse /> : <Expand />}
+            onClick={() => onSetOpen(!open)}
+          />
+        </ButtonToggleWrap>
+        <Box ref={keyWrapperRef} fill style={{ position: 'relative', overflow: 'hidden' }}>
+          {keyULRef.current &&
+            keyWrapperRef.current &&
+            hasScrollTop(keyIconOffset) && (
+            <KeyScrollButton
+              icon={<ArrowUp color="dark-4" />}
+              top
+              onClick={() => setKeyIconOffset(getScrollOffsetTop(
+                keyIconOffset,
+                OFFSET_STEP,
+              ))}
+            />
+          )}
+          {cleanActiveLayerIds.length > 0 && (
+            <KeyUL ref={keyULRef} offset={keyIconOffset}>
+              {cleanActiveLayerIds.map(id => {
+                const [configLayerId] = id.split('_');
+                const conf = allConfig && allConfig.find(l => l.id === configLayerId);
+                return (
+                  <KeyLI key={id}>
+                    <ButtonKey
+                      activeLayer={open && id.startsWith(activeContentIdRoot)}
+                      onClick={() => {
+                        onSetOpen(true);
+                        setActive(id);
+                      }}
+                      disabled={open && id.startsWith(activeContentIdRoot)}
+                    >
+                      {conf && <KeyIcon config={conf} />}
+                    </ButtonKey>
+                  </KeyLI>
+                );
+              })}
+            </KeyUL>
+          )}
+          {keyULRef.current &&
+            keyWrapperRef.current &&
+            hasScrollBottom(
+              cleanActiveLayerIds.length,
+              40,
+              keyWrapperRef.current.clientHeight,
+              keyIconOffset,
+            ) && (
+            <KeyScrollButton
+              icon={<ArrowDown color="dark-4" />}
+              onClick={() => setKeyIconOffset(getScrollOffsetBottom(
+                cleanActiveLayerIds.length,
+                40,
+                keyWrapperRef.current.clientHeight,
+                keyIconOffset,
+                OFFSET_STEP,
+              ))}
+            />
+          )}
+        </Box>
+      </ToggleWrap>
+      {open && (
+        <ContentWrap>
+          <Content
+            pad={{
+              top: hasTabs ? 'xsmall' : 'small',
+              bottom: 'small',
+              horizontal: 'small',
+            }}
+            style={{ zIndex: 2 }}
+          >
+            {hasTabs && (
+              <Box
+                direction="row"
+                gap="small"
+                flex={false}
+              >
+                <ButtonTab
+                  onClick={() => setTab(keyTabId)}
+                  label={
+                    <TabLabel>
+                      <FormattedMessage {...messages.keyTabKey} />
+                    </TabLabel>
+                  }
+                  activeTab={tabClean === keyTabId}
                 />
-              </ButtonToggleWrap>
-              <Box ref={keyWrapperRef} fill style={{ position: 'relative', overflow: 'hidden' }}>
-                {keyULRef.current &&
-                  keyWrapperRef.current &&
-                  hasScrollTop(keyIconOffset) && (
-                  <KeyScrollButton
-                    icon={<ArrowUp color="dark-4" />}
-                    top
-                    onClick={() => setKeyIconOffset(getScrollOffsetTop(
-                      keyIconOffset,
-                      OFFSET_STEP,
-                    ))}
+                {tabAll && (
+                  <ButtonTab
+                    onClick={() => setTab(aboutTabId)}
+                    label={
+                      <TabLabel>
+                        <FormattedMessage {...messages.keyTabAbout} />
+                      </TabLabel>
+                    }
+                    activeTab={tabClean === aboutTabId}
                   />
                 )}
-                {cleanActiveLayerIds.length > 0 && (
-                  <KeyUL ref={keyULRef} offset={keyIconOffset}>
-                    {cleanActiveLayerIds.map(id => {
-                      const [configLayerId] = id.split('_');
-                      const conf = allConfig && allConfig.find(l => l.id === configLayerId);
-                      return (
-                        <KeyLI key={id}>
-                          <ButtonKey
-                            activeLayer={open && id.startsWith(activeContentIdRoot)}
-                            onClick={() => {
-                              onSetOpen(true);
-                              setActive(id);
-                            }}
-                            disabled={open && id.startsWith(activeContentIdRoot)}
-                          >
-                            {conf && <KeyIcon config={conf} />}
-                          </ButtonKey>
-                        </KeyLI>
-                      );
-                    })}
-                  </KeyUL>
-                )}
-                {keyULRef.current &&
-                  keyWrapperRef.current &&
-                  hasScrollBottom(
-                    cleanActiveLayerIds.length,
-                    40,
-                    keyWrapperRef.current.clientHeight,
-                    keyIconOffset,
-                  ) && (
-                  <KeyScrollButton
-                    icon={<ArrowDown color="dark-4" />}
-                    onClick={() => setKeyIconOffset(getScrollOffsetBottom(
-                      cleanActiveLayerIds.length,
-                      40,
-                      keyWrapperRef.current.clientHeight,
-                      keyIconOffset,
-                      OFFSET_STEP,
-                    ))}
+                {isActivePolicy && (
+                  <ButtonTab
+                    onClick={() => setTab(settingsTabId)}
+                    label={
+                      <TabLabel>
+                        <FormattedMessage {...messages.keyTabSettings} />
+                      </TabLabel>
+                    }
+                    activeTab={tabClean === settingsTabId }
                   />
                 )}
               </Box>
-            </ToggleWrap>
-            {open && (
-              <ContentWrap>
-                <Content
-                  pad={{
-                    top: hasTabs ? 'xsmall' : 'small',
-                    bottom: 'small',
-                    horizontal: 'small',
-                  }}
-                  style={{ zIndex: 2 }}
-                >
-                  {hasTabs && (
-                    <Box
-                      direction="row"
-                      gap="small"
-                      flex={false}
-                    >
-                      <ButtonTab
-                        onClick={() => setTab(0)}
-                        label={
-                          <TabLabel>
-                            <FormattedMessage {...messages.keyTabKey} />
-                          </TabLabel>
-                        }
-                        activeTab={tab === 0}
-                      />
-                      {tabAll && (
-                        <ButtonTab
-                          onClick={() => setTab(1)}
-                          label={
-                            <TabLabel>
-                              <FormattedMessage {...messages.keyTabAbout} />
-                            </TabLabel>
-                          }
-                          activeTab={tab === 1}
+            )}
+            {(tabClean === keyTabId || !hasTabs) && (
+              <Tab>
+                {config && locale && (
+                  <Box flex={false}>
+                    {!hasTabs && (
+                      <TabLabel>
+                        <FormattedMessage {...messages.keyTabKey} />
+                      </TabLabel>
+                    )}
+                    <LayerTitleWrap>
+                      <LayerTitle>
+                        {isActiveProject ? (
+                          <FormattedMessage {...messages.keyProjectsTitle} />
+                        ) : (
+                          getLayerTitle({
+                            intl,
+                            config,
+                            jsonLayerInfo: activeJsonLayerInfo,
+                            indicatorId,
+                          })
+                        )}
+                      </LayerTitle>
+                      {!isActiveProject && !isModuleLayer && (
+                        <LayerButtonInfo
+                          onClick={() => {
+                            onLayerInfo(activeContentId);
+                          }}
+                          icon={<Info />}
                         />
                       )}
-                      {isActivePolicy && (
-                        <ButtonTab
-                          onClick={() => tabAll ? setTab(2) : setTab(1)}
-                          label={
-                            <TabLabel>
-                              <FormattedMessage {...messages.keyTabSettings} />
-                            </TabLabel>
-                          }
-                          activeTab={tabAll ? tab === 2 : tab === 1 }
+                    </LayerTitleWrap>
+                    <KeyFull
+                      config={config}
+                      layerInfo={activeJsonLayerInfo}
+                      excludeEmpty
+                      indicatorId={indicatorId}
+                      chartDate={chartDate}
+                    />
+                  </Box>
+                )}
+              </Tab>
+            )}
+            {hasTabs && tabClean === aboutTabId && (
+              <Tab>
+                {locale && (
+                  <Box flex={false}>
+                    <LayerTitleWrap>
+                      <LayerTitle>
+                        {isActiveProject ? (
+                          <FormattedMessage {...messages.keyProjectsTitle} />
+                        ) : (
+                          getLayerTitle({
+                            intl,
+                            config,
+                            jsonLayerInfo: activeJsonLayerInfo,
+                            indicatorId,
+                          })
+                        )}
+                      </LayerTitle>
+                      {!isActiveProject && !isModuleLayer && (
+                        <LayerButtonInfo
+                          onClick={() => {
+                            onLayerInfo(activeContentId);
+                          }}
+                          icon={<Info />}
                         />
                       )}
-                    </Box>
-                  )}
-                  {(tab === 0 || !hasTabs) && (
-                    <Tab>
-                      {config && locale && (
-                        <Box flex={false}>
-                          {isMinSize(size, MIN_EXPAND) && !isActivePolicy && (
-                            <TabLabel>
-                              <FormattedMessage {...messages.keyTabKey} />
-                            </TabLabel>
-                          )}
-                          <LayerTitleWrap>
-                            <LayerTitle>
-                              {isActiveProject ? (
-                                <FormattedMessage {...messages.keyProjectsTitle} />
-                              ) : (
-                                getLayerTitle({
-                                  intl,
-                                  config,
-                                  jsonLayerInfo: activeJsonLayerInfo,
-                                  indicatorId,
-                                })
-                              )}
-                            </LayerTitle>
-                            {!isActiveProject && !isModuleLayer && (
-                              <LayerButtonInfo
-                                onClick={() => {
-                                  onLayerInfo(activeContentId);
-                                }}
-                                icon={<Info />}
-                              />
-                            )}
-                          </LayerTitleWrap>
-                          <KeyFull
-                            config={config}
-                            layerInfo={activeJsonLayerInfo}
-                            excludeEmpty
-                            indicatorId={indicatorId}
-                            chartDate={chartDate}
-                          />
-                        </Box>
+                    </LayerTitleWrap>
+                    <Description className="mpx-wrap-markdown-description">
+                      {isActiveProject && (
+                        <FormattedMessage {...messages.keyProjectsAbout} />
                       )}
-                    </Tab>
-                  )}
-                  {tab === 1 && tabAll && (
-                    <Tab>
-                      {activeJsonLayerInfo && locale && (
-                        <Box flex={false}>
-                          <LayerTitleWrap>
-                            <LayerTitle>
-                              {isActiveProject ? (
-                                <FormattedMessage {...messages.keyProjectsTitle} />
-                              ) : (
-                                getLayerTitle({
-                                  intl,
-                                  config,
-                                  jsonLayerInfo: activeJsonLayerInfo,
-                                  indicatorId,
-                                })
-                              )}
-                            </LayerTitle>
-                            {!isActiveProject && !isModuleLayer && (
-                              <LayerButtonInfo
-                                onClick={() => {
-                                  onLayerInfo(activeContentId);
-                                }}
-                                icon={<Info />}
-                              />
-                            )}
-                          </LayerTitleWrap>
-                          <Description className="mpx-wrap-markdown-description">
-                            {isActiveProject && (
-                              <FormattedMessage {...messages.keyProjectsAbout} />
-                            )}
-                            {!isActiveProject && (
-                              <Markdown
-                                options={{
-                                  html: true,
-                                }}
-                                source={prepMarkdown(
-                                  config.about[locale] ||
-                                    config.about[DEFAULT_LOCALE],
-                                  { para: true },
-                                )}
-                              />
-                            )}
-                          </Description>
-                        </Box>
-                      )}
-                    </Tab>
-                  )}
-                  {((isActivePolicy && tabAll && tab === 2) ||
-                    (isActivePolicy && !tabAll && tab === 1)
-                  ) && (
-                    <Tab>
-                      {config && locale && (
-                        <Box flex={false}>
-                          <LayerSettings
-                            config={config}
-                            layerGeometries={layerGeometries}
-                            onSetLayerGeometries={onSetLayerGeometries}
-                          />
-                        </Box>
-                      )}
-                    </Tab>
-                  )}
-                </Content>
-                {isMinSize(size, MIN_EXPAND) && (
-                  <Content>
-                    <TabLabel>
-                      <FormattedMessage {...messages.keyTabAbout} />
-                    </TabLabel>
-                    <Box margin={{ top: 'small'}}>
-                      {config && locale && (
-                        <Text size="small">
-                          {isActiveProject ? (
-                            <FormattedMessage {...messages.keyProjectsAbout} />
-                          ) :
+                      {!isActiveProject && (
+                        <Markdown
+                          options={{
+                            html: true,
+                          }}
+                          source={prepMarkdown(
                             getLayerAbout({
                               intl,
                               config,
                               jsonLayerInfo: activeJsonLayerInfo,
                               indicatorId,
-                            })}
-                        </Text>
+                            }),
+                            { para: true },
+                          )}
+                        />
                       )}
-                    </Box>
-                  </Content>
+                    </Description>
+                  </Box>
                 )}
-              </ContentWrap>
+              </Tab>
             )}
-          </Styled>
-        );
-      }}
-    </ResponsiveContext.Consumer>
+            {hasTabs && tabClean === settingsTabId && (
+              <Tab>
+                {config && locale && (
+                  <Box flex={false}>
+                    <LayerSettings
+                      config={config}
+                      layerGeometries={layerGeometries}
+                      onSetLayerGeometries={onSetLayerGeometries}
+                    />
+                  </Box>
+                )}
+              </Tab>
+            )}
+          </Content>
+          {isMinSize(size, MIN_EXPAND) && (
+            <Content>
+              <TabLabel>
+                <FormattedMessage {...messages.keyTabAbout} />
+              </TabLabel>
+              <Box margin={{ top: 'small'}}>
+                {config && locale && (
+                  <Text size="small">
+                    {isActiveProject ? (
+                      <FormattedMessage {...messages.keyProjectsAbout} />
+                    ) :
+                      getLayerAbout({
+                        intl,
+                        config,
+                        jsonLayerInfo: activeJsonLayerInfo,
+                        indicatorId,
+                      })}
+                  </Text>
+                )}
+              </Box>
+            </Content>
+          )}
+        </ContentWrap>
+      )}
+    </Styled>
   );
 }
 

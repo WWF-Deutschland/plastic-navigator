@@ -15,7 +15,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 
 import styled from 'styled-components';
 // import { Box, Button, ResponsiveContext } from 'grommet';
-import { Text, Box, Button } from 'grommet';
+import { Text, Box, Button, ResponsiveContext } from 'grommet';
 // import { getAsideWidth, isMaxSize } from 'utils/responsive';
 import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 import { MODULES, POLICY_LAYER } from 'config';
@@ -87,7 +87,7 @@ const TitleShort = styled(Text)`
   line-height: 1;
   margin-top: 3px;
 `;
-const Title = styled(p => <Text size="xxxlarge" {...p} />)`
+const Title = styled(p => <Text {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
@@ -109,6 +109,8 @@ const TitleSelectArchived = styled(p => <Text size="large" {...p} />)`
   border-bottom: 1px solid rgb(218, 218, 218);
   padding-bottom: 10px;
 `;
+
+const TopicCardWrap = styled(p => <Box {...p} />)``;
 
 const COMPONENT_KEY = 'mpol';
 
@@ -227,6 +229,7 @@ export function ModulePolicy({
     moduleLayer.data.tables.topics.data &&
     moduleLayer.data.tables.topics.data.data.filter(t => t.archived === '1');
 
+  const size = React.useContext(ResponsiveContext);
   return (
     <div>
       <Helmet>
@@ -251,7 +254,7 @@ export function ModulePolicy({
                       </Box>
                     </Box>
                     <Box align="center" margin={{ vertical: 'small' }}>
-                      <Title>
+                      <Title size={size === 'small' ? 'xxlarge' : 'xxxlarge'}>
                         {layerConfig.title[locale] ||
                           layerConfig.title[DEFAULT_LOCALE]}
                       </Title>
@@ -270,7 +273,11 @@ export function ModulePolicy({
                         <TitleSelect>
                           <FormattedMessage {...messages.selectTopics} />
                         </TitleSelect>
-                        <Box direction="row" margin={{ top: 'small' }} wrap>
+                        <TopicCardWrap
+                          direction="row"
+                          margin={{ top: 'small' }}
+                          wrap
+                        >
                           {topicsPrimary &&
                             topicsPrimary.map(t => (
                               <TopicCard
@@ -285,7 +292,7 @@ export function ModulePolicy({
                                 }
                               />
                             ))}
-                        </Box>
+                        </TopicCardWrap>
                       </Box>
                     ),
                   },

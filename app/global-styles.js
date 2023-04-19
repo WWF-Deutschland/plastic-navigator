@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import WWFFontWoff from './fonts/wwf-webfont.woff';
 import WWFFontTTF from './fonts/wwf-webfont.ttf';
 import WWFFontEOT from './fonts/wwf-webfont.eot';
-
+import { sizes } from './theme';
 const GlobalStyle = createGlobalStyle`
   @import url('https://unpkg.com/leaflet@1.3.3/dist/leaflet.css');
 
@@ -121,7 +121,7 @@ const GlobalStyle = createGlobalStyle`
   .mpx-wrap-markdown-description p {
     margin: 0;
     line-height: 18px
-    @media (min-width: 721px}) {
+    @media (min-width: ${sizes.medium.min}px}) {
       line-height: 20px
     }
   }
@@ -156,7 +156,10 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   .mpx-modal .mpx-layer-content > p:first-child {
-    font-size: 18px;
+    font-size: 16px;
+    @media (min-width: ${sizes.medium.min}px) {
+      font-size: 18px;
+    }
   }
   .mpx-topic-select p {
     margin: 0;

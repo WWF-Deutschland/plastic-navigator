@@ -176,7 +176,7 @@ function GroupLayers({
                 />
               </ListBodyCell>
               <ListBodyCellCenter>
-                {(config.key || config['styles-by-value']) && (
+                {(projects || config.key || config['styles-by-value']) && (
                   <KeyWrap>
                     <KeyIcon config={projects ? PROJECT_CONFIG : config} />
                   </KeyWrap>

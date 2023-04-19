@@ -209,62 +209,6 @@ export const getCountryPositionForTopicAndDate = ({
   };
 };
 
-export const getCountryPositionStatsForTopicAndDate = ({
-  indicatorId,
-  layerInfo,
-  dateString,
-  includeOpposing = false,
-  includeWithout = false,
-  includeHidden = false,
-}) => {
-  const topicPositions =
-    layerInfo.data.tables &&
-    layerInfo.data.tables['topic-positions'] &&
-    layerInfo.data.tables['topic-positions'].data.data.filter(tp =>
-      qe(tp.topic_id, indicatorId),
-    );
-  const positions = topicPositions.map(tp => {
-    // prettier-ignore
-    const pos = layerInfo.data.tables.positions
-      ? layerInfo.data.tables.positions.data.data.find(p =>
-        qe(p.id, tp.position_id),
-      )
-      : null;
-    return pos ? mergePositions({ topicPosition: tp, position: pos }) : tp;
-  });
-  const countryPositions = getCountriesWithStrongestPosition({
-    indicatorId,
-    layerInfo,
-    dateString,
-    includeOpposing,
-    includeWithout,
-    includeHidden,
-  });
-  let positionsClean = positions;
-  if (!includeOpposing || !includeWithout) {
-    positionsClean = positions.filter(
-      p =>
-        (p.value === 0 && includeWithout) ||
-        (p.value < 0 && includeOpposing) ||
-        p.value > 0,
-    );
-  }
-  // TODO compare/fix key stats, make consistent
-  return (
-    positions &&
-    Object.values(countryPositions).reduce((statsMemo, countryPosition) => {
-      const value = countryPosition.position.value || 0;
-      // console.log('statsMemo, countryPosition')
-      return statsMemo.map(stat => {
-        if (qe(stat.id, value)) {
-          return { ...stat, count: stat.count ? stat.count + 1 : 1 };
-        }
-        return { ...stat, count: stat.count || 0 };
-      });
-    }, positionsClean)
-  );
-};
-
 export const getTopicsFromData = layerInfo => {
   if (
     layerInfo &&

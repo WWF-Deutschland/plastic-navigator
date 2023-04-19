@@ -24,7 +24,7 @@ import CountryFeatureContent from './policy/CountryFeatureContent';
 import ProjectLocationContent from './ProjectLocationContent';
 import ButtonClose from './ButtonClose';
 const Styled = styled.div`
-  position: fixed;
+  position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
@@ -32,12 +32,10 @@ const Styled = styled.div`
   width: 100%;
   pointer-events: all;
   overflow-y: auto;
-  z-index: 4003;
+  z-index: 2999;
   background: white;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    z-index: 2999;
-    position: absolute;
     width: ${({ panelWidth }) => panelWidth || 500}px;
     left: auto;
   }

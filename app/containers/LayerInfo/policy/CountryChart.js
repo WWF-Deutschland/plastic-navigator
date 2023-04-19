@@ -333,16 +333,10 @@ export function CountryChart({
             >
               <Box justify="between" gap="xsmall">
                 <Box gap="ms">
-                  <Box gap="xsmall">
-                    <Box
-                      direction="row"
-                      gap="xsmall"
-                      justify="start"
-                      flex={{ shrink: 0 }}
-                    >
+                  <Box gap={size === 'small' ? 'small' : 'xsmall'} responsive={false}>
+                    <Box justify="start" flex={{ shrink: 0 }} >
                       <Text
                         size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}
-                        textAlign="end"
                         color="textSecondary"
                       >
                         <FormattedMessage

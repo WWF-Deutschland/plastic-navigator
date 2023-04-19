@@ -42,7 +42,6 @@ export function ToggleOnOff({
   labelSize,
   isDisabled,
 }) {
-  console.log('isDisabled', isDisabled)
   return (
     <Box
       direction="row"

@@ -11,9 +11,10 @@ import Markdown from 'react-remarkable';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import styled, { withTheme } from 'styled-components';
-import { Text, Box, Button } from 'grommet';
+import { Text, Box, Button, ResponsiveContext } from 'grommet';
 
 import { POLICY_TOPIC_ICONS } from 'config';
+import { isMinSize } from 'utils/responsive';
 
 // import commonMessages from 'messages';
 import messages from './messages';
@@ -29,23 +30,14 @@ const TopicInner = styled(p => <Box elevation="small" pad="small" {...p} />)`
     isHover ? theme.global.colors.brand : 'white'};
 `;
 
-const TopicButtonWrap = styled(props => (
-  <Box margin={{ bottom: 'large' }} {...props} />
-))`
+const Styled = styled(props => <Box {...props} />)`
   width: 100%;
   min-width: 200px;
-  max-width: 300px;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 50%;
+    padding: 0 6px;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    padding: 0 6px;
-    &:first-child {
-      padding-left: 0;
-    }
-    &:last-child {
-      padding-right: 0;
-    }
     width: ${({ count, secondary }) => (secondary ? 25 : 100 / count)}%;
   }
 `;
@@ -64,30 +56,35 @@ const TitleShort = styled(p => <Text size="xlarge" {...p} />)`
 `;
 
 const Select = styled.div`
-  position: ${({ secondary }) => (secondary ? 'static' : 'absolute')};
-  bottom: 0;
-  left: 50%;
-  transform: translate(0, ${({ secondary }) => (secondary ? 0 : 50)}%);
+  position: absolute;
+  bottom: ${({ isOffset }) => (isOffset ? 0 : 8)}px;
+  left: ${({ isOffset }) => (isOffset ? '50%' : 'auto')};
+  right: ${({ isOffset }) => (isOffset ? 'auto' : '12px')};
+  transform: translate(0, ${({ isOffset }) => (isOffset ? 50 : 0)}%);
 `;
 const SelectText = styled.div`
   background-color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
   border-radius: 99999px;
-  padding: 10px 25px 11px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
   color: white;
   font-family: wwfregular;
   text-transform: uppercase;
   font-size: 20px;
   line-height: 1;
-  transform: translate(-50%, 0);
+  transform: translate(${({ isOffset }) => (isOffset ? -50 : 0)}%, 0);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+  padding: 4px 16px 5px;
+  font-size: 16px;
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    font-size: 20px;
+    padding: 9px 25px 11px;
+  }
 `;
 const SelectTextSecondary = styled.div`
   color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : 'white'};
   font-family: wwfregular;
   text-transform: uppercase;
-  font-size: 18px;
   line-height: 1;
 `;
 
@@ -102,11 +99,14 @@ export function TopicCard({
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
+  const size = React.useContext(ResponsiveContext);
+  const hasSelectButtonOffset = isMinSize(size, 'large') && !secondary;
   return (
-    <TopicButtonWrap
+    <Styled
       className="mpx-topic-select"
       count={count}
       secondary={secondary}
+      margin={{ bottom: hasSelectButtonOffset ? 'large' : 'small' }}
     >
       <TopicButton
         plain
@@ -126,7 +126,11 @@ export function TopicCard({
           )}
           <Box
             align="center"
-            margin={{ top: 'small', bottom: secondary ? 'small' : 'medium' }}
+            responsive={false}
+            margin={{
+              top: 'small',
+              bottom: hasSelectButtonOffset ? 'medium' : 'ml',
+            }}
           >
             <Teaser isHover={isHover}>
               <Markdown
@@ -136,21 +140,28 @@ export function TopicCard({
               />
             </Teaser>
           </Box>
-          <Select secondary={secondary} isHover={isHover}>
+          <Select
+            secondary={secondary}
+            isHover={isHover}
+            isOffset={hasSelectButtonOffset}
+          >
             {!secondary && (
-              <SelectText isHover={isHover}>
+              <SelectText isHover={isHover} isOffset={hasSelectButtonOffset}>
                 <FormattedMessage {...messages.select} />
               </SelectText>
             )}
             {secondary && (
-              <SelectTextSecondary isHover={isHover}>
+              <SelectTextSecondary
+                isHover={isHover}
+                isOffset={hasSelectButtonOffset}
+              >
                 <FormattedMessage {...messages.select} />
               </SelectTextSecondary>
             )}
           </Select>
         </TopicInner>
       </TopicButton>
-    </TopicButtonWrap>
+    </Styled>
   );
 }
 

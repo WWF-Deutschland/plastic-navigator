@@ -39,10 +39,7 @@ const TheModal = styled(p => (
   cursor: default;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     margin: 40px auto;
-    width: ${({ theme }) => theme.dimensions.modal.width[1]}px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    width: ${({ theme }) => theme.dimensions.modal.width[2]}px;
+    width: 90%;
   }
   @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
     width: ${({ theme }) => theme.dimensions.modal.width[3]}px;

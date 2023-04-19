@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import styled from 'styled-components';
-import { Box, Button, Layer } from 'grommet';
+import { Box, Button } from 'grommet';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
 import { getAsideWidth, isMaxSize } from 'utils/responsive';
@@ -203,14 +203,7 @@ export function ModuleExplore({
             />
           </ProjectButtonWrap>
         )}
-        {show && size !== 'small' && (
-          <PanelExplore onClose={() => onShow(false, uiURL)} />
-        )}
-        {show && size === 'small' && (
-          <Layer full>
-            <PanelExplore onClose={() => onShow(false, uiURL)} />
-          </Layer>
-        )}
+        {show && <PanelExplore onClose={() => onShow(false, uiURL)} />}
         {!show && (
           <Buttons>
             {size !== 'small' && (

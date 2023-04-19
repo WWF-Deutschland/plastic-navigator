@@ -202,7 +202,6 @@ export function PanelExplore({
 
   const isProjectTab = activeCategory && activeCategory.id === PROJECT_CATEGORY;
   const isPolicyTab = activeCategory && activeCategory.id === POLICY_CATEGORY;
-
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -210,7 +209,10 @@ export function PanelExplore({
         <Styled background="white" panelWidth={getAsideWidth(size)}>
           <div>
             <PanelHeader>
-              <ButtonHide onClick={() => onClose()} hasPadding />
+              <ButtonHide
+                onClick={() => onClose()}
+                hasPadding
+              />
               <TitleWrap>
                 <Layer />
                 <Title>

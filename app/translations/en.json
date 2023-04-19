@@ -52,6 +52,7 @@
   "app.containers.LayerInfo.countryStatementLinkLabel": "Go to statement",
   "app.containers.LayerInfo.downloadPolicyData": "Download all country positions (CSV)",
   "app.containers.LayerInfo.hidePanel": "Hide panel",
+  "app.containers.LayerInfo.hidePanelSmall": "Show map",
   "app.containers.LayerInfo.latestPositionLabel": "Current position",
   "app.containers.LayerInfo.moduleOverview": "Overview",
   "app.containers.LayerInfo.moreLocationInfo": "You can use the link above to learn more about the selected location's project",

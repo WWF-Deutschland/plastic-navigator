@@ -93,6 +93,10 @@ export default defineMessages({
     id: `${scope}.hidePanel`,
     defaultMessage: 'Hide panel',
   },
+  hidePanelSmall: {
+    id: `${scope}.hidePanelSmall`,
+    defaultMessage: 'Show map',
+  },
   scoreCardLabel: {
     id: `${scope}.scoreCardLabel`,
     defaultMessage: 'Policy position by topic',

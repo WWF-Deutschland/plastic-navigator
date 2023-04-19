@@ -5,7 +5,9 @@ import { Button } from 'grommet';
 // import messages from './messages';
 import { Close } from 'components/Icons';
 
-const StyledButton = styled(p => <Button plain alignSelf="end" {...p} />)`
+const StyledButton = styled(p => (
+  <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
+))`
   position: absolute;
   top: ${({ hasPadding }) => (hasPadding ? 15 : 0)}px;
   right: ${({ hasPadding }) => (hasPadding ? 15 : 0)}px;
@@ -23,13 +25,7 @@ const StyledButton = styled(p => <Button plain alignSelf="end" {...p} />)`
 `;
 
 export function ButtonClose({ onClick, hasPadding = true }) {
-  return (
-    <StyledButton
-      hasPadding={hasPadding}
-      onClick={onClick}
-      icon={<Close color="white" />}
-    />
-  );
+  return <StyledButton hasPadding={hasPadding} onClick={onClick} />;
 }
 
 ButtonClose.propTypes = {
