@@ -140,4 +140,8 @@ export default defineMessages({
     id: `${scope}.tabStatements`,
     defaultMessage: 'Statements',
   },
+  selectArchivedTopics: {
+    id: `${scope}.selectArchivedTopics`,
+    defaultMessage: 'Archived topics',
+  },
 });

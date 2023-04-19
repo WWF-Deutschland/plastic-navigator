@@ -50,6 +50,7 @@ import SourceList from './policy/SourceList';
 // import Alternates from './Alternates';
 // import TitleIconPolicy from './TitleIconPolicy';
 // import LayerReference from './LayerReference';
+import PolicyOptionList from './PolicyOptionList';
 import LayerContent from './LayerContent';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
@@ -128,34 +129,6 @@ const StyledDropButton = styled(DropButton)`
 
 const Description = styled(p => <Text size="ml" {...p} />)``;
 
-// prettier-ignore
-const DropOption = styled(p => <Button plain {...p} />)`
-  text-align: left;
-  padding: 2px ${({ theme }) => theme.global.edgeSize.small};
-  display: block;
-  width: 100%;
-  font-weight: ${({ active }) => (active ? 600 : 400)};
-  opacity: 1;
-  color: ${({ theme }) => theme.global.colors.black };
-  border-top: 1px solid ${({ theme }) => theme.global.colors.border.light };
-  border-left: 4px solid transparent;
-  font-size: ${({ theme }) => theme.text.xsmall.size};
-  min-width: 120px;
-  &:last-child {
-    border-bottom: 1px solid
-      ${({ theme, noBorderLast }) => noBorderLast
-    ? 'transparent'
-    : theme.global.colors.border.light};
-  }
-  &:hover {
-    text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 4px 32px 4px 12px;
-    font-size: ${({ theme }) => theme.text.medium.size};
-  }
-`;
-
 const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
 const TabLinkWrapper = styled(p => <Box {...p} margin={{ right: 'xsmall' }} />)`
   position: relative;
@@ -178,28 +151,6 @@ const TabLink = styled(p => <Button plain {...p} />)`
   }
 `;
 const TabLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
-
-const DropContent = ({ active, options, onSelect, locale }) => (
-  <Box margin="small" background="white" elevation="small">
-    {options &&
-      options.map(option => (
-        <DropOption
-          key={option.id}
-          onClick={() => onSelect(option.id)}
-          active={active === option.id}
-          disabled={active === option.id}
-        >
-          {option[`short_${locale}`] || option[`short_${DEFAULT_LOCALE}`]}
-        </DropOption>
-      ))}
-  </Box>
-);
-DropContent.propTypes = {
-  onSelect: PropTypes.func,
-  active: PropTypes.string,
-  options: PropTypes.array,
-  locale: PropTypes.string,
-};
 
 export function PolicyContent({
   view,
@@ -306,8 +257,7 @@ export function PolicyContent({
                     </TitleShort>
                   }
                   dropContent={
-                    <DropContent
-                      locale={locale}
+                    <PolicyOptionList
                       active={topic.id}
                       options={topicOptions}
                       onSelect={id => {
