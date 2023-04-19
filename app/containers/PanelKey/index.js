@@ -22,7 +22,6 @@ import {
   InfoSolid as Info,
 } from 'components/Icons';
 
-import { DEFAULT_LOCALE } from 'i18n';
 import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 
 import { startsWith, prepMarkdown } from 'utils/string';
