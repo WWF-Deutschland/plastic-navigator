@@ -246,10 +246,10 @@ export function Map({
       // console.log('zoomstart')
       setTooltip(null);
     },
-    zoomend: () => {
-      // console.log('zoomstart')
-      if (mapRef.current) console.log('zoomend', mapRef.current.getZoom());
-    },
+    // zoomend: () => {
+    //   // console.log('zoomstart')
+    //   if (mapRef.current) console.log('zoomend', mapRef.current.getZoom());
+    // },
     movestart: () => {
       // console.log('movestart')
       setTooltip(null);
