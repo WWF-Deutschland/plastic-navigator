@@ -155,7 +155,7 @@ const GlobalStyle = createGlobalStyle`
       color: #08586C;
     }
   }
-  .mpx-module-overview .mpx-layer-content > p:first-child {
+  .mpx-modal .mpx-layer-content > p:first-child {
     font-size: 18px;
   }
   .mpx-topic-select p {

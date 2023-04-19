@@ -21,6 +21,7 @@ import { decodeInfoView, getLayerIdFromView } from 'utils/layers';
 import { MODULES, POLICY_LAYER } from 'config';
 
 import ModuleWrap from 'components/ModuleWrap';
+import Modal from 'components/Modal';
 import { Policy } from 'components/Icons';
 import LayerInfo from 'containers/LayerInfo';
 import ItemInfo from 'containers/LayerInfo/ItemInfo';
@@ -77,42 +78,6 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
   }
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 5px 15px 5px 21px;
-  }
-`;
-
-const Inner = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-  pointer-events: all;
-  overflow-y: auto;
-`;
-
-const Overview = styled(p => (
-  <Box
-    flex={{ shrink: 0 }}
-    pad="medium"
-    background="white"
-    elevation="large"
-    {...p}
-  />
-))`
-  margin: 40px auto;
-  width: 100%;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    width: ${({ theme }) => theme.dimensions.modal.width[1]}px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    width: ${({ theme }) => theme.dimensions.modal.width[2]}px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    width: ${({ theme }) => theme.dimensions.modal.width[3]}px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.xxlarge.minpx}) {
-    width: ${({ theme }) => theme.dimensions.modal.width[4]}px;
   }
 `;
 
@@ -271,8 +236,8 @@ export function ModulePolicy({
       </Helmet>
       <ModuleWrap ref={ref}>
         {!topicSelected && layerConfig && ref && (
-          <Inner>
-            <Overview className="mpx-module-overview">
+          <Modal
+            content={
               <LayerContent
                 header={
                   <Box>
@@ -355,8 +320,8 @@ export function ModulePolicy({
                   },
                 ]}
               />
-            </Overview>
-          </Inner>
+            }
+          />
         )}
         {topicSelected && (
           <Buttons>
