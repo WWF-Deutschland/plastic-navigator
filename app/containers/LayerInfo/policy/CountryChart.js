@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
@@ -83,7 +83,7 @@ const KeyAreaWrap = styled.div`
 `;
 
 const KeyStatements = styled(p => (
-  <Box direction="row" align="center" {...p} />
+  <Box direction="row" align="center" justify="center" {...p} />
 ))`
   height: 18px;
   width: 18px;
@@ -176,7 +176,7 @@ export function CountryChart({
   onSelectStatement,
   indicatorId,
   intl,
-  // onSetChartDate,
+  onSetChartDate,
   // chartDate,
 }) {
   useInjectSaga({ key: 'map', saga });
@@ -187,40 +187,35 @@ export function CountryChart({
   const [mouseOverSource, setMouseOverSource] = useState(null);
 
   const { locale } = intl;
-  if (!layerInfo || !layerInfo.data) {
-    return null;
-  }
-  // const featuresEx = excludeCountryFeatures(config, layer.data.features);
-  //
-  // // console.log(layer.data.features)
-  // const countries = featuresToCountriesWithStrongestPosition(
-  //   config,
-  //   featuresEx,
-  //   locale,
-  // );
-  //
-  // console.log('countryPositions', countryPositions)
-  // // figure out data: positions over time
-  // const countryStats = getCountryPositionStatsForTopicAndDate({
-  //   indicatorId,
-  //   layerInfo,
-  //   includeOpposing: false,
-  //   includeWithout: false,
-  //   includeHidden: false,
-  // });
-  const positionsOverTime = getCountryPositionsOverTimeFromCountryFeatures({
-    indicatorId,
-    layerInfo,
-    includeOpposing: false,
-    includeWithout: false,
-    includeHidden: false,
-  });
+
+  const positionsOverTime =
+    layerInfo &&
+    layerInfo.data &&
+    getCountryPositionsOverTimeFromCountryFeatures({
+      indicatorId,
+      layerInfo,
+      includeOpposing: false,
+      includeWithout: false,
+      includeHidden: false,
+    });
   // console.log('positionsOverTime', positionsOverTime)
   // console.log('countryStats', countryStats)
   // console.log('positionsOverTime', positionsOverTime)
-  const lastDate = Object.keys(positionsOverTime)[
-    Object.keys(positionsOverTime).length - 1
-  ];
+  const lastDate =
+    layerInfo &&
+    layerInfo.data &&
+    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
+
+  useEffect(() => {
+    if (lastDate && onSetChartDate) {
+      onSetChartDate(lastDate);
+    }
+  }, [lastDate]);
+
+  if (!layerInfo || !layerInfo.data) {
+    return null;
+  }
+
   // prettier-ignore
   const mouseOverEffect = mouseOver;
   const currentDate =
@@ -740,7 +735,7 @@ CountryChart.propTypes = {
   indicatorId: PropTypes.string,
   onSelectStatement: PropTypes.func,
   intl: intlShape.isRequired,
-  // onSetChartDate: PropTypes.func,
+  onSetChartDate: PropTypes.func,
   // chartDate: PropTypes.string,
 };
 

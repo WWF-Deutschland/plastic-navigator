@@ -47,7 +47,7 @@
   "app.containers.Header.navSectionModules": "Sections",
   "app.containers.Header.navSectionPages": "Pages",
   "app.containers.LayerInfo.countryChartDateLabel": "Status: {date}",
-  "app.containers.LayerInfo.countryChartNoSources": "Individual statements:",
+  "app.containers.LayerInfo.countryChartNoSources": "Statements",
   "app.containers.LayerInfo.countryChartTitle": "Number of countries by policy position",
   "app.containers.LayerInfo.countryStatementLinkLabel": "Go to statement",
   "app.containers.LayerInfo.downloadPolicyData": "Download all country positions (CSV)",

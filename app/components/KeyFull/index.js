@@ -62,6 +62,7 @@ export function KeyFull({
       : null;
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
+
   return (
     <Styled>
       {hasTitle && (

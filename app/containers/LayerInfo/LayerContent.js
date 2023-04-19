@@ -75,7 +75,6 @@ export function LayerContent({
       onLoadLayer(config.id, config);
     }
   }, [layerInfo]);
-
   // prettier-ignore
   return (
     <>
@@ -99,7 +98,7 @@ export function LayerContent({
                   <Box margin={{ left: '30px', }} flex={false}>
                     <KeyFull
                       config={config}
-                      layerInfo={layerInfo && layerInfo.data}
+                      layerInfo={layerInfo}
                     />
                   </Box>
                 </Box>
