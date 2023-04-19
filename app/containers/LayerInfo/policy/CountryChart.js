@@ -307,7 +307,7 @@ export function CountryChart({
   const dataMouseOverCover =
     mouseOverEffect &&
     nearestXDate &&
-    getMouseOverCover({ chartData, currentDate, maxDate: lastDate });
+    getMouseOverCover({ chartData, minDate: currentDate, maxDate: lastDate });
   // console.log(getFlatCSVFromSources(sources, locale))
 
   // prettier-ignore
@@ -677,56 +677,6 @@ export function CountryChart({
       )}
     </ResponsiveContext.Consumer>
   );
-  // {/* source dots */}
-  // <MarkSeries
-  //   data={chartDataSources}
-  //   size={3}
-  //   colorType="literal"
-  //   style={{ opacity: 0.7 }}
-  // />
-  // {/* highlight source dot */}
-  // {mouseOverSource && (
-  //   <MarkSeries
-  //     data={[mouseOverSource]}
-  //     size={4}
-  //     colorType="literal"
-  //     style={{ opacity: 1, pointerEvents: 'none' }}
-  //   />
-  // )}
-  // {mouseOverSource && (
-  //   <Hint
-  //     value={mouseOverSource}
-  //     align={{ vertical: 'top', horizontal: 'auto' }}
-  //     style={{
-  //       transform: 'translateY(-10px)',
-  //       minWidth: '100px',
-  //       maxWidth: '120px',
-  //     }}
-  //   >
-  //     <Box elevation="small" background="white" pad="xsmall" gap="xsmall">
-  //         TODO: tooltip for one or more statements with link
-  //     </Box>
-  //   </Hint>
-  // )}
-  // {/* source dots interactions */}
-  // <MarkSeries
-  // data={chartDataSources}
-  // size={5}
-  // colorType="literal"
-  // style={{ opacity: 0, cursor: 'pointer' }}
-  // onNearestX={point => {
-  //   if (point) {
-  //     setNearestXDate(point.sdate)
-  //   }
-  // }}
-  // onValueMouseOver={point => {
-  //   setMouseOverSource(point)
-  // }}
-  // onValueMouseOut={() => {
-  //   setNearestXDate(null)
-  //   setMouseOverSource(null)
-  // }}
-  // />
 }
 
 CountryChart.propTypes = {
