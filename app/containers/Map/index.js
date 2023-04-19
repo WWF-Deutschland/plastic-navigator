@@ -164,6 +164,7 @@ export function Map({
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
   );
+  // console.log('highlightFeature', highlightFeature, highlightFeatureId)
   const jsonLayerLength = jsonLayers ? Object.keys(jsonLayers).length : 0;
 
   const showTooltip = (e, config) => {
@@ -211,10 +212,9 @@ export function Map({
   // console.log(tooltip)
   const onMarkerOver = (e, config) => {
     if (e && config) {
-      // console.log('over', e, config, tooltip);
       const feature = e.layer || e.target.feature;
       onFeatureHighlight({
-        feature: feature.properties.f_id,
+        feature: feature.properties.f_id || feature.properties.code,
         layer: e.target.options.layerId || config.id,
         copy: e.target.options.copy,
       });
@@ -725,6 +725,7 @@ export function Map({
       if (highlightFeatureId) {
         Object.keys(mapLayers).forEach(key => {
           const mapLayer = mapLayers[key];
+          // console.log('mapLayer.config', mapLayer.config);
           if (
             mapLayer &&
             mapLayer.config.render &&
@@ -738,13 +739,17 @@ export function Map({
               config,
               data: {
                 type: jsonLayer.data.type,
-                features: jsonLayer.data.features.filter(
-                  feature =>
-                    feature.properties.f_id === highlightFeatureId &&
-                    (!tooltip || tooltip.featureId !== feature.properties.f_id),
-                ),
+                features: jsonLayer.data.features.filter(feature => {
+                  const fid =
+                    feature.properties.code || feature.properties.f_id;
+                  return (
+                    fid === highlightFeatureId &&
+                    (!tooltip || tooltip.featureId !== fid)
+                  );
+                }),
               },
             };
+            // console.log('jsonLayerFiltered', jsonLayerFiltered)
             const highlightLayer = getVectorLayer({
               jsonLayer: jsonLayerFiltered,
               config,
