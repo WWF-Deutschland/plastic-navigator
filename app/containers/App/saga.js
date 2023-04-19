@@ -487,7 +487,7 @@ function* setLayerGeometriesSaga({ geometries }) {
       function: 'setLayerGeometriesSaga',
     });
   } else {
-    console.log('setLayerGeometriesSaga geometries', geometries)
+    // console.log('setLayerGeometriesSaga geometries', geometries)
     navPending = 'setLayerGeometriesSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
