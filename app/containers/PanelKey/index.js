@@ -117,6 +117,11 @@ const ButtonToggle = styled(p => <Button {...p} plain fill="horizontal" />)`
 `;
 const ButtonTab = styled(p => <Button {...p} plain />)`
   text-decoration: ${({ activeTab }) => (activeTab ? 'underline' : 'none')};
+  opacity: ${({ activeTab }) => (activeTab ? 1 : 0.5)};
+  cursor: ${({ activeTab }) => (activeTab ? 'default' : 'pointer')};
+  &:hover {
+    opacity: 1;
+  }
 `;
 const KeyUL = styled.ul`
   list-style-type: none;

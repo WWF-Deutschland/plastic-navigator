@@ -102,13 +102,16 @@ const ButtonBack = styled(p => <Button {...p} plain />)`
   position: absolute;
   left: 0;
   top: 0;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const HeaderButtonText = styled(p => <Text size="medium" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
-  margin-top: 0;
+  margin-top: -1px;
 `;
 
 const StyledDropButton = styled(DropButton)`
@@ -123,7 +126,7 @@ const StyledDropButton = styled(DropButton)`
   }
 `;
 
-const Description = styled(p => <Text {...p} />)``;
+const Description = styled(p => <Text size="ml" {...p} />)``;
 
 // prettier-ignore
 const DropOption = styled(p => <Button plain {...p} />)`

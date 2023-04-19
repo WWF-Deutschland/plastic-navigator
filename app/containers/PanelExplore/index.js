@@ -12,14 +12,7 @@ import { compose } from 'redux';
 import { FormattedMessage } from 'react-intl';
 import Markdown from 'react-remarkable';
 import styled from 'styled-components';
-import {
-  Box,
-  Button,
-  Text,
-  Heading,
-  Paragraph,
-  ResponsiveContext,
-} from 'grommet';
+import { Box, Button, Text, Heading, ResponsiveContext } from 'grommet';
 
 import { ExploreS as Layer } from 'components/Icons';
 import { getAsideWidth } from 'utils/responsive';
@@ -102,7 +95,7 @@ const PanelBody = styled.div`
 const TitleWrap = styled(p => (
   <Box margin={{ top: 'medium' }} {...p} align="center" responsive={false} />
 ))``;
-const Title = styled(Text)`
+const Title = styled(p => <Text size="large" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
@@ -140,7 +133,7 @@ const TitleGroup = styled(p => <Heading {...p} level={3} />)`
   font-size: 28px;
   line-height: 29px;
 `;
-const DescriptionGroup = styled(Paragraph)`
+const DescriptionGroup = styled.div`
   margin-bottom: 8px;
 `;
 
@@ -209,7 +202,7 @@ export function PanelExplore({
 
   const isProjectTab = activeCategory && activeCategory.id === PROJECT_CATEGORY;
   const isPolicyTab = activeCategory && activeCategory.id === POLICY_CATEGORY;
-  console.log()
+
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>

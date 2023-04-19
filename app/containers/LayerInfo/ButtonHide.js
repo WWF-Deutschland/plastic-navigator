@@ -10,6 +10,10 @@ const StyledButton = styled(p => <Button alignSelf="end" plain {...p} />)`
   top: ${({ hasPadding }) => (hasPadding ? 15 : 0)}px;
   right: ${({ hasPadding }) => (hasPadding ? 15 : 0)}px;
   padding: 5px;
+  margin-top: -3px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const HeaderButtonText = styled(p => <Text size="medium" {...p} />)`

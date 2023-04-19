@@ -99,6 +99,7 @@ const text = {
   xsmall: { size: '13px', height: '16px', maxWidth: '600px' },
   small: { size: '14px', height: '18px', maxWidth: '700px' },
   medium: { size: '15px', height: '20px', maxWidth: '800px' },
+  ml: { size: '17px', height: '23px', maxWidth: '800px' },
   large: { size: '18px', height: '24px', maxWidth: '800px' },
   xlarge: { size: '22px', height: '30px', maxWidth: '800px' },
   xxlarge: { size: '30px', height: '36px', maxWidth: '800px' },
