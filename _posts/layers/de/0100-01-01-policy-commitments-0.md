@@ -1,10 +1,12 @@
 ---
 layout: layer
 published: true
-permalink: /content/en/layers/policy-commitments-0/
-lang: en
+permalink: /content/de/layers/policy-commitments-0/
+lang: de
 title: Support for global treaty
 ---
+
+_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_
 
 Marine plastic pollution has reached crisis levels. It is estimated that eleven million tonnes of plastic enter the world’s oceans every year, threatening marine life, coastal livelihoods, and potentially even human health. It is a global problem that urgently requires a global response: it is time to begin negotiations on a new legally binding global agreement.
 

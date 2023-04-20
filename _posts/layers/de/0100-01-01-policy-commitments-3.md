@@ -1,12 +1,14 @@
 ---
 layout: layer
 published: true
-permalink: /content/en/layers/policy-commitments-3/
-lang: en
+permalink: /content/de/layers/policy-commitments-3/
+lang: de
 title: Safely Manage
 ---
 
-While the treaty should include specific measures to ensure improved waste management, it is important to recognize that reactive measures alone will do nothing to address the current plastic production and consumption trajectories. These measures must be complemented by other indispensable components, such as global bans, phase-outs, and global requirements standards to safely circulate plastics, to end plastic pollution
+_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_
+
+While the treaty should include specific measures to ensure improved waste management, it is important to recognize that reactive measures alone will do nothing to address the current plastic production and consumption trajectories.
 
 Some (non-exhaustive) examples of global requirements and standards on environmentally sound waste management are:
 
@@ -19,13 +21,13 @@ Some (non-exhaustive) examples of global requirements and standards on environme
 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
 
-States’ convergence on the need to ensure environmentally sound waste management of plastics is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution.
+States’ convergence on the need to ensure environmentally sound waste management of plastics is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution.
 
 
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards to ensure environmentally sound waste management of plastics. 
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards to ensure environmentally sound waste management of plastics.
 
 * Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard to ensure environmentally sound management of the plastics that becomes waste in their latest verbal or written public statement on this topic.
