@@ -160,24 +160,26 @@ export function Areas({
           </Text>
         </Box>
       )}
-      {asArray(squares).map(sq => {
-        const hasCount = typeof sq.count !== 'undefined' && !simple;
-        return (
-          <SquareLabelWrap key={sq.id}>
-            <KeyAreaWrap>
-              <KeyArea areaStyles={[sq.style]} />
-            </KeyAreaWrap>
-            <KeyLabelWrap>
-              <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-                <Markdown source={hasCount ? `${sq.title}: ` : sq.title} />
-              </StyledKeyLabel>
-            </KeyLabelWrap>
-            <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-              {hasCount && <StyledKeyCount>{sq.count}</StyledKeyCount>}
-            </KeyLabelWrap>
-          </SquareLabelWrap>
-        );
-      })}
+      {asArray(squares)
+        .filter(sq => typeof sq.count === 'undefined' || sq.count > 0)
+        .map(sq => {
+          const hasCount = typeof sq.count !== 'undefined' && !simple;
+          return (
+            <SquareLabelWrap key={sq.id}>
+              <KeyAreaWrap>
+                <KeyArea areaStyles={[sq.style]} />
+              </KeyAreaWrap>
+              <KeyLabelWrap>
+                <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+                  <Markdown source={hasCount ? `${sq.title}: ` : sq.title} />
+                </StyledKeyLabel>
+              </KeyLabelWrap>
+              <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+                {hasCount && <StyledKeyCount>{sq.count}</StyledKeyCount>}
+              </KeyLabelWrap>
+            </SquareLabelWrap>
+          );
+        })}
     </Box>
   );
 }
