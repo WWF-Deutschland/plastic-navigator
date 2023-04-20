@@ -145,6 +145,7 @@ export function* loadDataSaga({ key, config, args }) {
   if (hasMask) {
     file = config.mask;
   }
+  // console.log('loadDataSaga({ key, config, args })', key, config, args)
   if (type && (type === 'geojson' || type === 'topojson' || type === 'csv')) {
     // requestedSelector returns the times that entities where fetched from the API
     const requestedAt = yield select(selectLayerRequestedByKey, key);
@@ -213,21 +214,129 @@ export function* loadDataSaga({ key, config, args }) {
           if (typeof response.text === 'function' && type === 'csv') {
             const text = yield response.text();
             if (text) {
-              const promise = new Promise(resolve => {
-                csv2geojson(
-                  text,
-                  {
-                    latfield: 'latitude',
-                    lonfield: 'longitude',
-                    delimiter: ',',
-                  },
-                  (err, data) => {
-                    resolve(data);
-                  },
-                );
+              const tables = {};
+              let json;
+              let geometries;
+              let geometryMasks;
+              const features = Papa.parse(text, {
+                header: true,
+                skipEmptyLines: true,
               });
-              let json = yield promise;
-              json = setFeatureIds(json);
+
+              // console.log('geomtries',geometries)
+              if (config.tables) {
+                let responsesdata = yield all(
+                  Object.values(config.tables).map(x =>
+                    fetch(`${RESOURCES.DATA}/${x.file}`),
+                  ),
+                );
+                responsesdata = yield all(
+                  responsesdata.map(r => {
+                    if (r.text) {
+                      return r.text();
+                    }
+                    return r;
+                  }),
+                );
+                // console.log('responsesdata', responsesdata)
+                responsesdata.forEach((x, index) => {
+                  const configKey = Object.keys(config.tables)[index];
+                  tables[configKey] = {
+                    data: Papa.parse(x, {
+                      header: true,
+                      skipEmptyLines: true,
+                    }),
+                    config: config.tables[configKey],
+                  };
+                });
+                json = {
+                  features: features.data,
+                  tables,
+                };
+                // } else if (config && config.isGeometry) {
+              } else {
+                const promise = new Promise(resolve => {
+                  csv2geojson(
+                    text,
+                    {
+                      latfield:
+                        (config.latlonColumns && config.latlonColumns[0]) ||
+                        'latitude',
+                      lonfield:
+                        (config.latlonColumns && config.latlonColumns[1]) ||
+                        'longitude',
+                      delimiter: ',',
+                    },
+                    (err, data) => {
+                      resolve(data);
+                    },
+                  );
+                });
+                json = yield promise;
+                json = setFeatureIds(json);
+              }
+              // console.log('features',features)
+              if (config.geometries && config.geometries.length > 0) {
+                const responses = yield all(
+                  config.geometries.map(x =>
+                    fetch(`${RESOURCES.DATA}/${x.file}`),
+                  ),
+                );
+                geometries = yield all(
+                  responses.map(r => {
+                    if (r.json) {
+                      return r.json();
+                    }
+                    throw new Error('error csv-geometry');
+                  }),
+                );
+                geometries = geometries.map((x, index) => {
+                  const xconfig = config.geometries[index];
+                  let xjson = x;
+                  if (xconfig.type === 'topojson') {
+                    xjson = topojson.feature(
+                      xjson,
+                      Object.values(xjson.objects)[0],
+                    );
+                  }
+                  return {
+                    ...xjson,
+                    config: xconfig,
+                  };
+                });
+                const masked = config.geometries.filter(x => x.mask);
+                const maskResponses = yield all(
+                  masked.map(x => fetch(`${RESOURCES.DATA}/${x.mask}`)),
+                );
+                geometryMasks = yield all(
+                  maskResponses.map(r => {
+                    if (r.json) {
+                      return r.json();
+                    }
+                    throw new Error('error csv-geometry');
+                  }),
+                );
+                geometryMasks = geometryMasks.map((x, index) => {
+                  const maskConfig = masked[index];
+                  let xjson = x;
+                  if (maskConfig.type === 'topojson') {
+                    xjson = topojson.feature(
+                      xjson,
+                      Object.values(xjson.objects)[0],
+                    );
+                  }
+                  return {
+                    ...xjson,
+                    config: maskConfig,
+                  };
+                });
+                // console.log('geometryMasks', masked, geometryMasks)
+                json = {
+                  ...json,
+                  geometries,
+                  geometryMasks,
+                };
+              }
               yield put(setLayerLoadSuccess(key, config, json, Date.now()));
             }
           }

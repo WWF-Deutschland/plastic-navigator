@@ -4,8 +4,8 @@ import styled from 'styled-components';
 const Styled = styled.div`
   background: white;
   position: relative;
-  width: 18px;
-  height: 18px;
+  width: ${({ isLarge }) => (isLarge ? 28 : 18)}px;
+  height: ${({ isLarge }) => (isLarge ? 28 : 18)}px;
   overflow: hidden;
 `;
 
@@ -19,7 +19,7 @@ const SVG = styled.svg`
   right: 0;
 `;
 
-export function KeyArea({ areaStyles }) {
+export function KeyArea({ areaStyles, isLarge }) {
   const rectHeight = 100 / areaStyles.length;
   const rects = areaStyles.map((style, index) => ({
     key: index,
@@ -27,9 +27,8 @@ export function KeyArea({ areaStyles }) {
     offset: index * rectHeight,
     ...style,
   }));
-
   return (
-    <Styled>
+    <Styled isLarge={isLarge}>
       <SVG
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -56,6 +55,7 @@ export function KeyArea({ areaStyles }) {
 
 KeyArea.propTypes = {
   areaStyles: PropTypes.array,
+  isLarge: PropTypes.bool,
 };
 
 export default KeyArea;

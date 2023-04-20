@@ -28,6 +28,7 @@ import {
   loadConfig,
   navigate,
   setLayerInfo,
+  setItemInfo,
   showLayerInfoModule,
 } from 'containers/App/actions';
 import {
@@ -36,6 +37,7 @@ import {
   selectInfoSearch,
   selectLocale,
   selectLayerInfoVisible,
+  selectItemInfoSearch,
 } from 'containers/App/selectors';
 
 import ModuleStories from 'containers/ModuleStories/Loadable';
@@ -45,6 +47,8 @@ import Header from 'containers/Header';
 import Map from 'containers/Map';
 import Page from 'containers/Page';
 import LayerInfo from 'containers/LayerInfo';
+import ItemInfo from 'containers/LayerInfo/ItemInfo';
+
 import CookieConsent from 'containers/CookieConsent';
 
 import { ROUTES, CONFIG, MODULES } from 'config';
@@ -99,6 +103,8 @@ function App({
   onCloseLayerInfo,
   intl,
   layerInfoVisible,
+  onSetItemInfo,
+  itemInfo,
 }) {
   useInjectReducer({ key: 'global', reducer });
   useInjectSaga({ key: 'default', saga });
@@ -118,6 +124,8 @@ function App({
   // do not show info panel for
   // prettier-ignore
   const showInfo = info !== '' && layerInfoVisible;
+  const showItemInfo = itemInfo !== '' && layerInfoVisible;
+  // console.log(showInfo, info, layerInfoVisible)
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
@@ -162,6 +170,17 @@ function App({
                   currentModule={currentModule}
                 />
               )}
+              {showItemInfo && (
+                <ItemInfo
+                  isModule={false}
+                  item={itemInfo}
+                  onClose={() => onSetItemInfo()}
+                  onSetTopic={({ layerIdX, topicId, itemId, type }) => {
+                    onSetItemInfo(`${layerIdX}_${topicId}|${type}-${itemId}`);
+                  }}
+                  currentModule={currentModule}
+                />
+              )}
             </Content>
           )}
         </ResponsiveContext.Consumer>
@@ -176,10 +195,12 @@ function App({
 App.propTypes = {
   onLoadConfig: PropTypes.func,
   onClosePage: PropTypes.func,
+  onSetItemInfo: PropTypes.func,
   onCloseLayerInfo: PropTypes.func,
   path: PropTypes.string,
   page: PropTypes.string,
   info: PropTypes.string,
+  itemInfo: PropTypes.string,
   layerInfoVisible: PropTypes.bool,
   intl: intlShape.isRequired,
 };
@@ -188,6 +209,7 @@ const mapStateToProps = createStructuredSelector({
   path: state => selectRouterPath(state),
   page: state => selectPageSearch(state),
   info: state => selectInfoSearch(state),
+  itemInfo: state => selectItemInfoSearch(state),
   locale: state => selectLocale(state),
   layerInfoVisible: state => selectLayerInfoVisible(state),
 });
@@ -198,6 +220,9 @@ export function mapDispatchToProps(dispatch) {
       Object.keys(CONFIG).forEach(key => {
         dispatch(loadConfig(key));
       });
+    },
+    onSetItemInfo: id => {
+      dispatch(setItemInfo(id));
     },
     onClosePage: () =>
       dispatch(

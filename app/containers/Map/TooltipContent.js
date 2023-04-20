@@ -25,28 +25,39 @@ const getContent = (feature, element, layer, locale) => {
   return element[locale];
 };
 
-const TooltipContent = ({ config, feature, intl, layer }) => {
-  const { tooltip } = config;
+const TooltipContent = ({ config, feature, intl, layer, content }) => {
   const { locale } = intl;
-  const contentList = asArray(
-    getContent(feature, tooltip.content, layer, locale),
-  ).map((content, key) => ({
-    key,
-    content,
-  }));
-  return (
-    <Styled>
-      {contentList.map(c => (
-        <P key={c.key}>{c.content}</P>
-      ))}
-    </Styled>
-  );
+  if (content && content !== '') {
+    return (
+      <Styled>
+        <P>{content}</P>
+      </Styled>
+    );
+  }
+  if (config) {
+    const { tooltip } = config;
+    const contentList = asArray(
+      getContent(feature, tooltip.content, layer, locale),
+    ).map((contentItem, key) => ({
+      key,
+      content: contentItem,
+    }));
+    return (
+      <Styled>
+        {contentList.map(c => (
+          <P key={c.key}>{c.content}</P>
+        ))}
+      </Styled>
+    );
+  }
+  return null;
 };
 
 TooltipContent.propTypes = {
   config: PropTypes.object, // the layer configuration
   feature: PropTypes.object, // the feature
   layer: PropTypes.object, // optionally the features' layer information
+  content: PropTypes.string, // optionally the features' layer information
   intl: intlShape.isRequired,
 };
 

@@ -17,7 +17,7 @@ import { PROJECT_CONFIG } from 'config';
 
 import KeyIcon from 'components/KeyIcon';
 import Checkbox from 'components/Checkbox';
-
+import qe from 'utils/quasi-equals';
 import messages from './messages';
 
 const Styled = styled.div`
@@ -97,7 +97,49 @@ function GroupLayers({
   onLayerInfo,
   locale,
   projects,
+  isPolicy,
+  showArchived,
+  // group,
 }) {
+  const layers = [];
+  if (layersConfig) {
+    layersConfig.forEach(config => {
+      let id;
+      let title;
+      if (isPolicy && config.indicators) {
+        config.indicators.indicators
+          .filter(indicator => {
+            const isArchive = indicator.archive && qe(indicator.archive, 1);
+            // console.log(layer, isArchiveLayer, showArchived)
+            return showArchived ? isArchive : !isArchive;
+          })
+          .forEach(indicator => {
+            layers.push({
+              id: `${config.id}_${indicator.id}`,
+              title: indicator.short
+                ? indicator.short[locale] || indicator.short[DEFAULT_LOCALE]
+                : indicator.title[locale] || indicator.title[DEFAULT_LOCALE],
+              isArchive: indicator.archive ? qe(indicator.archive, 1) : false,
+              config,
+              configIndicator: indicator,
+            });
+          });
+      } else {
+        if (projects) {
+          id = `${PROJECT_CONFIG.id}_${config.project_id}`;
+          title =
+            config[`project_title_${locale}`] ||
+            config[`project_title_${DEFAULT_LOCALE}`];
+        } else {
+          /* eslint-disable prefer-destructuring */
+          id = config.id;
+          title = config.title[locale] || config.title[DEFAULT_LOCALE];
+        }
+        layers.push({ id, title, config });
+      }
+    });
+  }
+  // console.log(showArchived, layers, group)
   return (
     <Styled>
       <ListHeader>
@@ -105,9 +147,11 @@ function GroupLayers({
           <ListHeaderCell>
             <Box direction="row" gap="small" align="center">
               <Layer color="dark-4" />
-              <FormattedMessage
-                {...messages[projects ? 'columnProject' : 'columnLayer']}
-              />
+              {projects && <FormattedMessage {...messages.columnProject} />}
+              {isPolicy && <FormattedMessage {...messages.columnIndicator} />}
+              {!isPolicy && !projects && (
+                <FormattedMessage {...messages.columnLayer} />
+              )}
             </Box>
           </ListHeaderCell>
           <ListHeaderKey>
@@ -121,41 +165,33 @@ function GroupLayers({
         </ListHeaderRow>
       </ListHeader>
       <ListBody>
-        {layersConfig &&
-          layersConfig.map(config => {
-            const id = projects
-              ? `${PROJECT_CONFIG.id}-${config.project_id}`
-              : config.id;
-            // const contentId = projects ? id : config['content-id'] || config.id;
-            const title = projects
-              ? config[`project_title_${locale}`] ||
-                config[`project_title_${DEFAULT_LOCALE}`]
-              : config.title[locale] || config.title[DEFAULT_LOCALE];
-            return (
-              <ListBodyRow key={id}>
-                <ListBodyCell>
-                  <Checkbox
-                    checked={activeLayers.indexOf(id) > -1}
-                    onToggle={() => onToggleLayer(id)}
-                    label={title}
-                  />
-                </ListBodyCell>
-                <ListBodyCellCenter>
+        {layers &&
+          layers.map(({ id, title, config }) => (
+            <ListBodyRow key={id}>
+              <ListBodyCell>
+                <Checkbox
+                  checked={activeLayers.indexOf(id) > -1}
+                  onToggle={() => onToggleLayer(id)}
+                  label={title}
+                />
+              </ListBodyCell>
+              <ListBodyCellCenter>
+                {(projects || config.key || config['styles-by-value']) && (
                   <KeyWrap>
                     <KeyIcon config={projects ? PROJECT_CONFIG : config} />
                   </KeyWrap>
-                </ListBodyCellCenter>
-                {onLayerInfo && (
-                  <ListBodyCellCenter>
-                    <InfoButton
-                      onClick={() => onLayerInfo(id)}
-                      label={<FormattedMessage {...messages.info} />}
-                    />
-                  </ListBodyCellCenter>
                 )}
-              </ListBodyRow>
-            );
-          })}
+              </ListBodyCellCenter>
+              {onLayerInfo && (
+                <ListBodyCellCenter>
+                  <InfoButton
+                    onClick={() => onLayerInfo(id)}
+                    label={<FormattedMessage {...messages.info} />}
+                  />
+                </ListBodyCellCenter>
+              )}
+            </ListBodyRow>
+          ))}
       </ListBody>
     </Styled>
   );
@@ -165,10 +201,12 @@ GroupLayers.propTypes = {
   // group: PropTypes.object,
   layersConfig: PropTypes.array,
   projects: PropTypes.bool,
+  isPolicy: PropTypes.bool,
   activeLayers: PropTypes.array,
   onToggleLayer: PropTypes.func,
   onLayerInfo: PropTypes.func,
   locale: PropTypes.string,
+  showArchived: PropTypes.bool,
 };
 
 export default GroupLayers;

@@ -13,4 +13,16 @@ export default defineMessages({
     id: `${scope}.showLayerPanel`,
     defaultMessage: 'Policy info',
   },
+  selectTopics: {
+    id: `${scope}.selectTopics`,
+    defaultMessage: 'Select a policy topic to explore',
+  },
+  selectArchivedTopics: {
+    id: `${scope}.selectArchivedTopics`,
+    defaultMessage: 'Archived topics',
+  },
+  select: {
+    id: `${scope}.select`,
+    defaultMessage: 'Select',
+  },
 });

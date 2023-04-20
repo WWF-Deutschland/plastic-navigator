@@ -115,12 +115,13 @@ const BrandWWF = styled(props => <Button {...props} plain />)`
   height: 58px;
   width: 50px;
   background: ${({ theme }) => theme.global.colors.white};
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     height: 81px;
     width: 72px;
   }
 `;
+// box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 
 const toArray = obj =>
   Object.keys(obj).map(key => ({
@@ -258,7 +259,7 @@ function Header({ nav, navPage, path, navHome, intl, iframeConfig }) {
             {isMaxSize(size, 'medium') && (
               <MenuButton
                 plain
-                onClick={() => setShowMenu(true)}
+                onClick={() => setShowMenu(!showMenu)}
                 active={showMenu}
                 label={<Menu color="white" />}
               />

@@ -52,7 +52,6 @@ export function Circles({ config, simple, intl, range }) {
   } else if (!simple) {
     maxRadius = parseFloat(render.max);
   }
-
   return (
     <Styled
       exceeds={!simple && range && render && render.min}

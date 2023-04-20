@@ -39,6 +39,10 @@ export const selectInfoSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('info') ? search.get('info') : ''),
 );
+export const selectItemInfoSearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('item') ? search.get('item') : ''),
+);
 export const selectChapterSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('ch') ? parseInt(search.get('ch'), 10) : null),
@@ -50,6 +54,10 @@ export const selectStorySearch = createSelector(
 export const selectIFrameSearch = createSelector(
   selectRouterSearchParams,
   search => (search.has('iframe') ? search.get('iframe') : null),
+);
+export const selectLayerGeographySearch = createSelector(
+  selectRouterSearchParams,
+  search => (search.has('lgeo') ? search.get('lgeo') : ''),
 );
 
 /**
@@ -201,8 +209,8 @@ export const selectSingleProjectConfig = createSelector(
   (state, { key }) => key,
   state => selectConfigByKey(state, { key: 'projects' }),
   (key, projects) => {
-    const pid = startsWith(key, `${PROJECT_CONFIG.id}-`)
-      ? key.replace(`${PROJECT_CONFIG.id}-`, '')
+    const pid = startsWith(key, `${PROJECT_CONFIG.id}_`)
+      ? key.replace(`${PROJECT_CONFIG.id}_`, '')
       : key;
     return projects && projects.find(p => p.project_id === pid);
   },
@@ -250,6 +258,10 @@ export const selectActiveLayers = createSelector(
   layersSearch =>
     layersSearch === '' ? [] : layersSearch.split(URL_SEARCH_SEPARATOR),
 );
+export const selectLayerGeometries = createSelector(
+  selectLayerGeographySearch,
+  search => (search === '' ? [] : search.split(URL_SEARCH_SEPARATOR)),
+);
 export const selectIsActiveLayer = createSelector(
   (state, id) => id,
   selectActiveLayers,
@@ -268,4 +280,13 @@ export const selectLayerInfoVisible = createSelector(
     }
     return true;
   },
+);
+
+export const selectShowKey = createSelector(
+  selectGlobal,
+  global => global.showKey,
+);
+export const selectChartDate = createSelector(
+  selectGlobal,
+  global => global.chartDate,
 );

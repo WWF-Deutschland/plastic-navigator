@@ -13,13 +13,25 @@ export default defineMessages({
     id: `${scope}.titleReference`,
     defaultMessage: 'Reference',
   },
-  multiplePositions: {
-    id: `${scope}.multiplePositions`,
-    defaultMessage: 'Multiple Positions',
+  multipleStatements: {
+    id: `${scope}.multipleStatements`,
+    defaultMessage: 'Statement positions by topic',
+  },
+  singleStatement: {
+    id: `${scope}.singleStatement`,
+    defaultMessage: 'Statement position for topic',
+  },
+  noStatement: {
+    id: `${scope}.noStatement`,
+    defaultMessage: 'No statement recorded',
   },
   position: {
     id: `${scope}.position`,
     defaultMessage: 'Position',
+  },
+  statementPosition: {
+    id: `${scope}.statementPosition`,
+    defaultMessage: 'Statement position',
   },
   quote: {
     id: `${scope}.quote`,
@@ -72,5 +84,64 @@ export default defineMessages({
   shareCountryLink: {
     id: `${scope}.shareCountryLink`,
     defaultMessage: 'Copy link to country view',
+  },
+  moduleOverview: {
+    id: `${scope}.moduleOverview`,
+    defaultMessage: 'Overview',
+  },
+  hidePanel: {
+    id: `${scope}.hidePanel`,
+    defaultMessage: 'Hide panel',
+  },
+  hidePanelSmall: {
+    id: `${scope}.hidePanelSmall`,
+    defaultMessage: 'Show map',
+  },
+  scoreCardLabel: {
+    id: `${scope}.scoreCardLabel`,
+    defaultMessage: 'Policy position by topic',
+  },
+  scoreCardSelect: {
+    id: `${scope}.scoreCardSelect`,
+    defaultMessage: 'Select a topic to view statements and show on map',
+  },
+  latestPositionLabel: {
+    id: `${scope}.latestPositionLabel`,
+    defaultMessage: 'Current position',
+  },
+  countryStatementLinkLabel: {
+    id: `${scope}.countryStatementLinkLabel`,
+    defaultMessage: 'Go to statement',
+  },
+  noLocationInfo: {
+    id: `${scope}.noLocationInfo`,
+    defaultMessage:
+      'There is currently no information available for the selected project location, but you can use the link above to learn more about the project',
+  },
+  moreLocationInfo: {
+    id: `${scope}.moreLocationInfo`,
+    defaultMessage:
+      "You can use the link above to learn more about the selected location's project",
+  },
+  otherStatements: {
+    id: `${scope}.otherStatements`,
+    defaultMessage:
+      '{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)',
+  },
+  tabDetails: {
+    id: `${scope}.tabDetails`,
+    defaultMessage: 'Details',
+  },
+  tabCountries: {
+    id: `${scope}.tabCountries`,
+    defaultMessage: 'States',
+  },
+  tabStatements: {
+    id: `${scope}.tabStatements`,
+    defaultMessage: 'Statements',
+  },
+  selectArchivedTopics: {
+    id: `${scope}.selectArchivedTopics`,
+    defaultMessage: 'Archived topics',
   },
 });

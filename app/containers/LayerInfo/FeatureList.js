@@ -5,15 +5,12 @@
  */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
+
 import styled from 'styled-components';
 import { Button, Box, Heading, Text, ResponsiveContext } from 'grommet';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 
 import { ArrowRightL, CloseXS } from 'components/Icons';
-
-import { setLayerInfo } from 'containers/App/actions';
 
 import { sortLabels } from 'utils/string';
 import { isMinSize } from 'utils/responsive';
@@ -34,7 +31,7 @@ const ListTitle = styled(p => <Heading level={4} {...p} />)`
 `;
 
 const FeatureListWrap = styled(Box)`
-  margin-top: 30px;
+  margin-top: 5px;
 `;
 
 const FeatureButton = styled(p => (
@@ -52,18 +49,16 @@ const FeatureButton = styled(p => (
 export function FeatureList({
   title,
   items,
-  layerId,
-  onSetLayerInfo,
+  onSetItemInfo,
   config,
-  isSourceList,
   search,
   placeholder,
+  isSourceList,
   intl,
 }) {
   const [test, setTest] = useState('');
   const textInputRef = useRef(null);
   const { locale } = intl;
-
   const itemsFiltered =
     search && test.length > 0
       ? items.filter(item => search(item, test))
@@ -132,9 +127,7 @@ export function FeatureList({
                 <FeatureButton
                   key={item.id}
                   onClick={() =>
-                    isSourceList
-                      ? onSetLayerInfo(layerId, `source-${item.id}`)
-                      : onSetLayerInfo(layerId, item.id)
+                    onSetItemInfo ? onSetItemInfo(item.id) : null
                   }
                   label={
                     <Box
@@ -190,7 +183,7 @@ export function FeatureList({
 }
 
 FeatureList.propTypes = {
-  onSetLayerInfo: PropTypes.func.isRequired,
+  onSetItemInfo: PropTypes.func.isRequired,
   items: PropTypes.array,
   config: PropTypes.object,
   layerId: PropTypes.string,
@@ -201,17 +194,4 @@ FeatureList.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSetLayerInfo: (id, location) => {
-      dispatch(setLayerInfo(id, location));
-    },
-  };
-}
-
-const withConnect = connect(
-  null,
-  mapDispatchToProps,
-);
-
-export default compose(withConnect)(injectIntl(FeatureList));
+export default injectIntl(FeatureList);
