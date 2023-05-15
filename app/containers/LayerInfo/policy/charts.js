@@ -2,7 +2,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
 import { getPositionForTopicAndValue } from 'utils/policy';
 const DATE_BUFFER_ARCHIVED = 60;
-const DATE_BUFFER_CURRENT = 30;
+const DATE_BUFFER_CURRENT = 14;
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
 const getDataForDate = (dateKey, positions, positionID, positionIDYOffsets) => {
