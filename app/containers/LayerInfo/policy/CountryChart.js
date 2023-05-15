@@ -54,7 +54,7 @@ import coreMessages from 'messages';
 // } from './utils';
 import messages from '../messages';
 import {
-  getXMax,
+  getMaxDate,
   prepChartKey,
   prepChartData,
   prepChartDataSources,
@@ -177,6 +177,7 @@ export function CountryChart({
   indicatorId,
   intl,
   onSetChartDate,
+  isArchive,
   // chartDate,
 }) {
   useInjectSaga({ key: 'map', saga });
@@ -289,26 +290,37 @@ export function CountryChart({
   //
   // chart stuff
   const minDate = MINDATE[parseInt(indicatorId, 10)];
+  const maxDate = getMaxDate(lastDate, isArchive);
   const chartData = prepChartData({
     positions: positionsOverTime,
     minDate,
-    maxDate: lastDate,
+    maxDate,
   });
-  const tickValuesX = getTickValuesX({ chartData, minDate, maxDate: lastDate });
+  const tickValuesX = getTickValuesX({ chartData, minDate, maxDate });
+  // console.log('minDate', minDate)
+  // console.log('maxDate', maxDate)
+  // console.log('lastDate', lastDate)
   // console.log('tickValuesX', tickValuesX)
-
-  // console.log('chartDataSources', chartDataSources)
+  // console.log('chartData', chartData)
+  // console.log('isArchived', isArchive)
+  const countryCount = layerInfo.data.features.length;
   const dataForceYRange = getYRange({
-    countryCount: layerInfo.data.features.length,
+    countryCount,
     chartDataSources,
     minDate,
-    maxDate: lastDate,
+    maxDate,
   });
   const dataMouseOverCover =
     mouseOverEffect &&
     nearestXDate &&
-    getMouseOverCover({ chartData, minDate: currentDate, maxDate: lastDate });
+    getMouseOverCover({
+      chartData,
+      minDate: currentDate,
+      maxDate,
+      countryCount,
+    });
   // console.log(getFlatCSVFromSources(sources, locale))
+  // console.log('dataMouseOverCover', dataMouseOverCover)
 
   // prettier-ignore
   return (
@@ -523,7 +535,7 @@ export function CountryChart({
                       y: 0,
                     },
                     {
-                      x: getXMax(lastDate),
+                      x: new Date(maxDate).getTime(),
                       y: 0,
                     },
                   ]}
@@ -567,7 +579,7 @@ export function CountryChart({
                       y: 0,
                     },
                     {
-                      x: getXMax(lastDate),
+                      x: new Date(maxDate).getTime(),
                       y: 0,
                     },
                   ]}
@@ -680,6 +692,7 @@ CountryChart.propTypes = {
   onSelectStatement: PropTypes.func,
   intl: intlShape.isRequired,
   onSetChartDate: PropTypes.func,
+  isArchive: PropTypes.bool,
   // chartDate: PropTypes.string,
 };
 

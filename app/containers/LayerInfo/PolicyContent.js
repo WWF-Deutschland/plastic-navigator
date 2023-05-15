@@ -183,19 +183,20 @@ export function PolicyContent({
   const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerInfo);
   const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
+  const isTopicArchived = topic && qe(topic.archived, 1);
   const nextTopic =
     topic &&
     getNextTopicFromData({
       indicatorId,
       layerInfo,
-      archived: topic.archived === '1',
+      archived: isTopicArchived,
     });
   const prevTopic =
     topic &&
     getPreviousTopicFromData({
       indicatorId,
       layerInfo,
-      archived: topic.archived === '1',
+      archived: isTopicArchived,
     });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
   return (
@@ -223,10 +224,10 @@ export function PolicyContent({
               <Box
                 margin={{ top: 'small', bottom: 'small' }}
                 direction="row"
-                justify={topic.archived !== '1' ? 'between' : 'center'}
+                justify={isTopicArchived ? 'center' : 'between'}
                 align="center"
               >
-                {topic.archived !== '1' && (
+                {!isTopicArchived && (
                   <TopicNav onClick={() => onSetTopic(prevTopic.id)}>
                     <ArrowLeft color={theme.global.colors.brand} size="24px" />
                   </TopicNav>
@@ -267,7 +268,7 @@ export function PolicyContent({
                     />
                   }
                 />
-                {topic.archived !== '1' && (
+                {!isTopicArchived && (
                   <TopicNav onClick={() => onSetTopic(nextTopic.id)}>
                     <ArrowRight color={theme.global.colors.brand} size="24px" />
                   </TopicNav>
@@ -365,6 +366,7 @@ export function PolicyContent({
                 onSelectStatement={sid => onSelectStatement(sid, layerId)}
                 onSetChartDate={onSetChartDate}
                 chartDate={chartDate}
+                isArchive={isTopicArchived}
               />
             </Box>
             <LayerContent fullLayerId={layerId} config={config} />
