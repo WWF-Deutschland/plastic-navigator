@@ -57,6 +57,7 @@
   "app.containers.LayerInfo.moduleOverview": "Overview",
   "app.containers.LayerInfo.moreLocationInfo": "You can use the link above to learn more about the selected location's project",
   "app.containers.LayerInfo.multipleStatements": "Statement positions by topic",
+  "app.containers.LayerInfo.multipleStatementsCountry": "Statement positions for topic",
   "app.containers.LayerInfo.noLocationInfo": "There is currently no information available for the selected project location, but you can use the link above to learn more about the project",
   "app.containers.LayerInfo.noSearchResults": "No results for current search",
   "app.containers.LayerInfo.noStatement": "No statement recorded",

@@ -17,6 +17,10 @@ export default defineMessages({
     id: `${scope}.multipleStatements`,
     defaultMessage: 'Statement positions by topic',
   },
+  multipleStatementsCountry: {
+    id: `${scope}.multipleStatementsCountry`,
+    defaultMessage: 'Statement positions for topic',
+  },
   singleStatement: {
     id: `${scope}.singleStatement`,
     defaultMessage: 'Statement position for topic',

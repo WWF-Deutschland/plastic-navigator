@@ -46,7 +46,7 @@ const CountryPolicyCommitments = ({
             <FormattedMessage {...messages.singleStatement} />
           )}
           {(!statements || statements.length !== 1) && (
-            <FormattedMessage {...messages.multipleStatements} />
+            <FormattedMessage {...messages.multipleStatementsCountry} />
           )}
         </StatementListHeaderText>
       </StatementListHeader>
