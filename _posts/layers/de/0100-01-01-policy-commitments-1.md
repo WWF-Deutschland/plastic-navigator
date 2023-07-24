@@ -6,28 +6,26 @@ lang: de
 title: Ban & phase out
 ---
 
-_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_
+Das Abkommen sollte nach Möglichkeit konkrete, verbindliche Maßnahmen vorsehen, mit denen die Produktion und der Verbrauch von als bedenklich eingestuften Kunststoffen deutlich eingeschränkt oder ganz unterbunden werden können. Dies ist einer der unverzichtbaren Bestandteile eines ambitionierten Abkommens zur Beendigung der Plastikverschmutzung. Im Einklang mit einem risikobasierten Ansatz sollte der Schwerpunkt zunächst auf Produkten, Zusatzstoffen oder Materialien liegen, die das System am stärksten belasten und die größten Risiken darstellen.  Für diese Produkte, Zusatzstoffe und Materialien sollten dringend Prioritätenlisten erstellt werden.
 
-Where possible, the treaty must put in place specific, binding measures to significantly reduce or eliminate the production and consumption of plastic categories of concern. In line with a risk-based approach, initial emphasis should be on the products, additives or materials that generate the largest pressure on the system, and pose the highest risks. Priority lists of such products, additives or materials should urgently be developed.
+Der Global Plastic Navigator zeigt an, inwieweit die Staaten die Aufnahme globaler Verbote und Auslaufregelungen in das Abkommen unterstützen, mit denen Produktion, Verbrauch und Handel von/mit bestimmten bedenklichen Kunststoffkategorien unterbunden werden. Hierzu zählen Produkte, Materialien oder Stoffe, die besonders gefährdend sind, sowohl hinsichtlich der Wahrscheinlichkeit und Schwere potenzieller Schäden für den Menschen (sowie der menschlichen Gesundheit) als auch für andere Lebewesen und die Umwelt.
 
-The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of certain plastic categories of concern, including products, materials, or substances deemed to pose a significant risk, including probability and severity of potential harms to humans (including to human health), other living species, and the relevant environment.
-
-States’ convergence on the need to eliminate or significantly reduce these plastic categories is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [submission (pdf)]( https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) to the Intergovernmental Negotiating Committee, provides further information on WWF’s key recommendations on the potential options for elements towards an international legally binding instrument.
+Einigkeit der Staaten darüber, dass es notwendig ist, diese Kunststoffkategorien abzuschaffen oder erheblich zu verringern, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.  Die [Vorlage (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) des WWF an den zwischenstaatlichen Verhandlungsausschuss enthält weitere Informationen über die wichtigsten Empfehlungen des WWF zu  möglichen Optionen für Elemente eines internationalen rechtsverbindlichen Instruments.
 
 
-## How to read the data
+## So wurden die Daten visualisiert
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern.
+Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich für weltweite Verbote und Auslaufregelungen ausgesprochen haben, die darauf abzielen, Produktion, Verbrauch und Handel von/mit bestimmten, als problematisch eingestuften Kunststoffen zu beenden.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement on this topic.
+* Grün kennzeichnet Staaten, die sich in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema für die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag ausgesprochen haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht dafür ausgesprochen, dass globale Verbote von bzw. und Ausstiegsauflagen für irgendeine der bedenklichen Kunststoffkategorien aufgenommen werden sollen.
 
-_Clicking on the states shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
+_Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 
-### About the data
+### Über die Daten
 
-The estimated level of support by each state is based on WWF’s assessment of publicly available documents, including national and regional declarations and decisions, interventions during meetings of the Intergovernmental Negotiating Committee (INC), and written submissions to the INC.
+Die Unterstützung der jeweiligen Staaten für die Maßnahme wurde vom WWF auf Grundlage öffentlich zugänglicher Dokumente ausgewertet. Hierzu zählen Erklärungen und Entscheidungen auf nationaler und regionaler Ebene, Beiträge während der Sitzungen des zwischenstaatlichen Verhandlungsausschusses (INC) und schriftliche Eingaben an den INC.
 
-A group statement is understood as representing the level of support of all member states of the group, unless indicated otherwise through an individual member state’s statement recorded at the same time.
+Gruppenerklärungen wurden dabei so gewertet, dass sie den Grad der Unterstützung aller Mitgliedstaaten der Gruppe wiedergeben, es sei denn, die gleichzeitig abgegebene Erklärung eines einzelnen Mitgliedstaates weicht hiervon ab.
 
-_The designation of geographical entities and the presentation of the material do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries. The map of countries is reproduced from Natural Earth, a public domain map dataset that is built through a collaboration of volunteers and supported by NACIS (North American Cartographic Information Society)._
+_Mit der Bezeichnung der geografischen Einheiten und der Darstellung des Materials nimmt der WWF nicht Stellung zum rechtlichen Status von Staaten, Regionen oder Gebieten, deren Behörden oder Grenzverläufen. Quelle der politischen Landkarte ist der gemeinfreie Datensatz von Natural Earth, der in Zusammenarbeit mit Freiwilligen erstellt und von der NACIS (North American Cartographic Information Society) unterstützt wird._
