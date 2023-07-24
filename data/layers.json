@@ -388,7 +388,7 @@
             "type": "checkbox",
             "label": {
               "en": "Show areas for states",
-              "de": "Show areas for states"
+              "de": "Staatsgebiete anzeigen"
             }
           }
         },
@@ -409,7 +409,7 @@
             "type": "checkbox",
             "label": {
               "en": "Show markers for supporting states",
-              "de": "Show markers for supporting states"
+              "de": "Markierungen für unterstützende Staaten anzeigen"
             }
           },
           "zoom": {
@@ -419,13 +419,13 @@
               "true": {
                 "label": {
                   "en": "Small states only",
-                  "de": "Small states only"
+                  "de": "Nur kleine Staaten"
                 }
               },
               "false": {
                 "label": {
                   "en": "All states",
-                  "de": "All states"
+                  "de": "Alle Staaten"
                 }
               }
             }
@@ -471,15 +471,15 @@
     "attributes-by-locale": ["name_{locale}"],
     "title": {
       "en": "Tracking the global treaty negotiation",
-      "de": "Tracking the global treaty negotiation"
+      "de": "Beobachtung der Verhandlungen zum internationalen Abkommen"
     },
     "title-short": {
       "en": "Policy",
-      "de": "Policy"
+      "de": "Politik"
     },
     "title-module": {
-      "en": "What are the UN Member States’ levels of support for negotiating a new global agreement on marine plastic pollution?",
-      "de": "Wie stark ist die Unterstützung einzelner UN-Mitgliedsstaaten für ein neues globales Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+      "en": "What are the states’ levels of support for negotiating a new global agreement on marine plastic pollution?",
+      "de": "Wie stark unterstützen die Staaten die Verhandlungen eines neuen, globalen Abkommens zum Kampf gegen Plastikmüll in den Weltmeeren?"
     },
     "about": {
       "en": "TODO: The visualisation shows the UN Member States’ positions on a global, legally binding agreement based on our own research and various sources.",
