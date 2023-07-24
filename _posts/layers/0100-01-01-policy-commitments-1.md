@@ -10,7 +10,7 @@ Where possible, the treaty must put in place specific, binding measures to signi
 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of certain plastic categories of concern, including products, materials, or substances deemed to pose a significant risk, including probability and severity of potential harms to humans (including to human health), other living species, and the relevant environment.
 
-States’ convergence on the need to eliminate or significantly reduce these plastic categories is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [submission (pdf)]( https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) to the Intergovernmental Negotiating Committee, provides further information on WWF’s key recommendations on the potential options for elements towards an international legally binding instrument.
+States’ convergence on the need to eliminate or significantly reduce these plastic categories is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [submission (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) to the Intergovernmental Negotiating Committee, provides further information on WWF’s key recommendations on the potential options for elements towards an international legally binding instrument.
 
 
 ## How to read the data
@@ -29,4 +29,3 @@ The estimated level of support by each state is based on WWF’s assessment of p
 A group statement is understood as representing the level of support of all member states of the group, unless indicated otherwise through an individual member state’s statement recorded at the same time.
 
 _The designation of geographical entities and the presentation of the material do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries. The map of countries is reproduced from Natural Earth, a public domain map dataset that is built through a collaboration of volunteers and supported by NACIS (North American Cartographic Information Society)._
-
