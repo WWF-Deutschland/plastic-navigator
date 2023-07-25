@@ -55,7 +55,7 @@
   "app.containers.LayerInfo.latestPositionLabel": "Aktuelle Positionierung",
   "app.containers.LayerInfo.moduleOverview": "Überblick",
   "app.containers.LayerInfo.moreLocationInfo": "Benutzen Sie den Link oben zu weiteren Informationen zum Projekt des ausgewählten Standorts",
-  "app.containers.LayerInfo.singleTopics": "Position der Erklärung zum Thema",
+  "app.containers.LayerInfo.singleTopic": "Position der Erklärung zum Thema",
   "app.containers.LayerInfo.multipleTopics": "Positionen der Erklärung nach Thema",
   "app.containers.LayerInfo.multipleStatementsCountry": "Erklärungen zum Thema",
   "app.containers.LayerInfo.singleStatementCountry": "Erklärung zum Thema",
