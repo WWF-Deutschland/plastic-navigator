@@ -149,7 +149,7 @@ export function SourceContent({
         <OptionsLabel>
           <FormattedMessage
             {...messages[
-              multipleTopics ? 'multipleStatements' : 'singleStatement'
+              multipleTopics ? 'multipleTopics' : 'singleTopic'
             ]}
           />
         </OptionsLabel>

@@ -13,17 +13,21 @@ export default defineMessages({
     id: `${scope}.titleReference`,
     defaultMessage: 'Reference',
   },
-  multipleStatements: {
-    id: `${scope}.multipleStatements`,
+  singleTopic: {
+    id: `${scope}.singleTopic`,
+    defaultMessage: 'Statement position for topic',
+  },
+  multipleTopics: {
+    id: `${scope}.multipleTopics`,
     defaultMessage: 'Statement positions by topic',
   },
   multipleStatementsCountry: {
     id: `${scope}.multipleStatementsCountry`,
-    defaultMessage: 'Statement positions for topic',
+    defaultMessage: 'Statements for topic',
   },
-  singleStatement: {
-    id: `${scope}.singleStatement`,
-    defaultMessage: 'Statement position for topic',
+  singleStatementCountry: {
+    id: `${scope}.singleStatementCountry`,
+    defaultMessage: 'Statement for topic',
   },
   noStatement: {
     id: `${scope}.noStatement`,

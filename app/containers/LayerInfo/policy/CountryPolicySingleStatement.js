@@ -36,7 +36,7 @@ const Quote = styled(P)``;
 const SectionTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
-const SectionTitle = styled(p => <Text size="small" {...p} />)`
+const SectionTitle = styled(p => <Text size="xsmall" {...p} />)`
   text-transform: uppercase;
   font-weight: bold;
 `;
