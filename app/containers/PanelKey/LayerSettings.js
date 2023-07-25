@@ -12,6 +12,7 @@ import { startsWith } from 'utils/string';
 
 import Checkbox from 'components/Checkbox';
 import ToggleOnOff from 'components/ToggleOnOff';
+import MarkdownText from 'components/MarkdownText';
 
 import LayerButtonInfo from './LayerButtonInfo';
 
@@ -119,7 +120,6 @@ export function LayerSettings({
                         isDisabled={isDisabled}
                       >
                         <Checkbox
-                          labelSize="xsmall"
                           checked={checked}
                           isDisabled={isDisabled}
                           onToggle={() => {
@@ -141,9 +141,14 @@ export function LayerSettings({
                             }
                             onSetLayerGeometries(updated);
                           }}
-                          label={
-                            setting.label[locale] ||
-                            setting.label[DEFAULT_LOCALE]
+                          styledLabel={
+                            <MarkdownText
+                              size="xsmall"
+                              content={
+                                setting.label[locale] ||
+                                setting.label[DEFAULT_LOCALE]
+                              }
+                            />
                           }
                         />
                       </Setting>

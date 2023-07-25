@@ -409,7 +409,7 @@
             "type": "checkbox",
             "label": {
               "en": "Show markers for supporting states",
-              "de": "Unterstützende **Staaten als Markierungen** anzeigen"
+              "de": "Unterstützende Staaten **als Markierungen** anzeigen"
             }
           },
           "zoom": {
