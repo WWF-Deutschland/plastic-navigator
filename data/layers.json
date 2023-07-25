@@ -388,7 +388,7 @@
             "type": "checkbox",
             "label": {
               "en": "Show areas for states",
-              "de": "Staatsgebiete anzeigen"
+              "de": "Staaten **als Flächen** anzeigen"
             }
           }
         },
@@ -409,7 +409,7 @@
             "type": "checkbox",
             "label": {
               "en": "Show markers for supporting states",
-              "de": "Markierungen für unterstützende Staaten anzeigen"
+              "de": "Unterstützende **Staaten als Markierungen** anzeigen"
             }
           },
           "zoom": {
@@ -471,7 +471,7 @@
     "attributes-by-locale": ["name_{locale}"],
     "title": {
       "en": "Tracking the global treaty negotiation",
-      "de": "Beobachtung der Verhandlungen zum internationalen Abkommen"
+      "de": "Stand der Verhandlungen zum internationalen Abkommen"
     },
     "title-short": {
       "en": "Policy",
@@ -537,50 +537,60 @@
           "content-id": "policy-commitments-0",
           "archive": "1",
           "short": {
-            "en" : "Support for global treaty"
+            "en" : "Support for global treaty",
+            "de" : "Unterstützung des globalen Abkommens"
           },
           "title": {
-            "en" : "UN Member States’ level of support for treaty"
+            "en" : "UN Member States’ level of support for treaty",
+            "en" : "Grad der Unterstützung der Mitgliedstaaten für das Abkommen"
           }
         },
         {
           "id": "1",
           "content-id": "policy-commitments-1",
           "short": {
-            "en" : "Ban & phase out"
+            "en" : "Ban & phase out",
+            "de" : "Verbot & Phase-out"
           },
           "title": {
-            "en" : "Support for global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern"
+            "en" : "Support for global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern",
+            "de" : "Unterstützung für weltweite Verbote und Auslaufregelungen mit dem Ziel, Produktion, Verbrauch und Handel von/mit bestimmten bedenklichen Kunststoffen abzuschaffen"
           }
         },
         {
           "id": "2",
           "content-id": "policy-commitments-2",
           "short": {
-            "en" : "Circulate"
+            "en" : "Circulate",
+            "de" : "Kreislauf"
           },
           "title": {
-            "en" : "Support for global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy"
+            "en" : "Support for global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy",
+            "de" : "Unterstützung für globale Anforderungen und Standards für Produkte und relevante Systeme mit dem Ziel, verbleibende Kunststoffe in einer ungiftigen Kreislaufwirtschaft zu zirkulieren"
           }
         },
         {
           "id": "3",
           "content-id": "policy-commitments-3",
           "short": {
-            "en" : "Safely manage"
+            "en" : "Safely manage",
+            "de" : "Abfallmanagement"
           },
           "title": {
-            "en" : "Support for global requirements and standards to ensure environmentally sound management of the plastics that becomes waste"
+            "en" : "Support for global requirements and standards to ensure environmentally sound management of the plastics that becomes waste",
+            "de" : "Unterstützung für globale Vorgaben und Standards, die ein umweltverträgliches Abfallmanagement von Kunststoffabfällen gewährleisten"
           }
         },
         {
           "id": "4",
           "content-id": "policy-commitments-4",
           "short": {
-            "en": "Implementation support"
+            "en": "Implementation support",
+            "de": "Umsetzung"
           },
           "title": {
-            "en": "Support for treaty’s mechanisms to provide necessary support to countries for the effective implementation of their obligations"
+            "en": "Support for treaty’s mechanisms to provide necessary support to countries for the effective implementation of their obligations",
+            "de": "Unterstützung der Aufnahme von Mechanismen zur Unterstützung bei der Umsetzung in das Abkommen, mit dem Ziel, Länder zur effektiven Umsetzung der Verpflichtungen zu befähigen"
           }
         }
       ],
