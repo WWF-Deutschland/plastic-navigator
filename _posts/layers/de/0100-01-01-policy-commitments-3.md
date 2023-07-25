@@ -23,7 +23,7 @@ Einigkeit der Staaten darüber, dass ein umweltverträgliches Abfallmanagement f
 
 
 
-## So wurden die Daten visualisiert
+## Wie die Karte zu lesen ist
 
 Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für ein umweltverträgliches Abfallmanagement für Plastikmüll enthält.
 

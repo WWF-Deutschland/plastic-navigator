@@ -13,7 +13,7 @@ Der Global Plastic Navigator zeigt an, inwieweit die Staaten die Aufnahme global
 Einigkeit der Staaten darüber, dass es notwendig ist, diese Kunststoffkategorien abzuschaffen oder erheblich zu verringern, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.  Die [Vorlage (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) des WWF an den zwischenstaatlichen Verhandlungsausschuss enthält weitere Informationen über die wichtigsten Empfehlungen des WWF zu  möglichen Optionen für Elemente eines internationalen rechtsverbindlichen Instruments.
 
 
-## So wurden die Daten visualisiert
+## Wie die Karte zu lesen ist
 
 Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich für weltweite Verbote und Auslaufregelungen ausgesprochen haben, die darauf abzielen, Produktion, Verbrauch und Handel von/mit bestimmten, als problematisch eingestuften Kunststoffen zu beenden.
 

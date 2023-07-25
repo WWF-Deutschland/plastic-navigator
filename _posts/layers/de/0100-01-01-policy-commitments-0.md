@@ -14,7 +14,7 @@ Der Global Plastic Navigator hat die Unterstützung der UN-Mitgliedstaaten für 
 
 Der WWF fordert die Staaten auf, das maximale Potenzial auszuschöpfen, das sich ihnen bei der Ausarbeitung eines neuen internationalen rechtsverbindlichen Abkommens bietet, indem sie konkrete, verbindliche globale Richtlinien aushandeln, mit denen sie der Plastikverschmutzung der Ozeane entgegentreten. Die [Vorlage (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) des WWF an den zwischenstaatlichen Verhandlungsausschuss enthält weitere Informationen über die wichtigsten Empfehlungen des WWF zu  möglichen Optionen für Bestandteile eines internationalen rechtsverbindlichen Instruments.
 
-## So wurden die Daten visualisiert
+## Wie die Karte zu lesen ist
 
 Die Visualisierung zeigt, in welchem Ausmaß die jeweiligen UN-Mitgliedsstaaten öffentlich ihre Bereitschaft signalisiert haben, Verhandlungen über ein neues globales Abkommen zur Bekämpfung der Plastikverschmutzung aufzunehmen.
 

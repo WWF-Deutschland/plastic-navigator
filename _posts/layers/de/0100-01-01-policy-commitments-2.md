@@ -15,7 +15,7 @@ Der Global Plastic Navigator zeigt auf, inwieweit die Staaten die Aufnahme  glob
 Einigkeit der Staaten darüber, dass es notwendig ist, eine ungiftige Kreislaufwirtschaft für Kunststoffe sicherzustellen, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.
 
 
-## So wurden die Daten visualisiert
+## Wie die Karte zu lesen ist
 
 Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für eine ungiftige Kreislaufwirtschaft für verbleibende (nicht verbotene) Kunststoffe umfasst.
 
