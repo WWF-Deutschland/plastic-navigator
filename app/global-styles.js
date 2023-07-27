@@ -124,7 +124,7 @@ const GlobalStyle = createGlobalStyle`
     line-height: 16px;
     @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
       font-size: 13px;
-      line-height: 19px;
+      line-height: 18px;
     }
   }
   .mpx-wrap-markdown-stat-title p {
