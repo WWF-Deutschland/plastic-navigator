@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DEFAULT_LOCALE } from 'i18n';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box } from 'grommet';
 
@@ -28,7 +28,7 @@ const LayerTitleWrap = styled(p => (
     {...p}
   />
 ))`
-  min-height: 36px;
+  min-height: 22px;
 `;
 
 const Settings = styled(p => (
@@ -71,9 +71,12 @@ export function LayerSettings({
       <LayerTitleWrap>
         <Box gap="hair">
           <LayerTitle>
-            <FormattedMessage {...messages.settingsTabTitle} />
+            {`${intl.formatMessage(messages.settingsTabTitle)} ${getLayerTitle({
+              intl,
+              config,
+              short: true,
+            })}`}
           </LayerTitle>
-          <LayerTitle>{getLayerTitle({ intl, config })}</LayerTitle>
         </Box>
         {onLayerInfo && (
           <LayerButtonInfo onClick={onLayerInfo} icon={<Info />} />

@@ -8,21 +8,38 @@ import { PROJECT_CONFIG, POLICY_LAYER } from 'config';
 import { getTopicTitle, getTopicMapAnnotation } from 'utils/policy';
 import messages from './messages';
 
-export const getLayerTitle = ({ intl, config, jsonLayerInfo, indicatorId }) => {
+export const getLayerTitle = ({
+  intl,
+  config,
+  jsonLayerInfo,
+  indicatorId,
+  short,
+}) => {
   const { locale } = intl;
   let title = 'no title';
-  if (config && config.title) {
-    title = config.title[locale] || config.title[DEFAULT_LOCALE];
-    // append
-    if (config.id === POLICY_LAYER && jsonLayerInfo && indicatorId) {
+  if (config) {
+    if (
+      config.id === POLICY_LAYER &&
+      config['title-short'] &&
+      jsonLayerInfo &&
+      indicatorId
+    ) {
+      title =
+        config['title-short'][locale] || config['title-short'][DEFAULT_LOCALE];
+      // append
       title = `${title}: ${getTopicTitle({
         layerInfo: jsonLayerInfo,
         indicatorId,
         locale,
       })}`;
+    } else if (config.id === PROJECT_CONFIG.id) {
+      title = intl.formatMessage(messages.keyProjectsTitle);
+    } else if (short && config['title-short']) {
+      title =
+        config['title-short'][locale] || config['title-short'][DEFAULT_LOCALE];
+    } else if (config.title) {
+      title = config.title[locale] || config.title[DEFAULT_LOCALE];
     }
-  } else if (config.id === PROJECT_CONFIG.id) {
-    title = intl.formatMessage(messages.keyProjectsTitle);
   }
   return !title || title.trim() === '' ? 'title' : title;
 };

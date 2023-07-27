@@ -120,9 +120,11 @@ const GlobalStyle = createGlobalStyle`
   }
   .mpx-wrap-markdown-description p {
     margin: 0;
-    line-height: 18px
-    @media (min-width: ${sizes.medium.min}px}) {
-      line-height: 20px
+    font-size: 12px;
+    line-height: 16px;
+    @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
+      font-size: 13px;
+      line-height: 19px;
     }
   }
   .mpx-wrap-markdown-stat-title p {
