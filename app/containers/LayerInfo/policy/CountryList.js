@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { ResponsiveContext } from 'grommet';
 
 import { setItemInfo } from 'containers/App/actions';
 import { filterCountries } from 'utils/policy';
@@ -19,6 +20,7 @@ import FeatureList from '../FeatureList';
 import messages from '../messages';
 
 export function CountryList({ countries, intl, config, topic, onSetItemInfo }) {
+  const size = React.useContext(ResponsiveContext);
   return countries ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {
@@ -28,7 +30,9 @@ export function CountryList({ countries, intl, config, topic, onSetItemInfo }) {
       items={countries}
       config={config}
       search={filterCountries}
-      placeholder={intl.formatMessage(messages.placeholderCountries)}
+      placeholder={intl.formatMessage(messages.placeholderCountries, {
+        isSmall: size === 'small',
+      })}
       onSetItemInfo={id =>
         onSetItemInfo(`${config.id}_${topic.id}|country-${id}`)
       }

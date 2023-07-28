@@ -64,9 +64,9 @@ import {
   getPlotHeight,
 } from './charts';
 
-const Styled = styled(p => <Box margin={{ bottom: 'small' }} {...p} />)``;
+const Styled = styled(p => <Box {...p} />)``;
 const SquareLabelWrap = styled(p => (
-  <Box direction="row" align="start" gap="xsmall" {...p} />
+  <Box direction="row" align="center" gap="xsmall" {...p} />
 ))`
   min-height: 18px;
 `;
@@ -336,17 +336,17 @@ export function CountryChart({
           {(statsForKey && statsForKey.length > 0) && (
             <Box
               responsive={false}
-              margin={{ top: 'small' }}
+              margin={{ top: 'xsmall' }}
               pad={{
-                vertical: 'small',
+                vertical: 'xsmall',
                 horizontal: isMinSize(size, 'medium') ? 'small' : 'xsmall',
               }}
               gap="xxsmall"
               elevation={mouseOverEffect ? 'small' : 'none'}
             >
-              <Box justify="between" gap="xsmall">
-                <Box gap="ms">
-                  <Box gap={size === 'small' ? 'small' : 'xsmall'} responsive={false}>
+              <Box justify="between">
+                <Box gap="xsmall" responsive={false}>
+                  <Box gap="xsmall" responsive={false}>
                     <Box justify="start" flex={{ shrink: 0 }} >
                       <Text
                         size={isMinSize(size, 'medium') ? 'xxsmall' : 'xxxsmall'}

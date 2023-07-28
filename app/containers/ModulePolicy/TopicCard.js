@@ -24,7 +24,9 @@ const TopicButton = styled(p => <Button plain {...p} />)`
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
   }
 `;
-const TopicInner = styled(p => <Box elevation="small" pad="small" {...p} />)`
+const TopicInner = styled(p => (
+  <Box elevation="small" pad="small" responsive={false} {...p} />
+))`
   position: relative;
   background-color: ${({ isHover, theme }) =>
     isHover ? theme.global.colors.brand : 'white'};
@@ -33,6 +35,7 @@ const TopicInner = styled(p => <Box elevation="small" pad="small" {...p} />)`
 const Styled = styled(props => <Box {...props} />)`
   width: 100%;
   min-width: 200px;
+  hyphens: auto;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 50%;
     padding: 0 6px;
@@ -76,6 +79,10 @@ const SelectText = styled.div`
   padding: 4px 16px 5px;
   font-size: 16px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    font-size: 18px;
+    padding: 6px 16px 8px;
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
     font-size: 20px;
     padding: 9px 25px 11px;
   }
@@ -106,7 +113,7 @@ export function TopicCard({
       className="mpx-topic-select"
       count={count}
       secondary={secondary}
-      margin={{ bottom: hasSelectButtonOffset ? 'large' : 'small' }}
+      margin={{ bottom: hasSelectButtonOffset ? 'large' : 'medium' }}
     >
       <TopicButton
         plain

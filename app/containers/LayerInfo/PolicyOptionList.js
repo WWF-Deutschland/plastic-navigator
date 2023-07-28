@@ -17,14 +17,14 @@ import messages from './messages';
 // prettier-ignore
 const DropOption = styled(p => <Button plain {...p} />)`
   text-align: left;
-  padding: 2px ${({ theme }) => theme.global.edgeSize.small};
+  padding: 8px ${({ theme }) => theme.global.edgeSize.small};
   display: block;
   width: 100%;
   font-weight: ${({ active }) => (active ? 600 : 400)};
   opacity: 1;
   color: ${({ theme }) => theme.global.colors.black };
   border-top: 1px solid ${({ theme }) => theme.global.colors.border.light };
-  font-size: ${({ theme }) => theme.text.xsmall.size};
+  font-size: ${({ theme }) => theme.text.small.size};
   min-width: 140px;
   &:last-child {
     border-bottom: 1px solid
@@ -36,7 +36,7 @@ const DropOption = styled(p => <Button plain {...p} />)`
     text-decoration: ${({ active }) => (active ? 'none' : 'underline')};
   }
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 4px 32px 4px 12px;
+    padding: 8px 32px 8px 12px;
     font-size: ${({ theme }) => theme.text.medium.size};
   }
 `;
@@ -47,7 +47,7 @@ const GroupLabelWrap = styled(p => <Box margin={{ top: 'medium' }} {...p} />)`
   }
 `;
 const GroupLabel = styled(p => (
-  <Text size="small" color="textSecondary" {...p} />
+  <Text size="medium" color="textSecondary" {...p} />
 ))`
   font-family: 'wwfregular';
   text-transform: uppercase;

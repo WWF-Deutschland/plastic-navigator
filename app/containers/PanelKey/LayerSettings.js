@@ -32,7 +32,7 @@ const LayerTitleWrap = styled(p => (
 `;
 
 const Settings = styled(p => (
-  <Box gap="xsmall" margin={{ top: 'small' }} responsive={false} {...p} />
+  <Box gap="xsmall" margin={{ top: 'xsmall' }} responsive={false} {...p} />
 ))``;
 const GeoSettings = styled(p => (
   <Box gap="xsmall" responsive={false} {...p} />
@@ -151,6 +151,7 @@ export function LayerSettings({
                                 setting.label[locale] ||
                                 setting.label[DEFAULT_LOCALE]
                               }
+                              className="mpx-markdown-text-settings"
                             />
                           }
                         />

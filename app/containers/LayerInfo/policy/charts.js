@@ -324,5 +324,5 @@ export const getMouseOverCover = ({ chartData, minDate, maxDate, countryCount })
 export const getPlotHeight = ({ size, hasStatements }) => {
   if (isMinSize(size, 'large')) return hasStatements ? 220 : 180;
   if (isMinSize(size, 'medium')) return hasStatements ? 200 : 170;
-  return 230;
+  return hasStatements ? 160 : 140;
 };

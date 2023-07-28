@@ -111,7 +111,6 @@ const TabLink = styled(p => <Button plain {...p} />)`
   text-transform: uppercase;
   font-weight: normal;
   line-height: 1;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.ms};
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'white' : 'brandLight']};
   opacity: 1;
@@ -120,6 +119,10 @@ const TabLink = styled(p => <Button plain {...p} />)`
     active ? theme.global.colors.white : 'transparent'};
   &:hover {
     color: ${({ theme }) => theme.global.colors.white};
+  }
+  padding: 0 ${({ theme }) => theme.global.edgeSize.xsmall};
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 0 ${({ theme }) => theme.global.edgeSize.ms};
   }
 `;
 const TabLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;

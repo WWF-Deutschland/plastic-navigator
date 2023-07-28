@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Button, Text } from 'grommet';
+import { Box, Button, Text, ResponsiveContext } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 
 import { POLICY_TOPIC_ICONS } from 'config';
@@ -16,6 +16,7 @@ import { DEFAULT_LOCALE } from 'i18n';
 // import { findFeature } from 'utils/layers';
 import qe from 'utils/quasi-equals';
 import { getIndicatorScoresForCountry } from 'utils/policy';
+import { isMinSize } from 'utils/responsive';
 
 import MarkdownText from 'components/MarkdownText';
 import CountryPositionSymbol from './CountryPositionSymbol';
@@ -29,9 +30,9 @@ const PanelHeader = styled(p => (
   <Box justify="between" {...p} responsive={false} />
 ))``;
 const TitleWrap = styled(p => (
-  <Box margin={{ top: 'small', bottom: 'small' }} {...p} />
+  <Box margin={{ top: 'small', bottom: 'small' }} responsive={false} {...p} />
 ))`
-  padding: 12px 24px 0;
+  padding: 12px 12px 0;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 24px 24px 0;
   }
@@ -67,9 +68,12 @@ const IndicatorLink = styled(p => <Button plain {...p} />)`
   border-bottom: 6px solid;
   border-color: ${({ theme, active }) =>
     active ? theme.global.colors.brand : 'transparent'};
-  padding: 10px;
+  padding: 7px;
   &:hover {
     color: ${({ theme }) => theme.global.colors.brandDark};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 10px;
   }
 `;
 // const IndicatorLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
@@ -121,6 +125,7 @@ export function CountryFeatureContent({
   //     inputRef.current.select();
   //   }
   // }, [showLink, inputRef]);
+  const size = React.useContext(ResponsiveContext);
   const { locale } = intl;
   if (!featureId || !layerInfo) return null;
   const country = layerInfo.data.features.find(f => f.code === featureId);
@@ -143,7 +148,10 @@ export function CountryFeatureContent({
               <FormattedMessage {...messages.scoreCardLabel} />
             </ScoreCardLabel>
             <ScoreCardSelect>
-              <FormattedMessage {...messages.scoreCardSelect} />
+              <FormattedMessage
+                {...messages.scoreCardSelect}
+                values={{ isSmall: size === 'small' }}
+              />
             </ScoreCardSelect>
           </Box>
         </TitleWrap>
@@ -172,7 +180,10 @@ export function CountryFeatureContent({
                         ].fillColor
                       }
                     >
-                      <Icon color="white" size="48px" />
+                      <Icon
+                        color="white"
+                        size={isMinSize(size, 'medium') ? '48px' : '30px'}
+                      />
                     </IconWrap>
                   </IndicatorLink>
                 </IndicatorLinkWrapper>
@@ -225,6 +236,7 @@ export function CountryFeatureContent({
                             `position_${DEFAULT_LOCALE}`
                           ]
                         }
+                        size={isMinSize(size, 'medium') ? 'small' : 'xsmall'}
                         format
                         formatValues={{ isSingle: true }}
                       />
