@@ -152,4 +152,8 @@ export default defineMessages({
     id: `${scope}.selectArchivedTopics`,
     defaultMessage: 'Archived topics',
   },
+  selectCurrentTopics: {
+    id: `${scope}.selectCurrentTopics`,
+    defaultMessage: 'Current topics',
+  },
 });

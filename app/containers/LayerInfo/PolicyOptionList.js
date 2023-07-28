@@ -62,6 +62,11 @@ export function PolicyOptionList({ active, options, onSelect, intl }) {
     <Box margin="small" background="white" elevation="small">
       {options && optionGroups.regular && (
         <Box>
+          <GroupLabelWrap>
+            <GroupLabel>
+              <FormattedMessage {...messages.selectCurrentTopics} />
+            </GroupLabel>
+          </GroupLabelWrap>
           {optionGroups.regular.map(option => (
             <DropOption
               key={option.id}

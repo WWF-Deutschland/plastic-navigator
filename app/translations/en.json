@@ -87,6 +87,8 @@
   "app.containers.ModuleExplore.showProjects": "Show WWF Projects",
   "app.containers.ModuleExplore.showProjectsShort": "Show Projects",
   "app.containers.ModulePolicy.select": "Select",
+  "app.containers.LayerInfo.selectCurrentTopics": "Select a policy topic",
+  "app.containers.LayerInfo.selectArchivedTopics": "Archived topics",
   "app.containers.ModulePolicy.selectArchivedTopics": "Archived topics",
   "app.containers.ModulePolicy.selectTopics": "Select a policy topic to explore",
   "app.containers.ModulePolicy.showLayerPanel": "Policy info",
