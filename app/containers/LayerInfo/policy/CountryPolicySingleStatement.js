@@ -118,6 +118,8 @@ const CountryPolicySingleStatement = ({
                   position[`position_${locale}`] ||
                   position[`position_${DEFAULT_LOCALE}`]
                 }
+                format
+                formatValues={{ isSingle: true }}
               />
             </Box>
           </Box>

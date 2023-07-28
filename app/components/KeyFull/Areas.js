@@ -91,6 +91,7 @@ export function Areas({
       indicatorId,
       config,
       locale,
+      intl,
     });
 
   if (featureStyle && featureStyle.multiple === 'true') {

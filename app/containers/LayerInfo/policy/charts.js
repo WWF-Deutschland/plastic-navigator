@@ -1,6 +1,7 @@
 import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
 import { getPositionForTopicAndValue } from 'utils/policy';
+import { formatMessageForValues } from 'utils/string';
 const DATE_BUFFER_ARCHIVED = 60;
 const DATE_BUFFER_CURRENT = 3;
 const getXTime = dateString => new Date(`${dateString}`).getTime();
@@ -195,6 +196,7 @@ export const prepChartKey = ({
   tables,
   config,
   locale,
+  intl,
 }) => {
   if (positionsCurrentDate && config['styles-by-value']) {
     return Object.keys(positionsLatestDate)
@@ -207,15 +209,24 @@ export const prepChartKey = ({
           indicatorId,
           positionValue: posValue,
         });
+        // prettier-ignore
+        const title = intl
+          ? formatMessageForValues({
+            intl,
+            message:
+              positionClean[`position_short_${locale}`] ||
+              positionClean[`position_short_${DEFAULT_LOCALE}`],
+            values: { isSingle: false },
+          })
+          : positionClean[`position_short_${locale}`] ||
+            positionClean[`position_short_${DEFAULT_LOCALE}`];
         return [
           ...memo,
           {
             id: posValue,
             value: posValue,
             style: config['styles-by-value'][posValue],
-            title:
-              positionClean[`position_short_${locale}`] ||
-              positionClean[`position_short_${DEFAULT_LOCALE}`],
+            title,
             count,
           },
         ];

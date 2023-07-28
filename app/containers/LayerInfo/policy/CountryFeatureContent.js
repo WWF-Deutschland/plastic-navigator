@@ -225,6 +225,8 @@ export function CountryFeatureContent({
                             `position_${DEFAULT_LOCALE}`
                           ]
                         }
+                        format
+                        formatValues={{ isSingle: true }}
                       />
                     )}
                   </Box>

@@ -206,6 +206,8 @@ export function SourceContent({
                             p[`position_${locale}`] ||
                             p[`position_${DEFAULT_LOCALE}`]
                           }
+                          format
+                          formatValues={{ isSingle: false }}
                         />
                       </Box>
                     </Box>

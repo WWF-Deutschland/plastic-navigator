@@ -255,6 +255,7 @@ export function CountryChart({
     indicatorId,
     config,
     locale,
+    intl,
   });
 
   // console.log('statsForKey', statsForKey)

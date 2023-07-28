@@ -548,6 +548,7 @@ export function Map({
                   dateString: chartDate,
                   locale,
                   layerGeometrySettings,
+                  intl,
                   // also pass date
                 });
                 hideForZoom({ layer, zoom });
@@ -705,6 +706,7 @@ export function Map({
               jsonLayer: jsonLayerFiltered,
               config,
               state: 'active',
+              intl,
             });
             const ll = areaTooltipRef.current.getLayers();
             areaTooltipRef.current.addLayer(ttLayer);
@@ -757,6 +759,7 @@ export function Map({
               markerEvents: {
                 click: markerEvents.click,
               },
+              intl,
             });
             // shouldn't really be any layers present but just in case
             areaHighlightRef.current.clearLayers();
@@ -804,6 +807,7 @@ export function Map({
               markerEvents: {
                 click: markerEvents.click,
               },
+              intl,
             });
             // shouldn't really be any layers present but just in case
             areaInfoRef.current.clearLayers();

@@ -2,12 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Markdown from 'react-remarkable';
 import { Text } from 'grommet';
+import { injectIntl, intlShape } from 'react-intl';
+import { formatMessageForValues } from 'utils/string';
 
-export function MarkdownText({ content, ...p }) {
+export function MarkdownText({ intl, format, formatValues, content, ...p }) {
+  let source = content;
+  if (format) {
+    source = formatMessageForValues({
+      intl,
+      message: content,
+      values: formatValues,
+    });
+  }
   return (
     <div className="mpx-markdown-text">
       <Text {...p}>
-        <Markdown source={content} />
+        <Markdown source={source} />
       </Text>
     </div>
   );
@@ -15,6 +25,9 @@ export function MarkdownText({ content, ...p }) {
 
 MarkdownText.propTypes = {
   content: PropTypes.string,
+  format: PropTypes.bool,
+  formatValues: PropTypes.object,
+  intl: intlShape,
 };
 
-export default MarkdownText;
+export default injectIntl(MarkdownText);
