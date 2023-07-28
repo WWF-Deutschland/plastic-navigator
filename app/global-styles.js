@@ -29,6 +29,10 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    hyphenate-limit-chars: 8 3 3;
+    @media (max-width: ${({ theme }) => theme.sizes.small.maxpx}) {
+      hyphens: auto;
+    }
   }
 
   body.fontLoaded {

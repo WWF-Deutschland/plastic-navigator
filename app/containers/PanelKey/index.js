@@ -175,7 +175,9 @@ const Content = styled(p => (
   }
 `;
 
-const Description = styled(Text)``;
+const Description = styled(Text)`
+  hyphens: auto;
+`;
 
 const LayerTitleWrap = styled(p => (
   <Box
