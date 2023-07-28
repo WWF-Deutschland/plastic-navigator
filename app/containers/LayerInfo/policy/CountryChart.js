@@ -67,19 +67,23 @@ import {
 const Styled = styled(p => <Box {...p} />)``;
 const SquareLabelWrap = styled(p => (
   <Box direction="row" align="center" gap="xsmall" {...p} />
+))``;
+const KeyLabelWrap = styled(p => (
+  <Box
+    direction="row"
+    align="center"
+    alignContent="start"
+    justify="between"
+    {...p}
+  />
 ))`
   min-height: 18px;
 `;
-const KeyLabelWrap = styled(p => (
-  <Box direction="row" align="start" alignContent="start" {...p} />
-))``;
 
 const KeyAreaWrap = styled.div`
-  position: relative;
   height: 18px;
   width: 18px;
   padding: 0px;
-  top: -2px;
 `;
 
 const KeyStatements = styled(p => (
@@ -96,6 +100,12 @@ const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
 const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
   font-weight: bold;
+  min-width: 80px;
+  text-align: right;
+`;
+const StyledKeyCountPlaceHolder = styled.div`
+  display: block;
+  min-width: 80px;
 `;
 
 const Title = styled(Text)`
@@ -365,17 +375,22 @@ export function CountryChart({
                           <KeyAreaWrap>
                             <KeyArea areaStyles={[keyItem.style]} />
                           </KeyAreaWrap>
-                          <KeyLabelWrap>
-                            <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-                              <Markdown source={count ? `${keyItem.title}: ` : keyItem.title} />
-                            </StyledKeyLabel>
-                          </KeyLabelWrap>
-                          <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-                            {!!count && (
-                              <StyledKeyCount>
-                                {count}
-                              </StyledKeyCount>
-                            )}
+                          <KeyLabelWrap fill="horizontal">
+                            <Box>
+                              <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+                                <Markdown source={count ? `${keyItem.title}: ` : keyItem.title} />
+                              </StyledKeyLabel>
+                            </Box>
+                            <Box flex={{ grow: 0, shrink: 0 }}>
+                              {!!count && (
+                                <StyledKeyCount>
+                                  {count}
+                                </StyledKeyCount>
+                              )}
+                              {!count && (
+                                <StyledKeyCountPlaceHolder />
+                              )}
+                            </Box>
                           </KeyLabelWrap>
                         </SquareLabelWrap>
                       );
@@ -415,7 +430,7 @@ export function CountryChart({
                 margin={{
                   bottom: 30,
                   top: 0,
-                  right: 32,
+                  right: 15,
                   left: 15,
                 }}
                 onMouseEnter={() => setMouseOver(true)}

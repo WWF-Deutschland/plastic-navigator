@@ -32,8 +32,6 @@ const SquareLabelWrap = styled(p => (
 `;
 
 const KeyAreaWrap = styled.div`
-  position: relative;
-  top: -2px;
   height: 18px;
   width: 18px;
   padding: 0px;
