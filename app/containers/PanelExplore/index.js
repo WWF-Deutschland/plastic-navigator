@@ -138,6 +138,7 @@ const TitleGroup = styled(p => <Heading {...p} level={3} />)`
 `;
 const DescriptionGroup = styled.div`
   margin-bottom: 8px;
+  hyphens: auto;
 `;
 
 const COMPONENT_KEY = 'px';
