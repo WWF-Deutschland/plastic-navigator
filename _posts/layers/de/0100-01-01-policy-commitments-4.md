@@ -16,9 +16,10 @@ Einigkeit der Staaten darüber, dass eine Unterstützung zur Umsetzung der Verpf
 
 ## Wie die Karte zu lesen ist
 
-Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Mechanismen enthält, die den Ländern die notwendige Unterstützung zur wirksamen Umsetzung ihrer Verpflichtung gewähren.
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Mechanismen enthält, die den Ländern die notwendige Unterstützung zur wirksamen Umsetzung ihrer Verpflichtung gewähren.
 
-* Grün kennzeichnet Staaten, die sich in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema dafür ausgesprochen haben, dass mindestens ein Mechanismus in das Abkommen aufgenommen wird, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung unterstützt werden.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **gefordert** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung unterstützt werden.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **unterstützt** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung befähigt werden.
 * Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) Erklärungen zu diesem Thema nicht für Mechanismen ausgesprochen, die Länder bei der wirksamen Umsetzung ihrer Verpflichtungen unterstützen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._

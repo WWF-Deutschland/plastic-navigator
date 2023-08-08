@@ -17,9 +17,10 @@ Einigkeit der Staaten darüber, dass es notwendig ist, eine ungiftige Kreislaufw
 
 ## Wie die Karte zu lesen ist
 
-Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für eine ungiftige Kreislaufwirtschaft für verbleibende (nicht verbotene) Kunststoffe umfasst.
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für eine ungiftige Kreislaufwirtschaft für verbleibende (nicht verbotene) Kunststoffe umfasst.
 
-* Grün kennzeichnet Staaten, die sich in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema dafür ausgesprochen haben, dass Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen aufgenommen werden, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **gefordert** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **unterstützt** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
 * Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht dafür ausgesprochen, dass Anforderungen und Normen für eine ungiftige Kunststoff-Kreislaufwirtschaft in das Abkommen aufgenommen werden sollen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._

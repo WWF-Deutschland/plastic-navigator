@@ -15,9 +15,10 @@ Einigkeit der Staaten darüber, dass es notwendig ist, diese Kunststoffkategorie
 
 ## Wie die Karte zu lesen ist
 
-Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich für weltweite Verbote und Auslaufregelungen ausgesprochen haben, die darauf abzielen, Produktion, Verbrauch und Handel von/mit bestimmten, als problematisch eingestuften Kunststoffen zu beenden.
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich für weltweite Verbote und Auslaufregelungen ausgesprochen haben, die darauf abzielen, Produktion, Verbrauch und Handel von/mit bestimmten, als problematisch eingestuften Kunststoffen zu beenden.
 
-* Grün kennzeichnet Staaten, die sich in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema für die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag ausgesprochen haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **gefordert** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **unterstützt** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
 * Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht dafür ausgesprochen, dass globale Verbote von bzw. und Ausstiegsauflagen für irgendeine der bedenklichen Kunststoffkategorien aufgenommen werden sollen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._

@@ -25,9 +25,10 @@ Einigkeit der Staaten darüber, dass ein umweltverträgliches Abfallmanagement f
 
 ## Wie die Karte zu lesen ist
 
-Die Visualisierung zeigt, in welchem Ausmaß die UN-Mitgliedsstaaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für ein umweltverträgliches Abfallmanagement für Plastikmüll enthält.
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für ein umweltverträgliches Abfallmanagement für Plastikmüll enthält.
 
-* Grün kennzeichnet Staaten, die sich in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema dafür ausgesprochen haben, dass mindestens eine Anforderung bzw. ein Standard zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen aufgenommen wird.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **gefordert** haben.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **unterstützt** haben.
 * Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht für globale Anforderungen und Standards für ein umweltverträgliches Abfallmanagement von Plastikabfällen ausgesprochen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._

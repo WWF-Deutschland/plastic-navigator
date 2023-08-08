@@ -19,9 +19,10 @@ States’ convergence on the need to ensure necessary support to countries for t
 ## How to read the data
 
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of mechanisms to provide necessary support to countries for the effective implementation of their obligations. 
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of any mechanism to provide necessary support to countries for the effective implementation of their obligations in their latest verbal or written statement on this topic.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._

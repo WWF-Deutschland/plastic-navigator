@@ -25,10 +25,12 @@ States’ convergence on the need to ensure environmentally sound waste manageme
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards to ensure environmentally sound waste management of plastics. 
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards to ensure environmentally sound waste management of plastics.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard to ensure environmentally sound management of the plastics that becomes waste in their latest verbal or written public statement on this topic.
+
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 

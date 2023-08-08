@@ -15,9 +15,10 @@ States’ convergence on the need to eliminate or significantly reduce these pla
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern. 
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement on this topic.
 
 _Clicking on the states shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
