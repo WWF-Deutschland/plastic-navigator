@@ -19,7 +19,7 @@ Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitu
 
 * Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **gefordert** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
 * Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **unterstützt** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht dafür ausgesprochen, dass globale Verbote von bzw. und Ausstiegsauflagen für irgendeine der bedenklichen Kunststoffkategorien aufgenommen werden sollen.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht dafür ausgesprochen, dass globale Verbote und Ausstiegsauflagen für irgendeine der bedenklichen Kunststoffkategorien aufgenommen werden sollen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 

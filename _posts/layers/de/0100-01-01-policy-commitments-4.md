@@ -20,7 +20,7 @@ Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitu
 
 * Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **gefordert** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung unterstützt werden.
 * Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **unterstützt** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung befähigt werden.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) Erklärungen zu diesem Thema nicht für Mechanismen ausgesprochen, die Länder bei der wirksamen Umsetzung ihrer Verpflichtungen unterstützen.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) Erklärungen nicht für Mechanismen ausgesprochen, die Länder bei der wirksamen Umsetzung ihrer Verpflichtungen unterstützen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 

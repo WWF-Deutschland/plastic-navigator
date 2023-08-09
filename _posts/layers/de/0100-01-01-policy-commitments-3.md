@@ -11,11 +11,11 @@ Das Abkommen sollte konkrete Maßnahmen zur Verbesserung des Abfallmanagements u
 Zu den globalen Standards und Anforderungen für ein umweltverträgliches Abfallmanagement müssen unter anderem die folgenden zählen:
 
 * Verbot der offenen Deponierung und strenge, rechtsverbindliche globale Standards für den Betrieb von Deponien
-* Einschränkung der zulässigen Entsorgungsmethoden für bestimmte risikoreiche Produktkategorien, Stoffe oder Materialien (z. B. Verbot der Entsorgung leichter Materialien auf offenen Deponien oder in der Nähe von Gewässern oder verbindliche Ziele für die getrennte Sammlung bestimmter Produktkategorien/Materialien)
-* Pflicht zur Ausarbeitung und Umsetzung von Systemen der erweiterten Herstellerverantwortung (EPR), einschließlich Pfandsystemen für bestimmte Produktkategorien (z. B. Getränkeflaschen oder bestimmte Arten von Fanggeräten in der Fischerei)
-* Kennzeichnungspflicht für Fanggeräte (z. B. auf Grundlage der FAO-Leitlinien) und Meldepflicht bei Verlust von Fanggeräten
-* Technische Standards für Reifen und andere Hochrisikoprodukte, mit dem Ziel, die Freisetzung von Mikroplastik an der Quelle zu verhindern, sowie „end-of-pipe“-Auffangtechniken wie z.B. Filtern an Waschmaschinen, um das Austreten von Mikroplatik zu verhindern
-* Mechanismen, die Anreize für den Auffang von Plastikmüll sowohl innerhalb als auch außerhalb der nationalen Gerichtsbarkeit schaffen (z. B. durch die Einrichtung eines speziellen Finanzierungsmechanismus für die Reinigung/Rückgewinnung außerhalb der nationalen Gerichtsbarkeit)
+* Einschränkung der zulässigen Entsorgungsmethoden für bestimmte risikoreiche Produktkategorien, Stoffe oder Materialien (z.B. Verbot der Entsorgung leichter Materialien auf offenen Deponien oder in der Nähe von Gewässern oder verbindliche Ziele für die getrennte Sammlung bestimmter Produktkategorien/Materialien)
+* Pflicht zur Ausarbeitung und Umsetzung von Systemen der erweiterten Herstellerverantwortung (EPR), einschließlich Pfandsystemen für bestimmte Produktkategorien (z.B. Getränkeflaschen oder bestimmte Arten von Fanggeräten in der Fischerei)
+* Kennzeichnungspflicht für Fanggeräte (z.B. auf Grundlage der FAO-Leitlinien) und Meldepflicht bei Verlust von Fanggeräten
+* Technische Standards für Reifen und andere Hochrisikoprodukte, mit dem Ziel, die Freisetzung von Mikroplastik an der Quelle zu verhindern, sowie „end-of-pipe“-Auffangtechniken wie z.B. Filtern an Waschmaschinen, um das Austreten von Mikroplastik zu verhindern
+* Mechanismen, die Anreize für den Auffang von Plastikmüll sowohl innerhalb als auch außerhalb der nationalen Gerichtsbarkeit schaffen (z.B. durch die Einrichtung eines speziellen Finanzierungsmechanismus für die Reinigung/Rückgewinnung außerhalb der nationalen Gerichtsbarkeit)
 
 Der Global Plastic Navigator zeigt an, inwieweit die Staaten sich dafür aussprechen, dass globale Anforderungen und Standards in das Abkommen aufgenommen werden, die ein umweltverträgliches Abfallmanagement von Plastikmüll sicherstellen.
 
@@ -29,7 +29,7 @@ Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitu
 
 * Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **gefordert** haben.
 * Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **unterstützt** haben.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen zu diesem Thema nicht für globale Anforderungen und Standards für ein umweltverträgliches Abfallmanagement von Plastikabfällen ausgesprochen.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht für globale Anforderungen und Standards für ein umweltverträgliches Abfallmanagement von Plastikabfällen ausgesprochen.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 
