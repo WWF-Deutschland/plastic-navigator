@@ -15,10 +15,11 @@ States’ convergence on the need to eliminate or significantly reduce these pla
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern. 
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement on this topic.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement.
 
 _Clicking on the states shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 
@@ -29,4 +30,3 @@ The estimated level of support by each state is based on WWF’s assessment of p
 A group statement is understood as representing the level of support of all member states of the group, unless indicated otherwise through an individual member state’s statement recorded at the same time.
 
 _The designation of geographical entities and the presentation of the material do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries. The map of countries is reproduced from Natural Earth, a public domain map dataset that is built through a collaboration of volunteers and supported by NACIS (North American Cartographic Information Society)._
-
