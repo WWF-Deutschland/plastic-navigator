@@ -23,7 +23,7 @@ The visualisation shows the level of support, publicly expressed by states parti
 
 * Dark green indicates states that have publicly called for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 * Light green indicates states that have publicly expressed support for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any mechanism to provide necessary support to countries for the effective implementation of their obligations in their latest verbal or written statement on this topic.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of any mechanism to provide necessary support to countries for the effective implementation of their obligations in their latest verbal or written statement.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 

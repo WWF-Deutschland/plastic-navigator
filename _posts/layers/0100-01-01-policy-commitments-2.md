@@ -21,7 +21,7 @@ The visualisation shows the level of support, publicly expressed by states parti
 
 * Dark green indicates states that have publicly called for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy.
 * Light green indicates states that have publicly expressed support for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard towards a non-toxic circular economy in their latest verbal or written public statement on this topic.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard towards a non-toxic circular economy in their latest verbal or written public statement.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 
