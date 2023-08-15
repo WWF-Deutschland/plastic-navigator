@@ -10,10 +10,10 @@ Das Abkommen muss sicherstellen, dass die verbleibenden Kunststoffe – also sol
 
 Zu vergleichbaren globalen Anforderungen und Standards in anderen Bereichen zählen unter anderem die folgenden:
 
-* Standards für das recyclinggerechte Design von risikoreichen Produktkategorien oder Anwendungen (z.B. Verpackungen),
-* Standards für die Verwendung von Materialien, Farben und Zusatzstoffen, die in bestimmten Produkten verwendet werden dürfen,
-* die Abschaffung giftiger Zusatzstoffe, die die Wiederverwendung und das Recycling von Materialien gesundheits- und umweltschädlich machen,
-* Verpflichtungen zur Offenlegung von Produktinformationen zur Verbesserung der globalen Transparenz (z.B. Polymere und chemische Zusatzstoffe von Produkten).
+* Standards für das recyclinggerechte Design von risikoreichen Produktkategorien oder Anwendungen (z.B. Verpackungen)
+* Standards für die Verwendung von Materialien, Farben und Zusatzstoffen, die in bestimmten Produkten verwendet werden dürfen
+* die Abschaffung giftiger Zusatzstoffe, die die Wiederverwendung und das Recycling von Materialien gesundheits- und umweltschädlich machen
+* Verpflichtungen zur Offenlegung von Produktinformationen zur Verbesserung der globalen Transparenz (z.B. Polymere und chemische Zusatzstoffe von Produkten)
 
 Der Global Plastic Navigator zeigt auf, inwieweit die Staaten die Aufnahme  globaler Anforderungen und Standards für Produkte und relevante Systeme in das Abkommen unterstützen, die darauf abzielen, die verbleibenden (nicht abgeschafften) Kunststoffe in einer ungiftigen Kreislaufwirtschaft in Umlauf zu bringen.
 
