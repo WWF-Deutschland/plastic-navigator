@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import { Box, Text } from 'grommet';
 
 import { useInjectSaga } from 'utils/injectSaga';
+import qe from 'utils/quasi-equals';
 
 import saga from 'containers/App/saga';
 import {
@@ -43,25 +44,37 @@ export function LayerContent({
   config,
   onToggleLayer,
   isActive,
-  layerData,
+  layerInfo,
   onLoadLayer,
   inject = [],
   title,
   header,
+  fullLayerId,
 }) {
   useInjectSaga({ key: 'default', saga });
 
   useEffect(() => {
     // kick off loading of page content
-    onLoadContent(config['content-id'] || config.id);
-  }, [config]);
+    if (fullLayerId && config.indicators) {
+      const [, indiId] = fullLayerId.split('_');
+      const indicatorConfig = config.indicators.indicators.find(l =>
+        qe(l.id, indiId),
+      );
+      if (indicatorConfig) {
+        onLoadContent(
+          indicatorConfig['content-id'] || config['content-id'] || config.id,
+        );
+      }
+    } else {
+      onLoadContent(config['content-id'] || config.id);
+    }
+  }, [config, fullLayerId]);
   useEffect(() => {
     // kick off loading of page content
     if (config.render && config.render.type === 'scaledCircle') {
       onLoadLayer(config.id, config);
     }
-  }, [layerData]);
-
+  }, [layerInfo]);
   // prettier-ignore
   return (
     <>
@@ -85,7 +98,7 @@ export function LayerContent({
                   <Box margin={{ left: '30px', }} flex={false}>
                     <KeyFull
                       config={config}
-                      layerData={layerData && layerData.data}
+                      layerInfo={layerInfo}
                     />
                   </Box>
                 </Box>
@@ -106,20 +119,32 @@ LayerContent.propTypes = {
   onLoadLayer: PropTypes.func.isRequired,
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object,
   inject: PropTypes.array,
   isActive: PropTypes.bool,
   title: PropTypes.string,
+  fullLayerId: PropTypes.string,
   header: PropTypes.node,
 };
 
 const mapStateToProps = createStructuredSelector({
-  content: (state, { config }) =>
-    selectContentByKey(state, {
+  content: (state, { config, fullLayerId }) => {
+    if (fullLayerId && config.indicators) {
+      const [, indId] = fullLayerId.split('_');
+      const indicatorConfig = config.indicators.indicators.find(l =>
+        qe(l.id, indId),
+      );
+      return selectContentByKey(state, {
+        contentType: 'layers',
+        key: indicatorConfig['content-id'] || config['content-id'] || config.id,
+      });
+    }
+    return selectContentByKey(state, {
       contentType: 'layers',
       key: config['content-id'] || config.id,
-    }),
-  layerData: (state, { config }) => selectLayerByKey(state, config.id),
+    });
+  },
+  layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
   isActive: (state, { config }) => selectIsActiveLayer(state, config.id),
 });
 

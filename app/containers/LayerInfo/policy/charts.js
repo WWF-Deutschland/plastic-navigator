@@ -1,6 +1,8 @@
 import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
-
+import { getPositionForTopicAndValue } from 'utils/policy';
+const DATE_BUFFER_ARCHIVED = 60;
+const DATE_BUFFER_CURRENT = 3;
 const getXTime = dateString => new Date(`${dateString}`).getTime();
 
 const getDataForDate = (dateKey, positions, positionID, positionIDYOffsets) => {
@@ -39,10 +41,38 @@ const addStep = (previous, datum) => {
   return [datum];
 };
 
-const dateBuffer = (nDays = 30) => 24 * 60 * 60 * 1000 * nDays;
-export const getXMax = (nDays = 10) => new Date().getTime() + dateBuffer(nDays);
+// days to ms
+// 24 * 60 * 60 * 1000 = 86,400,000
+const FACTOR_D2MS = 86400000;
+const days2ms = days => days * FACTOR_D2MS;
+const ms2days = ms => ms / FACTOR_D2MS;
 
-export const prepChartData = (positions, minDate) => {
+export const getMaxDate = (lastDateString, isArchive) => {
+  const lastDate = new Date(lastDateString);
+  // default to today
+  let maxDate = new Date();
+  // unless archived: add min buffer
+  if (lastDateString) {
+    if (isArchive) {
+      const maxTime = lastDate.getTime() + days2ms(DATE_BUFFER_ARCHIVED);
+      maxDate = new Date(maxTime);
+    } else if (
+      maxDate.getTime() - lastDate.getTime() <
+      days2ms(DATE_BUFFER_CURRENT)
+    ) {
+      // or last date is too recent
+      const maxTime = lastDate.getTime() + days2ms(DATE_BUFFER_CURRENT);
+      maxDate = new Date(maxTime);
+    }
+  }
+  const year = maxDate.getFullYear();
+  const month = `0${maxDate.getMonth() + 1}`.slice(-2);
+  const day = `0${maxDate.getDate()}`.slice(-2);
+  return `${year}-${month}-${day}`;
+};
+// export const getXMax = maxDateString => new Date(maxDateString).getTime();
+
+export const prepChartData = ({ positions, minDate, maxDate }) => {
   const data = Object.keys(positions).reduce(
     (memo, dateKey) => ({
       4: [
@@ -69,6 +99,7 @@ export const prepChartData = (positions, minDate) => {
       1: [{ sdate: minDate, scount: 0, y: 0, x: getXTime(minDate) }],
     },
   );
+
   return {
     4: [
       ...data[4],
@@ -76,7 +107,7 @@ export const prepChartData = (positions, minDate) => {
         sdate: 'today',
         scount: 0,
         y: data[4][data[4].length - 1].y,
-        x: getXMax(),
+        x: new Date(maxDate).getTime(),
       },
     ],
     3: [
@@ -85,7 +116,7 @@ export const prepChartData = (positions, minDate) => {
         sdate: 'today',
         scount: 0,
         y: data[3][data[3].length - 1].y,
-        x: getXMax(),
+        x: new Date(maxDate).getTime(),
       },
     ],
     2: [
@@ -94,7 +125,7 @@ export const prepChartData = (positions, minDate) => {
         sdate: 'today',
         scount: 0,
         y: data[2][data[2].length - 1].y,
-        x: getXMax(),
+        x: new Date(maxDate).getTime(),
       },
     ],
     1: [
@@ -103,137 +134,175 @@ export const prepChartData = (positions, minDate) => {
         sdate: 'today',
         scount: 0,
         y: data[1][data[1].length - 1].y,
-        x: getXMax(),
+        x: new Date(maxDate).getTime(),
       },
     ],
   };
 };
 
 // TODO: figure out a way to express in pixels rather than scaled values
-const X_THRESHOLD = 1600000000;
-const Y_OFFSET = 9;
+// const X_THRESHOLD = 1600000000;
+// const Y_OFFSET = 9;
 const Y_OFFSET_MIN = 9;
 
-export const prepChartDataSources = (positions, dataStyles) => {
-  const data = Object.keys(positions).reduce((memo, dateKey) => {
-    const positionsForDate = positions[dateKey];
-    const sourcesForDate = positionsForDate.sources;
-    if (sourcesForDate) {
-      return Object.keys(sourcesForDate).reduce((m2, key) => {
-        const source = sourcesForDate[key];
-        let y = Y_OFFSET_MIN * -1;
-        const x = getXTime(source.date);
-        const prev = m2.length > 0 ? m2[m2.length - 1] : null;
-        if (prev && x - prev.x < X_THRESHOLD) {
-          y = prev.y - Y_OFFSET;
-        }
+export const prepChartDataSources = (positionsByDate, dataStyles) => {
+  const sourceMarkers = Object.keys(positionsByDate).reduce(
+    (memoSourceMarkers, dateKey) => {
+      const positionsForDate = positionsByDate[dateKey];
+      if (positionsForDate && positionsForDate.sources) {
+        const statementsForDate = positionsForDate.sources;
+        const y = Y_OFFSET_MIN * -1;
+        const x = getXTime(dateKey);
+        const sortedStatements = Object.values(statementsForDate).sort(
+          (a, b) => {
+            // const posValueA = parseInt(a.position.value, 10);
+            // const posValueB = parseInt(b.position.value, 10);
+            // return posValueA < posValueB ? 1 : -1;
+            const countA = a.countryCodes.length;
+            const countB = b.countryCodes.length;
+            return countA < countB ? 1 : -1;
+          },
+          -99,
+        );
         return [
-          ...m2,
+          ...memoSourceMarkers,
           {
-            sdate: source.date,
-            sposition: source.position_id,
-            sid: source.id,
+            sdate: dateKey,
+            sposition: sortedStatements[0].position.value,
+            sid: sortedStatements[0].id,
             y,
             x,
+            sources: sortedStatements,
+            opacity: 0.66,
             color:
-              dataStyles && dataStyles[source.position_id]
-                ? dataStyles[source.position_id].style.fillColor
+              dataStyles && dataStyles[sortedStatements[0].position.value]
+                ? dataStyles[sortedStatements[0].position.value].fillColor
                 : 'red',
           },
         ];
-      }, memo);
-    }
-    return memo;
-  }, []);
-  return data;
+      }
+      return memoSourceMarkers;
+    },
+    [],
+  );
+  return sourceMarkers;
 };
 
-export const prepChartKey = (positionsCurrentDate, config, locale) => {
-  const { key, featureStyle } = config;
-  return key.values.reduce((memo, val) => {
-    if (val === '0') return memo;
-    let t;
-    if (key.title && key.title[val]) {
-      t =
-        key.title[val][locale] ||
-        key.title[val][DEFAULT_LOCALE] ||
-        key.title[val];
-    }
-    let style;
-    if (featureStyle && featureStyle.style) {
-      style = Object.keys(featureStyle.style).reduce(
-        (memo2, attr) => ({
-          ...memo2,
-          [attr]: featureStyle.style[attr][val],
-        }),
-        {
-          fillOpacity: 0.4,
-        },
-      );
-    }
-    const count =
-      positionsCurrentDate && positionsCurrentDate[val]
-        ? positionsCurrentDate[val].length.toString()
-        : '0';
-    return [
-      ...memo,
-      {
-        id: val,
-        style,
-        title: t,
-        count,
-      },
-    ];
-  }, []);
+export const prepChartKey = ({
+  positionsCurrentDate,
+  positionsLatestDate, // includes all positions
+  indicatorId,
+  tables,
+  config,
+  locale,
+}) => {
+  if (positionsCurrentDate && config['styles-by-value']) {
+    return Object.keys(positionsLatestDate)
+      .reduce((memo, posValue) => {
+        const count = positionsCurrentDate[posValue]
+          ? positionsCurrentDate[posValue].length
+          : 0;
+        const positionClean = getPositionForTopicAndValue({
+          tables,
+          indicatorId,
+          positionValue: posValue,
+        });
+        return [
+          ...memo,
+          {
+            id: posValue,
+            value: posValue,
+            style: config['styles-by-value'][posValue],
+            title:
+              positionClean[`position_short_${locale}`] ||
+              positionClean[`position_short_${DEFAULT_LOCALE}`],
+            count,
+          },
+        ];
+      }, [])
+      .sort((a, b) => (parseInt(a.value, 10) < parseInt(b.value, 10) ? 1 : -1));
+  }
+  return null;
 };
+// days
+const TICK_THRESHHOLD_YEAR = 400;
+const MONTH_INTERVAL = 1;
 
-export const getTickValuesX = chartData => {
+// credit https://stackoverflow.com/questions/2536379/difference-in-months-between-two-dates-in-javascript
+function monthDiff(d1, d2) {
+  let months;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  return months <= 0 ? 0 : months;
+}
+export const getTickValuesX = ({ chartData, maxDate, minDate }) => {
   // console.log(chartData)
   const values = [];
-  const minYear =
+  const maxDateX = new Date(maxDate);
+  const minDateX =
     chartData && chartData[1] && chartData[1][0] && chartData[1][0].sdate
-      ? new Date(chartData[1][0].sdate).getFullYear()
-      : 2021;
-  const maxYear = new Date().getFullYear();
-  /* eslint-disable no-plusplus */
-  for (let y = minYear; y <= maxYear; y++) {
-    values.push(new Date(y.toString()).getTime());
+      ? new Date(chartData[1][0].sdate)
+      : new Date(minDate);
+
+  // in days
+  const timespan = ms2days(maxDateX.getTime()) - ms2days(minDateX.getTime());
+  // show yearly ticks
+  if (timespan > TICK_THRESHHOLD_YEAR) {
+    const minYear = minDate ? minDateX.getFullYear() : 2021;
+    const maxYear = maxDateX.getFullYear();
+    for (let y = minYear; y <= maxYear; y += 1) {
+      values.push(new Date(y.toString()).getTime());
+    }
+  } else {
+    // show monthly ticks
+    const spanMonths = Math.max(monthDiff(minDateX, maxDateX), 6);
+    for (let m = 0; m <= spanMonths; m += MONTH_INTERVAL) {
+      const step = m * MONTH_INTERVAL;
+      const dateMin = new Date(minDateX.getTime());
+      const date = new Date(dateMin.setMonth(dateMin.getMonth() + step));
+      if (date.getTime() < new Date(maxDate).getTime()) {
+        values.push(date.getTime());
+      }
+    }
   }
-  /* eslint-enable no-plusplus */
   return values;
 };
 
 const Y_BUFFER = 8;
-export const getYRange = (chartData, chartDataSources, minDate) => {
-  const yMax =
-    chartData && chartData[2] && chartData[2].length > 0
-      ? chartData[2][chartData[2].length - 1].y
-      : 0;
+export const getYRange = ({
+  countryCount,
+  chartDataSources,
+  minDate,
+  maxDate,
+}) => {
+  const yMax = countryCount + 5;
   const yMin = chartDataSources
     ? chartDataSources.reduce((min, s) => Math.min(min, s.y), 0)
     : 0;
+  // console.log(yMin)
   return [
     {
       x: new Date(minDate).getTime(),
       y: yMin - Y_BUFFER,
     },
     {
-      x: getXMax(),
+      x: new Date(maxDate).getTime(),
       y: yMax + Y_BUFFER,
     },
   ];
 };
 // prettier-ignore
-export const getMouseOverCover = (chartData, minDate) => {
+export const getMouseOverCover = ({ chartData, minDate, maxDate, countryCount }) => {
   if (chartData[2][chartData[2].length - 1]) {
-    const maxY = chartData[2][chartData[2].length - 1].y;
+    const maxY = countryCount + 5;
     return [
       {
         x: new Date(minDate).getTime(),
         y: maxY,
       },
       {
-        x: getXMax(),
+        x: new Date(maxDate).getTime(),
         y: maxY,
       },
     ]
@@ -241,8 +310,8 @@ export const getMouseOverCover = (chartData, minDate) => {
   return null;
 }
 
-export const getPlotHeight = size => {
-  if (isMinSize(size, 'large')) return 250;
-  if (isMinSize(size, 'medium')) return 240;
+export const getPlotHeight = ({ size, hasStatements }) => {
+  if (isMinSize(size, 'large')) return hasStatements ? 220 : 180;
+  if (isMinSize(size, 'medium')) return hasStatements ? 200 : 170;
   return 230;
 };

@@ -289,7 +289,7 @@ export function PanelChapter({
                             config={config}
                             simple
                             dark
-                            layerData={
+                            layerInfo={
                               config && jsonLayers[config.id]
                                 ? jsonLayers[config.id].data
                                 : null
@@ -427,7 +427,7 @@ function mapDispatchToProps(dispatch) {
         ),
       ),
     onLayerInfo: id => {
-      dispatch(setLayerInfo(id));
+      dispatch(setLayerInfo({ layerId: id }));
       dispatch(showLayerInfoModule(!!id || false));
     },
     onSetLayers: layers => dispatch(setLayers(layers)),

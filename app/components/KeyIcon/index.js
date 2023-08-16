@@ -47,10 +47,11 @@ export function KeyIcon({ config, id }) {
     config.render.type === 'scaledCircle' &&
     !!config.style;
   const isArea =
-    config.key &&
-    config.render &&
-    config.render.type === 'area' &&
-    !!config.featureStyle;
+    (config.key &&
+      config.render &&
+      config.render.type === 'area' &&
+      !!config.featureStyle) ||
+    config['styles-by-value'];
   let marker;
   let markerSize;
   if (isIconURI) {
@@ -96,6 +97,19 @@ export function KeyIcon({ config, id }) {
       ),
     );
   }
+  if (isArea && config['styles-by-value']) {
+    areaStyles = Object.keys(config['styles-by-value'])
+      .filter(val => {
+        const style = config['styles-by-value'][val];
+        return typeof style.key === 'undefined' || style.key;
+      })
+      .sort((a, b) => (parseInt(a, 10) < parseInt(b, 10) ? 1 : -1))
+      .map(val => ({
+        val,
+        ...config['styles-by-value'][val],
+      }));
+  }
+
   return (
     <Styled background={isIconURI && config.key.icon.background}>
       {isGradient && (

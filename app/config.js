@@ -1,4 +1,13 @@
-import { Explore, Intro, Policy } from 'components/Icons';
+import {
+  Explore,
+  Intro,
+  Policy,
+  PolicyTopic0,
+  PolicyTopic1,
+  PolicyTopic2,
+  PolicyTopic3,
+  PolicyTopic4,
+} from 'components/Icons';
 import React from 'react';
 
 // application routes and paths
@@ -18,6 +27,15 @@ export const PAGES = {
     footer: true,
   },
 };
+
+export const POLICY_TOPIC_ICONS = {
+  0: p => <PolicyTopic0 color={p.color || 'black'} {...p} />,
+  1: p => <PolicyTopic1 color={p.color || 'black'} {...p} />,
+  2: p => <PolicyTopic2 color={p.color || 'black'} {...p} />,
+  3: p => <PolicyTopic3 color={p.color || 'black'} {...p} />,
+  4: p => <PolicyTopic4 color={p.color || 'black'} {...p} />,
+};
+
 export const MODULES = {
   stories: {
     path: ROUTES.INTRO,
@@ -28,13 +46,12 @@ export const MODULES = {
   },
   policy: {
     path: ROUTES.POLICY,
-    featuredLayer: 'policy-commitments-area',
+    featuredLayer: 'policy-commitments',
     icon: <Policy color="white" />,
     iconActive: <Policy color="black" />,
     iconS: <Policy color="white" size="26px" />,
     iconActiveS: <Policy color="black" size="26px" />,
-    layers: ['surface-concentration', 'policy-commitments-area'],
-    hasKey: true,
+    layers: ['surface-concentration'],
   },
   explore: {
     path: ROUTES.EXPLORE,
@@ -43,7 +60,6 @@ export const MODULES = {
     iconS: <Explore color="white" size="26px" />,
     iconActiveS: <Explore color="black" size="26px" />,
     layers: ['surface-concentration'],
-    hasKey: true,
   },
 };
 
@@ -79,12 +95,15 @@ export const CONFIG = {
   },
 };
 
-export const POLICY_LAYERS = ['policy-commitments-area', 'policy-commitments'];
+export const POLICY_LAYER = 'policy-commitments';
+export const POLICY_CATEGORY = 'policy';
 export const PROJECT_CATEGORY = 'projects';
 export const PROJECT_CONFIG = {
   id: 'projects',
   type: 'csv',
   source: 'data',
+  isGeometry: true,
+  latlonColumns: ['latitude', 'longitude'],
   file: 'layers/project_locations.csv',
   data: {
     'layer-id': 'project_id',
@@ -166,4 +185,4 @@ export const MAP_OPTIONS = {
   },
 };
 
-export const LOCALE_TOGGLE = true;
+export const LOCALE_TOGGLE = false;

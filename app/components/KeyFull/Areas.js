@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box } from 'grommet';
+import { Box, Text, ResponsiveContext } from 'grommet';
 import { intlShape, injectIntl } from 'react-intl';
 import Markdown from 'react-remarkable';
 
 import { DEFAULT_LOCALE } from 'i18n';
-import { POLICY_LAYERS } from 'config';
+import { POLICY_LAYER } from 'config';
 
+import formatDate from 'utils/format-date';
 import quasiEquals from 'utils/quasi-equals';
-import {
-  excludeCountryFeatures,
-  getPositionStatsFromCountries,
-  featuresToCountriesWithStrongestPosition,
-} from 'containers/LayerInfo/policy/utils';
+import { getCountryPositionsOverTimeFromCountryFeatures } from 'utils/policy';
+import { prepChartKey } from 'containers/LayerInfo/policy/charts';
+// import {
+//   excludeCountryFeatures,
+//   getPositionStatsFromCountries,
+//   featuresToCountriesWithStrongestPosition,
+// } from 'containers/LayerInfo/policy/utils';
 
 import asArray from 'utils/as-array';
 
@@ -53,27 +56,45 @@ const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
 export function Areas({
   config,
   intl,
-  title,
   simple,
-  layerData,
-  excludeEmpty,
+  layerInfo,
+  indicatorId,
+  // chartDate,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
-  let square = { style: { color: 'black' }, title, id: config.id };
-  const countries =
-    POLICY_LAYERS.indexOf(config.id) > -1 &&
-    layerData &&
-    featuresToCountriesWithStrongestPosition(
-      config,
-      excludeCountryFeatures(config, layerData.features),
-      locale,
-    );
-  const countryStats =
-    countries && getPositionStatsFromCountries(config, countries);
+  let squares = [];
+  const isPolicy = POLICY_LAYER === config.id;
+  // console.log('layerInfo', layerInfo);
+  const positionsOverTime =
+    isPolicy &&
+    layerInfo &&
+    layerInfo.data &&
+    getCountryPositionsOverTimeFromCountryFeatures({
+      indicatorId,
+      layerInfo,
+      includeOpposing: false,
+      includeWithout: false,
+      includeHidden: false,
+    });
+  const lastDate =
+    positionsOverTime &&
+    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
+  const chartDate = lastDate;
 
-  if (featureStyle.multiple === 'true') {
-    square = key.values.reduce((memo, val) => {
+  const statsForKey =
+    lastDate &&
+    prepChartKey({
+      positionsCurrentDate: positionsOverTime[chartDate].positions,
+      positionsLatestDate: positionsOverTime[lastDate].positions,
+      tables: layerInfo.data.tables,
+      indicatorId,
+      config,
+      locale,
+    });
+
+  if (featureStyle && featureStyle.multiple === 'true') {
+    squares = key.values.reduce((memo, val) => {
       let t;
       if (key.title && key.title[val]) {
         t =
@@ -94,10 +115,7 @@ export function Areas({
         );
       }
       const stat =
-        countryStats && countryStats.find(s => quasiEquals(s.val, val));
-      if (excludeEmpty && (!stat || quasiEquals(stat.count, 0))) {
-        return memo;
-      }
+        statsForKey && statsForKey.find(s => quasiEquals(s.value, val));
       return [
         ...memo,
         {
@@ -108,36 +126,71 @@ export function Areas({
         },
       ];
     }, []);
+  } else if (config['styles-by-value'] && statsForKey) {
+    squares = statsForKey.sort((a, b) =>
+      parseInt(a.id, 10) < parseInt(b.id, 10) ? 1 : -1,
+    );
+  } else if (config['styles-by-value'] && !statsForKey && !isPolicy) {
+    squares = Object.keys(config['styles-by-value'])
+      .filter(val => {
+        const style = config['styles-by-value'][val];
+        return typeof style.key === 'undefined' || style.key;
+      })
+      .sort((a, b) => (parseInt(a, 10) < parseInt(b, 10) ? 1 : -1))
+      .map(val => {
+        const t = val;
+        const style = config['styles-by-value'][val];
+        return {
+          id: val,
+          title: t,
+          style,
+        };
+      });
   }
+  const size = React.useContext(ResponsiveContext);
   return (
-    <Box gap={simple ? 'xxsmall' : 'xsmall'} responsive={false}>
-      {asArray(square).map(sq => (
-        <SquareLabelWrap key={sq.id}>
-          <KeyAreaWrap>
-            <KeyArea areaStyles={[sq.style]} />
-          </KeyAreaWrap>
-          <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-            {!!sq.count && !simple && (
-              <StyledKeyCount>{sq.count}</StyledKeyCount>
+    <Box gap={size === 'small' ? 'small' : 'xsmall'} responsive={false}>
+      {config['styles-by-value'] && statsForKey && chartDate && (
+        <Box justify="start" flex={{ shrink: 0 }}>
+          <Text color="textSecondary" size="xxxsmall">
+            {formatDate(
+              locale,
+              chartDate ? new Date(chartDate).getTime() : new Date().getTime(),
             )}
-          </KeyLabelWrap>
-          <KeyLabelWrap>
-            <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-              <Markdown source={sq.title} />
-            </StyledKeyLabel>
-          </KeyLabelWrap>
-        </SquareLabelWrap>
-      ))}
+          </Text>
+        </Box>
+      )}
+      {asArray(squares)
+        .filter(sq => typeof sq.count === 'undefined' || sq.count > 0)
+        .map(sq => {
+          const hasCount = typeof sq.count !== 'undefined' && !simple;
+          return (
+            <SquareLabelWrap key={sq.id}>
+              <KeyAreaWrap>
+                <KeyArea areaStyles={[sq.style]} />
+              </KeyAreaWrap>
+              <KeyLabelWrap>
+                <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+                  <Markdown source={hasCount ? `${sq.title}: ` : sq.title} />
+                </StyledKeyLabel>
+              </KeyLabelWrap>
+              <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+                {hasCount && <StyledKeyCount>{sq.count}</StyledKeyCount>}
+              </KeyLabelWrap>
+            </SquareLabelWrap>
+          );
+        })}
     </Box>
   );
 }
 
 Areas.propTypes = {
   config: PropTypes.object,
-  layerData: PropTypes.object,
-  title: PropTypes.string,
+  layerInfo: PropTypes.object,
+  indicatorId: PropTypes.string,
+  // chartDate: PropTypes.string,
   simple: PropTypes.bool,
-  excludeEmpty: PropTypes.bool,
+  // excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

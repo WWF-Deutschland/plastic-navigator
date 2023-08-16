@@ -23,6 +23,7 @@ import {
   CHANGE_LOCALE,
   LOAD_CONFIG,
   SET_LAYER_INFO,
+  SET_ITEM_INFO,
   TOGGLE_LAYER,
   SET_LAYERS,
   SET_STORY,
@@ -30,6 +31,7 @@ import {
   SET_MAP_POSITION,
   SET_UI_URL,
   SHOW_LAYER_INFO_MODULE,
+  SET_LAYER_GEOGRAPHIES,
 } from './constants';
 
 import {
@@ -387,7 +389,7 @@ function* changeLocaleSaga({ locale }) {
   }
 }
 
-function* setLayerInfoSaga({ layer, view, copy }) {
+function* setLayerInfoSaga({ layerId, view, copy, infoPath }) {
   if (navPending) {
     // console.log('setLayerInfoSaga waiting for', navPending, view);
     throw new Error({
@@ -397,20 +399,52 @@ function* setLayerInfoSaga({ layer, view, copy }) {
     navPending = 'setLayerInfoSaga';
     const currentLocation = yield select(selectRouterLocation);
     const searchParams = new URLSearchParams(currentLocation.search);
-    // only update if not already active
-    let infoId = layer;
-    if (view) {
-      infoId = `${layer}|${view}`;
-      if (copy) {
-        // // console.log('COPY INFO', layer, view, copy);
-        infoId = `${layer}|${view}|${copy}`;
+    let infoId = infoPath;
+    if (!infoId) {
+      infoId = layerId;
+      if (view) {
+        infoId = `${infoId}|${view}`;
+        if (copy) {
+          // // console.log('COPY INFO', layer, view, copy);
+          infoId = `${infoId}|${copy}`;
+        }
       }
     }
+    // console.log('layerId', layerId, searchParams.get('info'))
+    // console.log('infoId', infoId)
+    // only update if not already active
     if (searchParams.get('info') !== infoId) {
-      if (typeof layer === 'undefined' || layer === '') {
+      if (typeof infoId === 'undefined' || infoId === '') {
         searchParams.delete('info');
       } else {
         searchParams.set('info', infoId);
+      }
+      // convert to string and append if necessary
+      const newSearch = searchParams.toString();
+      const search = newSearch.length > 0 ? `?${newSearch}` : '';
+      if (search !== currentLocation.search) {
+        yield put(push(`${currentLocation.pathname}${search}`));
+      }
+    }
+    yield (navPending = false);
+  }
+}
+function* setItemInfoSaga({ infoPath }) {
+  // console.log(infoPath)
+  if (navPending) {
+    throw new Error({
+      function: 'setItemInfoSaga',
+    });
+  } else {
+    navPending = 'setItemInfoSaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const searchParams = new URLSearchParams(currentLocation.search);
+    // only update if not already active
+    if (searchParams.get('item') !== infoPath) {
+      if (typeof infoPath === 'undefined' || infoPath === '') {
+        searchParams.delete('item');
+      } else {
+        searchParams.set('item', infoPath);
       }
       // convert to string and append if necessary
       const newSearch = searchParams.toString();
@@ -437,6 +471,30 @@ function* setLayersSaga({ layers }) {
 
     if (layers && layers.length > 0) {
       searchParams.set('layers', layers.join(URL_SEARCH_SEPARATOR));
+    }
+    const newSearch = searchParams.toString();
+    const search = newSearch.length > 0 ? `?${newSearch}` : '';
+    if (search !== currentLocation.search) {
+      yield put(push(`${currentLocation.pathname}${search}`));
+    }
+    yield (navPending = false);
+  }
+}
+function* setLayerGeometriesSaga({ geometries }) {
+  if (navPending) {
+    // console.log('setLayersSaga waiting for: ', navPending);
+    throw new Error({
+      function: 'setLayerGeometriesSaga',
+    });
+  } else {
+    // console.log('setLayerGeometriesSaga geometries', geometries)
+    navPending = 'setLayerGeometriesSaga';
+    const currentLocation = yield select(selectRouterLocation);
+    const searchParams = new URLSearchParams(currentLocation.search);
+    searchParams.delete('lgeo');
+
+    if (geometries && geometries.length > 0) {
+      searchParams.set('lgeo', geometries.join(URL_SEARCH_SEPARATOR));
     }
     const newSearch = searchParams.toString();
     const search = newSearch.length > 0 ? `?${newSearch}` : '';
@@ -644,9 +702,27 @@ export default function* defaultSaga() {
     ),
   );
   yield takeEvery(
+    SET_LAYER_GEOGRAPHIES,
+    autoRestart(
+      setLayerGeometriesSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
     SET_LAYER_INFO,
     autoRestart(
       setLayerInfoSaga,
+      navigateErrorHandler,
+      MAX_NAV_ATTEMPTS,
+      RETRY_NAV_DELAY,
+    ),
+  );
+  yield takeEvery(
+    SET_ITEM_INFO,
+    autoRestart(
+      setItemInfoSaga,
       navigateErrorHandler,
       MAX_NAV_ATTEMPTS,
       RETRY_NAV_DELAY,
