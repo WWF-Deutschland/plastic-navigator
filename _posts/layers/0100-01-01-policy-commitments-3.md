@@ -31,7 +31,6 @@ The visualisation shows the level of support, publicly expressed by states parti
 * Light green indicates states that have publicly expressed support for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard to ensure environmentally sound management of the plastics that becomes waste in their latest verbal or written public statement.
 
-
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 
 ### About the data
