@@ -2,12 +2,15 @@ import L from 'leaflet';
 import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
-import quasiEquals from 'utils/quasi-equals';
+import qe from 'utils/quasi-equals';
+import { getCountryPositionForTopicAndDate } from 'utils/policy';
+import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
 import 'leaflet.vectorgrid';
 
 import { PROJECT_CONFIG, MAP_OPTIONS } from 'config';
+import { DEFAULT_LOCALE } from 'i18n';
 
 export const getRange = (allFeatures, attribute) =>
   allFeatures.reduce(
@@ -88,7 +91,7 @@ const decorateLine = (line, type, options) => {
 };
 
 const filterByProject = (feature, project) =>
-  quasiEquals(feature.properties.project_id, project.project_id);
+  qe(feature.properties.project_id, project.project_id);
 
 const getPolylineLayer = ({ data, config }) => {
   const layer = L.featureGroup(null);
@@ -171,8 +174,12 @@ const getPolylineLayer = ({ data, config }) => {
   });
   return layer;
 };
-export const getVectorGridStyle = (properties, config, state = 'default') => {
-  // console.log(properties, config)
+export const getVectorGridStyle = (
+  properties,
+  dataConfig,
+  config,
+  state = 'default',
+) => {
   // const value = properties[GEOJSON.PROPERTIES.OCCURRENCE];
   if (state === 'mask') {
     return {
@@ -185,50 +192,37 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
     };
   }
   let featureStyle = {
-    fillOpacity: 0.4,
-    stroke: true,
+    fillOpacity: 0,
+    stroke: false,
   };
-
-  if (
-    properties &&
-    config.featureStyle &&
-    config.featureStyle.property &&
-    typeof config.featureStyle.style === 'object'
-  ) {
+  if (properties && properties.indicator) {
     if (
-      config.featureStyle.multiple &&
-      config.featureStyle.multiple === 'true'
+      dataConfig &&
+      dataConfig['styles-by-value'] &&
+      dataConfig['styles-by-value'] !== 'inherit'
     ) {
-      const ps = config.featureStyle.property.split('.');
-      const propertyArray = properties[ps[0]];
-      const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
-      if (config.featureStyle.multiplePriority) {
-        featureStyle = Object.keys(config.featureStyle.style).reduce(
-          (styleMemo, attr) => {
-            const attrObject = config.featureStyle.style[attr];
-            // prettier-ignore
-            const attrValue = values
-              ? config.featureStyle.multiplePriority.reduce((memo, value) => {
-                if (memo) return memo;
-                if (values.indexOf(value) > -1) {
-                  return attrObject[value];
-                }
-                return null;
-              }, null )
-              : attrObject.default ||
-                attrObject.none ||
-                attrObject.without ||
-                attrObject['0'];
-            return {
-              ...styleMemo,
-              [attr]: attrValue,
-            };
-          },
-          {},
-        );
-      }
+      const value = properties.indicator.value || 0;
+      featureStyle = {
+        ...featureStyle,
+        stroke: true,
+        ...dataConfig['styles-by-value'][value],
+      };
+    } else if (
+      dataConfig &&
+      dataConfig['styles-by-value'] &&
+      dataConfig['styles-by-value'] === 'inherit' &&
+      config &&
+      config['styles-by-value']
+    ) {
+      const value = properties.indicator.value || 0;
+      featureStyle = {
+        ...featureStyle,
+        stroke: true,
+        ...config['styles-by-value'][value],
+      };
     }
   }
+  // console.log('config', config)
   if (state === 'hover') {
     featureStyle.fillOpacity = 0.2;
   } else if (state === 'active') {
@@ -245,7 +239,13 @@ export const getVectorGridStyle = (properties, config, state = 'default') => {
   };
 };
 const featureInteractive = (e, config) => {
+  // console.log('featureInteractive config', config)
+  if (config.indicators && e.layer) {
+    const { properties } = e.layer;
+    return properties && properties.indicator;
+  }
   if (
+    e.layer &&
     config.tooltip &&
     config.tooltip.values &&
     config.featureStyle.multiple &&
@@ -254,7 +254,7 @@ const featureInteractive = (e, config) => {
     // figure out feature values
     const ps = config.featureStyle.property.split('.');
     const { properties } = e.layer;
-    const propertyArray = properties[ps[0]];
+    const propertyArray = properties && properties[ps[0]];
     const values = propertyArray && uniq(propertyArray.map(p => p[ps[1]]));
     return intersection(config.tooltip.values, values).length > 0;
   }
@@ -270,12 +270,17 @@ const getPolygonVectorGrid = ({ data, config, markerEvents, state }) => {
         : config['z-index'] || 1,
     rendererFactory: L.svg.tile,
     vectorTileLayerStyles: {
-      sliced: properties => getVectorGridStyle(properties, config, state),
+      sliced: properties =>
+        getVectorGridStyle(properties, data.config, config, state),
     },
     interactive: state !== 'hover' && state !== 'active',
     getFeatureId: f => f.properties.f_id,
   });
-  if (markerEvents) {
+  if (state === 'mask') {
+    vectorGrid.on({
+      click: () => null,
+    });
+  } else if (markerEvents) {
     vectorGrid.on({
       mouseover: e => {
         if (featureInteractive(e, config) && markerEvents.mouseover) {
@@ -347,7 +352,18 @@ const getPolygonLayer = ({ data, config, markerEvents, state }) => {
   return layer;
 };
 
-export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
+export const getIcon = (
+  config,
+  { feature, latlng, state = 'default', hide } = {},
+) => {
+  const { icon } = config;
+  if (hide) {
+    return L.divIcon({
+      className: 'mpx-map-icon-uri',
+      iconSize: [0, 0],
+      html: '<img style="width:100%;" src="">',
+    });
+  }
   if (icon && icon.datauri) {
     const sizeForState = icon.size[state] || icon.size.default || icon.size;
     const iconSize = [
@@ -418,15 +434,77 @@ export const getIcon = (icon, { feature, latlng, state = 'default' } = {}) => {
       html: `<img style="width:100%;" src="${iconForState}">`,
     });
   }
+  const iconsByValue = config['icons-by-value'];
+  if (iconsByValue && config.size) {
+    // console.log('feature',feature)
+    // const sizeForState =
+    //   config.size[state] || config.size.default || config.size;
+    const iconSize = [
+      // (sizeForState && sizeForState.x) || 25,
+      // (sizeForState && sizeForState.y) || 50,
+      24,
+      25.5,
+    ];
+    // off set from top left
+    const iconAnchor = [iconSize[0] / 2, iconSize[1]]; // bottom
+    const options = {
+      className: 'mpx-map-icon-uri',
+      iconSize,
+      iconAnchor,
+    };
+    const value =
+      (feature &&
+        feature.properties &&
+        feature.properties.indicator &&
+        feature.properties.indicator.value) ||
+      0;
+
+    // check for property dependent icon
+    if (iconsByValue[value]) {
+      const uri = iconsByValue[value][state];
+      // console.log('uri', uri)
+      return L.divIcon({
+        ...options,
+        html: `<img style="width:100%;" src="${uri}">`,
+      });
+    }
+    return L.divIcon({
+      ...options,
+      iconSize: [0, 0],
+      html: '<img style="width:100%;" src="">',
+    });
+  }
   return L.icon();
 };
 
-const getPointLayer = ({ data, config, markerEvents }) => {
+const filterFeatureMaxZoom = ({ feature, zoom, config }) => {
+  if (
+    config &&
+    config['default-max-zoom'] &&
+    feature.properties[config['default-max-zoom']] &&
+    feature.properties[config['default-max-zoom']] !== ''
+  ) {
+    return zoom <= parseInt(feature.properties[config['default-max-zoom']], 10);
+  }
+  return false;
+};
+
+const getPointLayer = ({ data, config, markerEvents, layerGeoSettings }) => {
   const layer = L.featureGroup(null);
   const options = {
     ...config.style,
     zIndex: config['z-index'] || 1,
   };
+  const hasZoomCheck =
+    config['default-max-zoom'] && config.settings && config.settings.zoom;
+  let doZoomCheck = hasZoomCheck;
+  if (doZoomCheck) {
+    doZoomCheck = config.settings.zoom.default;
+  }
+  if (doZoomCheck && layerGeoSettings.zoom) {
+    doZoomCheck =
+      qe(layerGeoSettings.zoom, 1) || layerGeoSettings.zoom === 'true';
+  }
   const events = {
     mouseover: e =>
       markerEvents.mouseover ? markerEvents.mouseover(e, config) : null,
@@ -434,11 +512,17 @@ const getPointLayer = ({ data, config, markerEvents }) => {
       markerEvents.mouseout ? markerEvents.mouseout(e, config) : null,
     click: e => (markerEvents.click ? markerEvents.click(e, config) : null),
   };
+  // prettier-ignore
   const jsonLayer = L.geoJSON(data, {
+    config,
+    checkZoom: doZoomCheck
+      ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config})
+      : null,
     pointToLayer: (feature, latlng) =>
       L.marker(latlng, {
         ...options,
-        icon: getIcon(config.icon, { feature, latlng }),
+        icon: getIcon(config, { feature, latlng }),
+        opacity: config['default-max-zoom'] ? 0.666 : 1,
       }).on(events),
   });
   layer.addLayer(jsonLayer);
@@ -450,11 +534,16 @@ const getPointLayer = ({ data, config, markerEvents }) => {
   ) {
     const layerWest = L.geoJSON(data, {
       copy: 'west',
+      config,
+      checkZoom: doZoomCheck
+        ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config })
+        : null,
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng - 360], {
           ...options,
           copy: 'west',
-          icon: getIcon(config.icon, { feature, latlng }),
+          icon: getIcon(config, { feature, latlng }),
+          opacity: config['default-max-zoom'] ? 0.666 : 1,
         }).on(events),
     });
     layer.addLayer(layerWest);
@@ -466,11 +555,16 @@ const getPointLayer = ({ data, config, markerEvents }) => {
   ) {
     const layerEast = L.geoJSON(data, {
       copy: 'east',
+      config,
+      checkZoom: doZoomCheck
+        ? (feature, zoom) => filterFeatureMaxZoom({ feature, zoom, config })
+        : null,
       pointToLayer: (feature, latlng) =>
         L.marker([latlng.lat, latlng.lng + 360], {
           ...options,
           copy: 'east',
-          icon: getIcon(config.icon, { feature, latlng }),
+          icon: getIcon(config, { feature, latlng }),
+          opacity: config['default-max-zoom'] ? 0.666 : 1,
         }).on(events),
     });
     layer.addLayer(layerEast);
@@ -547,7 +641,91 @@ const getCircleLayer = ({ data, config, markerEvents }) => {
   return layer;
 };
 
-export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
+const prepareGeometry = ({
+  config,
+  geometry,
+  features,
+  tables,
+  indicatorId,
+  dateString,
+  locale,
+}) => {
+  if (config.indicators) {
+    const geometryX = {
+      type: geometry.type,
+      config: geometry.config,
+      features: geometry.features.map(gf => {
+        const feature = features.find(f =>
+          qe(f[config.self], gf.properties[geometry.config.feature]),
+        );
+        // console.log('gf', gf)
+        // console.log('feature', feature)?
+        if (feature) {
+          const position = getCountryPositionForTopicAndDate({
+            countryCode: feature.code,
+            topicId: indicatorId,
+            dateString,
+            tables,
+            locale,
+          });
+          return {
+            type: gf.type,
+            geometry: gf.geometry,
+            properties: {
+              ...gf.properties,
+              ...feature,
+              indicator: position,
+              tooltip: {
+                supTitle: position ? position.topic : 'no topic',
+                title:
+                  gf.properties[`name_${locale}`] ||
+                  gf.properties[`name_${DEFAULT_LOCALE}`],
+                infoArg: 'item',
+                infoPath: `${config.id}_${indicatorId}|country-${feature.code}`,
+                id: feature.code,
+                more: true,
+                content:
+                  position &&
+                  position.latestPosition &&
+                  (position.latestPosition[`position_short_${locale}`] ||
+                    position.latestPosition[
+                      `position_short_${DEFAULT_LOCALE}`
+                    ]),
+              },
+            },
+          };
+        }
+        return gf;
+      }),
+    };
+    return geometryX;
+  }
+  return geometry;
+};
+
+const getLayerGeoSettings = (layerSettings, index) =>
+  layerSettings.reduce((memo, setting) => {
+    const [geoIndex, keyValue] = setting.split('-');
+    if (`g${index}` === geoIndex) {
+      const [key, value] = keyValue.split(':');
+      return {
+        ...memo,
+        [key]: value,
+      };
+    }
+    return memo;
+  }, {});
+
+export const getVectorLayer = ({
+  jsonLayer,
+  config,
+  markerEvents,
+  state,
+  indicatorId,
+  dateString,
+  locale,
+  layerGeometrySettings,
+}) => {
   const { data } = jsonLayer;
   // polyline
   if (config.render && config.render.type === 'polyline' && data.features) {
@@ -560,13 +738,124 @@ export const getVectorLayer = ({ jsonLayer, config, markerEvents, state }) => {
 
   // regular point marker
   if (config.render && config.render.type === 'marker') {
-    return getPointLayer({ data, config, markerEvents, state });
+    return getPointLayer({
+      data: {
+        features: data.features
+          ? excludeCountryFeatures(config, data.features)
+          : [],
+      },
+      config,
+      markerEvents,
+      state,
+    });
   }
   // scaled circle marker
   if (config.render && config.render.type === 'scaledCircle') {
     return getCircleLayer({ data, config, markerEvents, state });
   }
-  return null;
+  let layers;
+  if (data.features && data.geometries && data.geometries.length > 0) {
+    // figure out any settings for current layer
+    const layerSettings = layerGeometrySettings.reduce((memo, lg) => {
+      const [layerId, rest] = lg.split('_');
+      if (config.id === layerId) {
+        return [...memo, rest];
+      }
+      return memo;
+    }, []);
+    // cons/t geometry = data.geometries[0]; // for now take first one
+    layers = data.geometries.reduce((memoLayers, geometry, index) => {
+      const geometryX = prepareGeometry({
+        geometry,
+        config,
+        features: data.features,
+        tables: data.tables,
+        indicatorId,
+        dateString,
+        locale,
+      });
+      const layerGeoSettings = getLayerGeoSettings(layerSettings, index);
+      let active = true;
+      if (
+        geometry.config.settings &&
+        geometry.config.settings.active &&
+        geometry.config.settings.active.default
+      ) {
+        active = geometry.config.settings.active.default;
+      }
+      if (layerGeoSettings && typeof layerGeoSettings.active !== 'undefined') {
+        active =
+          qe(layerGeoSettings.active, 1) || layerGeoSettings.active === 'true';
+      }
+      if (active) {
+        if (geometry.config.render.type === 'area') {
+          return [
+            ...memoLayers,
+            getPolygonLayer({
+              data: geometryX,
+              config,
+              markerEvents,
+              state,
+            }),
+          ];
+        }
+        if (geometry.config.render.type === 'marker') {
+          return [
+            ...memoLayers,
+            getPointLayer({
+              data: geometryX,
+              config: geometry.config,
+              markerEvents,
+              state,
+              layerGeoSettings,
+            }),
+          ];
+        }
+      }
+      return memoLayers;
+    }, []);
+    if (
+      layers.length > 0 &&
+      data.features &&
+      data.geometryMasks &&
+      data.geometryMasks.length > 0
+    ) {
+      const maskLayers = data.geometryMasks.map(geometry => {
+        if (geometry.config.render.type === 'area') {
+          return getPolygonLayer({
+            data: geometry,
+            config,
+            state: 'mask',
+          });
+        }
+        return null;
+      });
+      layers = [...layers, ...maskLayers];
+    }
+  }
+  return layers ? L.layerGroup(layers) : null;
+};
+const getProjectData = ({ data, project }) => {
+  const projectFeatures = data.features.filter(feature =>
+    filterByProject(feature, project),
+  );
+  return {
+    ...data,
+    features: projectFeatures.map(feature => {
+      let infoArg = 'info';
+      let infoPath = `${PROJECT_CONFIG.id}_${project.project_id}`;
+      if (projectFeatures.length > 1) {
+        infoArg = 'item';
+        // item=projects_7|location-7.1
+        infoPath = `${infoPath}|location-${feature.properties.location_id}`;
+      }
+      return {
+        ...feature,
+        infoArg,
+        infoPath,
+      };
+    }),
+  };
 };
 
 export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
@@ -579,17 +868,18 @@ export const getProjectLayer = ({ jsonLayer, project, markerEvents }) => {
   const layer = L.featureGroup(null);
   const { icon } = PROJECT_CONFIG;
   if (icon && icon.datauri) {
-    const divIcon = getIcon(icon);
+    const divIcon = getIcon(PROJECT_CONFIG);
     const options = {
       icon: divIcon,
       layer: project,
-      layerId: `${PROJECT_CONFIG.id}-${
+      layerId: `${PROJECT_CONFIG.id}_${
         project[PROJECT_CONFIG.data['layer-id']]
       }`,
       ...config.style,
     };
-    const jsonLlayer = L.geoJSON(data, {
-      filter: feature => filterByProject(feature, project),
+    const dataX = getProjectData({ data, project });
+    const jsonLlayer = L.geoJSON(dataX, {
+      // filter: feature => filterByProject(feature, project),
       pointToLayer: (feature, latlng) => L.marker(latlng, options).on(events),
     });
     layer.addLayer(jsonLlayer);
@@ -688,4 +978,44 @@ export const padBounds = (latlngBounds, padding, map) => {
 export const getMapPaddedBounds = (map, padding) => {
   const bounds = map.getBounds();
   return padBounds(bounds, padding, map);
+};
+
+export const hideForZoom = ({ layer, zoom }) => {
+  if (layer && layer.getLayers() && layer.getLayers().length > 0) {
+    layer.eachLayer(sublayer => {
+      if (sublayer.getLayers && sublayer.getLayers().length > 0) {
+        if (sublayer.options && sublayer.options.checkZoom) {
+          sublayer.eachLayer(feature => {
+            if (sublayer.options.checkZoom(feature.feature, zoom)) {
+              feature.setIcon(
+                getIcon(sublayer.options.config, { feature: feature.feature }),
+              );
+            } else {
+              feature.setIcon(getIcon(sublayer.options.config, { hide: true }));
+            }
+          });
+        } else {
+          sublayer.eachLayer(sublayer2 => {
+            if (sublayer2.getLayers && sublayer2.getLayers().length > 0) {
+              if (sublayer2.options && sublayer2.options.checkZoom) {
+                sublayer2.eachLayer(feature => {
+                  if (sublayer2.options.checkZoom(feature.feature, zoom)) {
+                    feature.setIcon(
+                      getIcon(sublayer2.options.config, {
+                        feature: feature.feature,
+                      }),
+                    );
+                  } else {
+                    feature.setIcon(
+                      getIcon(sublayer2.options.config, { hide: true }),
+                    );
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  }
 };

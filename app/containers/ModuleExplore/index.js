@@ -13,7 +13,7 @@ import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import styled from 'styled-components';
-import { Box, Button, Layer } from 'grommet';
+import { Box, Button } from 'grommet';
 import { uniq } from 'lodash/array';
 import { startsWith } from 'utils/string';
 import { getAsideWidth, isMaxSize } from 'utils/responsive';
@@ -36,6 +36,7 @@ import {
   setUIState,
   setLanding,
   setUIURL,
+  setShowKey,
 } from 'containers/App/actions';
 
 import commonMessages from 'messages';
@@ -90,10 +91,10 @@ const ProjectButton = ({ showAll, lids, pids, onClick, small, ...rest }) => {
       onClick={() => {
         if (showAll) {
           onClick(
-            uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}-${pid}`)]),
+            uniq([...lids, ...pids.map(pid => `${PROJECT_CONFIG.id}_${pid}`)]),
           );
         } else {
-          onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}-`)));
+          onClick(lids.filter(id => !startsWith(id, `${PROJECT_CONFIG.id}_`)));
         }
       }}
       label={<FormattedMessage {...label} />}
@@ -133,6 +134,7 @@ export function ModuleExplore({
   onShow,
   intl,
   size,
+  onShowKey,
 }) {
   const { layersMemo } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -152,6 +154,9 @@ export function ModuleExplore({
       onSetLanding();
     }
   }, []);
+  useEffect(() => {
+    onShowKey();
+  }, []);
 
   useEffect(() => {
     onMemoLayers(activeLayers, uiState);
@@ -167,13 +172,13 @@ export function ModuleExplore({
   const projectIds = projects ? projects.map(p => p.project_id) : [];
   const activeProjects = layerIds
     .filter(id => {
-      if (startsWith(id, `${PROJECT_CONFIG.id}-`)) {
-        const pid = id.replace(`${PROJECT_CONFIG.id}-`, '');
+      if (startsWith(id, `${PROJECT_CONFIG.id}_`)) {
+        const pid = id.replace(`${PROJECT_CONFIG.id}_`, '');
         return projectIds.indexOf(pid) > -1;
       }
       return false;
     })
-    .map(id => id.replace(`${PROJECT_CONFIG.id}-`, ''));
+    .map(id => id.replace(`${PROJECT_CONFIG.id}_`, ''));
   // const hasActiveProjects = activeProjects.length > 0;
   const hasAllProjectsActive =
     projects && activeProjects.length >= projects.length;
@@ -198,14 +203,7 @@ export function ModuleExplore({
             />
           </ProjectButtonWrap>
         )}
-        {show && size !== 'small' && (
-          <PanelExplore onClose={() => onShow(false, uiURL)} />
-        )}
-        {show && size === 'small' && (
-          <Layer full>
-            <PanelExplore onClose={() => onShow(false, uiURL)} />
-          </Layer>
-        )}
+        {show && <PanelExplore onClose={() => onShow(false, uiURL)} />}
         {!show && (
           <Buttons>
             {size !== 'small' && (
@@ -238,6 +236,7 @@ ModuleExplore.propTypes = {
   onSetLayers: PropTypes.func,
   onMemoLayers: PropTypes.func,
   onSetLanding: PropTypes.func,
+  onShowKey: PropTypes.func,
   onShow: PropTypes.func,
   activeLayers: PropTypes.array,
   uiState: PropTypes.object,
@@ -258,6 +257,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
+    onShowKey: () => dispatch(setShowKey(true)),
     onSetLanding: () => dispatch(setLanding()),
     onSetLayers: layers => dispatch(setLayers(layers)),
     onMemoLayers: (layers, uiState) =>

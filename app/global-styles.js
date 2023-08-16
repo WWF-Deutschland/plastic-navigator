@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import WWFFontWoff from './fonts/wwf-webfont.woff';
 import WWFFontTTF from './fonts/wwf-webfont.ttf';
 import WWFFontEOT from './fonts/wwf-webfont.eot';
-
+import { sizes } from './theme';
 const GlobalStyle = createGlobalStyle`
   @import url('https://unpkg.com/leaflet@1.3.3/dist/leaflet.css');
 
@@ -49,6 +49,7 @@ const GlobalStyle = createGlobalStyle`
     min-width: 100%;
   }
 
+  .mpx-content li,
   p,
   label {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -120,9 +121,13 @@ const GlobalStyle = createGlobalStyle`
   .mpx-wrap-markdown-description p {
     margin: 0;
     line-height: 18px
-    @media (min-width: 721px}) {
+    @media (min-width: ${sizes.medium.min}px}) {
       line-height: 20px
     }
+  }
+  .mpx-wrap-markdown-stat-title p {
+    margin: 0;
+    line-height: 14px;
   }
   .mpx-reference {
     color: #606367;
@@ -149,6 +154,18 @@ const GlobalStyle = createGlobalStyle`
     &:hover{
       color: #08586C;
     }
+  }
+  .mpx-modal .mpx-layer-content > p:first-child {
+    font-size: 16px;
+    @media (min-width: ${sizes.medium.min}px) {
+      font-size: 18px;
+    }
+  }
+  .mpx-topic-select p {
+    margin: 0;
+  }
+  .mpx-markdown-text p {
+    margin: 0;
   }
   .leaflet-layer .leaflet-mask.leaflet-interactive {
     cursor: initial !important;

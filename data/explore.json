@@ -39,12 +39,19 @@
       {
         "id": "policy",
         "title": {
-          "en": "What are the countries’ levels of support for a new global agreement on marine plastic pollution?",
-          "de": "In welchem Maße bekennen sich die einzelnen Länder zu einem neuen globalen Abkommen zur Bekämpfung der Vermüllung der Meere mit Plastik?"
+          "en": "What are states' positions during the negotiation of a new global treaty to end plastic pollution?",
+          "de": "What are states' positions during the negotiation of a new global treaty to end plastic pollution?"
         },
         "description": {
-          "en": "Learn about the countries’ levels of support for negotiating a new international, legally binding agreement to reduce the amount of plastic entering our oceans. For small countries, select ‘shown as markers’.",
-          "de": "Hier erfahren Sie mehr darüber, in welchem Maße sich die einzelnen Länder dafür aussprechen, ein neues international verbindliches Abkommen zur Reduzierung der Einträge von Plastik in unsere Weltmeere zu verhandeln. Für kleinere Länder am besten 'als Marker angezeigt' anklicken."
+          "en": "In March 2022, the United Nations Environment Assembly decided to develop an international legally binding instrument to end plastic pollution, with the aim of concluding the negotiation by the end of 2024. The Global Plastic Navigator tracks the states’ level of support for the following four groups of expected regulations under the new treaty, as key indicators for the development of an ambitious and effective treaty.",
+          "de": "_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_.  __ In March 2022, the United Nations Environment Assembly decided to develop an international legally binding instrument to end plastic pollution, with the aim of concluding the negotiation by the end of 2024. The Global Plastic Navigator tracks the states’ level of support for the following four groups of expected regulations under the new treaty, as key indicators for the development of an ambitious and effective treaty."
+        }
+      },
+      {
+        "id": "archive",
+        "title": {
+          "en": "Archived",
+          "de": "Archiviert"
         }
       }
     ]

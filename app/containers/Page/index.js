@@ -10,13 +10,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Button, Layer, Box } from 'grommet';
+import { Button, Box } from 'grommet';
 import { Close } from 'components/Icons';
 import { useInjectSaga } from 'utils/injectSaga';
 
 import saga from 'containers/App/saga';
 import { selectContentByKey } from 'containers/App/selectors';
 import { loadContent } from 'containers/App/actions';
+import Modal from 'components/Modal';
 
 import HTMLWrapper from 'components/HTMLWrapper';
 
@@ -26,31 +27,25 @@ const ContentWrap = styled(props => (
     responsive={false}
     {...props}
   />
-))`
-  overflow-y: auto;
-  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    width: 600px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    width: 720px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    width: 820px;
-  }
-`;
+))``;
 
 const ButtonClose = styled(p => (
   <Button icon={<Close color="white" />} plain alignSelf="end" {...p} />
 ))`
   position: absolute;
-  top: 30px;
-  right: 30px;
-  padding: 10px;
+  top: 15px;
+  right: 15px;
+  padding: 5px;
   border-radius: 99999px;
   background: ${({ theme }) => theme.global.colors.black};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
     background: ${({ theme }) => theme.global.colors.dark};
+  }
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    top: 30px;
+    right: 30px;
+    padding: 10px;
   }
 `;
 
@@ -65,17 +60,16 @@ export function Page({ page, onLoadContent, content, onClose }) {
   }, []);
 
   return (
-    <Layer
-      onEsc={() => onClose()}
-      onClickOutside={() => onClose()}
-      animation={false}
-      margin={{ top: 'xlarge', horizontal: 'large' }}
-    >
-      <ContentWrap>
-        <ButtonClose onClick={() => onClose()} />
-        {content && <HTMLWrapper innerhtml={content} />}
-      </ContentWrap>
-    </Layer>
+    <Modal
+      onClose={onClose}
+      zIndex={2601}
+      content={
+        <ContentWrap>
+          <ButtonClose onClick={() => onClose()} />
+          {content && <HTMLWrapper innerhtml={content} />}
+        </ContentWrap>
+      }
+    />
   );
 }
 

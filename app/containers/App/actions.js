@@ -33,6 +33,7 @@ import {
   SET_UI_STATE,
   SET_UI_URL,
   SET_LAYER_INFO,
+  SET_ITEM_INFO,
   SHOW_LAYER_INFO_MODULE,
   TOGGLE_LAYER,
   SET_LAYERS,
@@ -40,6 +41,9 @@ import {
   SET_CHAPTER,
   SET_LANDING,
   SET_MAP_POSITION,
+  SET_SHOW_KEY,
+  SET_CHART_DATE,
+  SET_LAYER_GEOGRAPHIES,
 } from './constants';
 
 export function setLocale(locale) {
@@ -188,12 +192,30 @@ export function setUIURL(key, newState) {
     newState,
   };
 }
-export function setLayerInfo(layer, view, copy) {
+export function setLayerInfo(args) {
+  if (args) {
+    const { layerId, view, copy, infoPath } = args;
+    return {
+      type: SET_LAYER_INFO,
+      layerId,
+      view,
+      copy,
+      infoPath,
+    };
+  }
   return {
     type: SET_LAYER_INFO,
-    layer,
-    view,
-    copy,
+  };
+}
+export function setItemInfo(infoPath) {
+  if (infoPath) {
+    return {
+      type: SET_ITEM_INFO,
+      infoPath,
+    };
+  }
+  return {
+    type: SET_ITEM_INFO,
   };
 }
 export function showLayerInfoModule(visible = true) {
@@ -212,6 +234,12 @@ export function setLayers(layers) {
   return {
     type: SET_LAYERS,
     layers,
+  };
+}
+export function setLayerGeometries(geometries) {
+  return {
+    type: SET_LAYER_GEOGRAPHIES,
+    geometries,
   };
 }
 export function setChapter(index) {
@@ -235,5 +263,17 @@ export function setMapPosition(position) {
   return {
     type: SET_MAP_POSITION,
     position,
+  };
+}
+export function setShowKey(value) {
+  return {
+    type: SET_SHOW_KEY,
+    value,
+  };
+}
+export function setChartDate(dateString) {
+  return {
+    type: SET_CHART_DATE,
+    dateString,
   };
 }

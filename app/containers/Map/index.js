@@ -7,29 +7,35 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import L from 'leaflet';
 
-import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS } from 'config';
+import { MAPBOX, PROJECT_CONFIG, MAP_OPTIONS, POLICY_LAYER } from 'config';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { decodeInfoView, findFeature } from 'utils/layers';
 import { getAsideInfoWidth } from 'utils/responsive';
 import { roundNumber } from 'utils/numbers';
+import { startsWith } from 'utils/string';
+
 // import commonMessages from 'messages';
 //
 import {
   selectActiveLayers,
   selectConfigByKey,
   selectInfoSearch,
+  selectShowKey,
+  selectChartDate,
+  selectLayerGeometries,
 } from 'containers/App/selectors';
 
 import {
   setLayerInfo,
+  setItemInfo,
   setMapPosition,
   showLayerInfoModule,
 } from 'containers/App/actions';
@@ -48,6 +54,7 @@ import {
   getVectorLayer,
   getIcon,
   getMapPaddedBounds,
+  hideForZoom,
 } from './utils';
 
 import reducer from './reducer';
@@ -125,7 +132,8 @@ export function Map({
   onLoadLayer,
   jsonLayers,
   projects,
-  onLayerInfo,
+  onSetLayerInfo,
+  onSetItemInfo,
   layerInfo,
   size,
   onFeatureHighlight,
@@ -136,9 +144,13 @@ export function Map({
   onMapMove,
   mview,
   layerInfoActive,
+  chartDate,
+  layerGeometrySettings,
+  intl,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
+  const { locale } = intl;
   const [tooltip, setTooltip] = useState(null);
   const [tilesLoading, setTilesLoading] = useState(false);
   const [zoom, setZoom] = useState(MAP_OPTIONS.ZOOM.INIT);
@@ -147,20 +159,32 @@ export function Map({
   const areaHighlightRef = useRef(null);
   const areaTooltipRef = useRef(null);
   const areaInfoRef = useRef(null);
-  const areaMaskRef = useRef(null);
+  // const areaMaskRef = useRef(null);
   const [infoLayerId, infoFeatureId, infoCopy] = decodeInfoView(layerInfo);
   const [highlightLayerId, highlightFeatureId, highlightCopy] = decodeInfoView(
     highlightFeature,
   );
+  // console.log('highlightFeature', highlightFeature, highlightFeatureId)
   const jsonLayerLength = jsonLayers ? Object.keys(jsonLayers).length : 0;
 
   const showTooltip = (e, config) => {
     // console.log('click', e, config, tooltip);
     L.DomEvent.stopPropagation(e);
-    const { target, layer } = e;
+    const {
+      target, // the layer
+      layer, // the feature
+    } = e;
+    // console.log('showTooltip target', target)
+    // console.log('showTooltip layer', layer)
+    // console.log('showTooltip config', config)
     const feature = layer || target.feature;
     const eLayerId = target.options.layerId || config.id;
-    const eFeatureId = feature.properties.f_id;
+    let eFeatureId;
+    if (feature.properties.f_id) {
+      eFeatureId = feature.properties.f_id;
+    } else if (feature.properties.tooltip) {
+      eFeatureId = feature.properties.tooltip.id;
+    }
     let anchor = e.containerPoint;
     const mapSize = mapRef.current ? mapRef.current.getSize() : [0, 0];
     const direction = {
@@ -188,10 +212,9 @@ export function Map({
   // console.log(tooltip)
   const onMarkerOver = (e, config) => {
     if (e && config) {
-      // console.log('over', e, config, tooltip);
       const feature = e.layer || e.target.feature;
       onFeatureHighlight({
-        feature: feature.properties.f_id,
+        feature: feature.properties.f_id || feature.properties.code,
         layer: e.target.options.layerId || config.id,
         copy: e.target.options.copy,
       });
@@ -200,7 +223,9 @@ export function Map({
   // const onMarkerOut = (e, config) => {
   // console.log('out', e, config, tooltip);
   const onMarkerOut = () => onFeatureHighlight(null);
-  const onMarkerClick = showTooltip;
+  const onMarkerClick = (e, config) => {
+    showTooltip(e, config);
+  };
 
   const markerEvents = {
     mouseover: onMarkerOver,
@@ -221,6 +246,10 @@ export function Map({
       // console.log('zoomstart')
       setTooltip(null);
     },
+    // zoomend: () => {
+    //   // console.log('zoomstart')
+    //   if (mapRef.current) console.log('zoomend', mapRef.current.getZoom());
+    // },
     movestart: () => {
       // console.log('movestart')
       setTooltip(null);
@@ -258,11 +287,11 @@ export function Map({
     areaHighlightRef.current = L.layerGroup();
     areaTooltipRef.current = L.layerGroup();
     areaInfoRef.current = L.layerGroup();
-    areaMaskRef.current = L.layerGroup();
+    // areaMaskRef.current = L.layerGroup();
     areaHighlightRef.current.addTo(mapRef.current);
     areaTooltipRef.current.addTo(mapRef.current);
     areaInfoRef.current.addTo(mapRef.current);
-    areaMaskRef.current.addTo(mapRef.current);
+    // areaMaskRef.current.addTo(mapRef.current);
     mapRef.current.on('zoomend', () => {
       setZoom(mapRef.current.getZoom());
     });
@@ -283,6 +312,27 @@ export function Map({
   useEffect(() => {
     if (mapRef.current.getZoom() !== zoom) {
       mapRef.current.setZoom(zoom);
+    }
+    if (activeLayerIds && layersConfig) {
+      activeLayerIds.forEach(id => {
+        const [configLayerId] = id.split('_');
+        const layer = mapLayers[id] && mapLayers[id].layer;
+        const config = layersConfig.find(
+          c => c.id === id || c.id === configLayerId,
+        );
+        if (config) {
+          if (
+            config.source === 'data' &&
+            (config.type === 'geojson' ||
+              config.type === 'topojson' ||
+              config.type === 'csv' ||
+              config.geometries)
+          ) {
+            // console.log('hideForZoom', config)
+            hideForZoom({ layer, zoom });
+          }
+        }
+      });
     }
   }, [zoom]);
 
@@ -322,7 +372,6 @@ export function Map({
           jsonLayers[infoLayerId].data.features,
           infoFeatureId,
         );
-
         if (feature && feature.geometry && feature.geometry.coordinates) {
           let featureBounds;
           if (feature.properties && feature.properties.bounds_nwse) {
@@ -378,116 +427,132 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    // console.log('Map: active layer ids: ', activeLayerIds);
+    // console.log('activelayers (according to url) ', activeLayerIds);
+    // console.log('mapLayers (currently on map) ', mapLayers);
+    // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
     if (activeLayerIds && layersConfig) {
+      // console.log('chartDate', chartDate)
       const newMapLayers = {};
+      // const removeMapLayers = Object.keys(mapLayers).filter(
+      //   id => activeLayerIds.map(alId => alId.split('_')[0]).indexOf(id) < 0,
+      // );
+      // const addMapLayers = activeLayerIds.filter(id => {
+      //   const [mapLayerId, indicatorId] = id.split('_');
+      //   // also check if map does not have layer,
+      //   // otherwise they will not be adeded when hot reloading
+      //   const llayer = mapLayers[mapLayerId] && mapLayers[mapLayerId].layer;
+      //   const hasLayer = mapRef.current.hasLayer(llayer);
+      //   // layer not yet created
+      //   return !hasLayer || Object.keys(mapLayers).indexOf(mapLayerId) < 0;
+      // });
       // remove layers no longer active
-      Object.keys(mapLayers).forEach(id => {
-        if (activeLayerIds.indexOf(id) < 0) {
+      Object.keys(mapLayers)
+        .filter(
+          id => activeLayerIds.indexOf(id) < 0 || startsWith(id, POLICY_LAYER),
+        )
+        .forEach(id => {
           const project =
             projects &&
             projects.find(
-              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}_`, ''),
             );
           if (project && mapLayers[id]) {
             const { layer } = mapLayers[id];
             mapRef.current.removeLayer(layer);
           } else {
-            const config = layersConfig.find(c => c.id === id);
+            const [configLayerId] = id.split('_');
+            const config = layersConfig.find(c => c.id === configLayerId);
             if (config && mapLayers[id]) {
               const { layer } = mapLayers[id];
-              if (config.type === 'raster-tiles') {
-                mapRef.current.removeLayer(layer);
-              }
-              if (config.type === 'geojson' || config.type === 'topojson') {
+              if (
+                config.type === 'raster-tiles' ||
+                config.type === 'geojson' ||
+                config.type === 'topojson' ||
+                config.type === 'csv'
+              ) {
                 mapRef.current.removeLayer(layer);
               }
             }
           }
-        }
-      });
+        });
       // add layers not already present
       activeLayerIds.forEach(id => {
+        const [configLayerId, indicatorId] = id.split('_');
         // also check if map does not have layer,
         // otherwise they will not be adeded when hot reloading
         const llayer = mapLayers[id] && mapLayers[id].layer;
-        const hasLayer =
-          mapRef.current.hasLayer(llayer) || mapRef.current.hasLayer(llayer);
-        if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer) {
+        const hasLayer = mapRef.current.hasLayer(llayer);
+        const config = layersConfig.find(
+          c => c.id === id || c.id === configLayerId,
+        );
+        const isPolicy = startsWith(id, POLICY_LAYER);
+        // layer not yet created
+        // console.log('t1', id)
+        if (Object.keys(mapLayers).indexOf(id) < 0 || !hasLayer || isPolicy) {
+          // console.log('t2')
           // check if this layer is a project
           const project =
             projects &&
             projects.find(
-              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}-`, ''),
+              p => p.project_id === id.replace(`${PROJECT_CONFIG.id}_`, ''),
             );
           if (project) {
             if (!jsonLayers.projectLocations) {
               onLoadLayer('projectLocations', PROJECT_CONFIG);
             } else {
-              const { config } = jsonLayers.projectLocations;
               const layer = getProjectLayer({
                 jsonLayer: jsonLayers.projectLocations,
                 project,
                 markerEvents,
               });
               mapRef.current.addLayer(layer);
-              newMapLayers[id] = { layer, config };
+              newMapLayers[id] = { layer, config: jsonLayers.projectLocations };
             }
-          } else {
-            const config = layersConfig.find(c => c.id === id);
-            if (config) {
-              // raster layer
-              if (
-                config.type === 'raster-tiles' &&
-                config.source === 'mapbox'
-              ) {
-                if (mapRef) {
-                  const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
-                    id: config.tileset,
-                    accessToken: MAPBOX.TOKEN,
-                    zIndex: config['z-index'] || 1,
-                    opacity: (config.style && config.style.opacity) || 1,
-                  }).on({
-                    loading: () => setTilesLoading(true),
-                    load: () => setTilesLoading(false),
-                  });
-                  mapRef.current.addLayer(layer);
-                  newMapLayers[id] = { layer, config };
-                }
+          } else if (config) {
+            // console.log('config', config, jsonLayers[id])
+            // raster layer
+            if (config.type === 'raster-tiles' && config.source === 'mapbox') {
+              if (mapRef) {
+                const layer = L.tileLayer(MAPBOX.RASTER_URL_TEMPLATE, {
+                  id: config.tileset,
+                  accessToken: MAPBOX.TOKEN,
+                  zIndex: config['z-index'] || 1,
+                  opacity: (config.style && config.style.opacity) || 1,
+                }).on({
+                  loading: () => setTilesLoading(true),
+                  load: () => setTilesLoading(false),
+                });
+                mapRef.current.addLayer(layer);
+                newMapLayers[id] = { layer, config };
               }
-              // geojson layer
-              if (
-                (config.type === 'geojson' || config.type === 'topojson') &&
-                config.source === 'data'
-              ) {
-                // kick of loading of vector data for group if not present
-                if (!jsonLayers[id]) {
-                  onLoadLayer(id, config);
-                }
-                // kick off loading mask layers
-                const maskId = `${id}-mask`;
-                if (config.mask) {
-                  onLoadLayer(maskId, config, { mask: true });
-                }
-                if (jsonLayers[maskId] && areaMaskRef) {
-                  const layer = getVectorLayer({
-                    jsonLayer: jsonLayers[maskId],
-                    config,
-                    state: 'mask',
-                  });
-                  areaMaskRef.current.addLayer(layer);
-                  // newMapLayers[id] = { layer, config };
-                }
-                if (jsonLayers[id] && mapRef) {
-                  const layer = getVectorLayer({
-                    jsonLayer: jsonLayers[id],
-                    config,
-                    markerEvents,
-                  });
-                  mapRef.current.addLayer(layer);
-                  newMapLayers[id] = { layer, config };
-                }
+            }
+            // csv layer
+            // geojson layer
+            if (
+              config.source === 'data' &&
+              (config.type === 'geojson' ||
+                config.type === 'topojson' ||
+                config.type === 'csv')
+            ) {
+              // kick of loading of vector data for group if not present
+              if (!jsonLayers[configLayerId]) {
+                onLoadLayer(configLayerId, config);
+              }
+              if (jsonLayers[configLayerId] && mapRef) {
+                const layer = getVectorLayer({
+                  jsonLayer: jsonLayers[configLayerId],
+                  config,
+                  markerEvents,
+                  indicatorId,
+                  dateString: chartDate,
+                  locale,
+                  layerGeometrySettings,
+                  // also pass date
+                });
+                hideForZoom({ layer, zoom });
+                mapRef.current.addLayer(layer);
+                newMapLayers[id] = { layer, config };
               }
             }
           }
@@ -498,7 +563,33 @@ export function Map({
       // remember new layers
       onSetMapLayers(newMapLayers);
     }
-  }, [activeLayerIds, layersConfig, jsonLayers, projects]);
+  }, [
+    activeLayerIds,
+    layersConfig,
+    jsonLayers,
+    projects,
+    chartDate,
+    layerGeometrySettings,
+  ]);
+
+  // preload featured layers
+  useEffect(() => {
+    // console.log('activelayers (according to url) ', activeLayerIds);
+    // console.log('mapLayers (currently on map) ', mapLayers);
+    // console.log('jsonLayers (loaded into state) ', jsonLayers);
+    // console.log('Map: layers config present ', !!layersConfig);
+    if (currentModule && currentModule.featuredLayer && layersConfig) {
+      // console.log('currentModule', currentModule)
+      if (!jsonLayers[currentModule.featuredLayer]) {
+        const config = layersConfig.find(
+          c => c.id === currentModule.featuredLayer,
+        );
+        if (config) {
+          onLoadLayer(currentModule.featuredLayer, config);
+        }
+      }
+    }
+  }, [currentModule, layersConfig, jsonLayers]);
 
   // update icon/marker states for mouse over, tooltip and info panel
   useEffect(() => {
@@ -543,19 +634,19 @@ export function Map({
                   ((!mcopy && !highlightCopy) || mcopy === highlightCopy);
                 if (active || infoLayerActive || highlight) {
                   if (highlight) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'hover',
                     });
                   } else if (active) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'active',
                     });
                   } else if (infoLayerActive) {
-                    icon = getIcon(config.icon, {
+                    icon = getIcon(config, {
                       feature: marker.feature,
                       latlng: marker.getLatLng(),
                       state: 'semi-active',
@@ -564,7 +655,7 @@ export function Map({
                   // if (active) marker.setZIndexOffset(1000);
                 } else {
                   marker.setZIndexOffset(0);
-                  icon = getIcon(config.icon, {
+                  icon = getIcon(config, {
                     feature: marker.feature,
                     latlng: marker.getLatLng(),
                     state: 'default',
@@ -634,6 +725,7 @@ export function Map({
       if (highlightFeatureId) {
         Object.keys(mapLayers).forEach(key => {
           const mapLayer = mapLayers[key];
+          // console.log('mapLayer.config', mapLayer.config);
           if (
             mapLayer &&
             mapLayer.config.render &&
@@ -647,13 +739,17 @@ export function Map({
               config,
               data: {
                 type: jsonLayer.data.type,
-                features: jsonLayer.data.features.filter(
-                  feature =>
-                    feature.properties.f_id === highlightFeatureId &&
-                    (!tooltip || tooltip.featureId !== feature.properties.f_id),
-                ),
+                features: jsonLayer.data.features.filter(feature => {
+                  const fid =
+                    feature.properties.code || feature.properties.f_id;
+                  return (
+                    fid === highlightFeatureId &&
+                    (!tooltip || tooltip.featureId !== fid)
+                  );
+                }),
               },
             };
+            // console.log('jsonLayerFiltered', jsonLayerFiltered)
             const highlightLayer = getVectorLayer({
               jsonLayer: jsonLayerFiltered,
               config,
@@ -721,6 +817,7 @@ export function Map({
   }, [layersConfig, mapLayers, layerInfo]);
 
   // move active marker into view
+  // TODO: re-enable
   useEffect(() => {
     if (mapLayers && layersConfig) {
       Object.keys(mapLayers).forEach(key => {
@@ -770,8 +867,8 @@ export function Map({
         <PanelKey
           activeLayerIds={activeLayerIds.slice().reverse()}
           layersConfig={layersConfig}
-          onLayerInfo={args => {
-            onLayerInfo(args, layersConfig);
+          onSetLayerInfo={args => {
+            onSetLayerInfo(args, layersConfig);
           }}
           jsonLayers={jsonLayers}
           currentModule={currentModule}
@@ -785,9 +882,40 @@ export function Map({
           config={tooltip.config}
           layerOptions={tooltip.options}
           onClose={() => setTooltip(null)}
-          onFeatureClick={args => {
+          onFeatureClick={() => {
             setTooltip(null);
-            onLayerInfo(args, layersConfig);
+            const { id } = tooltip.config;
+            if (tooltip.feature && tooltip.feature.properties) {
+              let { infoPath, infoArg } = tooltip.feature;
+              infoPath =
+                (tooltip.feature.properties &&
+                  tooltip.feature.properties.tooltip &&
+                  tooltip.feature.properties.tooltip.infoPath) ||
+                infoPath;
+              infoArg =
+                (tooltip.feature.properties &&
+                  tooltip.feature.properties.tooltip &&
+                  tooltip.feature.properties.tooltip.infoArg) ||
+                infoArg;
+              if (infoArg === 'item' && infoPath) {
+                onSetItemInfo(infoPath);
+              } else if (id === PROJECT_CONFIG.id) {
+                // onSetProjectInfo({ projectId, locationId });
+                onSetLayerInfo({
+                  infoPath,
+                  copy: tooltip.options ? tooltip.options.copy : null,
+                });
+              } else {
+                // TODO country
+                // TODO river, gyre etc
+                onSetLayerInfo({
+                  layerId: id,
+                  copy: tooltip.options ? tooltip.options.copy : null,
+                  infoArg: 'info',
+                  infoPath: id,
+                });
+              }
+            }
           }}
         />
       )}
@@ -837,7 +965,8 @@ Map.propTypes = {
   currentModule: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
-  onLayerInfo: PropTypes.func,
+  onSetLayerInfo: PropTypes.func,
+  onSetItemInfo: PropTypes.func,
   onFeatureHighlight: PropTypes.func,
   onMapMove: PropTypes.func,
   highlightFeature: PropTypes.string,
@@ -847,6 +976,9 @@ Map.propTypes = {
   hasKey: PropTypes.bool,
   loading: PropTypes.bool,
   layerInfoActive: PropTypes.bool,
+  chartDate: PropTypes.string,
+  layerGeometrySettings: PropTypes.array,
+  intl: intlShape,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -860,9 +992,13 @@ const mapStateToProps = createStructuredSelector({
   highlightFeature: state => selectHighlightFeature(state),
   loading: state => selectLayersLoading(state),
   mview: state => selectMapPosition(state),
+  hasKey: state => selectShowKey(state),
+  chartDate: state => selectChartDate(state),
+  layerGeometrySettings: state => selectLayerGeometries(state),
 });
 
-function mapDispatchToProps(dispatch, ownProps) {
+// function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return {
     onLoadLayer: (key, config, args) => {
       dispatch(loadLayer(key, config, args));
@@ -870,19 +1006,23 @@ function mapDispatchToProps(dispatch, ownProps) {
     onSetMapLayers: layers => {
       dispatch(setMapLayers(layers));
     },
-    onLayerInfo: ({ layer, feature, copy }, layersConfig) => {
-      dispatch(setLayerInfo(layer, feature, copy));
-      const { currentModule } = ownProps;
-      const config = layersConfig && layersConfig.find(l => l.id === layer);
-      const isModuleLayer =
-        config &&
-        currentModule &&
-        currentModule.featuredLayer &&
-        (currentModule.featuredLayer === config['content-default'] ||
-          currentModule.featuredLayer === layer);
-      if (!isModuleLayer) {
-        dispatch(showLayerInfoModule());
-      }
+    onSetItemInfo: infoPath => {
+      dispatch(setItemInfo(infoPath));
+      dispatch(showLayerInfoModule());
+    },
+    onSetLayerInfo: args => {
+      dispatch(setLayerInfo(args));
+      dispatch(showLayerInfoModule());
+      // const { currentModule } = ownProps;
+      // const config = layersConfig && layersConfig.find(l => l.id === layerId);
+      // const isModuleLayer =
+      //   config &&
+      //   currentModule &&
+      //   currentModule.featuredLayer &&
+      //   (currentModule.featuredLayer === config['content-default'] ||
+      //     currentModule.featuredLayer === layerId);
+      // if (!isModuleLayer) {
+      // }
     },
     onFeatureHighlight: args => {
       const layer = args ? args.layer : null;
@@ -901,4 +1041,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(Map);
+export default compose(withConnect)(injectIntl(Map));

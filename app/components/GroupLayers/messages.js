@@ -17,6 +17,10 @@ export default defineMessages({
     id: `${scope}.columnProject`,
     defaultMessage: 'Project',
   },
+  columnIndicator: {
+    id: `${scope}.columnIndicator`,
+    defaultMessage: 'Topic',
+  },
   columnKey: {
     id: `${scope}.columnKey`,
     defaultMessage: 'Key',

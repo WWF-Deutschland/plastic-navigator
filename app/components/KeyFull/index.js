@@ -28,20 +28,24 @@ const SubTitleWrap = styled.div`
 `;
 
 export function KeyFull({
-  config,
   id,
+  indicatorId,
   simple,
   intl,
   dark,
-  layerData,
+  layerInfo,
+  config,
   excludeEmpty,
+  chartDate,
 }) {
   const { key, render, style, data, icon, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
   const isCircle = key && render && render.type === 'scaledCircle' && !!style;
-  const isArea = key && render && render.type === 'area' && !!featureStyle;
+  const isArea =
+    (key && render && render.type === 'area' && !!featureStyle) ||
+    config['styles-by-value'];
   const isIcon =
     (key && key.icon && !!key.icon.datauri) ||
     (render && render.type === 'marker' && !!icon.datauri);
@@ -49,11 +53,16 @@ export function KeyFull({
   /* eslint-disable react/no-danger */
   // prettier-ignore
   const range =
-    isCircle && layerData && layerData.features && render.attribute
-      ? getRange(layerData.features, render.attribute)
+    isCircle &&
+    render.attribute &&
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.features
+      ? getRange(layerInfo.data.features, render.attribute)
       : null;
   const hasTitle =
     (key && key.title && !isIcon && !isArea) || (!simple && data && data.unit);
+
   return (
     <Styled>
       {hasTitle && (
@@ -91,6 +100,7 @@ export function KeyFull({
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
+          excludeEmpty={excludeEmpty}
         />
       )}
       {isIconAlt && (
@@ -104,7 +114,8 @@ export function KeyFull({
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
-          layerData={layerData}
+          layerInfo={layerInfo}
+          excludeEmpty={excludeEmpty}
         />
       )}
       {isGradient && (
@@ -125,8 +136,10 @@ export function KeyFull({
           config={config}
           simple={simple}
           dark={dark}
-          layerData={layerData}
+          layerInfo={layerInfo}
           excludeEmpty={excludeEmpty}
+          chartDate={chartDate}
+          indicatorId={indicatorId}
         />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
@@ -146,9 +159,11 @@ export function KeyFull({
 }
 
 KeyFull.propTypes = {
-  config: PropTypes.object,
-  layerData: PropTypes.object,
+  layerInfo: PropTypes.object, // { config, data }
+  config: PropTypes.object, // { config, data }
   id: PropTypes.string,
+  indicatorId: PropTypes.string,
+  chartDate: PropTypes.string,
   simple: PropTypes.bool,
   dark: PropTypes.bool,
   excludeEmpty: PropTypes.bool,
