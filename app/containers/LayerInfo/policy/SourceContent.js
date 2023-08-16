@@ -8,7 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Box, Text, Button } from 'grommet';
+import { Box, Text, Button, ResponsiveContext } from 'grommet';
 
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_TOPIC_ICONS } from 'config';
@@ -16,6 +16,7 @@ import { POLICY_TOPIC_ICONS } from 'config';
 import { getStatementWithPositionsAndCountries } from 'utils/policy';
 import qe from 'utils/quasi-equals';
 import formatDate from 'utils/format-date';
+import { isMinSize } from 'utils/responsive';
 
 import Checkbox from 'components/Checkbox';
 import MarkdownText from 'components/MarkdownText';
@@ -36,7 +37,7 @@ const TitleWrap = styled(p => (
 const PanelHeader = styled(p => (
   <Box justify="between" {...p} responsive={false} />
 ))`
-  padding: 12px 24px 0;
+  padding: 24px 12px 0;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 24px 24px 0;
   }
@@ -51,7 +52,12 @@ const DateWrapper = styled.div`
   margin-bottom: 5px;
 `;
 const TopicPositions = styled(p => (
-  <Box gap="small" margin={{ top: 'small', bottom: 'medium' }} {...p} />
+  <Box
+    gap="medium"
+    margin={{ top: 'medium', bottom: 'medium' }}
+    responsive={false}
+    {...p}
+  />
 ))``;
 
 // prettier-ignore
@@ -63,7 +69,12 @@ const TopicButton = styled(p => <Button plain {...p} />)`
   }
 `;
 const TopicInner = styled(p => (
-  <Box elevation={p.active ? 'medium' : 'xsmall'} pad="small" {...p} />
+  <Box
+    elevation={p.active ? 'medium' : 'xsmall'}
+    pad="small"
+    responsive={false}
+    {...p}
+  />
 ))`
   position: relative;
   background-color: ${({ isHover, theme }) =>
@@ -71,7 +82,7 @@ const TopicInner = styled(p => (
 `;
 
 const TopicButtonWrap = styled(props => <Box {...props} />)``;
-const TopicDescription = styled(p => <Text size="small" {...p} />)`
+const TopicDescription = styled(p => <Text {...p} />)`
   color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.text.light : 'white'};
 `;
@@ -80,7 +91,7 @@ const TopicTitleShort = styled(p => <Text size="xlarge" {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   margin-top: -3px;
-  text-align: center;
+  text-align: left;
 `;
 
 const Section = styled.div`
@@ -114,6 +125,8 @@ export function SourceContent({
   intl,
   layerId,
 }) {
+  const size = React.useContext(ResponsiveContext);
+
   const { locale } = intl;
   if (!sourceId || !layerInfo) return null;
 
@@ -149,7 +162,7 @@ export function SourceContent({
         <OptionsLabel>
           <FormattedMessage
             {...messages[
-              multipleTopics ? 'multipleStatements' : 'singleStatement'
+              multipleTopics ? 'multipleTopics' : 'singleTopic'
             ]}
           />
         </OptionsLabel>
@@ -171,18 +184,19 @@ export function SourceContent({
                         {p.topic[`short_${locale}`] ||
                           p.topic[`short_${DEFAULT_LOCALE}`]}
                       </TopicTitleShort>
-                      <Box direction="row" align="center" gap="small">
+                      <Box direction="row" align="center" gap="small" flex={{ shrink: 0 }}>
                         <Icon color="black" />
                         <Checkbox inButton checked={active} activeColor="brand" />
                       </Box>
                     </Box>
-                    <Box margin={{ top: 'xsmall' }}>
+                    <Box margin={{ top: 'small' }}>
                       <TopicDescription>
                         <MarkdownText
                           content={
                             p.topic[`description_${locale}`] ||
                             p.topic[`description_${DEFAULT_LOCALE}`]
                           }
+                          size={isMinSize(size, 'medium') ? 'medium' : 'small'}
                         />
                       </TopicDescription>
                     </Box>
@@ -206,6 +220,9 @@ export function SourceContent({
                             p[`position_${locale}`] ||
                             p[`position_${DEFAULT_LOCALE}`]
                           }
+                          size={isMinSize(size, 'medium') ? 'small' : 'xsmall'}
+                          format
+                          formatValues={{ isSingle: false }}
                         />
                       </Box>
                     </Box>

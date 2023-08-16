@@ -129,7 +129,13 @@ function App({
   return (
     <Grommet theme={appTheme}>
       <AppWrapper>
-        <Helmet titleTemplate={`%s - ${title}`} defaultTitle={title}>
+        <Helmet
+          titleTemplate={`%s - ${title}`}
+          defaultTitle={title}
+          htmlAttributes={{
+            lang: locale,
+          }}
+        >
           <meta name="description" content="" />
         </Helmet>
         <Header route={route} />

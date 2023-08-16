@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'grommet';
 
 const LayerButtonInfo = styled(p => <Button plain {...p} />)`
-  padding: ${({ theme }) => theme.global.edgeSize.xxsmall};
+  padding: 0 ${({ theme }) => theme.global.edgeSize.xxsmall};
   border-radius: 9999px;
   margin-left: auto;
   &:hover {

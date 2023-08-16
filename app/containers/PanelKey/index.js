@@ -176,11 +176,7 @@ const Content = styled(p => (
 `;
 
 const Description = styled(Text)`
-  font-size: 13px;
-  line-height: 18px;
-  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    font-size: 15px;
-  }
+  hyphens: auto;
 `;
 
 const LayerTitleWrap = styled(p => (
@@ -192,7 +188,7 @@ const LayerTitleWrap = styled(p => (
     {...p}
   />
 ))`
-  min-height: 36px;
+  min-height: 20px;
 `;
 
 const LayerTitle = styled(p => <Text size="xsmall" {...p} />)`
@@ -399,15 +395,15 @@ export function PanelKey({
           <Content
             pad={{
               top: hasTabs ? 'xsmall' : 'small',
-              bottom: 'small',
-              horizontal: 'small',
+              bottom: isMinSize(size, 'medium') ? 'small' : 'xsmall',
+              horizontal: isMinSize(size, 'medium') ? 'small' : 'xsmall',
             }}
             style={{ zIndex: 2 }}
           >
             {hasTabs && (
               <Box
                 direction="row"
-                gap="small"
+                gap="xsmall"
                 flex={false}
               >
                 <ButtonTab
@@ -513,7 +509,7 @@ export function PanelKey({
                     </LayerTitleWrap>
                     <Description className="mpx-wrap-markdown-description">
                       {isActiveProject && (
-                        <FormattedMessage {...messages.keyProjectsAbout} />
+                        <p><FormattedMessage {...messages.keyProjectsAbout} /></p>
                       )}
                       {!isActiveProject && (
                         <Markdown
@@ -555,19 +551,29 @@ export function PanelKey({
               <TabLabel>
                 <FormattedMessage {...messages.keyTabAbout} />
               </TabLabel>
-              <Box margin={{ top: 'small'}}>
+              <Box margin={{ top: 'xsmall'}}>
                 {config && locale && (
-                  <Text size="small">
-                    {isActiveProject ? (
-                      <FormattedMessage {...messages.keyProjectsAbout} />
-                    ) :
-                      getLayerAbout({
-                        intl,
-                        config,
-                        jsonLayerInfo: activeJsonLayerInfo,
-                        indicatorId,
-                      })}
-                  </Text>
+                  <Description className="mpx-wrap-markdown-description">
+                    {isActiveProject && (
+                      <p><FormattedMessage {...messages.keyProjectsAbout} /></p>
+                    )}
+                    {!isActiveProject && (
+                      <Markdown
+                        options={{
+                          html: true,
+                        }}
+                        source={prepMarkdown(
+                          getLayerAbout({
+                            intl,
+                            config,
+                            jsonLayerInfo: activeJsonLayerInfo,
+                            indicatorId,
+                          }),
+                          { para: true },
+                        )}
+                      />
+                    )}
+                  </Description>
                 )}
               </Box>
             </Content>

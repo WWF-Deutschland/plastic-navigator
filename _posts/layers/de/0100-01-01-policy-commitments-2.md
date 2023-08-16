@@ -6,30 +6,34 @@ lang: de
 title: Circulate
 ---
 
-_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_
+Das Abkommen muss sicherstellen, dass die verbleibenden Kunststoffe – also solche, die nicht verboten oder schrittweise aus dem Verkehr gezogen werden – tatsächlich in einer ungiftigen Kreislaufwirtschaft zirkulieren und Anforderungen und Normen zur Wiederverwendung und zum wirksamen Recycling unterliegen. Dabei muss mit Sofortmaßnahmen für die Kunststoffkategorien begonnen werden, die das größte Risiko darstellen.  Dies ist einer der unverzichtbaren Bestandteile eines ambitionierten Abkommens zur Beendigung der Plastikverschmutzung. Zur Festlegung dieser Anforderungen und Normen sollten sowohl Positivlisten („erlaubt“) als auch Negativlisten („verboten“) in Betracht gezogen werden.
 
-The treaty must ensure that remaining plastic products—that are not banned or phased out—are effectively circulated in a non-toxic circular economy, and should be subject to requirements and standards for reuse and effective recycling, starting with immediate measures aimed at plastic categories posing the highest risk. Both positive (i.e., allowed) lists and negative (i.e., not allowed) lists should be considered to specify these requirements and standards.
+Zu vergleichbaren globalen Anforderungen und Standards in anderen Bereichen zählen unter anderem die folgenden:
 
-Some (non-exhaustive) examples of these global requirements and standards are: design standards for high-risk product categories or applications (e.g., packaging), aimed at incentivizing reuse, collection and/or recycling; standards on materials, colours and additives allowed for use in certain products; elimination of toxic additives that make reuse and recycled materials dangerous for human health and the environment; obligations on product information disclosure to improve global transparency (e.g., polymers and chemical additives of products); etc.
+* Standards für das recyclinggerechte Design von risikoreichen Produktkategorien oder Anwendungen (z.B. Verpackungen)
+* Standards für die Verwendung von Materialien, Farben und Zusatzstoffen, die in bestimmten Produkten verwendet werden dürfen
+* die Abschaffung giftiger Zusatzstoffe, die die Wiederverwendung und das Recycling von Materialien gesundheits- und umweltschädlich machen
+* Verpflichtungen zur Offenlegung von Produktinformationen zur Verbesserung der globalen Transparenz (z.B. Polymere und chemische Zusatzstoffe von Produkten)
 
-The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics  (those not eliminated) in a non-toxic circular economy.
+Der Global Plastic Navigator zeigt auf, inwieweit die Staaten die Aufnahme  globaler Anforderungen und Standards für Produkte und relevante Systeme in das Abkommen unterstützen, die darauf abzielen, die verbleibenden (nicht abgeschafften) Kunststoffe in einer ungiftigen Kreislaufwirtschaft in Umlauf zu bringen.
 
-States’ convergence on the need to ensure a non-toxic circular economy of plastics is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution.
+Einigkeit der Staaten darüber, dass es notwendig ist, eine ungiftige Kreislaufwirtschaft für Kunststoffe sicherzustellen, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.
 
 
-## How to read the data
+## Wie die Karte zu lesen ist
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards towards a non-toxic circular economy for remaining plastics (those not eliminated).
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für eine ungiftige Kreislaufwirtschaft für verbleibende (nicht verbotene) Kunststoffe umfasst.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard towards a non-toxic circular economy in their latest verbal or written public statement on this topic.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **gefordert** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **unterstützt** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht dafür ausgesprochen, dass Anforderungen und Normen für eine ungiftige Kunststoff-Kreislaufwirtschaft in das Abkommen aufgenommen werden sollen.
 
-_Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
+_Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 
-### About the data
+### Über die Daten
 
-The estimated level of support by each state is based on WWF’s assessment of publicly available documents, including national and regional declarations and decisions, interventions during meetings of the Intergovernmental Negotiating Committee (INC), and written submissions to the INC.
+Die Unterstützung der jeweiligen Staaten für die Maßnahme wurde vom WWF auf Grundlage öffentlich zugänglicher Dokumente ausgewertet. Hierzu zählen Erklärungen und Entscheidungen auf nationaler und regionaler Ebene, Beiträge während der Sitzungen des zwischenstaatlichen Verhandlungsausschusses (INC) und schriftliche Eingaben an den INC.
 
-A group statement is understood as representing the level of support of all member states of the group, unless indicated otherwise through an individual member state’s statement recorded at the same time.
+Gruppenerklärungen wurden dabei so gewertet, dass sie den Grad der Unterstützung aller Mitgliedstaaten der Gruppe wiedergeben, es sei denn, die gleichzeitig abgegebene Erklärung eines einzelnen Mitgliedstaates weicht hiervon ab.
 
-_The designation of geographical entities and the presentation of the material do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries. The map of countries is reproduced from Natural Earth, a public domain map dataset that is built through a collaboration of volunteers and supported by NACIS (North American Cartographic Information Society)._
+_Mit der Bezeichnung der geografischen Einheiten und der Darstellung des Materials nimmt der WWF nicht Stellung zum rechtlichen Status von Staaten, Regionen oder Gebieten, deren Behörden oder Grenzverläufen. Quelle der politischen Landkarte ist der gemeinfreie Datensatz von Natural Earth, der in Zusammenarbeit mit Freiwilligen erstellt und von der NACIS (North American Cartographic Information Society) unterstützt wird._
