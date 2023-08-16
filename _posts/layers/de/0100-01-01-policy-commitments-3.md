@@ -6,38 +6,37 @@ lang: de
 title: Safely Manage
 ---
 
-_Leider sind die Policy-Inhalte zur Zeit nur auf Englisch verfügbar_
+Das Abkommen sollte konkrete Maßnahmen zur Verbesserung des Abfallmanagements umfassen. Dabei darf allerdings nicht vergessen werden, dass reaktive Maßnahmen nicht ausreichen, um den aktuellen Entwicklungen von Kunststoffproduktion und -verbrauch Einhalt zu gebieten. Um die Plastikverschmutzung zu beenden, muss das Abkommen neben diesen Maßnahmen noch weitere, unverzichtbare Komponenten beinhalten. Hierzu zählen beispielsweise globale Verbote und Auslaufregelungen sowie globale Vorgaben für eine sichere Kunststoff-Kreislaufwirtschaft.
 
-While the treaty should include specific measures to ensure improved waste management, it is important to recognize that reactive measures alone will do nothing to address the current plastic production and consumption trajectories.
+Zu den globalen Standards und Anforderungen für ein umweltverträgliches Abfallmanagement müssen unter anderem die folgenden zählen:
 
-Some (non-exhaustive) examples of global requirements and standards on environmentally sound waste management are:
+* Verbot der offenen Deponierung und strenge, rechtsverbindliche globale Standards für den Betrieb von Deponien
+* Einschränkung der zulässigen Entsorgungsmethoden für bestimmte risikoreiche Produktkategorien, Stoffe oder Materialien (z.B. Verbot der Entsorgung leichter Materialien auf offenen Deponien oder in der Nähe von Gewässern oder verbindliche Ziele für die getrennte Sammlung bestimmter Produktkategorien/Materialien)
+* Pflicht zur Ausarbeitung und Umsetzung von Systemen der erweiterten Herstellerverantwortung (EPR), einschließlich Pfandsystemen für bestimmte Produktkategorien (z.B. Getränkeflaschen oder bestimmte Arten von Fanggeräten in der Fischerei)
+* Kennzeichnungspflicht für Fanggeräte (z.B. auf Grundlage der FAO-Leitlinien) und Meldepflicht bei Verlust von Fanggeräten
+* Technische Standards für Reifen und andere Hochrisikoprodukte, mit dem Ziel, die Freisetzung von Mikroplastik an der Quelle zu verhindern, sowie „end-of-pipe“-Auffangtechniken wie z.B. Filtern an Waschmaschinen, um das Austreten von Mikroplastik zu verhindern
+* Mechanismen, die Anreize für den Auffang von Plastikmüll sowohl innerhalb als auch außerhalb der nationalen Gerichtsbarkeit schaffen (z.B. durch die Einrichtung eines speziellen Finanzierungsmechanismus für die Reinigung/Rückgewinnung außerhalb der nationalen Gerichtsbarkeit)
 
-* Prohibition of open dumping, and mandatory strict global standards for landfill operations;
-* Specific restrictions on disposal methods for certain high-risk product categories, substances, or materials (e.g., ban on disposal of lightweight materials in open dumpsites, or near aquatic systems; or binding targets for separate collection of certain product categories/materials);
-* Mandatory development and implementation of Extended Producer Responsibility (EPR) schemes, including deposit return schemes for certain product categories (e.g., beverage bottles, or certain types of fishing gear);
-* Mandatory marking of fishing gear (e.g., building on FAO guidelines) and mandatory reporting of lost fishing gear;
-* Technical standards for tires and other high-risk products to prevent microplastic release from the source, and of end-of-pipe capture practices to prevent microplastic leakage, such as filters on washing machine;
-* Mechanisms incentivising clean-up, both within and beyond national jurisdiction (e.g., through the establishment of a dedicated financial mechanism for clean-up/recovery beyond national jurisdiction)
+Der Global Plastic Navigator zeigt an, inwieweit die Staaten sich dafür aussprechen, dass globale Anforderungen und Standards in das Abkommen aufgenommen werden, die ein umweltverträgliches Abfallmanagement von Plastikmüll sicherstellen.
 
-The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
-
-States’ convergence on the need to ensure environmentally sound waste management of plastics is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution.
+Einigkeit der Staaten darüber, dass ein umweltverträgliches Abfallmanagement für Plastikmüll notwendig ist, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.
 
 
 
-## How to read the data
+## Wie die Karte zu lesen ist
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards to ensure environmentally sound waste management of plastics.
+Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für ein umweltverträgliches Abfallmanagement für Plastikmüll enthält.
 
-* Green indicates states that have publicly expressed—in their latest verbal or written statement on this topic—support for the treaty’s inclusion of at least one or more global requirements and standards to ensure environmentally sound management of the plastics that becomes waste.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard to ensure environmentally sound management of the plastics that becomes waste in their latest verbal or written public statement on this topic.
+* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **gefordert** haben.
+* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens einer Anforderung bzw. eines Standards zur Gewährleistung eines umweltverträglichen Plastikmüll-Managements in das Abkommen **unterstützt** haben.
+* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht für globale Anforderungen und Standards für ein umweltverträgliches Abfallmanagement von Plastikabfällen ausgesprochen.
 
-_Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
+_Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 
-### About the data
+### Über die Daten
 
-The estimated level of support by each state is based on WWF’s assessment of publicly available documents, including national and regional declarations and decisions, interventions during meetings of the Intergovernmental Negotiating Committee (INC), and written submissions to the INC.
+Die Unterstützung der jeweiligen Staaten für die Maßnahme wurde vom WWF auf Grundlage öffentlich zugänglicher Dokumente ausgewertet. Hierzu zählen Erklärungen und Entscheidungen auf nationaler und regionaler Ebene, Beiträge während der Sitzungen des zwischenstaatlichen Verhandlungsausschusses (INC) und schriftliche Eingaben an den INC.
 
-A group statement is understood as representing the level of support of all member states of the group, unless indicated otherwise through an individual member state’s statement recorded at the same time.
+Gruppenerklärungen wurden dabei so gewertet, dass sie den Grad der Unterstützung aller Mitgliedstaaten der Gruppe wiedergeben, es sei denn, die gleichzeitig abgegebene Erklärung eines einzelnen Mitgliedstaates weicht hiervon ab.
 
-_The designation of geographical entities and the presentation of the material do not imply the expression of any opinion whatsoever on the part of WWF concerning the legal status of any country, territory, or area, or of its authorities, or concerning the delimitation of its frontiers or boundaries. The map of countries is reproduced from Natural Earth, a public domain map dataset that is built through a collaboration of volunteers and supported by NACIS (North American Cartographic Information Society)._
+_Mit der Bezeichnung der geografischen Einheiten und der Darstellung des Materials nimmt der WWF nicht Stellung zum rechtlichen Status von Staaten, Regionen oder Gebieten, deren Behörden oder Grenzverläufen. Quelle der politischen Landkarte ist der gemeinfreie Datensatz von Natural Earth, der in Zusammenarbeit mit Freiwilligen erstellt und von der NACIS (North American Cartographic Information Society) unterstützt wird._

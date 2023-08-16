@@ -185,4 +185,4 @@ export const MAP_OPTIONS = {
   },
 };
 
-export const LOCALE_TOGGLE = false;
+export const LOCALE_TOGGLE = true;

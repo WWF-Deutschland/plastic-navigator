@@ -70,7 +70,7 @@ const ContentWrap = styled.div`
 const PanelHeader = styled(p => (
   <Box justify="between" {...p} elevation="small" responsive={false} />
 ))`
-  padding: 12px 12px 0;
+  padding: 18px 12px 0;
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     padding: 24px 12px 0;
   }
@@ -83,19 +83,26 @@ const IconWrap = styled.div`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
 `;
 
-const TitleShort = styled(p => <Text size="xxlarge" {...p} />)`
+const TitleShort = styled(p => <Text {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
   color: ${({ theme }) => theme.global.colors.brand};
+  font-size: 26px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 30px;
+  }
 `;
 
 const TopicNav = styled(p => <Button plain {...p} />)`
   border-radius: 99999px;
   background: white;
-  padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+  padding: 7px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    padding: 10px;
+  }
 `;
 
 const ButtonBack = styled(p => <Button {...p} plain />)`
@@ -127,7 +134,14 @@ const StyledDropButton = styled(DropButton)`
   }
 `;
 
-const Description = styled(p => <Text size="ml" {...p} />)``;
+const Description = styled(p => <Text {...p} />)`
+  font-size: 15px;
+  line-height: 20px;
+  @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+    font-size: 17px;
+    line-height: 23px;
+  }
+`;
 
 const Tabs = styled(p => <Box {...p} direction="row" gap="xsmall" />)``;
 const TabLinkWrapper = styled(p => <Box {...p} margin={{ right: 'xsmall' }} />)`
@@ -358,7 +372,7 @@ export function PolicyContent({
         )}
         {layerInfo && tab === 'details' && (
           <PanelBody>
-            <Box margin={{ vertical: 'medium' }}>
+            <Box margin={{ top: 'medium' }} responsive={false}>
               <CountryChart
                 config={config}
                 indicatorId={indicatorId}

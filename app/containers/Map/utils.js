@@ -4,6 +4,7 @@ import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
 import qe from 'utils/quasi-equals';
 import { getCountryPositionForTopicAndDate } from 'utils/policy';
+import { formatMessageForValues } from 'utils/string';
 import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
@@ -649,6 +650,7 @@ const prepareGeometry = ({
   indicatorId,
   dateString,
   locale,
+  intl,
 }) => {
   if (config.indicators) {
     const geometryX = {
@@ -668,6 +670,20 @@ const prepareGeometry = ({
             tables,
             locale,
           });
+          let positionTitle = '';
+          if (position && position.latestPosition) {
+            // prettier-ignore
+            positionTitle = intl ?
+              formatMessageForValues({
+                intl,
+                message:
+                  position.latestPosition[`position_short_${locale}`] ||
+                  position.latestPosition[`position_short_${DEFAULT_LOCALE}`],
+                values: { isSingle: false },
+              })
+              : position.latestPosition[`position_short_${locale}`] ||
+                position.latestPosition[`position_short_${DEFAULT_LOCALE}`];
+          }
           return {
             type: gf.type,
             geometry: gf.geometry,
@@ -684,13 +700,7 @@ const prepareGeometry = ({
                 infoPath: `${config.id}_${indicatorId}|country-${feature.code}`,
                 id: feature.code,
                 more: true,
-                content:
-                  position &&
-                  position.latestPosition &&
-                  (position.latestPosition[`position_short_${locale}`] ||
-                    position.latestPosition[
-                      `position_short_${DEFAULT_LOCALE}`
-                    ]),
+                content: positionTitle,
               },
             },
           };
@@ -725,6 +735,7 @@ export const getVectorLayer = ({
   dateString,
   locale,
   layerGeometrySettings,
+  intl,
 }) => {
   const { data } = jsonLayer;
   // polyline
@@ -773,6 +784,7 @@ export const getVectorLayer = ({
         indicatorId,
         dateString,
         locale,
+        intl,
       });
       const layerGeoSettings = getLayerGeoSettings(layerSettings, index);
       let active = true;

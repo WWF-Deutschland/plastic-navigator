@@ -1,4 +1,5 @@
 import { toLower, deburr } from 'lodash/string';
+import { defineMessages } from 'react-intl';
 /* eslint-disable no-useless-escape */
 const INVALID = /[°"§%()\[\]{}=\\?´`'#<>|,;.:+_-]+/g;
 
@@ -58,4 +59,15 @@ export const regExMultipleWords = str => {
   return chunks
     ? chunks.reduce((words, s) => `${words}(?=.*${s})`, '')
     : sanitise(str);
+};
+
+export const formatMessageForValues = ({ intl, message, values }) => {
+  if (!values) return message;
+  const messages = defineMessages({
+    msg: {
+      id: 'utils.formatMessage',
+      defaultMessage: message,
+    },
+  });
+  return intl.formatMessage(messages.msg, values);
 };

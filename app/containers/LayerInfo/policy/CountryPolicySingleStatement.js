@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Box, Text, Button } from 'grommet';
+import { Box, Text, Button, ResponsiveContext } from 'grommet';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import coreMessages from 'messages';
 import formatDate from 'utils/format-date';
 import { getPositionForStatement } from 'utils/policy';
+import { isMinSize } from 'utils/responsive';
 import MarkdownText from 'components/MarkdownText';
 
 import CountryPositionSymbol from './CountryPositionSymbol';
@@ -36,7 +37,7 @@ const Quote = styled(P)``;
 const SectionTitleWrap = styled.div`
   margin-bottom: 5px;
 `;
-const SectionTitle = styled(p => <Text size="small" {...p} />)`
+const SectionTitle = styled(p => <Text size="xsmall" {...p} />)`
   text-transform: uppercase;
   font-weight: bold;
 `;
@@ -49,7 +50,7 @@ const BorderBottomWrap = styled.div`
   margin-bottom: 20px;
 `;
 
-const StatementTitle = styled(p => <Text size="xxlarge" {...p} />)`
+const StatementTitle = styled(p => <Text {...p} />)`
   font-family: 'wwfregular';
   font-weight: normal;
   line-height: 1;
@@ -65,6 +66,8 @@ const CountryPolicySingleStatement = ({
   listCountries,
   onSelectStatement,
 }) => {
+  const size = React.useContext(ResponsiveContext);
+
   const { locale } = intl;
   const position = getPositionForStatement({
     topicId: indicatorId,
@@ -77,7 +80,10 @@ const CountryPolicySingleStatement = ({
       <StatementHeader>
         {statement.date && (
           <DateWrapper>
-            <Text size="medium" color="textSecondary">
+            <Text
+              size="medium"
+              color="textSecondary"
+            >
               {formatDate(
                 locale,
                 new Date(statement.date).getTime(),
@@ -85,7 +91,9 @@ const CountryPolicySingleStatement = ({
             </Text>
           </DateWrapper>
         )}
-        <StatementTitle>
+        <StatementTitle
+          size={isMinSize(size, 'medium') ? 'xxlarge' : 'xlarge'}
+        >
           {statement &&
             (statement[`title_${locale}`] ||
               statement[`title_${DEFAULT_LOCALE}`])}
@@ -118,6 +126,9 @@ const CountryPolicySingleStatement = ({
                   position[`position_${locale}`] ||
                   position[`position_${DEFAULT_LOCALE}`]
                 }
+                size={isMinSize(size, 'medium') ? 'small' : 'xsmall'}
+                format
+                formatValues={{ isSingle: true }}
               />
             </Box>
           </Box>

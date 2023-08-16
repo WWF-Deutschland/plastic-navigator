@@ -1,4 +1,4 @@
-country_code,country_en,source_id
+﻿country_code,country_en,source_id
 AFG,Afghanistan,G77CPR157
 AFG,Afghanistan,UNEA-5.2
 ALB,Albania,ANTALYA21
@@ -299,7 +299,6 @@ ECU,Ecuador,PERWRES21
 ECU,Ecuador,UNEA-5.2
 ECU,Ecuador,UNEA5.1-GER
 ECU,Ecuador,WTODEC21
-EGY,Egypt,AG-PRE-INC2
 EGY,Egypt,AMCEN2019
 EGY,Egypt,AMCEN2021
 EGY,Egypt,ANTALYA21
@@ -820,6 +819,7 @@ KOR,Republic of Korea,ODPPD21
 KOR,Republic of Korea,PERWRES21A
 KOR,Republic of Korea,UNEA-5.2
 KOR,Republic of Korea,WTODEC21
+KOR,Republic of Korea,KOR-PRE-INC2
 MDA,Republic of Moldova,MDA-PRE-INC2
 MDA,Republic of Moldova,UNEA-5.2
 ROU,Romania,EU-PRE-INC2
@@ -896,6 +896,7 @@ SYC,Seychelles,UNEA-5.2
 SLE,Sierra Leone,AG-PRE-INC2
 SLE,Sierra Leone,AMCEN2019
 SLE,Sierra Leone,AMCEN2021
+SLE,Sierra Leone,AOSIS-PRE-INC2
 SLE,Sierra Leone,G77CPR157
 SLE,Sierra Leone,SLE-PRE-INC2
 SLE,Sierra Leone,UNEA-5.2
@@ -1110,3 +1111,58 @@ ZWE,Zimbabwe,AMCEN2021
 ZWE,Zimbabwe,BMK2020
 ZWE,Zimbabwe,G77CPR157
 ZWE,Zimbabwe,UNEA-5.2
+ATG,Antigua & Barbuda,HAC-joint-INC2
+ARM,Armenia,HAC-joint-INC2
+AUS,Australia,HAC-joint-INC2
+AUT,Austria,HAC-joint-INC2
+AZE,Azerbaijan,HAC-joint-INC2
+BEL,Belgium,HAC-joint-INC2
+BGR,Bulgaria,HAC-joint-INC2
+BFA,Burkina Faso,HAC-joint-INC2
+CPV,Cabo Verde,HAC-joint-INC2
+CAN,Canada,HAC-joint-INC2
+CHL,Chile,HAC-joint-INC2
+COL,Colombia,HAC-joint-INC2
+COK,Cook Island,HAC-joint-INC2
+CRI,Costa Rica,HAC-joint-INC2
+DNK,Denmark,HAC-joint-INC2
+DOM,Dominican Republic,HAC-joint-INC2
+ECU,Ecuador,HAC-joint-INC2
+FIN,Finland,HAC-joint-INC2
+FRA,France,HAC-joint-INC2
+GEO,Georgia,HAC-joint-INC2
+DEU,Germany,HAC-joint-INC2
+GHA,Ghana,HAC-joint-INC2
+GIN,Guinea,HAC-joint-INC2
+ISL,Iceland,HAC-joint-INC2
+IRL,Ireland,HAC-joint-INC2
+JOR,Jordan,HAC-joint-INC2
+LUX,Luxembourg,HAC-joint-INC2
+MDV,Maldives,HAC-joint-INC2
+MLI,Mali,HAC-joint-INC2
+MEX,Mexico,HAC-joint-INC2
+FSM,Micronesia,HAC-joint-INC2
+MCO,Monaco,HAC-joint-INC2
+MNE,Montenegro,HAC-joint-INC2
+NLD,Netherlands,HAC-joint-INC2
+NZL,New Zealand,HAC-joint-INC2
+NGA,Nigeria,HAC-joint-INC2
+NOR,Norway,HAC-joint-INC2
+PAN,Panama,HAC-joint-INC2
+PER,Peru,HAC-joint-INC2
+PRT,Portugal,HAC-joint-INC2
+KOR,Republic of Korea,HAC-joint-INC2
+ROU,Romania,HAC-joint-INC2
+RWA,Rwanda,HAC-joint-INC2
+SEN,Senegal,HAC-joint-INC2
+SYC,Seychelles,HAC-joint-INC2
+SVN,Slovenia,HAC-joint-INC2
+SWE,Sweden,HAC-joint-INC2
+CHE,Switzerland,HAC-joint-INC2
+GBR,United Kingdom,HAC-joint-INC2
+URY,Uruguay,HAC-joint-INC2
+JPN,Japan,HAC-joint-INC2
+GAB,Gabon,HAC-joint-INC2
+EST,Estonia,HAC-joint-INC2
+MUS,Mauritius,HAC-joint-INC2
+ESP,Spain,HAC-joint-INC2

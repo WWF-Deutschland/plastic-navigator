@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DEFAULT_LOCALE } from 'i18n';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import styled from 'styled-components';
 import { Text, Box } from 'grommet';
 
@@ -12,6 +12,7 @@ import { startsWith } from 'utils/string';
 
 import Checkbox from 'components/Checkbox';
 import ToggleOnOff from 'components/ToggleOnOff';
+import MarkdownText from 'components/MarkdownText';
 
 import LayerButtonInfo from './LayerButtonInfo';
 
@@ -27,11 +28,11 @@ const LayerTitleWrap = styled(p => (
     {...p}
   />
 ))`
-  min-height: 36px;
+  min-height: 22px;
 `;
 
 const Settings = styled(p => (
-  <Box gap="xsmall" margin={{ top: 'small' }} responsive={false} {...p} />
+  <Box gap="xsmall" margin={{ top: 'xsmall' }} responsive={false} {...p} />
 ))``;
 const GeoSettings = styled(p => (
   <Box gap="xsmall" responsive={false} {...p} />
@@ -70,9 +71,12 @@ export function LayerSettings({
       <LayerTitleWrap>
         <Box gap="hair">
           <LayerTitle>
-            <FormattedMessage {...messages.settingsTabTitle} />
+            {`${intl.formatMessage(messages.settingsTabTitle)} ${getLayerTitle({
+              intl,
+              config,
+              short: true,
+            })}`}
           </LayerTitle>
-          <LayerTitle>{getLayerTitle({ intl, config })}</LayerTitle>
         </Box>
         {onLayerInfo && (
           <LayerButtonInfo onClick={onLayerInfo} icon={<Info />} />
@@ -119,7 +123,6 @@ export function LayerSettings({
                         isDisabled={isDisabled}
                       >
                         <Checkbox
-                          labelSize="xsmall"
                           checked={checked}
                           isDisabled={isDisabled}
                           onToggle={() => {
@@ -141,9 +144,15 @@ export function LayerSettings({
                             }
                             onSetLayerGeometries(updated);
                           }}
-                          label={
-                            setting.label[locale] ||
-                            setting.label[DEFAULT_LOCALE]
+                          styledLabel={
+                            <MarkdownText
+                              size="xsmall"
+                              content={
+                                setting.label[locale] ||
+                                setting.label[DEFAULT_LOCALE]
+                              }
+                              className="mpx-markdown-text-settings"
+                            />
                           }
                         />
                       </Setting>

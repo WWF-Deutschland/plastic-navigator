@@ -29,6 +29,10 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    hyphenate-limit-chars: 8 3 3;
+    @media (max-width: ${({ theme }) => theme.sizes.small.maxpx}) {
+      hyphens: auto;
+    }
   }
 
   body.fontLoaded {
@@ -97,10 +101,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 20px;
   }
   .mpx-content a {
-    color: #000000;
-    text-decoration-color: #000000;
+    color: #00728F;
+    text-decoration-color: #00728F;
     &:visited{
-      color: #000000;
+      color: #00728F;
     }
     &:hover{
       color: #08586C;
@@ -120,9 +124,14 @@ const GlobalStyle = createGlobalStyle`
   }
   .mpx-wrap-markdown-description p {
     margin: 0;
-    line-height: 18px
-    @media (min-width: ${sizes.medium.min}px}) {
-      line-height: 20px
+    font-size: 12px;
+    line-height: 15px;
+    @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
+      line-height: 16px;
+    }
+    @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
+      font-size: 13px;
+      line-height: 18px;
     }
   }
   .mpx-wrap-markdown-stat-title p {
@@ -166,6 +175,9 @@ const GlobalStyle = createGlobalStyle`
   }
   .mpx-markdown-text p {
     margin: 0;
+  }
+  .mpx-markdown-text-settings p {
+    line-height: 1.2;
   }
   .leaflet-layer .leaflet-mask.leaflet-interactive {
     cursor: initial !important;
