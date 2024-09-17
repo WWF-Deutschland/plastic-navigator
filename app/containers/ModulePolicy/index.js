@@ -48,6 +48,7 @@ import {
 } from 'containers/App/actions';
 
 import { startsWith } from 'utils/string';
+import { isArchived, isAggregate } from 'utils/policy';
 
 import commonMessages from 'messages';
 import messages from './messages';
@@ -126,9 +127,6 @@ const isModuleLayerActive = activeLayers =>
   !!activeLayers.find(l => startsWith(l, POLICY_LAYER));
 const getActiveModuleLayer = activeLayers =>
   activeLayers.find(l => startsWith(l, POLICY_LAYER));
-
-const isAggregate = topic => topic.aggregate && topic.aggregate.trim() !== '';
-const isArchived = topic => topic.archived && topic.archived.trim() === '1';
 
 export function ModulePolicy({
   onSetLayers,
@@ -226,15 +224,11 @@ export function ModulePolicy({
     moduleLayer.data.tables.topics.data &&
     moduleLayer.data.tables.topics.data.data;
 
-  const topicsAggregated =
-    topicsData && topicsData.filter(t => isAggregate(t) && !isArchived(t));
-
   const topicsCurrent = topicsData && topicsData.filter(t => !isArchived(t));
   // topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
 
   const topicsArchived =
     topicsData && topicsData.filter(t => !isAggregate(t) && isArchived(t));
-
 
   const size = React.useContext(ResponsiveContext);
   return (
