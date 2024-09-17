@@ -229,6 +229,12 @@ export const getTopicsFromData = layerInfo => {
       if (a.archived !== '1' && b.archived === '1') {
         return -1;
       }
+      if (isAggregate(a)) {
+        return -1;
+      }
+      if (isAggregate(b)) {
+        return 1;
+      }
       return parseInt(a.id, 10) > parseInt(b.id, 10) ? 1 : -1;
     });
   }
