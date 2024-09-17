@@ -127,6 +127,9 @@ const isModuleLayerActive = activeLayers =>
 const getActiveModuleLayer = activeLayers =>
   activeLayers.find(l => startsWith(l, POLICY_LAYER));
 
+const isAggregate = topic => topic.aggregate && topic.aggregate.trim() !== '';
+const isArchived = topic => topic.archived && topic.archived.trim() === '1';
+
 export function ModulePolicy({
   onSetLayers,
   uiState,
@@ -216,18 +219,22 @@ export function ModulePolicy({
   // const isModuleInfo = startsWith(info, MODULES.policy.featuredLayer);
   const ref = React.useRef(null);
   const layerConfig = config && config.find(l => l.id === POLICY_LAYER);
-  const topicsPrimary =
+  const topicsData =
     moduleLayer &&
     moduleLayer.data.tables &&
     moduleLayer.data.tables.topics &&
     moduleLayer.data.tables.topics.data &&
-    moduleLayer.data.tables.topics.data.data.filter(t => t.archived !== '1');
-  const topicsSecondary =
-    moduleLayer &&
-    moduleLayer.data.tables &&
-    moduleLayer.data.tables.topics &&
-    moduleLayer.data.tables.topics.data &&
-    moduleLayer.data.tables.topics.data.data.filter(t => t.archived === '1');
+    moduleLayer.data.tables.topics.data.data;
+
+  const topicsAggregated =
+    topicsData && topicsData.filter(t => isAggregate(t) && !isArchived(t));
+
+  const topicsCurrent = topicsData && topicsData.filter(t => !isArchived(t));
+  // topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
+
+  const topicsArchived =
+    topicsData && topicsData.filter(t => !isAggregate(t) && isArchived(t));
+
 
   const size = React.useContext(ResponsiveContext);
   return (
@@ -278,11 +285,11 @@ export function ModulePolicy({
                           margin={{ top: 'small' }}
                           wrap
                         >
-                          {topicsPrimary &&
-                            topicsPrimary.map(t => (
+                          {topicsCurrent &&
+                            topicsCurrent.map(t => (
                               <TopicCard
                                 key={t.id}
-                                count={topicsPrimary.length}
+                                count={topicsCurrent.length}
                                 topic={t}
                                 onTopicSelect={id =>
                                   onSetLayers([
@@ -306,12 +313,12 @@ export function ModulePolicy({
                           />
                         </TitleSelectArchived>
                         <Box direction="row" margin={{ top: 'small' }}>
-                          {topicsSecondary &&
-                            topicsSecondary.map(t => (
+                          {topicsArchived &&
+                            topicsArchived.map(t => (
                               <TopicCard
                                 key={t.id}
                                 secondary
-                                count={topicsSecondary.length}
+                                count={topicsArchived.length}
                                 topic={t}
                                 onTopicSelect={id =>
                                   onSetLayers([

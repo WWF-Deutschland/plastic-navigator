@@ -224,7 +224,7 @@ export const getTopicsFromData = layerInfo => {
       if (a.archived !== '1' && b.archived === '1') {
         return -1;
       }
-      return a.id > b.id ? 1 : -1;
+      return parseInt(a.id, 10) > parseInt(b.id, 10) ? 1 : -1;
     });
   }
   return null;
@@ -237,7 +237,9 @@ export const getTopicFromData = ({ indicatorId, layerInfo }) => {
     layerInfo.data.tables.topics &&
     layerInfo.data.tables.topics.data.data
   ) {
-    return layerInfo.data.tables.topics.data.data[indicatorId];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, indicatorId),
+    );
   }
   return null;
 };
@@ -259,7 +261,9 @@ export const getPreviousTopicFromData = ({
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const prevIndex =
       currentIndex === 0 ? validTopicIds.length - 1 : currentIndex - 1;
-    return layerInfo.data.tables.topics.data.data[validTopicIds[prevIndex]];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, validTopicIds[prevIndex]),
+    );
   }
   return null;
 };
@@ -277,7 +281,9 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const nextIndex =
       currentIndex === validTopicIds.length - 1 ? 0 : currentIndex + 1;
-    return layerInfo.data.tables.topics.data.data[validTopicIds[nextIndex]];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, validTopicIds[nextIndex]),
+    );
   }
   return null;
 };

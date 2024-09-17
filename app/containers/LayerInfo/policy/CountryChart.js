@@ -258,15 +258,18 @@ export function CountryChart({
   //     ];
   //   }
   // }
-  const statsForKey = prepChartKey({
-    positionsCurrentDate: positionsOverTime[currentDate].positions,
-    positionsLatestDate: positionsOverTime[lastDate].positions,
-    tables: layerInfo.data.tables,
-    indicatorId,
-    config,
-    locale,
-    intl,
-  });
+  const statsForKey =
+    positionsOverTime &&
+    positionsOverTime[currentDate] &&
+    prepChartKey({
+      positionsCurrentDate: positionsOverTime[currentDate].positions,
+      positionsLatestDate: positionsOverTime[lastDate].positions,
+      tables: layerInfo.data.tables,
+      indicatorId,
+      config,
+      locale,
+      intl,
+    });
 
   // console.log('statsForKey', statsForKey)
   // const statsForKeyByStatic = groupBy(statsForKey, s =>

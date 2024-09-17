@@ -344,6 +344,22 @@ export function PolicyContent({
             </Tabs>
           </PanelHeader>
         )}
+        {layerInfo && tab === 'details' && (
+          <PanelBody>
+            <Box margin={{ top: 'medium' }} responsive={false}>
+              <CountryChart
+                config={config}
+                indicatorId={indicatorId}
+                layerInfo={layerInfo}
+                onSelectStatement={sid => onSelectStatement(sid, layerId)}
+                onSetChartDate={onSetChartDate}
+                chartDate={chartDate}
+                isArchive={isTopicArchived}
+              />
+            </Box>
+            <LayerContent fullLayerId={layerId} config={config} />
+          </PanelBody>
+        )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
             <CountryList
@@ -368,22 +384,6 @@ export function PolicyContent({
               topic={topic}
               config={config}
             />
-          </PanelBody>
-        )}
-        {layerInfo && tab === 'details' && (
-          <PanelBody>
-            <Box margin={{ top: 'medium' }} responsive={false}>
-              <CountryChart
-                config={config}
-                indicatorId={indicatorId}
-                layerInfo={layerInfo}
-                onSelectStatement={sid => onSelectStatement(sid, layerId)}
-                onSetChartDate={onSetChartDate}
-                chartDate={chartDate}
-                isArchive={isTopicArchived}
-              />
-            </Box>
-            <LayerContent fullLayerId={layerId} config={config} />
           </PanelBody>
         )}
       </ContentWrap>
