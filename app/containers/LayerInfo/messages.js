@@ -156,4 +156,9 @@ export default defineMessages({
     id: `${scope}.selectCurrentTopics`,
     defaultMessage: 'Current topics',
   },
+  noStatementsHint: {
+    id: `${scope}.noStatementsHint`,
+    defaultMessage:
+      'Please refer to the underlying topics or individual countries',
+  },
 });

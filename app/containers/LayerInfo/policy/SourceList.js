@@ -6,18 +6,33 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { intlShape, injectIntl } from 'react-intl';
+import styled from 'styled-components';
+import { Box, Text } from 'grommet';
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { setItemInfo } from 'containers/App/actions';
-import { filterSources } from 'utils/policy';
+import { filterSources, isAggregate } from 'utils/policy';
 
 import coreMessages from 'messages';
+import messages from '../messages';
 
 import FeatureList from '../FeatureList';
 
+const Hint = styled(p => <Text size="small" {...p} />)``;
+
 export function SourceList({ sources, config, topic, intl, onSetItemInfo }) {
+  if (isAggregate(topic)) {
+    return (
+      <Box margin={{ top: 'medium' }} responsive={false}>
+        <Hint>
+          <FormattedMessage {...messages.noStatementsHint} />
+        </Hint>
+      </Box>
+    );
+  }
+
   return sources ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.sources, {
