@@ -61,7 +61,7 @@
   "app.containers.LayerInfo.noLocationInfo": "Zur Zeit gibt es keine weiteren Informationen zum ausgewählten Projekt-Standort. Benutzen Sie den Link oben zu allgemeinen Informationen zum Projekt",
   "app.containers.LayerInfo.noSearchResults": "Keine Ergebnisse für aktuelle Suche",
   "app.containers.LayerInfo.noStatement": "Keine Erklärung dokumentiert",
-  "app.containers.LayerInfo.noStatementsHint": "",
+  "app.containers.LayerInfo.noStatementsAggregateTopicHint": "",
   "app.containers.LayerInfo.otherStatements": "{countOther} andere {isSingle, select, true {Erklärung} false {Erklärungen}} (siehe Tab)",
   "app.containers.LayerInfo.placeholderCountries": "{isSmall, select, true {Nach} false {Liste nach}} Ländernamen oder -code filtern",
   "app.containers.LayerInfo.placeholderDefault": "Liste nach Namen filtern",

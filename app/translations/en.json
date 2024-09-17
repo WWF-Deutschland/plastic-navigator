@@ -61,7 +61,7 @@
   "app.containers.LayerInfo.noLocationInfo": "There is currently no information available for the selected project location, but you can use the link above to learn more about the project",
   "app.containers.LayerInfo.noSearchResults": "No results for current search",
   "app.containers.LayerInfo.noStatement": "No statement recorded",
-  "app.containers.LayerInfo.noStatementsHint": "Please refer to the underlying topics or individual countries",
+  "app.containers.LayerInfo.noStatementsAggregateTopicHint": "Please refer to the underlying topics or individual countries",
   "app.containers.LayerInfo.otherStatements": "{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)",
   "app.containers.LayerInfo.placeholderCountries": "Filter list by country name or code",
   "app.containers.LayerInfo.placeholderDefault": "Filter list by name",

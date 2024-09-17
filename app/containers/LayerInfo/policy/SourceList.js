@@ -27,7 +27,7 @@ export function SourceList({ sources, config, topic, intl, onSetItemInfo }) {
     return (
       <Box margin={{ top: 'medium' }} responsive={false}>
         <Hint>
-          <FormattedMessage {...messages.noStatementsHint} />
+          <FormattedMessage {...messages.noStatementsAggregateTopicHint} />
         </Hint>
       </Box>
     );
