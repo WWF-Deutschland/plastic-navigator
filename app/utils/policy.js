@@ -9,9 +9,9 @@ import {
 const excludeHiddenCountries = country => country.display !== 'inactive';
 
 export const isAggregate = topic =>
-  topic.aggregate && topic.aggregate.trim() !== '';
+  !!(topic && topic.aggregate && topic.aggregate.trim() !== '');
 export const isArchived = topic =>
-  topic.archived && topic.archived.trim() === '1';
+  !!(topic && topic.archived && topic.archived.trim() === '1');
 
 export const getPositionForStatement = ({ topicId, statement, tables }) => {
   const value =

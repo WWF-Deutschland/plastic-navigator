@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Text } from 'grommet';
 
-import { getCountryStatements } from 'utils/policy';
+import { getCountryStatements, getTopicsFromData, isAggregate } from 'utils/policy';
+
+import Hint from 'components/Hint';
 import CountryPolicySingleStatement from './CountryPolicySingleStatement';
 
 import messages from '../messages';
@@ -33,6 +35,9 @@ const CountryPolicyCommitments = ({
   layerInfo,
   onSelectStatement,
 }) => {
+  const currentTopic = getTopicsFromData(layerInfo).find(t => t.id === indicatorId);
+  const isTopicAggregate = isAggregate(currentTopic);
+
   const statements = getCountryStatements({
     countryCode: country.code,
     tables: layerInfo.data.tables,
@@ -50,7 +55,7 @@ const CountryPolicyCommitments = ({
           )}
         </StatementListHeaderText>
       </StatementListHeader>
-      {(!statements || statements.length === 0) && (
+      {(!statements || statements.length === 0) && !isTopicAggregate && (
         <NoStatement>
           <Text size="small" color="textSecondary">
             <FormattedMessage {...messages.noStatement} />
@@ -70,6 +75,11 @@ const CountryPolicyCommitments = ({
             onSelectStatement={onSelectStatement}
           />
         ))}
+      {isTopicAggregate &&
+        <Hint>
+          <FormattedMessage {...messages.noStatementsAggregateTopicHint} />
+        </Hint>
+      }
     </Styled>
   );
 };
