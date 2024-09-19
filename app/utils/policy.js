@@ -151,16 +151,13 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
 
 export const getAggregatePositionForDate = ({
   countryCode,
-  topicId,
   dateString,
-  // countries,
   tables,
   //locale
 }) => {
-  const aggregateTopic = tables.topics.data.data.find(t => qe(t.id, topicId));
-  const topicsAggregated = aggregateTopic['aggregate'].split(',');
-  //how many topics have any support
-  const countryPositions = topicsAggregated.reduce((memo, topic) => {
+  const aggregateTopic = tables.topics.data.data.find(t => isAggregate(t));
+  const topicsToAggregate = aggregateTopic['aggregate'].split(',');
+  const countryPositionsByTopicId = topicsToAggregate.reduce((memo, topic) => {
     const position = getCountryPositionForTopicAndDate({
       countryCode,
       topicId: parseInt(topic, 10),
@@ -172,11 +169,11 @@ export const getAggregatePositionForDate = ({
       [position.value]: (memo[position.value] || 0) + 1
     };
   });
-  const topicsLength = topicsAggregated.length;
-  const topicsRecordedCount = Object.values(countryPositions).reduce((memo, val) => memo + val, 0);
-  const sumOfHighValues = (countryPositions[2] || 0) + (countryPositions[3] || 0);
+  const topicsLength = topicsToAggregate.length;
+  const topicsRecordedCount = Object.values(countryPositionsByTopicId).reduce((memo, val) => memo + val, 0);
+  const sumOfHighValues = (countryPositionsByTopicId[2] || 0) + (countryPositionsByTopicId[3] || 0);
   const countryAggregate = (() => {
-    if (topicsRecordedCount === topicsLength && topicsLength === (countryPositions[3] || 0)) {
+    if (topicsRecordedCount === topicsLength && topicsLength === (countryPositionsByTopicId[3] || 0)) {
       return 3; // all topics have a value of 3
     }
     if (topicsRecordedCount === topicsLength && sumOfHighValues === topicsLength) {
@@ -185,7 +182,7 @@ export const getAggregatePositionForDate = ({
     if (topicsRecordedCount >= 1 && (sumOfHighValues >= 2)) {
       return 1; // support for at least one topic with a value of 2 or more
     }
-    return 0;
+    return 0; // default / no support
   })();
 
   return {
@@ -345,6 +342,62 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
   }
   return null;
 };
+export const getCountriesWithPositionsAggregated = ({
+  layerInfo,
+  locale,
+  dateString,
+  includeOpposing = true,
+  includeWithout = false,
+  includeHidden = false
+}) =>
+  layerInfo.data &&
+  layerInfo.data.features &&
+  layerInfo.data.features.reduce((listMemo, country) => {
+    if (!includeHidden && !excludeHiddenCountries(country)) {
+      return listMemo;
+    }
+    const position = getAggregatePositionForDate({
+      countryCode: country.code,
+      tables: layerInfo.data.tables,
+      includeOpposing,
+      dateString,
+    });
+    if (!includeWithout && position && position.value === 0) {
+      return listMemo;
+    }
+    if (!includeOpposing && position && position.value < 0) {
+      return listMemo;
+    }
+    return [
+      ...listMemo,
+      {
+        id: country.code,
+        code: country.code,
+        label:
+          (locale && country[`name_${locale}`]) ||
+          country[`name_${DEFAULT_LOCALE}`],
+        position,
+      },
+    ];
+  }, []);
+
+export const getCountryListByTopic = ({
+  indicatorId,
+  layerInfo,
+  locale,
+  topic,
+}) => {
+  const isTopicAggregate = isAggregate(topic);
+  return isTopicAggregate ?
+    getCountriesWithPositionsAggregated({
+      layerInfo,
+      locale,
+    }) : getCountriesWithStrongestPosition({
+      indicatorId,
+      layerInfo,
+      locale,
+    });
+};
 
 export const getCountriesWithStrongestPosition = ({
   indicatorId,
@@ -361,14 +414,7 @@ export const getCountriesWithStrongestPosition = ({
     if (!includeHidden && !excludeHiddenCountries(country)) {
       return listMemo;
     }
-    const position = isAggregate(layerInfo.data.tables.topics.data.data.find(t => qe(t.id, indicatorId)))
-      ? getAggregatePositionForDate({
-        countryCode: country.code,
-        topicId: indicatorId,
-        tables: layerInfo.data.tables,
-        includeOpposing,
-        dateString,
-      }) : getCountryPositionForTopicAndDate({
+    const position = getCountryPositionForTopicAndDate({
         countryCode: country.code,
         topicId: indicatorId,
         tables: layerInfo.data.tables,

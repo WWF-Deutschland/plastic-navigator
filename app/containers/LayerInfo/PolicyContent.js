@@ -38,7 +38,7 @@ import {
   getTopicsFromData,
   getPreviousTopicFromData,
   getNextTopicFromData,
-  getCountriesWithStrongestPosition,
+  getCountryListByTopic,
   getStatementsForTopic,
 } from 'utils/policy';
 import CountryChart from './policy/CountryChart';
@@ -363,10 +363,11 @@ export function PolicyContent({
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
             <CountryList
-              countries={getCountriesWithStrongestPosition({
+              countries={getCountryListByTopic({
                 indicatorId,
                 layerInfo,
                 locale,
+                topic
               })}
               topic={topic}
               config={config}
