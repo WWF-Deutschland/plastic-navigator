@@ -7,12 +7,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 
 import { DEFAULT_LOCALE } from 'i18n';
 
-import { setItemInfo } from 'containers/App/actions';
 import { isAggregate, isArchived } from 'utils/policy';
 import messages from './messages';
 
@@ -53,17 +50,4 @@ AggregateTopicsList.propTypes = {
   intl: intlShape.isRequired,
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSetItemInfo: id => {
-      dispatch(setItemInfo(id));
-    },
-  };
-}
-
-const withConnect = connect(
-  null,
-  mapDispatchToProps,
-);
-
-export default compose(withConnect)(injectIntl(AggregateTopicsList));
+export default injectIntl(AggregateTopicsList);
