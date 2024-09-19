@@ -52,6 +52,7 @@ export function FeatureList({
   title,
   items,
   onSetItemInfo,
+  onSetTopic,
   config,
   search,
   placeholder,
@@ -129,9 +130,15 @@ export function FeatureList({
               {sorted.map(item => (
                 <FeatureButton
                   key={item.id}
-                  onClick={() =>
-                    onSetItemInfo ? onSetItemInfo(item.id) : null
-                  }
+                  onClick={() => {
+                    if (onSetItemInfo) {
+                      return onSetItemInfo(item.id);
+                    }
+                    if (onSetTopic) {
+                      return onSetTopic(item.id);
+                    }
+                    return null;
+                  }}
                   label={
                     <Box
                       direction="row"
@@ -189,7 +196,8 @@ export function FeatureList({
 }
 
 FeatureList.propTypes = {
-  onSetItemInfo: PropTypes.func.isRequired,
+  onSetItemInfo: PropTypes.func,
+  onSetTopic: PropTypes.func,
   items: PropTypes.array,
   config: PropTypes.object,
   layerId: PropTypes.string,

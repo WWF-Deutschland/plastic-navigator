@@ -200,8 +200,8 @@ export function PolicyContent({
   const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerInfo);
   const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
-  const isTopicArchived = topic && isArchived(topic);
-  const isTopicAggregate = topic && isAggregate(topic);
+  const isTopicArchived = !!topic && isArchived(topic);
+  const isTopicAggregate = !!topic && isAggregate(topic);
   const nextTopic =
     topic &&
     getNextTopicFromData({

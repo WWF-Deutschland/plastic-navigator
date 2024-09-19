@@ -41,14 +41,14 @@ export function AggregateTopicsList({ topics, config, intl, onSetTopic }) {
       items={childIndicators}
       config={config}
       isTopicsList
-      onSetItemInfo={id => onSetTopic(id)}
+      onSetTopic={id => onSetTopic(id)}
     />
   ) : null;
 }
 
 AggregateTopicsList.propTypes = {
   config: PropTypes.object,
-  topics: PropTypes.object,
+  topics: PropTypes.array,
   onSetTopic: PropTypes.func,
   intl: intlShape.isRequired,
 };
