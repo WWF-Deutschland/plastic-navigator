@@ -170,7 +170,7 @@ export const getAggregatePositionForDate = ({
     };
   });
   const topicsLength = topicsToAggregate.length;
-  const topicsRecordedCount = Object.values(countryPositionsByTopicId).reduce((memo, val) => memo + val, 0);
+  const topicsRecordedCount = Object.values(countryPositionsByTopicId).length;
   const sumOfHighValues = (countryPositionsByTopicId[2] || 0) + (countryPositionsByTopicId[3] || 0);
   const countryAggregate = (() => {
     if (topicsRecordedCount === topicsLength && topicsLength === (countryPositionsByTopicId[3] || 0)) {
@@ -186,7 +186,7 @@ export const getAggregatePositionForDate = ({
   })();
 
   return {
-    country: countryCode,
+    //country: countryCode,
     //positions: countryPositions,
     value: countryAggregate
   };
@@ -473,12 +473,17 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
   const topics = getTopicsFromData(layerInfo);
   return topics.map(t => ({
     ...t,
-    position: getCountryPositionForTopicAndDate({
+    position: isAggregate(t) ? getAggregatePositionForDate({
+      countryCode: country.code,
+      tables: layerInfo.data.tables,
+      //locale
+    }) : getCountryPositionForTopicAndDate({
       countryCode: country.code,
       topicId: t.id,
       tables: layerInfo.data.tables,
     }),
-  }));
+  })
+  );
 };
 
 export const filterCountries = (item, test) => {
