@@ -376,7 +376,7 @@ export const getCountriesWithPositionsAggregated = ({
         label:
           (locale && country[`name_${locale}`]) ||
           country[`name_${DEFAULT_LOCALE}`],
-        position,
+        //position,
       },
     ];
   }, []);
