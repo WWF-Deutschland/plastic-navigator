@@ -148,6 +148,15 @@ export default defineMessages({
     id: `${scope}.tabStatements`,
     defaultMessage: 'Statements',
   },
+  tabTopics: {
+    id: `${scope}.tabTopics`,
+    defaultMessage: 'Topics',
+  },
+  topicsTabTitle: {
+    id: `${scope}.topicsTabTitle`,
+    defaultMessage:
+      'Explore the {count} underlying topics of the red line manifesto and the underlying statements',
+  },
   selectArchivedTopics: {
     id: `${scope}.selectArchivedTopics`,
     defaultMessage: 'Archived topics',

@@ -72,4 +72,8 @@ export default defineMessages({
     id: `${scope}.sources`,
     defaultMessage: '{count} statements',
   },
+  topics: {
+    id: `${scope}.topics`,
+    defaultMessage: '{count} Topics',
+  },
 });

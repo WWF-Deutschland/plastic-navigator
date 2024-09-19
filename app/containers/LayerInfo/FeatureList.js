@@ -17,7 +17,9 @@ import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
 
 import CountryPositionSymbol from './policy/CountryPositionSymbol';
+import TopicsSymbol from './policy/TopicsSymbol';
 import TextInput from './TextInput';
+
 import messages from './messages';
 
 const ListTitle = styled(p => <Heading level={4} {...p} />)`
@@ -54,6 +56,7 @@ export function FeatureList({
   search,
   placeholder,
   isSourceList,
+  isTopicsList,
   intl,
 }) {
   const [test, setTest] = useState('');
@@ -150,6 +153,9 @@ export function FeatureList({
                             config={config}
                           />
                         )}
+                        {isTopicsList && item.id && (
+                          <TopicsSymbol topicId={item.id} />
+                        )}
                         <Box>
                           {isSourceList && item.date && (
                             <Text
@@ -189,6 +195,7 @@ FeatureList.propTypes = {
   layerId: PropTypes.string,
   title: PropTypes.string,
   isSourceList: PropTypes.bool,
+  isTopicsList: PropTypes.bool,
   placeholder: PropTypes.string,
   search: PropTypes.func,
   intl: intlShape.isRequired,

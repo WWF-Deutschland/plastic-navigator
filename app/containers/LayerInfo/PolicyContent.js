@@ -40,6 +40,8 @@ import {
   getNextTopicFromData,
   getCountryListByTopic,
   getStatementsForTopic,
+  isArchived,
+  isAggregate,
 } from 'utils/policy';
 import CountryChart from './policy/CountryChart';
 import CountryList from './policy/CountryList';
@@ -55,6 +57,7 @@ import LayerContent from './LayerContent';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
 import PanelBody from './PanelBody';
+import AggregateTopicsList from './AggregateTopicsList';
 import messages from './messages';
 
 const ContentWrap = styled.div`
@@ -197,7 +200,8 @@ export function PolicyContent({
   const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerInfo);
   const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
-  const isTopicArchived = topic && qe(topic.archived, 1);
+  const isTopicArchived = topic && isArchived(topic);
+  const isTopicAggregate = topic && isAggregate(topic);
   const nextTopic =
     topic &&
     getNextTopicFromData({
@@ -330,16 +334,29 @@ export function PolicyContent({
                 />
               </TabLinkWrapper>
               <TabLinkWrapper>
-                <TabLink
-                  onClick={() => onSetTab('statements', layerId)}
-                  active={qe(tab, 'statements')}
-                  disabled={qe(tab, 'statements')}
-                  label={
-                    <TabLinkAnchor active={qe(tab, 'statements')}>
-                      <FormattedMessage {...messages.tabStatements} />
-                    </TabLinkAnchor>
-                  }
-                />
+                {isTopicAggregate ? (
+                  <TabLink
+                    onClick={() => onSetTab('topics', layerId)}
+                    active={qe(tab, 'topics')}
+                    disabled={qe(tab, 'topics')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'topics')}>
+                        <FormattedMessage {...messages.tabTopics} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                ) : (
+                  <TabLink
+                    onClick={() => onSetTab('statements', layerId)}
+                    active={qe(tab, 'statements')}
+                    disabled={qe(tab, 'statements')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'statements')}>
+                        <FormattedMessage {...messages.tabStatements} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                )}
               </TabLinkWrapper>
             </Tabs>
           </PanelHeader>
@@ -367,7 +384,7 @@ export function PolicyContent({
                 indicatorId,
                 layerInfo,
                 locale,
-                topic
+                topic,
               })}
               topic={topic}
               config={config}
@@ -384,6 +401,16 @@ export function PolicyContent({
               })}
               topic={topic}
               config={config}
+            />
+          </PanelBody>
+        )}
+        {config && tab === 'topics' && layerInfo && (
+          <PanelBody>
+            <AggregateTopicsList
+              topics={topicOptions}
+              topic={topic}
+              config={config}
+              onSetTopic={id => onSetTopic(id)}
             />
           </PanelBody>
         )}
