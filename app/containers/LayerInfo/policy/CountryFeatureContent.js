@@ -241,6 +241,21 @@ export function CountryFeatureContent({
                         formatValues={{ isSingle: true }}
                       />
                     )}
+                    {currentIndicator.position.aggregatePosition && (
+                      <MarkdownText
+                        content={
+                          currentIndicator.position.aggregatePosition[
+                          `position_${locale}`
+                          ] ||
+                          currentIndicator.position.aggregatePosition[
+                          `position_${DEFAULT_LOCALE}`
+                          ]
+                        }
+                        size={isMinSize(size, 'medium') ? 'small' : 'xsmall'}
+                        format
+                        formatValues={{ isSingle: true }}
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>

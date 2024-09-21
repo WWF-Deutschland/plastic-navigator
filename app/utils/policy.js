@@ -19,7 +19,20 @@ export const getPositionForStatement = ({ topicId, statement, tables }) => {
     parseInt(statement[`position_t${topicId}`], 10);
   return getPositionForValueAndTopic({ value, topicId, tables });
 };
-
+export const getAggregateTopicDetails = (layerInfo) => {
+  const aggregateTopic =
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables.topics &&
+    layerInfo.data.tables.topics.data &&
+    layerInfo.data.tables.topics.data.data.find(isAggregate);
+  if (!aggregateTopic) {
+    return null;
+  }
+  const topicsToAggregate = aggregateTopic['aggregate'].split(',');
+  return { aggregateTopic, topicsToAggregate };
+};
 export const getStatementWithPositionsAndCountries = ({
   layerInfo,
   statementId,
@@ -148,27 +161,7 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
     );
   return mergePositions({ topicPosition, position });
 };
-
-export const getAggregatePositionForDate = ({
-  countryCode,
-  dateString,
-  tables,
-  //locale
-}) => {
-  const aggregateTopic = tables.topics.data.data.find(t => isAggregate(t));
-  const topicsToAggregate = aggregateTopic['aggregate'].split(',');
-  const countryPositionsByTopicId = topicsToAggregate.reduce((memo, topic) => {
-    const position = getCountryPositionForTopicAndDate({
-      countryCode,
-      topicId: parseInt(topic, 10),
-      tables,
-      dateString
-    });
-    return {
-      ...memo,
-      [position.value]: (memo[position.value] || 0) + 1
-    };
-  });
+export const calculateAggregatePosition = ({ topicsToAggregate, countryPositionsByTopicId }) => {
   const topicsLength = topicsToAggregate.length;
   const topicsRecordedCount = Object.values(countryPositionsByTopicId).length;
   const sumOfHighValues = (countryPositionsByTopicId[2] || 0) + (countryPositionsByTopicId[3] || 0);
@@ -188,8 +181,47 @@ export const getAggregatePositionForDate = ({
   return {
     //country: countryCode,
     //positions: countryPositions,
+    //topic: getTopicTitle({ indicatorId: aggregateTopic.id, tables, locale }),
     value: countryAggregate
   };
+};
+export const getAggregatePositionFromTopics = ({ topics, layerInfo }) => {
+  const { aggregateTopic, topicsToAggregate } = getAggregateTopicDetails(layerInfo);
+  if (!aggregateTopic) {
+    return topics;
+  } 
+  const filteredTopics = topics.filter(t => topicsToAggregate.indexOf(t.id) !== -1);
+  const countryPositionsByTopicId = filteredTopics.reduce((memo, topic) => {
+    const topicPosition = topic.position && topic.position.value;
+    return {
+      ...memo,
+      [topicPosition]: (memo[topicPosition] || 0) + 1
+    };
+  }, []);
+
+  return calculateAggregatePosition({ topicsToAggregate: filteredTopics, countryPositionsByTopicId });
+};
+export const getAggregatePositionForDate = ({
+  countryCode,
+  dateString,
+  tables,
+  layerInfo,
+  locale
+}) => {
+  const { topicsToAggregate } = getAggregateTopicDetails(layerInfo);
+  const countryPositionsByTopicId = topicsToAggregate.reduce((memo, topic) => {
+    const position = getCountryPositionForTopicAndDate({
+      countryCode,
+      topicId: parseInt(topic, 10),
+      tables,
+      dateString
+    });
+    return {
+      ...memo,
+      [position.value]: (memo[position.value] || 0) + 1
+    };
+  });
+  return calculateAggregatePosition({ topicsToAggregate, countryPositionsByTopicId, locale });
 };
 
 export const getCountryPositionForTopicAndDate = ({
@@ -359,6 +391,7 @@ export const getCountriesWithPositionsAggregated = ({
     const position = getAggregatePositionForDate({
       countryCode: country.code,
       tables: layerInfo.data.tables,
+      layerInfo,
       includeOpposing,
       dateString,
     });
@@ -470,21 +503,46 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
   }, []);
 
 export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
+  const { aggregateTopic } = getAggregateTopicDetails(layerInfo);
   const topics = getTopicsFromData(layerInfo);
-  return topics.map(t => ({
-    ...t,
-    position: isAggregate(t) ? getAggregatePositionForDate({
-      countryCode: country.code,
-      tables: layerInfo.data.tables,
-      //locale
-    }) : getCountryPositionForTopicAndDate({
+  const topicsWithPositions = topics.map(t => {
+    if (isAggregate(t)) {
+      return { ...t, position: {} };
+    }
+    const position = getCountryPositionForTopicAndDate({
       countryCode: country.code,
       topicId: t.id,
       tables: layerInfo.data.tables,
-    }),
-  })
+    });
+    return { ...t, position };
+  });
+
+  const aggregateScore = getAggregatePositionFromTopics({
+    topics: topicsWithPositions,
+    layerInfo,
+  });
+  if (!aggregateScore) {
+    return topicsWithPositions;
+  }
+  const aggregateLabel =
+    layerInfo.data.tables['topic-positions'].data.data.find(
+      topicPosition =>
+        topicPosition['topic_id'] === aggregateTopic.id &&
+        parseInt(topicPosition['position_id'], 10) === aggregateScore.value
+    );
+
+  return topicsWithPositions.map(topic =>
+    topic.id === aggregateTopic.id
+      ? {
+        ...topic,
+        position: {
+          ...aggregateScore,
+          aggregatePosition: { ...aggregateLabel, ...aggregateScore },
+        },
+      }
+      : topic
   );
-};
+} 
 
 export const filterCountries = (item, test) => {
   if (!test || test.length < 2) return true;
@@ -685,7 +743,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
         const bDate = new Date(b.date).getTime();
         return aDate > bDate ? 1 : -1;
       });
-    // console.log('statementsWithCountryCodes', statementsWithCountryCodes)
+    //console.log('statementsWithCountryCodes', statementsWithCountryCodes)
 
     const positionsByDate = statementsWithCountryCodes.reduce(
       (memo, source) => {
