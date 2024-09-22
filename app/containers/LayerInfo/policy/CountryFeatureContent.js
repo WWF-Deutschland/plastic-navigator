@@ -138,6 +138,7 @@ export function CountryFeatureContent({
   });
   const currentIndicator =
     indicatorPositions && indicatorPositions.find(i => qe(i.id, indicatorId));
+
   return (
     <>
       <PanelHeader>
@@ -250,7 +251,7 @@ export function CountryFeatureContent({
         <CountryPolicyCommitments
           country={country}
           layerInfo={layerInfo}
-          indicatorId={indicatorId}
+          indicator={currentIndicator}
           onSelectStatement={onSelectStatement}
         />
       </PanelBody>

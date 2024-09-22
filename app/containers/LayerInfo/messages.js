@@ -165,4 +165,9 @@ export default defineMessages({
     id: `${scope}.selectCurrentTopics`,
     defaultMessage: 'Current topics',
   },
+  noStatementsAggregateTopicHint: {
+    id: `${scope}.noStatementsAggregateTopicHint`,
+    defaultMessage:
+      'Please refer to the underlying topics for country statements',
+  },
 });

@@ -364,7 +364,7 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
     return listMemo;
   }, []);
 
-const getAggregateScore = (parent, children) => {
+const getAggregateScore = ({ parent, children, tables }) => {
   const countChildren = children.length;
   const countPositions = children.reduce((memo, child) => {
     const { value } = child.position;
@@ -379,24 +379,32 @@ const getAggregateScore = (parent, children) => {
       [value]: 1,
     };
   }, {});
+  let value = 0;
   // all value of 3 => agg value 3
   if (countPositions[3] === countChildren) {
-    return { value: 3 };
-  }
-  // all have value 2 or 3 => agg value 2
-  if (countPositions[3] + countPositions[2] === countChildren) {
-    return { value: 2 };
-  }
-  // some have value 2 or 3 ==> agg value 1
-  if (countPositions[3] > 0 || countPositions[2] > 0) {
-    return { value: 1 };
+    value = 3;
+    // all have value 2 or 3 => agg value 2
+  } else if (countPositions[3] + countPositions[2] === countChildren) {
+    value = 2;
+    // some have value 2 or 3 ==> agg value 1
+  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    value = 1;
   }
   // else 0
-  return { value: 0 };
+  const position = getPositionForValueAndTopic({
+    value,
+    topicId: parent.id,
+    tables,
+  });
+  return {
+    value,
+    latestPosition: position,
+  };
 };
 
 export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
   const topics = getTopicsFromData(layerInfo);
+  const tables = layerInfo && layerInfo.data && layerInfo.data.tables;
   const indicatorScores = topics
     .filter(t => !isAggregate(t))
     .map(t => ({
@@ -404,7 +412,7 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
       position: getCountryPositionForTopicAndDate({
         countryCode: country.code,
         topicId: t.id,
-        tables: layerInfo.data.tables,
+        tables,
       }),
     }));
   const aggIndicatorScores = topics
@@ -416,7 +424,11 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
       );
       return {
         ...t,
-        position: getAggregateScore(t, childIndicators),
+        position: getAggregateScore({
+          parent: t,
+          children: childIndicators,
+          tables,
+        }),
       };
     });
   return [...aggIndicatorScores, ...indicatorScores];
