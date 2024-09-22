@@ -619,3 +619,8 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   }
   return [];
 };
+
+export const isAggregate = topic =>
+  !!topic && topic.aggregate && topic.aggregate.trim() !== '';
+export const isArchived = topic =>
+  !!topic && topic.archived && topic.archived.trim() === '1';
