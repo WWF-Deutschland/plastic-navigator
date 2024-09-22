@@ -190,19 +190,18 @@ export const prepChartDataSources = (positionsByDate, dataStyles) => {
 };
 
 export const prepChartKey = ({
-  positionsCurrentDate,
-  positionsLatestDate, // includes all positions
+  positionsForAllDates,
   indicatorId,
   tables,
   config,
   locale,
   intl,
 }) => {
-  if (positionsCurrentDate && config['styles-by-value']) {
-    return Object.keys(positionsLatestDate)
+  if (positionsForAllDates && config['styles-by-value']) {
+    return Object.keys(positionsForAllDates)
       .reduce((memo, posValue) => {
-        const count = positionsCurrentDate[posValue]
-          ? positionsCurrentDate[posValue].length
+        const count = positionsForAllDates[posValue]
+          ? positionsForAllDates[posValue].length
           : 0;
         const positionClean = getPositionForTopicAndValue({
           tables,
@@ -326,3 +325,27 @@ export const getPlotHeight = ({ size, hasStatements }) => {
   if (isMinSize(size, 'medium')) return hasStatements ? 200 : 170;
   return hasStatements ? 160 : 140;
 };
+
+export const getOrderedDates = (positionsOverTime) =>
+  Object.keys(positionsOverTime).sort((a, b) => {
+    const aDate = new Date(a).getTime();
+    const bDate = new Date(b).getTime();
+    return aDate > bDate ? 1 : -1;
+  });
+
+export const getPositionsForAllDates = (positionsOverTime) =>
+  Object.keys(positionsOverTime).reduce((memo, date) => {
+    const currPositions = positionsOverTime[date].positions;
+    const combinedPositions = Object.keys(currPositions).reduce((memo2, position) => {
+      return {
+        [position]:
+          memo[position] ?
+            [...new Set([...memo[position], ...currPositions[position]])] :
+            [...currPositions[position]]
+      };
+    }, {});
+    return {
+      ...memo,
+      ...combinedPositions
+    };
+  }, {});

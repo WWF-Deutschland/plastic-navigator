@@ -36,7 +36,7 @@ import { isMinSize } from 'utils/responsive';
 import formatDate from 'utils/format-date';
 import {
   // getCountryPositionStatsForTopicAndDate,
-  getCountryPositionsOverTimeFromCountryFeatures,
+  getCountryPositionsOverTime,
 } from 'utils/policy';
 
 import KeyArea from 'components/KeyArea';
@@ -62,6 +62,8 @@ import {
   getYRange,
   getMouseOverCover,
   getPlotHeight,
+  getOrderedDates,
+  getPositionsForAllDates,
 } from './charts';
 
 const Styled = styled(p => <Box {...p} />)``;
@@ -178,6 +180,7 @@ const MINDATE = {
   2: '2023-01-01',
   3: '2023-01-01',
   4: '2023-01-01',
+  10: '2023-01-01',
 };
 
 export function CountryChart({
@@ -202,20 +205,20 @@ export function CountryChart({
   const positionsOverTime =
     layerInfo &&
     layerInfo.data &&
-    getCountryPositionsOverTimeFromCountryFeatures({
+    getCountryPositionsOverTime({
       indicatorId,
       layerInfo,
       includeOpposing: false,
       includeWithout: false,
       includeHidden: false,
     });
-  // console.log('positionsOverTime', positionsOverTime)
+  //console.log('positionsOverTime', positionsOverTime);
+  const orderedDates = getOrderedDates(positionsOverTime)
   // console.log('countryStats', countryStats)
-  // console.log('positionsOverTime', positionsOverTime)
   const lastDate =
     layerInfo &&
     layerInfo.data &&
-    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
+    orderedDates[Object.keys(positionsOverTime).length - 1];
 
   useEffect(() => {
     if (lastDate && onSetChartDate) {
@@ -258,12 +261,13 @@ export function CountryChart({
   //     ];
   //   }
   // }
+  //console.log(lastDate);
+  const positionsForAllDates = getPositionsForAllDates(positionsOverTime);
+  //console.log(positionsForAllDates)
   const statsForKey =
-    positionsOverTime &&
-    positionsOverTime[currentDate] &&
+    positionsForAllDates &&
     prepChartKey({
-      positionsCurrentDate: positionsOverTime[currentDate].positions,
-      positionsLatestDate: positionsOverTime[lastDate].positions,
+      positionsForAllDates,
       tables: layerInfo.data.tables,
       indicatorId,
       config,

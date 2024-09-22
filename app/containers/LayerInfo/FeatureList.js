@@ -161,7 +161,7 @@ export function FeatureList({
                           />
                         )}
                         {isTopicsList && item.id && (
-                          <TopicsSymbol topicId={item.id} />
+                          <TopicsSymbol topicId={parseInt(item.id, 10)} />
                         )}
                         <Box>
                           {isSourceList && item.date && (
