@@ -364,16 +364,62 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
     return listMemo;
   }, []);
 
+const getAggregateScore = (parent, children) => {
+  const countChildren = children.length;
+  const countPositions = children.reduce((memo, child) => {
+    const { value } = child.position;
+    if (memo[value]) {
+      return {
+        ...memo,
+        [value]: memo[value] + 1,
+      };
+    }
+    return {
+      ...memo,
+      [value]: 1,
+    };
+  }, {});
+  // all value of 3 => agg value 3
+  if (countPositions[3] === countChildren) {
+    return { value: 3 };
+  }
+  // all have value 2 or 3 => agg value 2
+  if (countPositions[3] + countPositions[2] === countChildren) {
+    return { value: 2 };
+  }
+  // some have value 2 or 3 ==> agg value 1
+  if (countPositions[3] > 0 || countPositions[2] > 0) {
+    return { value: 1 };
+  }
+  // else 0
+  return { value: 0 };
+};
+
 export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
   const topics = getTopicsFromData(layerInfo);
-  return topics.map(t => ({
-    ...t,
-    position: getCountryPositionForTopicAndDate({
-      countryCode: country.code,
-      topicId: t.id,
-      tables: layerInfo.data.tables,
-    }),
-  }));
+  const indicatorScores = topics
+    .filter(t => !isAggregate(t))
+    .map(t => ({
+      ...t,
+      position: getCountryPositionForTopicAndDate({
+        countryCode: country.code,
+        topicId: t.id,
+        tables: layerInfo.data.tables,
+      }),
+    }));
+  const aggIndicatorScores = topics
+    .filter(t => isAggregate(t))
+    .map(t => {
+      const childIds = t.aggregate.split(',');
+      const childIndicators = indicatorScores.filter(
+        child => childIds.indexOf(child.id) > -1,
+      );
+      return {
+        ...t,
+        position: getAggregateScore(t, childIndicators),
+      };
+    });
+  return [...aggIndicatorScores, ...indicatorScores];
 };
 
 export const filterCountries = (item, test) => {
