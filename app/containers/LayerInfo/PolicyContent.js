@@ -40,10 +40,14 @@ import {
   getNextTopicFromData,
   getCountriesWithStrongestPosition,
   getStatementsForTopic,
+  isArchived,
+  isAggregate,
+  getChildTopics,
 } from 'utils/policy';
 import CountryChart from './policy/CountryChart';
 import CountryList from './policy/CountryList';
 import SourceList from './policy/SourceList';
+import TopicsList from './policy/TopicsList';
 // import SourceContent from './policy/SourceContent';
 // import CountryFeatureContent from './policy/CountryFeatureContent';
 // import FeatureContent from './FeatureContent';
@@ -197,7 +201,8 @@ export function PolicyContent({
   const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerInfo);
   const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
-  const isTopicArchived = topic && qe(topic.archived, 1);
+  const isTopicArchived = isArchived(topic);
+  const isTopicAggregate = isAggregate(topic);
   const nextTopic =
     topic &&
     getNextTopicFromData({
@@ -329,18 +334,34 @@ export function PolicyContent({
                   }
                 />
               </TabLinkWrapper>
-              <TabLinkWrapper>
-                <TabLink
-                  onClick={() => onSetTab('statements', layerId)}
-                  active={qe(tab, 'statements')}
-                  disabled={qe(tab, 'statements')}
-                  label={
-                    <TabLinkAnchor active={qe(tab, 'statements')}>
-                      <FormattedMessage {...messages.tabStatements} />
-                    </TabLinkAnchor>
-                  }
-                />
-              </TabLinkWrapper>
+              {!isTopicAggregate && (
+                <TabLinkWrapper>
+                  <TabLink
+                    onClick={() => onSetTab('statements', layerId)}
+                    active={qe(tab, 'statements')}
+                    disabled={qe(tab, 'statements')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'statements')}>
+                        <FormattedMessage {...messages.tabStatements} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                </TabLinkWrapper>
+              )}
+              {isTopicAggregate && (
+                <TabLinkWrapper>
+                  <TabLink
+                    onClick={() => onSetTab('topics', layerId)}
+                    active={qe(tab, 'topics')}
+                    disabled={qe(tab, 'topics')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'topics')}>
+                        <FormattedMessage {...messages.tabTopics} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                </TabLinkWrapper>
+              )}
             </Tabs>
           </PanelHeader>
         )}
@@ -383,6 +404,15 @@ export function PolicyContent({
               })}
               topic={topic}
               config={config}
+            />
+          </PanelBody>
+        )}
+        {config && tab === 'topics' && layerInfo && (
+          <PanelBody>
+            <TopicsList
+              topics={getChildTopics(topic, topicOptions, locale)}
+              config={config}
+              onSetTopic={id => onSetTopic(id)}
             />
           </PanelBody>
         )}

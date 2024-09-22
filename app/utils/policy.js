@@ -630,3 +630,13 @@ export const isAggregate = topic =>
   !!topic && topic.aggregate && topic.aggregate.trim() !== '';
 export const isArchived = topic =>
   !!topic && topic.archived && topic.archived.trim() === '1';
+
+export const getChildTopics = (parentTopic, topics, locale) => {
+  const childIds = parentTopic.aggregate && parentTopic.aggregate.split(',');
+  return topics
+    .filter(child => childIds.indexOf(child.id) > -1)
+    .map(child => ({
+      ...child,
+      label: child[`short_${locale}`] || child[`short_${DEFAULT_LOCALE}`],
+    }));
+};
