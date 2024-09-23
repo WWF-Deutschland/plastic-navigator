@@ -90,6 +90,30 @@ export const colors = {
   },
   // other custom colours (also understood by grommet conmponents)
   map: '#fdfdfd',
+
+  topicCards: {
+    default: {
+      background: '#00728F',
+      backgroundHover: '#046179',
+      buttonBackground: '#000000',
+      buttonFontHover: '#08586C',
+      buttonFont: '#046179'
+    },
+    aggregate: {
+      background: '#ffffff',
+      dropShadow: '#046179',
+      buttonBackground: '#08586C',
+      buttonFont: '#000000',
+      buttonFontHover: '#08586C',
+    },
+    secondary: {
+      background: '#ffffff',
+      backgroundHover: '#ffffff',
+      buttonBackground: '#000000',
+      buttonFont: '#00728F',
+      buttonFontHover: '#08586C',
+    }
+  }
 };
 
 // grommet text

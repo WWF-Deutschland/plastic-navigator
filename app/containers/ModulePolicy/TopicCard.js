@@ -20,16 +20,28 @@ import { isMinSize } from 'utils/responsive';
 import messages from './messages';
 
 const TopicButton = styled(p => <Button plain {...p} />)`
+  background: ${({ theme, secondary }) =>
+    !secondary ? theme.global.colors.topicCards.default.background : theme.global.colors.topicCards.secondary.background};
+  box-shadow: ${({ secondary }) => secondary ? 'rgba(0, 0, 0, 0.2) 0px 2px 4px' : 'none'};
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+    background: ${({ theme, secondary }) =>
+    !secondary ? theme.global.colors.topicCards.default.backgroundHover : theme.global.colors.topicCards.secondary.background};
   }
 `;
 const TopicInner = styled(p => (
   <Box elevation="small" pad="small" responsive={false} {...p} />
 ))`
   position: relative;
-  background-color: ${({ isHover, theme }) =>
-    isHover ? theme.global.colors.brand : 'white'};
+  background-color: ${({ theme, secondary }) =>
+    !secondary ? theme.global.colors.topicCards.default.background : theme.global.colors.topicCards.secondary.background};
+  box-shadow: none;
+  &:hover {
+    box-shadow: ${({ theme, secondary }) =>
+    !secondary ? `${theme.global.colors.topicCards.default.backgroundHover} 4px 2px 4px` : 'none'};
+    background: ${({ theme, secondary }) =>
+    !secondary ? theme.global.colors.topicCards.default.backgroundHover : theme.global.colors.topicCards.secondary.backgroundHover};
+  }
+  border: ${({ secondary }) => secondary ? 'none' : '1px solid white'};
 `;
 
 const Styled = styled(props => <Box {...props} />)`
@@ -41,35 +53,33 @@ const Styled = styled(props => <Box {...props} />)`
     padding: 0 6px;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    width: ${({ count, secondary }) => (secondary ? 25 : 100 / count)}%;
+    width: ${({ count, secondary }) => (secondary ? 50 : 100 / count)}%;
   }
 `;
 const Teaser = styled(p => <Text size="small" {...p} />)`
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.text.light : 'white'};
+  color: ${({ theme, secondary }) =>
+    secondary ? theme.global.colors.text.light : 'white'};
 `;
 const TitleShort = styled(p => <Text size="xlarge" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
   margin-top: 3px;
-  text-align: center;
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : 'white'};
+  text-align: ${({ secondary }) => secondary ? 'left' : 'center'};
+  color: ${({ theme, secondary }) => secondary ? theme.global.colors.brand : 'white'};
 `;
 
-const Select = styled.div`
+const Show = styled.div`
   position: absolute;
   bottom: ${({ isOffset }) => (isOffset ? 0 : 8)}px;
   left: ${({ isOffset }) => (isOffset ? '50%' : 'auto')};
   right: ${({ isOffset }) => (isOffset ? 'auto' : '12px')};
   transform: translate(0, ${({ isOffset }) => (isOffset ? 50 : 0)}%);
 `;
-const SelectText = styled.div`
-  background-color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
+const ShowText = styled.div`
+  color: ${({ isHover, theme }) => !isHover ? theme.global.colors.topicCards.default.buttonFont : theme.global.colors.topicCards.default.buttonFontHover};
   border-radius: 99999px;
-  color: white;
+  background-color: white;
   font-family: wwfregular;
   text-transform: uppercase;
   font-size: 20px;
@@ -87,12 +97,17 @@ const SelectText = styled.div`
     padding: 9px 25px 11px;
   }
 `;
-const SelectTextSecondary = styled.div`
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : 'white'};
+const ShowTextSecondary = styled.div`
+  color: ${({ isHover, theme }) => 
+  !isHover ? theme.global.colors.topicCards.secondary.buttonFont : theme.global.colors.topicCards.secondary.buttonFontHover};
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
+  border-radius: 99999px;
+  background-color: white;
+  padding: 4px 16px 5px;
+  font-size: 16px;
+  box-shadow: rgb(0, 0, 0, 0.2) 0px 2px 4px;
 `;
 
 export function TopicCard({
@@ -100,7 +115,6 @@ export function TopicCard({
   onTopicSelect,
   topic,
   count,
-  theme,
   secondary,
 }) {
   const { locale } = intl;
@@ -118,28 +132,27 @@ export function TopicCard({
       <TopicButton
         plain
         hoverIndicator={false}
+        secondary={secondary}
         onClick={() => onTopicSelect(topic.id)}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <TopicInner isHover={isHover}>
-          {!secondary && (
-            <Box align="center">
-              <Icon color={isHover ? 'white' : theme.global.colors.brand} />
-              <TitleShort isHover={isHover}>
-                {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
-              </TitleShort>
-            </Box>
-          )}
+        <TopicInner isHover={isHover} secondary={secondary}>
+          <Box align={secondary ? "left" : "center"}>
+            <Icon color={secondary ? 'brand' : 'white'} />
+            <TitleShort isHover={isHover} secondary={secondary}>
+              {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
+            </TitleShort>
+          </Box>
           <Box
-            align="center"
+            align={secondary ? "left" : "center"}
             responsive={false}
             margin={{
               top: 'small',
               bottom: hasSelectButtonOffset ? 'medium' : 'ml',
             }}
           >
-            <Teaser isHover={isHover}>
+            <Teaser isHover={isHover} secondary={secondary}>
               <Markdown
                 source={
                   topic[`teaser_${locale}`] || topic[`teaser_${DEFAULT_LOCALE}`]
@@ -147,25 +160,25 @@ export function TopicCard({
               />
             </Teaser>
           </Box>
-          <Select
+          <Show
             secondary={secondary}
             isHover={isHover}
             isOffset={hasSelectButtonOffset}
           >
             {!secondary && (
-              <SelectText isHover={isHover} isOffset={hasSelectButtonOffset}>
-                <FormattedMessage {...messages.select} />
-              </SelectText>
+              <ShowText isHover={isHover} isOffset={hasSelectButtonOffset}>
+                <FormattedMessage {...messages.show} />
+              </ShowText>
             )}
             {secondary && (
-              <SelectTextSecondary
+              <ShowTextSecondary
                 isHover={isHover}
                 isOffset={hasSelectButtonOffset}
               >
-                <FormattedMessage {...messages.select} />
-              </SelectTextSecondary>
+                <FormattedMessage {...messages.show} />
+              </ShowTextSecondary>
             )}
-          </Select>
+          </Show>
         </TopicInner>
       </TopicButton>
     </Styled>
@@ -182,4 +195,3 @@ TopicCard.propTypes = {
 };
 
 export default injectIntl(withTheme(TopicCard));
-// export default ModuleExplore;
