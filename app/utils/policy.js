@@ -143,6 +143,78 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
     );
   return mergePositions({ topicPosition, position });
 };
+export const getCountryPositionForAnyTopicAndDate = ({
+  countryCode,
+  topic,
+  dateString,
+  // countries,
+  tables,
+  locale,
+}) => {
+  if (!isAggregate(topic)) {
+    return getCountryPositionForTopicAndDate({
+      countryCode,
+      topicId: topic.id,
+      dateString,
+      tables,
+      locale,
+    });
+  }
+  // is Aggregate
+  const childIds = topic.aggregate.split(',');
+  const childPositions = childIds.reduce((memo, id) => {
+    const positionForTopic = getCountryPositionForTopicAndDate({
+      countryCode,
+      topicId: id,
+      dateString,
+      tables,
+      locale,
+    });
+    return {
+      ...memo,
+      [id]: positionForTopic,
+    };
+  }, {});
+  const countPositions =
+    childPositions &&
+    Object.values(childPositions).reduce(
+      (memo, child) => {
+        const { value } = child;
+        return {
+          ...memo,
+          [value]: (memo[value] || 0) + 1,
+        };
+      },
+      {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+      },
+    );
+  let value = 0;
+  // all value of 3 => agg value 3
+  if (countPositions[3] === childIds.length) {
+    value = 3;
+    // all have value 2 or 3 => agg value 2
+  } else if (countPositions[3] + countPositions[2] === childIds.length) {
+    value = 2;
+    // some have value 2 or 3 ==> agg value 1
+  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    value = 1;
+  }
+  const position = getPositionForValueAndTopic({
+    value,
+    topicId: topic.id,
+    tables,
+  });
+  // else 0
+  return {
+    value,
+    topic: topic[`title_${locale}`],
+    latestPosition: position,
+  };
+};
 export const getCountryPositionForTopicAndDate = ({
   countryCode,
   topicId,
