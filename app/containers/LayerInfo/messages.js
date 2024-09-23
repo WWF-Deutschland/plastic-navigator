@@ -63,7 +63,11 @@ export default defineMessages({
   },
   countryChartNoSources: {
     id: `${scope}.countryChartNoSources`,
-    defaultMessage: 'Individual statements: ',
+    defaultMessage: 'Statements',
+  },
+  countryChartDates: {
+    id: `${scope}.countryChartDates`,
+    defaultMessage: 'Dates',
   },
   countryChartDateLabel: {
     id: `${scope}.countryChartDateLabel`,

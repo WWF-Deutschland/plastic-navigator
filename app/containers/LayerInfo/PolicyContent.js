@@ -13,7 +13,6 @@ import styled, { withTheme } from 'styled-components';
 import { Box, Text, Button, DropButton } from 'grommet';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import qe from 'utils/quasi-equals';
-
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_TOPIC_ICONS } from 'config';
 
@@ -44,7 +43,7 @@ import {
   isAggregate,
   getChildTopics,
 } from 'utils/policy';
-import CountryChart from './policy/CountryChart';
+import CountryDetails from './policy/CountryDetails';
 import CountryList from './policy/CountryList';
 import SourceList from './policy/SourceList';
 import TopicsList from './policy/TopicsList';
@@ -55,7 +54,6 @@ import TopicsList from './policy/TopicsList';
 // import TitleIconPolicy from './TitleIconPolicy';
 // import LayerReference from './LayerReference';
 import PolicyOptionList from './PolicyOptionList';
-import LayerContent from './LayerContent';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
 import PanelBody from './PanelBody';
@@ -181,8 +179,8 @@ export function PolicyContent({
   theme,
   onClose,
   onSetTab,
-  onSelectStatement,
   onLoadLayer,
+  onSelectStatement,
   onSetChartDate,
   chartDate,
 }) {
@@ -366,20 +364,16 @@ export function PolicyContent({
           </PanelHeader>
         )}
         {layerInfo && tab === 'details' && (
-          <PanelBody>
-            <Box margin={{ top: 'medium' }} responsive={false}>
-              <CountryChart
-                config={config}
-                indicatorId={indicatorId}
-                layerInfo={layerInfo}
-                onSelectStatement={sid => onSelectStatement(sid, layerId)}
-                onSetChartDate={onSetChartDate}
-                chartDate={chartDate}
-                isArchive={isTopicArchived}
-              />
-            </Box>
-            <LayerContent fullLayerId={layerId} config={config} />
-          </PanelBody>
+          <CountryDetails
+            layerInfo={layerInfo}
+            indicator={topic}
+            onSelectStatement={onSelectStatement}
+            onSetChartDate={onSetChartDate}
+            chartDate={chartDate}
+            config={config}
+            layerId={layerId}
+            isTopicArchived={isTopicArchived}
+          />
         )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
