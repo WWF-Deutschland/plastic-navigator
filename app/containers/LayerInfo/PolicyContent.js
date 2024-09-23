@@ -37,7 +37,6 @@ import {
   getTopicsFromData,
   getPreviousTopicFromData,
   getNextTopicFromData,
-  getCountriesWithStrongestPosition,
   getStatementsForTopic,
   isArchived,
   isAggregate,
@@ -366,7 +365,7 @@ export function PolicyContent({
         {layerInfo && tab === 'details' && (
           <CountryDetails
             layerInfo={layerInfo}
-            indicator={topic}
+            topic={topic}
             onSelectStatement={onSelectStatement}
             onSetChartDate={onSetChartDate}
             chartDate={chartDate}
@@ -377,15 +376,7 @@ export function PolicyContent({
         )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
-            <CountryList
-              countries={getCountriesWithStrongestPosition({
-                indicatorId,
-                layerInfo,
-                locale,
-              })}
-              topic={topic}
-              config={config}
-            />
+            <CountryList layerInfo={layerInfo} topic={topic} config={config} />
           </PanelBody>
         )}
         {config && tab === 'statements' && layerInfo && (

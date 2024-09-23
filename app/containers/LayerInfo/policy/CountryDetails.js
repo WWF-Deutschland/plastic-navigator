@@ -13,7 +13,7 @@ import PanelBody from '../PanelBody';
 import CountryChart from './CountryChart';
 export function CountryDetails({
   layerInfo,
-  indicator,
+  topic,
   onSelectStatement,
   onSetChartDate,
   chartDate,
@@ -21,14 +21,14 @@ export function CountryDetails({
   layerId,
   isTopicArchived,
 }) {
-  const indicatorId = indicator.id;
+  const topicId = topic.id;
   let positionsOverTime;
-  if (isAggregate(indicator)) {
+  if (isAggregate(topic)) {
     positionsOverTime =
       layerInfo &&
       layerInfo.data &&
       getCountryAggregatePositionsOverTime({
-        indicator,
+        indicator: topic,
         layerInfo,
       });
   } else {
@@ -36,7 +36,7 @@ export function CountryDetails({
       layerInfo &&
       layerInfo.data &&
       getCountryPositionsOverTimeFromCountryFeatures({
-        indicatorId,
+        indicatorId: topicId,
         layerInfo,
         includeOpposing: false,
         includeWithout: false,
@@ -50,7 +50,7 @@ export function CountryDetails({
         {positionsOverTime && (
           <CountryChart
             config={config}
-            indicator={indicator}
+            indicator={topic}
             layerInfo={layerInfo}
             onSelectStatement={sid => onSelectStatement(sid, layerId)}
             onSetChartDate={onSetChartDate}
@@ -67,7 +67,7 @@ export function CountryDetails({
 
 CountryDetails.propTypes = {
   layerInfo: PropTypes.object,
-  indicator: PropTypes.object,
+  topic: PropTypes.object,
   config: PropTypes.object,
   onSelectStatement: PropTypes.func,
   onSetChartDate: PropTypes.func,

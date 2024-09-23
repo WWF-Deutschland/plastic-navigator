@@ -854,3 +854,114 @@ export const getCountryAggregatePositionsOverTime = ({
     };
   }, {});
 };
+
+export const getCountriesWithStrongestPositionAggregated = ({
+  indicator,
+  layerInfo,
+  locale,
+}) => {
+  const childIds = indicator.aggregate && indicator.aggregate.split(',');
+  const childPositions = childIds.reduce((memo, id) => {
+    const countries = getCountriesWithStrongestPosition({
+      indicatorId: id,
+      layerInfo,
+      locale,
+    });
+
+    return {
+      ...memo,
+      [id]: countries,
+    };
+  }, {});
+  // from this:
+  // {
+  // [topicid]: [
+  //   {
+  //     code: [code],
+  //     other: [countryAttributes],
+  //     positions: {
+  //       value: [value],
+  //     }
+  //   }
+  // ]
+  // to this:
+  // {
+  //   [countrycode]: {
+  //     code: [code],
+  //     other: [countryAttributes],
+  //     positions: {
+  //       [topicid1]: [supportlevel1]
+  //       [topicid2]: [supportlevel2]
+  //       [topicid3]: [supportlevel3]
+  //       [topicid4]: [supportlevel4]
+  //     },
+  // }
+  const positionsLatest = Object.keys(childPositions).reduce(
+    (memo, indicatorId) => {
+      // data for one topic and all countries
+      const countryIndicatorData = childPositions[indicatorId];
+      return countryIndicatorData.reduce((memo2, countryData) => {
+        // countryData : data for one topic and 1 country
+        if (memo[countryData.code]) {
+          return {
+            ...memo2,
+            [countryData.code]: {
+              ...memo[countryData.code],
+              positions: {
+                ...memo[countryData.code].positions,
+                [indicatorId]: countryData.position,
+              },
+            },
+          };
+        }
+        return {
+          ...memo2,
+          [countryData.code]: {
+            ...countryData,
+            positions: {
+              [indicatorId]: countryData.position,
+            },
+          },
+        };
+      }, memo);
+    },
+    {},
+  );
+  // now aggregate for each country
+  const countryPositionValues = Object.keys(positionsLatest).reduce(
+    (memo, countryCode) => {
+      // countryData
+      const countryData = positionsLatest[countryCode];
+      const countPositions = Object.values(countryData.positions).reduce(
+        (memo2, countryPosition) => {
+          const levelOfSupport = countryPosition.value;
+          return {
+            ...memo2,
+            [levelOfSupport]: (memo2[levelOfSupport] || 0) + 1,
+          };
+        },
+        { 0: 0, 1: 0, 2: 0, 3: 0 },
+      );
+      let value = 0;
+      // all value of 3 => agg value 3
+      if (countPositions[3] === childIds.length) {
+        value = 3;
+        // all have value 2 or 3 => agg value 2
+      } else if (countPositions[3] + countPositions[2] === childIds.length) {
+        value = 2;
+        // some have value 2 or 3 ==> agg value 1
+      } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+        value = 1;
+      }
+      return [
+        ...memo,
+        {
+          ...countryData,
+          position: { value },
+        },
+      ];
+    },
+    [],
+  );
+  return countryPositionValues;
+};
