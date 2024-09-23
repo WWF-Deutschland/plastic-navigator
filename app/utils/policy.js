@@ -366,19 +366,21 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
 
 const getAggregateScore = ({ parent, children, tables }) => {
   const countChildren = children.length;
-  const countPositions = children.reduce((memo, child) => {
-    const { value } = child.position;
-    if (memo[value]) {
+  const countPositions = children.reduce(
+    (memo, child) => {
+      const { value } = child.position;
       return {
         ...memo,
-        [value]: memo[value] + 1,
+        [value]: (memo[value] || 0) + 1,
       };
-    }
-    return {
-      ...memo,
-      [value]: 1,
-    };
-  }, {});
+    },
+    {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+    },
+  );
   let value = 0;
   // all value of 3 => agg value 3
   if (countPositions[3] === countChildren) {
@@ -819,19 +821,11 @@ export const getCountryAggregatePositionsOverTime = ({
       (memo2, countryCode) => {
         const countryPositions = positionsForDate[countryCode];
         const countPositions = Object.values(countryPositions).reduce(
-          (memo3, levelOfSupport) => {
-            if (memo3[levelOfSupport]) {
-              return {
-                ...memo3,
-                [levelOfSupport]: memo3[levelOfSupport] + 1,
-              };
-            }
-            return {
-              ...memo3,
-              [levelOfSupport]: 1,
-            };
-          },
-          {},
+          (memo3, levelOfSupport) => ({
+            ...memo3,
+            [levelOfSupport]: (memo3[levelOfSupport] || 0) + 1,
+          }),
+          { 0: 0, 1: 0, 2: 0, 3: 0 },
         );
         let value = 0;
         // all value of 3 => agg value 3
