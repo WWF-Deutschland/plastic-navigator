@@ -53,6 +53,7 @@ import { isArchived, isAggregate } from 'utils/policy';
 import commonMessages from 'messages';
 import messages from './messages';
 import TopicCard from './TopicCard';
+import AggregateTopicCard from './AggregateTopicCard';
 
 const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
   position: absolute;
@@ -98,10 +99,9 @@ const TitleSelect = styled(p => <Text size="xlarge" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
-  margin-top: 3px;
-  border-bottom: 1px solid rgb(218, 218, 218);
-  padding-bottom: 10px;
+  margin-top: 10px;
 `;
+const TitleSelectWrapper = styled(p => <Box {...p} align="center" margin={{ top: 'small' }} />)``;
 const TitleSelectArchived = styled(p => <Text size="large" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
@@ -112,6 +112,7 @@ const TitleSelectArchived = styled(p => <Text size="large" {...p} />)`
 `;
 
 const TopicCardWrap = styled(p => <Box {...p} />)``;
+const AggregateCardWrap = styled(p => <Box {...p} background="white" />)``;
 
 const COMPONENT_KEY = 'mpol';
 
@@ -227,13 +228,18 @@ export function ModulePolicy({
   // const topicsAggregated =
   //   topicsData && topicsData.filter(t => isAggregate(t) && !isArchived(t));
 
-  const topicsCurrent = topicsData && topicsData.filter(t => !isArchived(t));
+  const topicsCurrent =
+    topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
   // topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
 
   const topicsArchived =
     topicsData && topicsData.filter(t => !isAggregate(t) && isArchived(t));
 
+  const aggregateTopic =
+    topicsData && topicsData.filter(t => isAggregate(t))[0];
+
   const size = React.useContext(ResponsiveContext);
+
   return (
     <div>
       <Helmet>
@@ -272,15 +278,32 @@ export function ModulePolicy({
                     el: (
                       <Box
                         margin={{ top: 'medium', bottom: 'small' }}
+                        pad="medium"
                         gap="small"
+                        background="brand"
                       >
-                        <TitleSelect>
-                          <FormattedMessage {...messages.selectTopics} />
-                        </TitleSelect>
+                        {aggregateTopic &&
+                          <AggregateCardWrap>
+                            <AggregateTopicCard
+                              key={aggregateTopic.id}
+                              topic={aggregateTopic}
+                              onTopicSelect={id =>
+                                onSetLayers([
+                                  ...activeLayers,
+                                  `${POLICY_LAYER}_${id}`,
+                                ])
+                              }
+                            />
+                          </AggregateCardWrap>
+                        }
+                        <TitleSelectWrapper>
+                          <TitleSelect>
+                            <FormattedMessage {...messages.selectTopics} />
+                          </TitleSelect>
+                        </TitleSelectWrapper>
                         <TopicCardWrap
                           direction="row"
                           margin={{ top: 'small' }}
-                          wrap
                         >
                           {topicsCurrent &&
                             topicsCurrent.map(t => (
@@ -288,6 +311,7 @@ export function ModulePolicy({
                                 key={t.id}
                                 count={topicsCurrent.length}
                                 topic={t}
+                                invertColor={true}
                                 onTopicSelect={id =>
                                   onSetLayers([
                                     ...activeLayers,

@@ -25,4 +25,12 @@ export default defineMessages({
     id: `${scope}.select`,
     defaultMessage: 'Select',
   },
+  show: {
+    id: `${scope}.show`,
+    defaultMessage: 'Show',
+  },
+  showOnMap: {
+    id: `${scope}.showOnMap`,
+    defaultMessage: 'Show on Map',
+  },
 });
