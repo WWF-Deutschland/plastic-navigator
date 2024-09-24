@@ -114,7 +114,7 @@ const TitleSelect = styled(p => <Text size="xlarge" {...p} />)`
   margin-top: 10px;
 `;
 const TitleSelectWrapper = styled(p => (
-  <Box {...p} align="center" margin={{ top: 'small' }} />
+  <Box {...p} align="center" margin={{ top: 'large' }} />
 ))``;
 const TopicCardWrap = styled(p => <Box {...p} />)`
   width: 100%;

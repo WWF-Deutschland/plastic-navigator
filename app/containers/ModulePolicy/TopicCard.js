@@ -99,7 +99,7 @@ const ShowButton = styled(props => <Box {...props} />)`
   background-color: white;
   border-radius: 99999px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    padding: ${({ secondary }) => (secondary ? '8px 30px 10px' : '8px 26px 10px')};
+    padding: ${({ secondary }) => (secondary ? '5px 28px 7px' : '6px 26px 8px')};
   }
   `;
 const ShowText = styled(p => <Text {...p} />)`

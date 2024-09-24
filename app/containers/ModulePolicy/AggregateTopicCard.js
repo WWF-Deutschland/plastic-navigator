@@ -53,7 +53,7 @@ const ShowOnMapButton = styled(props => <Box {...props} />)`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
   padding: 7px 20px 9px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    padding: 9px 25px 11px;
+    padding: 10px 28px 12px;
   }
 `;
 const ShowText = styled(p => <Text {...p} />)`
@@ -61,6 +61,10 @@ const ShowText = styled(p => <Text {...p} />)`
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
+  font-size: 24px;
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    font-size: 28px;
+  }
 `;
 
 export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
@@ -110,10 +114,7 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
             </Box>
             <Box align="center" margin="medium">
               <ShowOnMapButton isHover={isHover}>
-                <ShowText
-                  isHover={isHover}
-                  size={isScreenSmall ? 'large' : 'xlarge'}
-                >
+                <ShowText isHover={isHover}>
                   <FormattedMessage {...messages.showOnMap} />
                 </ShowText>
               </ShowOnMapButton>
