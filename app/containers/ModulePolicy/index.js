@@ -48,7 +48,7 @@ import {
 } from 'containers/App/actions';
 
 import { startsWith } from 'utils/string';
-import { isArchived, isAggregate } from 'utils/policy';
+import { isArchived, isAggregate, isHidden } from 'utils/policy';
 
 import commonMessages from 'messages';
 import messages from './messages';
@@ -225,20 +225,27 @@ export function ModulePolicy({
     moduleLayer.data.tables &&
     moduleLayer.data.tables.topics &&
     moduleLayer.data.tables.topics.data &&
-    moduleLayer.data.tables.topics.data.data;
+    moduleLayer.data.tables.topics.data.data &&
+    moduleLayer.data.tables.topics.data.data.filter(t => !isHidden(t));
 
   // const topicsAggregated =
   //   topicsData && topicsData.filter(t => isAggregate(t) && !isArchived(t));
 
-  const topicsCurrent =
+  let topicsCurrent =
     topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
   // topicsData && topicsData.filter(t => !isAggregate(t) && !isArchived(t));
 
   const topicsArchived =
     topicsData && topicsData.filter(t => !isAggregate(t) && isArchived(t));
 
-  const aggregateTopic =
-    topicsData && topicsData.filter(t => isAggregate(t))[0];
+  const aggregateTopic = topicsData && topicsData.find(t => isAggregate(t));
+
+  if (aggregateTopic) {
+    const childTopicIds = aggregateTopic.aggregate
+      .split(',')
+      .map(id => id.trim());
+    topicsCurrent = topicsCurrent.filter(t => childTopicIds.indexOf(t.id) > -1);
+  }
 
   const size = React.useContext(ResponsiveContext);
 

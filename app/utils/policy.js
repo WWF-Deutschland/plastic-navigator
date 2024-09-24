@@ -762,7 +762,14 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
 export const isAggregate = topic =>
   !!topic && topic.aggregate && topic.aggregate.trim() !== '';
 export const isArchived = topic =>
-  !!topic && topic.archived && topic.archived.trim() === '1';
+  checkAttribute(topic, 'archived', ['1', 'true', 'TRUE']) && !isHidden(topic);
+export const isHidden = topic =>
+  checkAttribute(topic, 'hidden', ['1', 'true', 'TRUE']);
+
+const checkAttribute = (item, attribute, values = ['1'], inverse) =>
+  inverse
+    ? !!item && item[attribute] && values.indexOf(item[attribute]) === -1
+    : !!item && item[attribute] && values.indexOf(item[attribute]) > -1;
 
 export const getChildTopics = (parentTopic, topics, locale) => {
   const childIds = parentTopic.aggregate && parentTopic.aggregate.split(',');
