@@ -70,7 +70,7 @@
   "app.containers.LayerInfo.projectLinkExternal": "Visit project website",
   "app.containers.LayerInfo.quote": "Statement",
   "app.containers.LayerInfo.scoreCardLabel": "Policy position by topic",
-  "app.containers.LayerInfo.scoreCardSelect": "Select a topic to view statements{isSmall, select, true {} false { and show on map}}",
+  "app.containers.LayerInfo.scoreCardSelect": "Select a topic to view statements {isSmall, select, true {} false { and show on map}}",
   "app.containers.LayerInfo.selectArchivedTopics": "Archived topics",
   "app.containers.LayerInfo.selectCurrentTopics": "Select a policy topic",
   "app.containers.LayerInfo.shareCountryLink": "Copy link to country view",
