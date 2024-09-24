@@ -94,6 +94,7 @@
   "app.containers.ModuleExplore.showProjectsShort": "Show Projects",
   "app.containers.ModulePolicy.select": "Select",
   "app.containers.ModulePolicy.selectArchivedTopics": "Archived topics",
+  "app.containers.ModulePolicy.selectCurrentTopics": "Select to explore on map",
   "app.containers.ModulePolicy.selectTopics": "Explore the underlying topics",
   "app.containers.ModulePolicy.show": "Show",
   "app.containers.ModulePolicy.showLayerPanel": "Policy info",

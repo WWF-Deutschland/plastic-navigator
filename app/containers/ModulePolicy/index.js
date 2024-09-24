@@ -55,6 +55,19 @@ import messages from './messages';
 import TopicCard from './TopicCard';
 import AggregateTopicCard from './AggregateTopicCard';
 
+const CurrentTopicsWrapper = styled(props => (
+  <Box
+    margin={{ top: 'medium', bottom: 'small' }}
+    pad="medium"
+    gap="small"
+    background="brand"
+    {...props}
+  />
+))`
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+`;
+const ArchivedTopicsWrapper = styled(props => <Box {...props} />)``;
+
 const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
   position: absolute;
   right: 12px;
@@ -82,7 +95,6 @@ const ShowButton = styled(p => <Button plain reverse {...p} />)`
     padding: 5px 15px 5px 21px;
   }
 `;
-
 const TitleShort = styled(Text)`
   font-family: 'wwfregular';
   text-transform: uppercase;
@@ -104,17 +116,12 @@ const TitleSelect = styled(p => <Text size="xlarge" {...p} />)`
 const TitleSelectWrapper = styled(p => (
   <Box {...p} align="center" margin={{ top: 'small' }} />
 ))``;
-const TitleSelectArchived = styled(p => <Text size="large" {...p} />)`
-  font-family: 'wwfregular';
-  text-transform: uppercase;
-  line-height: 1;
-  margin-top: 3px;
-  border-bottom: 1px solid rgb(218, 218, 218);
-  padding-bottom: 10px;
+const TopicCardWrap = styled(p => <Box {...p} />)`
+  width: 100%;
 `;
-
-const TopicCardWrap = styled(p => <Box {...p} />)``;
-const AggregateCardWrap = styled(p => <Box {...p} background="white" />)``;
+const AggregateCardWrap = styled(p => <Box {...p} background="white" />)`
+  box-shadow: 4px 4px 4px ${({ theme }) => theme.global.colors.brandDark};
+`;
 
 const COMPONENT_KEY = 'mpol';
 
@@ -264,13 +271,11 @@ export function ModulePolicy({
                 header={
                   <Box>
                     <Box align="center">
-                      <Box>
-                        <Policy color="black" />
-                        <TitleShort>
-                          {layerConfig['title-short'][locale] ||
-                            layerConfig['title-short'][DEFAULT_LOCALE]}
-                        </TitleShort>
-                      </Box>
+                      <Policy color="black" />
+                      <TitleShort>
+                        {layerConfig['title-short'][locale] ||
+                          layerConfig['title-short'][DEFAULT_LOCALE]}
+                      </TitleShort>
                     </Box>
                     <Box align="center" margin={{ vertical: 'small' }}>
                       <Title size={size === 'small' ? 'xxlarge' : 'xxxlarge'}>
@@ -286,44 +291,18 @@ export function ModulePolicy({
                     tag: '[SELECT-TOPICS-CURRENT]',
                     el:
                       aggregateTopic || topicsCurrent ? (
-                        <Box
-                          margin={{ top: 'medium', bottom: 'small' }}
-                          pad="medium"
-                          gap="small"
-                          background="brand"
-                        >
-                          {aggregateTopic && (
-                            <AggregateCardWrap>
-                              <AggregateTopicCard
-                                key={aggregateTopic.id}
-                                topic={aggregateTopic}
-                                onTopicSelect={id =>
-                                  onSetLayers([
-                                    ...activeLayers,
-                                    `${POLICY_LAYER}_${id}`,
-                                  ])
-                                }
-                              />
-                            </AggregateCardWrap>
-                          )}
-                          {topicsCurrent && (
-                            <TitleSelectWrapper>
-                              <TitleSelect>
-                                <FormattedMessage {...messages.selectTopics} />
-                              </TitleSelect>
-                            </TitleSelectWrapper>
-                          )}
-                          {topicsCurrent && (
-                            <TopicCardWrap
-                              direction="row"
-                              margin={{ top: 'small' }}
-                            >
-                              {topicsCurrent.map(t => (
-                                <TopicCard
-                                  key={t.id}
-                                  count={topicsCurrent.length}
-                                  topic={t}
-                                  invertColor
+                        <Box>
+                          <TitleSelect>
+                            <FormattedMessage
+                              {...messages.selectCurrentTopics}
+                            />
+                          </TitleSelect>
+                          <CurrentTopicsWrapper>
+                            {aggregateTopic && (
+                              <AggregateCardWrap>
+                                <AggregateTopicCard
+                                  key={aggregateTopic.id}
+                                  topic={aggregateTopic}
                                   onTopicSelect={id =>
                                     onSetLayers([
                                       ...activeLayers,
@@ -331,22 +310,55 @@ export function ModulePolicy({
                                     ])
                                   }
                                 />
-                              ))}
-                            </TopicCardWrap>
-                          )}
+                              </AggregateCardWrap>
+                            )}
+                            {topicsCurrent && (
+                              <TitleSelectWrapper>
+                                <TitleSelect size="large">
+                                  <FormattedMessage
+                                    {...messages.selectTopics}
+                                  />
+                                </TitleSelect>
+                              </TitleSelectWrapper>
+                            )}
+                            {topicsCurrent && (
+                              <TopicCardWrap
+                                direction={size === 'small' ? 'column' : 'row'}
+                                margin={{ top: 'small' }}
+                                wrap
+                              >
+                                {topicsCurrent.map(t => (
+                                  <TopicCard
+                                    key={t.id}
+                                    count={topicsCurrent.length}
+                                    topic={t}
+                                    invertColor
+                                    onTopicSelect={id =>
+                                      onSetLayers([
+                                        ...activeLayers,
+                                        `${POLICY_LAYER}_${id}`,
+                                      ])
+                                    }
+                                  />
+                                ))}
+                              </TopicCardWrap>
+                            )}
+                          </CurrentTopicsWrapper>
                         </Box>
                       ) : null,
                   },
                   {
                     tag: '[SELECT-TOPICS-ARCHIVE]',
                     el: (
-                      <Box margin={{ top: 'medium', bottom: 'small' }}>
-                        <TitleSelectArchived>
+                      <ArchivedTopicsWrapper
+                        margin={{ top: 'medium', bottom: 'small' }}
+                      >
+                        <TitleSelect>
                           <FormattedMessage
                             {...messages.selectArchivedTopics}
                           />
-                        </TitleSelectArchived>
-                        <Box direction="row" margin={{ top: 'small' }}>
+                        </TitleSelect>
+                        <Box direction="row" margin={{ top: 'medium' }}>
                           {topicsArchived &&
                             topicsArchived.map(t => (
                               <TopicCard
@@ -363,7 +375,7 @@ export function ModulePolicy({
                               />
                             ))}
                         </Box>
-                      </Box>
+                      </ArchivedTopicsWrapper>
                     ),
                   },
                 ]}

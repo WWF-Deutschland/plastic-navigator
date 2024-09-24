@@ -94,6 +94,7 @@
   "app.containers.ModuleExplore.showProjectsShort": "Projekte einblenden",
   "app.containers.ModulePolicy.select": "Auswahl",
   "app.containers.ModulePolicy.selectArchivedTopics": "Archivierte Themen",
+  "app.containers.ModulePolicy.selectCurrentTopics": "",
   "app.containers.ModulePolicy.selectTopics": "Wählen Sie ein Thema aus",
   "app.containers.ModulePolicy.show": "Anzeigen",
   "app.containers.ModulePolicy.showLayerPanel": "Informationen",

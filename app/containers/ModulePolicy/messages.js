@@ -17,6 +17,10 @@ export default defineMessages({
     id: `${scope}.selectTopics`,
     defaultMessage: 'Select a policy topic to explore',
   },
+  selectCurrentTopics: {
+    id: `${scope}.selectCurrentTopics`,
+    defaultMessage: 'Select to explore on map',
+  },
   selectArchivedTopics: {
     id: `${scope}.selectArchivedTopics`,
     defaultMessage: 'Archived topics',
