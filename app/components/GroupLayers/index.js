@@ -18,7 +18,6 @@ import { PROJECT_CONFIG } from 'config';
 import KeyIcon from 'components/KeyIcon';
 import Checkbox from 'components/Checkbox';
 import qe from 'utils/quasi-equals';
-import { isAggregate } from 'utils/policy';
 
 import messages from './messages';
 
