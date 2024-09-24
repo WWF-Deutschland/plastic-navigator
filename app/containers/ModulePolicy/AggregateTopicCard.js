@@ -20,12 +20,15 @@ import messages from './messages';
 
 const TopicButton = styled(p => <Button plain {...p} />)``;
 
+// prettier-ignore
 const TopicInner = styled(p => (
   <Box elevation="small" pad="small" responsive={false} {...p} />
 ))`
   position: relative;
-  background-color: ${({ theme }) => theme.global.colors.topicCards.aggregate.background};
-  box-shadow: ${({ theme }) => theme.global.colors.topicCards.aggregate.dropShadow} 0px 2px 2px;
+  background-color: ${({ theme }) =>
+    theme.global.colors.topicCards.aggregate.background};
+  box-shadow: ${({ theme }) =>
+    theme.global.colors.topicCards.aggregate.dropShadow} 0px 2px 2px;
 `;
 
 const Styled = styled(props => <Box {...props} />)`
@@ -41,7 +44,8 @@ const TitleShort = styled(p => <Text size="xxxlarge" {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
-  color: ${({ theme, isHover }) => !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
+  color: ${({ theme, isHover }) =>
+    !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
 `;
 const Show = styled.div``;
 const ShowText = styled.div`
@@ -66,12 +70,7 @@ const ShowText = styled.div`
   }
 `;
 
-export function AggregateTopicCard({
-  intl,
-  onTopicSelect,
-  topic,
-  theme,
-}) {
+export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
@@ -96,7 +95,8 @@ export function AggregateTopicCard({
               <Teaser isHover={isHover}>
                 <Markdown
                   source={
-                    topic[`teaser_${locale}`] || topic[`teaser_${DEFAULT_LOCALE}`]
+                    topic[`teaser_${locale}`] ||
+                    topic[`teaser_${DEFAULT_LOCALE}`]
                   }
                 />
               </Teaser>

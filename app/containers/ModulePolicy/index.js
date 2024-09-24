@@ -101,7 +101,9 @@ const TitleSelect = styled(p => <Text size="xlarge" {...p} />)`
   line-height: 1;
   margin-top: 10px;
 `;
-const TitleSelectWrapper = styled(p => <Box {...p} align="center" margin={{ top: 'small' }} />)``;
+const TitleSelectWrapper = styled(p => (
+  <Box {...p} align="center" margin={{ top: 'small' }} />
+))``;
 const TitleSelectArchived = styled(p => <Text size="large" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
@@ -282,7 +284,7 @@ export function ModulePolicy({
                         gap="small"
                         background="brand"
                       >
-                        {aggregateTopic &&
+                        {aggregateTopic && (
                           <AggregateCardWrap>
                             <AggregateTopicCard
                               key={aggregateTopic.id}
@@ -295,7 +297,7 @@ export function ModulePolicy({
                               }
                             />
                           </AggregateCardWrap>
-                        }
+                        )}
                         <TitleSelectWrapper>
                           <TitleSelect>
                             <FormattedMessage {...messages.selectTopics} />
@@ -311,7 +313,7 @@ export function ModulePolicy({
                                 key={t.id}
                                 count={topicsCurrent.length}
                                 topic={t}
-                                invertColor={true}
+                                invertColor
                                 onTopicSelect={id =>
                                   onSetLayers([
                                     ...activeLayers,
