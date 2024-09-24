@@ -11,7 +11,7 @@ import Markdown from 'react-remarkable';
 import { DEFAULT_LOCALE } from 'i18n';
 
 import styled, { withTheme } from 'styled-components';
-import { Text, Box, Button } from 'grommet';
+import { Text, Box, Button, ResponsiveContext } from 'grommet';
 
 import { POLICY_TOPIC_ICONS } from 'config';
 
@@ -21,9 +21,7 @@ import messages from './messages';
 const TopicButton = styled(p => <Button plain {...p} />)``;
 
 // prettier-ignore
-const TopicInner = styled(p => (
-  <Box pad="small" responsive={false} {...p} />
-))`
+const TopicInner = styled(p => (<Box pad='medium' {...p} />))`
   position: relative;
   background-color: ${({ theme }) =>
     theme.global.colors.topicCards.aggregate.background};
@@ -39,41 +37,34 @@ const Styled = styled(props => <Box {...props} />)`
 `;
 const Teaser = styled(p => <Text size="small" {...p} />)`
   color: ${({ theme }) => theme.global.colors.text.light};
+  text-align: center;
 `;
-const TitleShort = styled(p => <Text size="xxxlarge" {...p} />)`
+const TitleShort = styled(p => <Text {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
   color: ${({ theme }) => theme.global.colors.brand};
 `;
-const Show = styled.div``;
-const ShowText = styled.div`
+const ShowOnMapButton = styled(props => <Box {...props} />)`
+  border-radius: 99999px;
   background-color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
-  border-radius: 99999px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+`;
+const ShowText = styled(p => <Text {...p} />)`
   color: white;
   font-family: wwfregular;
   text-transform: uppercase;
-  font-size: 20px;
   line-height: 1;
-  transform: translate(${({ isOffset }) => (isOffset ? -50 : 0)}%, 0);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-  padding: 8px 16px 10px;
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    font-size: 22px;
-    padding: 6px 16px 8px;
-  }
-  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    font-size: 30px;
-    padding: 9px 25px 11px;
-  }
 `;
 
 export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
+  const size = React.useContext(ResponsiveContext);
+  const isSmallScreen = size === 'small';
   return (
     <Styled className="mpx-topic-select">
       <TopicButton
@@ -84,14 +75,23 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
         onMouseLeave={() => setIsHover(false)}
       >
         <TopicInner isHover={isHover}>
-          <Box align="center">
-            <Icon color={theme.global.colors.brand} />
-            <TitleShort isHover={isHover}>
+          <Box align="center" gap="small">
+            <Icon
+              color={theme.global.colors.brand}
+              size={isSmallScreen ? '70px' : '90px'}
+            />
+            <TitleShort
+              isHover={isHover}
+              size={isSmallScreen ? 'xxlarge' : 'xxxlarge'}
+            >
               {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
             </TitleShort>
           </Box>
-          <Box align="center" responsive={false}>
-            <Box margin={{ top: 'medium' }}>
+          <Box
+            align="center"
+            margin={{ horizontal: isSmallScreen ? 'medium' : 'xxlarge' }}
+          >
+            <Box margin={{ top: 'medium', bottom: 'small' }}>
               <Teaser isHover={isHover}>
                 <Markdown
                   source={
@@ -102,11 +102,17 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
               </Teaser>
             </Box>
             <Box align="center" margin="medium">
-              <Show isHover={isHover}>
-                <ShowText isHover={isHover}>
+              <ShowOnMapButton
+                isHover={isHover}
+                pad={{ horizontal: 'medium', vertical: 'small' }}
+              >
+                <ShowText
+                  isHover={isHover}
+                  size={isSmallScreen ? 'xlarge' : 'xxlarge'}
+                >
                   <FormattedMessage {...messages.showOnMap} />
                 </ShowText>
-              </Show>
+              </ShowOnMapButton>
             </Box>
           </Box>
         </TopicInner>
