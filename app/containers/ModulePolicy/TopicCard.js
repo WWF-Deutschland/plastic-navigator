@@ -19,27 +19,42 @@ import { isMinSize } from 'utils/responsive';
 // import commonMessages from 'messages';
 import messages from './messages';
 
+// prettier-ignore
 const TopicButton = styled(p => <Button plain {...p} />)`
   background: ${({ theme, secondary }) =>
-    !secondary ? theme.global.colors.topicCards.default.background : theme.global.colors.topicCards.secondary.background};
-  box-shadow: ${({ secondary }) => secondary ? 'rgba(0, 0, 0, 0.2) 0px 2px 4px' : 'none'};
+    !secondary
+      ? theme.global.colors.topicCards.default.background
+      : theme.global.colors.topicCards.secondary.background};
+  box-shadow: ${({ secondary }) =>
+    secondary ? 'rgba(0, 0, 0, 0.2) 0px 2px 4px' : 'none'};
   &:hover {
     background: ${({ theme, secondary }) =>
-    !secondary ? theme.global.colors.topicCards.default.backgroundHover : theme.global.colors.topicCards.secondary.background};
+    !secondary
+      ? theme.global.colors.topicCards.default.backgroundHover
+      : theme.global.colors.topicCards.secondary.background};
   }
 `;
+// prettier-ignore
 const TopicInner = styled(p => (
   <Box elevation="small" pad="small" responsive={false} {...p} />
 ))`
   position: relative;
   background-color: ${({ theme, secondary }) =>
-    !secondary ? theme.global.colors.topicCards.default.background : theme.global.colors.topicCards.secondary.background};
+    !secondary
+      ? theme.global.colors.topicCards.default.background
+      : theme.global.colors.topicCards.secondary.background};
   box-shadow: none;
   &:hover {
     box-shadow: ${({ theme, secondary }) =>
-    !secondary ? `${theme.global.colors.topicCards.default.backgroundHover} 4px 2px 4px` : 'none'};
+    !secondary
+      ? `${
+        theme.global.colors.topicCards.default.backgroundHover
+      } 4px 2px 4px`
+      : 'none'};
     background: ${({ theme, secondary }) =>
-    !secondary ? theme.global.colors.topicCards.default.backgroundHover : theme.global.colors.topicCards.secondary.backgroundHover};
+    !secondary
+      ? theme.global.colors.topicCards.default.backgroundHover
+      : theme.global.colors.topicCards.secondary.backgroundHover};
   }
   border: ${({ secondary }) => secondary ? 'none' : '1px solid white'};
 `;
@@ -65,8 +80,9 @@ const TitleShort = styled(p => <Text size="xlarge" {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   margin-top: 3px;
-  text-align: ${({ secondary }) => secondary ? 'left' : 'center'};
-  color: ${({ theme, secondary }) => secondary ? theme.global.colors.brand : 'white'};
+  text-align: ${({ secondary }) => (secondary ? 'left' : 'center')};
+  color: ${({ theme, secondary }) =>
+    secondary ? theme.global.colors.brand : 'white'};
 `;
 
 const Show = styled.div`
@@ -77,7 +93,10 @@ const Show = styled.div`
   transform: translate(0, ${({ isOffset }) => (isOffset ? 50 : 0)}%);
 `;
 const ShowText = styled.div`
-  color: ${({ isHover, theme }) => !isHover ? theme.global.colors.topicCards.default.buttonFont : theme.global.colors.topicCards.default.buttonFontHover};
+  color: ${({ isHover, theme }) =>
+    !isHover
+      ? theme.global.colors.topicCards.default.buttonFont
+      : theme.global.colors.topicCards.default.buttonFontHover};
   border-radius: 99999px;
   background-color: white;
   font-family: wwfregular;
@@ -98,8 +117,10 @@ const ShowText = styled.div`
   }
 `;
 const ShowTextSecondary = styled.div`
-  color: ${({ isHover, theme }) => 
-  !isHover ? theme.global.colors.topicCards.secondary.buttonFont : theme.global.colors.topicCards.secondary.buttonFontHover};
+  color: ${({ isHover, theme }) =>
+    !isHover
+      ? theme.global.colors.topicCards.secondary.buttonFont
+      : theme.global.colors.topicCards.secondary.buttonFontHover};
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
@@ -110,13 +131,7 @@ const ShowTextSecondary = styled.div`
   box-shadow: rgb(0, 0, 0, 0.2) 0px 2px 4px;
 `;
 
-export function TopicCard({
-  intl,
-  onTopicSelect,
-  topic,
-  count,
-  secondary,
-}) {
+export function TopicCard({ intl, onTopicSelect, topic, count, secondary }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
@@ -138,14 +153,14 @@ export function TopicCard({
         onMouseLeave={() => setIsHover(false)}
       >
         <TopicInner isHover={isHover} secondary={secondary}>
-          <Box align={secondary ? "left" : "center"}>
+          <Box align={secondary ? 'start' : 'center'}>
             <Icon color={secondary ? 'brand' : 'white'} />
             <TitleShort isHover={isHover} secondary={secondary}>
               {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
             </TitleShort>
           </Box>
           <Box
-            align={secondary ? "left" : "center"}
+            align={secondary ? 'start' : 'center'}
             responsive={false}
             margin={{
               top: 'small',
