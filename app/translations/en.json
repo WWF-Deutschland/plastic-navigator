@@ -90,7 +90,7 @@
   "app.containers.LayerInfo.selectCurrentTopics": "Select a policy topic",
   "app.containers.LayerInfo.selectArchivedTopics": "Archived topics",
   "app.containers.ModulePolicy.selectArchivedTopics": "Archived topics",
-  "app.containers.ModulePolicy.selectTopics": "Select a policy topic to explore",
+  "app.containers.ModulePolicy.selectTopics": "Explore the underlying topics",
   "app.containers.ModulePolicy.showLayerPanel": "Policy info",
   "app.containers.PanelChapter.exploreAll": "Explore all layers",
   "app.containers.PanelChapter.next": "Next",
