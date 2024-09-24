@@ -284,43 +284,19 @@ export function ModulePolicy({
                 inject={[
                   {
                     tag: '[SELECT-TOPICS-CURRENT]',
-                    el: (
-                      <Box
-                        margin={{ top: 'medium', bottom: 'small' }}
-                        pad="medium"
-                        gap="small"
-                        background="brand"
-                      >
-                        {aggregateTopic && (
-                          <AggregateCardWrap>
-                            <AggregateTopicCard
-                              key={aggregateTopic.id}
-                              topic={aggregateTopic}
-                              onTopicSelect={id =>
-                                onSetLayers([
-                                  ...activeLayers,
-                                  `${POLICY_LAYER}_${id}`,
-                                ])
-                              }
-                            />
-                          </AggregateCardWrap>
-                        )}
-                        <TitleSelectWrapper>
-                          <TitleSelect>
-                            <FormattedMessage {...messages.selectTopics} />
-                          </TitleSelect>
-                        </TitleSelectWrapper>
-                        <TopicCardWrap
-                          direction="row"
-                          margin={{ top: 'small' }}
+                    el:
+                      aggregateTopic || topicsCurrent ? (
+                        <Box
+                          margin={{ top: 'medium', bottom: 'small' }}
+                          pad="medium"
+                          gap="small"
+                          background="brand"
                         >
-                          {topicsCurrent &&
-                            topicsCurrent.map(t => (
-                              <TopicCard
-                                key={t.id}
-                                count={topicsCurrent.length}
-                                topic={t}
-                                invertColor
+                          {aggregateTopic && (
+                            <AggregateCardWrap>
+                              <AggregateTopicCard
+                                key={aggregateTopic.id}
+                                topic={aggregateTopic}
                                 onTopicSelect={id =>
                                   onSetLayers([
                                     ...activeLayers,
@@ -328,10 +304,38 @@ export function ModulePolicy({
                                   ])
                                 }
                               />
-                            ))}
-                        </TopicCardWrap>
-                      </Box>
-                    ),
+                            </AggregateCardWrap>
+                          )}
+                          {topicsCurrent && (
+                            <TitleSelectWrapper>
+                              <TitleSelect>
+                                <FormattedMessage {...messages.selectTopics} />
+                              </TitleSelect>
+                            </TitleSelectWrapper>
+                          )}
+                          {topicsCurrent && (
+                            <TopicCardWrap
+                              direction="row"
+                              margin={{ top: 'small' }}
+                            >
+                              {topicsCurrent.map(t => (
+                                <TopicCard
+                                  key={t.id}
+                                  count={topicsCurrent.length}
+                                  topic={t}
+                                  invertColor
+                                  onTopicSelect={id =>
+                                    onSetLayers([
+                                      ...activeLayers,
+                                      `${POLICY_LAYER}_${id}`,
+                                    ])
+                                  }
+                                />
+                              ))}
+                            </TopicCardWrap>
+                          )}
+                        </Box>
+                      ) : null,
                   },
                   {
                     tag: '[SELECT-TOPICS-ARCHIVE]',
