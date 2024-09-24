@@ -169,6 +169,7 @@ const myTimeFormat = (value, intl) => {
 //   }
 // `;
 
+// TODO move to topics csv file
 const MINDATE = {
   0: '2018-10-01',
   1: '2023-01-01',
@@ -327,7 +328,6 @@ export function CountryChart({
     });
   // console.log(getFlatCSVFromSources(sources, locale))
   // console.log('dataMouseOverCover', dataMouseOverCover)
-
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -365,6 +365,7 @@ export function CountryChart({
                     </Box>
                     {statsForKey.map(keyItem => {
                       const {count} = keyItem;
+                      const hasCount = typeof count !== 'undefined' && count !== null;
                       return (
                         <SquareLabelWrap key={keyItem.id}>
                           <KeyAreaWrap>
@@ -377,12 +378,12 @@ export function CountryChart({
                               </StyledKeyLabel>
                             </Box>
                             <Box flex={{ grow: 0, shrink: 0 }}>
-                              {!!count && (
+                              {hasCount && (
                                 <StyledKeyCount>
                                   {count}
                                 </StyledKeyCount>
                               )}
-                              {!count && (
+                              {!hasCount && (
                                 <StyledKeyCountPlaceHolder />
                               )}
                             </Box>
