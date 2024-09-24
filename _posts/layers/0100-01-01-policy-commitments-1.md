@@ -6,19 +6,21 @@ lang: en
 title: Ban & phase out
 ---
 
-Where possible, the treaty must put in place specific, binding measures to significantly reduce or eliminate the production and consumption of plastic categories of concern. This is one of the indispensable components of an ambitious treaty to end plastic pollution. In line with a risk-based approach, initial emphasis should be on the products, additives or materials that generate the largest pressure on the system, and pose the highest risks. Priority lists of such products, additives or materials should urgently be developed.
+As a starting point, the treaty must include binding, global bans and phase-outs of problematic
+and avoidable plastic products and chemicals of concern. Priority must be those that are most harmful to human health and the environment and can be immediately banned and gradually phased out. The treaty must include global criteria and initial lists to identify and specify these plastic products and chemicals.
 
-The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of certain plastic categories of concern, including products, materials, or substances deemed to pose a significant risk, including probability and severity of potential harms to humans (including to human health), other living species, and the relevant environment.
+The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of problematic
+and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
 
-States’ convergence on the need to eliminate or significantly reduce these plastic categories is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [submission (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) to the Intergovernmental Negotiating Committee, provides further information on WWF’s key recommendations on the potential options for elements towards an international legally binding instrument.
+States’ convergence on the need to eliminate these plastic products and chemicals is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of certain plastic categories of concern.
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of problematic and avoidable plastic products and chemicals of concern.
 
-* Dark green indicates states that have publicly called for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
-* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of at least one or more plastic categories of concern.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global bans and phaseouts of problematic and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global bans and phaseouts of problematic and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
 * Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement.
 
 _Clicking on the states shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._

@@ -6,22 +6,21 @@ lang: en
 title: Circulate
 ---
 
-The treaty must ensure that remaining plastic products—that are not banned or phased out—are effectively circulated in a non-toxic circular economy, and should be subject to requirements and standards for reuse and effective recycling, starting with immediate measures aimed at plastic categories posing the highest risk. This is one of the indispensable components of an ambitious treaty to end plastic pollution. Both positive (i.e., allowed) lists and negative (i.e., not allowed) lists should be considered to specify these requirements and standards.
+The treaty must establish binding, global requirements on product design and performance
+to ensure reduction, reuse, and safe recycling for the remaining plastics. Establishing these requirements must go hand-in-hand with a dedicated focus on setting up the systems needed to enable collection, reuse and recycling. As a starting point, the measures should target products that are consumed in high volumes, likely to become pollution and cause more harm due to their design, such as beverage bottles and food containers. Initial requirements should focus on priority plastic products’ reusability and recyclability, on recycled plastics, and on setting up essential systems to facilitate the circular economy transition.
 
-Some (non-exhaustive) examples of these global requirements and standards are: design standards for high-risk product categories or applications (e.g., packaging), aimed at incentivizing reuse, collection and/or recycling; standards on materials, colours and additives allowed for use in certain products; elimination of toxic additives that make reuse and recycled materials dangerous for human health and the environment; obligations on product information disclosure to improve global transparency (e.g., polymers and chemical additives of products); etc.
+The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic circular economy.
 
-The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics  (those not eliminated) in a non-toxic circular economy.
-
-States’ convergence on the need to ensure a non-toxic circular economy of plastics is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution.
+States’ convergence on the need to ensure a non-toxic circular economy of plastics, through product design requirements and systems, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on global product design requirements and systems, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
 
-The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global requirements and standards towards a non-toxic circular economy for remaining plastics (those not eliminated).
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
 
-* Dark green indicates states that have publicly called for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy.
-* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global requirements and standards for products and relevant systems to circulate remaining plastics in a non-toxic circular economy.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any global requirement and standard towards a non-toxic circular economy in their latest verbal or written public statement.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of any global product design requirements and systems for the transition toward a non-toxic cricular economy in their latest verbal or written public statement.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 
