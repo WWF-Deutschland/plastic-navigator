@@ -159,7 +159,7 @@ export default defineMessages({
   topicsTabTitle: {
     id: `${scope}.topicsTabTitle`,
     defaultMessage:
-      'Explore the {count} underlying topics of the red line manifesto and the underlying statements',
+      'Explore the four topics of must-haves in the treaty and their relevant statements',
   },
   selectArchivedTopics: {
     id: `${scope}.selectArchivedTopics`,
