@@ -374,7 +374,7 @@ export function CountryChart({
                           <KeyLabelWrap fill="horizontal">
                             <Box>
                               <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-                                <Markdown source={count ? `${keyItem.title}: ` : keyItem.title} />
+                                <Markdown source={hasCount ? `${keyItem.title}: ` : keyItem.title} />
                               </StyledKeyLabel>
                             </Box>
                             <Box flex={{ grow: 0, shrink: 0 }}>
