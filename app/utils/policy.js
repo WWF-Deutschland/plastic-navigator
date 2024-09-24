@@ -481,7 +481,7 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
   const topics = getTopicsFromData(layerInfo);
   const tables = layerInfo && layerInfo.data && layerInfo.data.tables;
   const indicatorScores = topics
-    .filter(t => !isAggregate(t))
+    .filter(t => !isAggregate(t) && !isHidden(t))
     .map(t => ({
       ...t,
       position: getCountryPositionForTopicAndDate({
@@ -491,7 +491,7 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
       }),
     }));
   const aggIndicatorScores = topics
-    .filter(t => isAggregate(t))
+    .filter(t => isAggregate(t) && !isHidden(t))
     .map(t => {
       const childIds = t.aggregate.split(',');
       const childIndicators = indicatorScores.filter(
