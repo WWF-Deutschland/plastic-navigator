@@ -35,7 +35,7 @@ const Styled = styled(props => <Box {...props} />)`
   height: 100%;
   hyphens: auto;
 `;
-const Teaser = styled(p => <Text size="small" {...p} />)`
+const Teaser = styled(p => <Text {...p} />)`
   color: ${({ theme }) => theme.global.colors.text.light};
   text-align: center;
 `;
@@ -51,6 +51,10 @@ const ShowOnMapButton = styled(props => <Box {...props} />)`
   background-color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+  padding: 7px 20px 9px;
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+    padding: 9px 25px 11px;
+  }
 `;
 const ShowText = styled(p => <Text {...p} />)`
   color: white;
@@ -64,7 +68,7 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
   const size = React.useContext(ResponsiveContext);
-  const isSmallScreen = size === 'small';
+  const isScreenSmall = size === 'small';
   return (
     <Styled className="mpx-topic-select">
       <TopicButton
@@ -78,21 +82,24 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
           <Box align="center" gap="small">
             <Icon
               color={theme.global.colors.brand}
-              size={isSmallScreen ? '70px' : '90px'}
+              size={isScreenSmall ? '70px' : '90px'}
             />
             <TitleShort
               isHover={isHover}
-              size={isSmallScreen ? 'xxlarge' : 'xxxlarge'}
+              size={isScreenSmall ? 'xxlarge' : 'xxxlarge'}
             >
               {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
             </TitleShort>
           </Box>
           <Box
             align="center"
-            margin={{ horizontal: isSmallScreen ? 'medium' : 'xxlarge' }}
+            margin={{ horizontal: isScreenSmall ? 'medium' : 'xlarge' }}
           >
             <Box margin={{ top: 'medium', bottom: 'small' }}>
-              <Teaser isHover={isHover}>
+              <Teaser
+                isHover={isHover}
+                size={isScreenSmall ? 'medium' : 'large'}
+              >
                 <Markdown
                   source={
                     topic[`teaser_${locale}`] ||
@@ -102,13 +109,10 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
               </Teaser>
             </Box>
             <Box align="center" margin="medium">
-              <ShowOnMapButton
-                isHover={isHover}
-                pad={{ horizontal: 'medium', vertical: 'small' }}
-              >
+              <ShowOnMapButton isHover={isHover}>
                 <ShowText
                   isHover={isHover}
-                  size={isSmallScreen ? 'xlarge' : 'xxlarge'}
+                  size={isScreenSmall ? 'large' : 'xlarge'}
                 >
                   <FormattedMessage {...messages.showOnMap} />
                 </ShowText>
