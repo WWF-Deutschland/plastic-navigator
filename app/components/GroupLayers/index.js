@@ -18,6 +18,8 @@ import { PROJECT_CONFIG } from 'config';
 import KeyIcon from 'components/KeyIcon';
 import Checkbox from 'components/Checkbox';
 import qe from 'utils/quasi-equals';
+import { isAggregate } from 'utils/policy';
+
 import messages from './messages';
 
 const Styled = styled.div`
@@ -101,7 +103,7 @@ function GroupLayers({
   showArchived,
   // group,
 }) {
-  const layers = [];
+  let layers = [];
   if (layersConfig) {
     layersConfig.forEach(config => {
       let id;
@@ -114,16 +116,29 @@ function GroupLayers({
             return showArchived ? isArchive : !isArchive;
           })
           .forEach(indicator => {
+            // note indicator from layers.json config file not csv data files
             layers.push({
               id: `${config.id}_${indicator.id}`,
               title: indicator.short
                 ? indicator.short[locale] || indicator.short[DEFAULT_LOCALE]
                 : indicator.title[locale] || indicator.title[DEFAULT_LOCALE],
               isArchive: indicator.archive ? qe(indicator.archive, 1) : false,
+              isAggregate: indicator.aggregate
+                ? qe(indicator.aggregate, 1)
+                : false,
               config,
               configIndicator: indicator,
             });
           });
+        layers = layers.sort((a, b) => {
+          if (a.isAggregate) {
+            return -1;
+          }
+          if (b.isAggregate) {
+            return 1;
+          }
+          return 1;
+        });
       } else {
         if (projects) {
           id = `${PROJECT_CONFIG.id}_${config.project_id}`;
