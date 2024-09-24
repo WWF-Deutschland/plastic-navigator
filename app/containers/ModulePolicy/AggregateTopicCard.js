@@ -22,13 +22,14 @@ const TopicButton = styled(p => <Button plain {...p} />)``;
 
 // prettier-ignore
 const TopicInner = styled(p => (
-  <Box elevation="small" pad="small" responsive={false} {...p} />
+  <Box pad="small" responsive={false} {...p} />
 ))`
   position: relative;
   background-color: ${({ theme }) =>
     theme.global.colors.topicCards.aggregate.background};
-  box-shadow: ${({ theme }) =>
-    theme.global.colors.topicCards.aggregate.dropShadow} 0px 2px 2px;
+  &:hover {
+    box-shadow: ${({ theme }) => theme.global.colors.topicCards.aggregate.dropShadow} 4px 2px 4px;
+  }
 `;
 
 const Styled = styled(props => <Box {...props} />)`
@@ -44,8 +45,7 @@ const TitleShort = styled(p => <Text size="xxxlarge" {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   text-align: center;
-  color: ${({ theme, isHover }) =>
-    !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
+  color: ${({ theme }) => theme.global.colors.brand};
 `;
 const Show = styled.div``;
 const ShowText = styled.div`
