@@ -61,9 +61,10 @@ export const getCountryStatements = ({
   let countryStatements =
     countryStatementIds &&
     tables.sources &&
-    countryStatementIds.map(id =>
-      tables.sources.data.data.find(s => qe(id, s.id)),
-    );
+    countryStatementIds.reduce((memo, id) => {
+      const statement = tables.sources.data.data.find(s => qe(id, s.id));
+      return statement ? [...memo, statement] : memo;
+    }, []);
   if (dateString) {
     countryStatements = countryStatements.filter(
       s => new Date(s.date) <= new Date(dateString),
