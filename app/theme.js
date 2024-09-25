@@ -54,7 +54,8 @@ export const dimensions = {
   },
   modal: {
     // by breakpoint
-    width: [300, 600, 800, 1000, 1200],
+    // s, m, l, xl, xxl
+    width: [300, 600, 850, 1050, 1200],
   },
 };
 

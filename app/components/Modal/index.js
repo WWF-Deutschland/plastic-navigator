@@ -27,7 +27,7 @@ const Background = styled.div`
 const TheModal = styled(p => (
   <Box
     flex={{ shrink: 0 }}
-    pad="medium"
+    pad="ml"
     background="white"
     elevation="large"
     {...p}
