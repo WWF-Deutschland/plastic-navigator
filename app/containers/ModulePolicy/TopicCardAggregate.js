@@ -26,7 +26,7 @@ const TopicInner = styled(p => (<Box pad='medium' {...p} />))`
   background-color: ${({ theme }) =>
     theme.global.colors.topicCards.aggregate.background};
   &:hover {
-    box-shadow: ${({ theme }) => theme.global.colors.topicCards.aggregate.dropShadow} 4px 2px 4px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.20);
   }
 `;
 
@@ -50,7 +50,8 @@ const ShowOnMapButton = styled(props => <Box {...props} />)`
   border-radius: 99999px;
   background-color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+  box-shadow: ${({ isHover }) =>
+    isHover ? '2px 2px 6px rgba(0,0,0,0.15)' : '2px 2px 6px rgba(0,0,0,0.10)'};
   padding: 13px 30px;
 `;
 const ShowText = styled(p => <Text {...p} />)`

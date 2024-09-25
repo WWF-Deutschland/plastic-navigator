@@ -58,14 +58,13 @@ import TopicCardAggregate from './TopicCardAggregate';
 const CurrentTopicsWrapper = styled(props => (
   <Box
     margin={{ top: 'medium', bottom: 'small' }}
-    pad="medium"
+    pad={{ top: 'medium', bottom: 'small', horizontal: 'medium' }}
     gap="small"
     background="brand"
+    elevation="medium"
     {...props}
   />
-))`
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
-`;
+))``;
 const ArchivedTopicsWrapper = styled(props => <Box {...props} />)``;
 
 const Buttons = styled(props => <Box gap="small" direction="row" {...props} />)`
@@ -288,7 +287,7 @@ export function ModulePolicy({
                     tag: '[SELECT-TOPICS-CURRENT]',
                     el:
                       aggregateTopic || topicsCurrent ? (
-                        <Box>
+                        <Box margin={{ top: 'ml', bottom: 'medium' }}>
                           <TitleSelect>
                             <FormattedMessage
                               {...messages.selectCurrentTopics}
@@ -327,7 +326,6 @@ export function ModulePolicy({
                                     key={t.id}
                                     count={topicsCurrent.length}
                                     topic={t}
-                                    invertColor
                                     onTopicSelect={id =>
                                       onSetLayers([
                                         ...activeLayers,
@@ -358,7 +356,7 @@ export function ModulePolicy({
                             topicsArchived.map(t => (
                               <TopicCard
                                 key={t.id}
-                                secondary
+                                archived
                                 count={topicsArchived.length}
                                 topic={t}
                                 onTopicSelect={id =>

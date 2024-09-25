@@ -102,12 +102,11 @@ export const colors = {
     },
     aggregate: {
       background: '#ffffff',
-      dropShadow: '#046179',
       buttonBackground: '#08586C',
       buttonFont: '#000000',
       buttonFontHover: '#08586C',
     },
-    secondary: {
+    archived: {
       background: '#ffffff',
       backgroundHover: '#ffffff',
       buttonBackground: '#000000',
