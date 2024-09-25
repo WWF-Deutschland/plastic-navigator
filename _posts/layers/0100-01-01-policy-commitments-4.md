@@ -6,16 +6,11 @@ lang: en
 title: Implementation support
 ---
 
-The treaty must include a comprehensive finance package that leverages all available sources
-and aligns financial flows, including public and private financing, with the objectives of the
-treaty and the implementation of its measures. This package will ensure predictable, adequate,
-equitable and accessible financial support to enable all parties to effectively implement the treaty.
-
-To complement the financial package, the treaty should ensure the provision of non-financial resources to enable effective implementation, particularly through technology transfer, technical assistance and capacity building.
+The treaty must include a comprehensive finance package that leverages all available sources and aligns financial flows, including public and private financing, with the objectives of the treaty and the implementation of its measures. This package will ensure predictable, adequate, equitable and accessible financial support to enable all parties to effectively implement the treaty. To complement the financial package, the treaty should ensure the provision of non-financial resources to enable effective implementation, particularly through technology transfer, technical assistance and capacity building.
 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 
-States’ convergence on the need to ensure necessary support to countries for the effective implementation of their obligations is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution.
+States’ convergence on the need to ensure necessary support to countries for the effective implementation of their obligations is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
