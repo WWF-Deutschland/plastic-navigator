@@ -11,7 +11,7 @@ to ensure reduction, reuse, and safe recycling for the remaining plastics. Estab
 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic circular economy.
 
-States’ convergence on the need to ensure a non-toxic circular economy of plastics, through product design requirements and systems, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on global product design requirements and systems, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
+States’ convergence on the need to ensure a non-toxic circular economy of plastics, through product design requirements and systems, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global product design requirements and systems, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
