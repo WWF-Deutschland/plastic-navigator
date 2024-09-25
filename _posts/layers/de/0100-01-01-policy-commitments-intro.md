@@ -18,6 +18,6 @@ The new treaty on plastic pollution presents a unique opportunity for countries 
 
 As a priority, states must pursue binding, global obligations on the most problematic and concerning issues across the full plastic lifecycle, and the necessary means for all parties to implement them. Importantly, the treaty must be equipped to strengthen measures and expand states’ efforts over time.
 
-The Global Plastic Navigator tracks states’ level of support for these essential elements in the treaty, as key indicators for an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
+The Global Plastic Navigator tracks states’ level of support for these essential elements in the treaty, as key indicators for an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 [SELECT-TOPICS-ARCHIVE]

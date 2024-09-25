@@ -15,7 +15,7 @@ The Global Plastic Navigator tracks the states’ level of support for the inclu
 * Evidence-based mechanisms to report, assess and review progress and effectiveness of measures, and potential necessary improvements;
 * Effective decision-making mechanisms, including in the absence of consensus among parties, to enable future adoption of necessary amendments to strengthen the treaty
 
-States’ convergence on the need for evidence-based and decision-making mechanisms, that guarantee measures can be adapted and strengthened over time, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
+States’ convergence on the need for evidence-based and decision-making mechanisms, that guarantee measures can be adapted and strengthened over time, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 ## How to read the data
 
