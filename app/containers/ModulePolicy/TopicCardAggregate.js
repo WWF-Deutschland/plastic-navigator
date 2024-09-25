@@ -1,6 +1,6 @@
 /**
  *
- * ModulePolicy: AggregateTopicCard
+ * ModulePolicy: TopicCardAggregate
  *
  */
 
@@ -62,7 +62,7 @@ const ShowText = styled(p => <Text {...p} />)`
   margin-top: -1px;
 `;
 
-export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
+export function TopicCardAggregate({ intl, onTopicSelect, topic, theme }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
@@ -121,11 +121,11 @@ export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
   );
 }
 
-AggregateTopicCard.propTypes = {
+TopicCardAggregate.propTypes = {
   onTopicSelect: PropTypes.func,
   topic: PropTypes.object,
   intl: intlShape.isRequired,
   theme: PropTypes.object,
 };
 
-export default injectIntl(withTheme(AggregateTopicCard));
+export default injectIntl(withTheme(TopicCardAggregate));

@@ -53,7 +53,7 @@ import { isArchived, isAggregate, isHidden } from 'utils/policy';
 import commonMessages from 'messages';
 import messages from './messages';
 import TopicCard from './TopicCard';
-import AggregateTopicCard from './AggregateTopicCard';
+import TopicCardAggregate from './TopicCardAggregate';
 
 const CurrentTopicsWrapper = styled(props => (
   <Box
@@ -296,7 +296,7 @@ export function ModulePolicy({
                           </TitleSelect>
                           <CurrentTopicsWrapper>
                             {aggregateTopic && (
-                              <AggregateTopicCard
+                              <TopicCardAggregate
                                 key={aggregateTopic.id}
                                 topic={aggregateTopic}
                                 onTopicSelect={id =>
