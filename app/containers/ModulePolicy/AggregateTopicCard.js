@@ -51,10 +51,7 @@ const ShowOnMapButton = styled(props => <Box {...props} />)`
   background-color: ${({ isHover, theme }) =>
     !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-  padding: 7px 20px 9px;
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    padding: 10px 28px 12px;
-  }
+  padding: 13px 30px;
 `;
 const ShowText = styled(p => <Text {...p} />)`
   color: white;
@@ -62,6 +59,7 @@ const ShowText = styled(p => <Text {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   font-size: 24px;
+  margin-top: -1px;
 `;
 
 export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {

@@ -96,11 +96,11 @@ const ShowButton = styled(props => <Box {...props} />)`
     (secondary
       ? 'rgba(0, 0, 0, 0.2)'
       : theme.global.colors.topicCards.default.buttonFontHover)} 0px 2px 4px;
-  padding: 4px 16px 5px;
+  padding: 8px 21px;
   background-color: white;
   border-radius: 99999px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    padding: ${({ secondary }) => (secondary ? '5px 28px 7px' : '6px 26px 8px')};
+    padding: ${({ secondary }) => (secondary ? '8px 21px' : '8px 23px')};
   }
   `;
 // prettier-ignore
@@ -117,6 +117,7 @@ const ShowText = styled(p => <Text {...p} />)`
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
+  margin-top: -1px;
   font-size: 19px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
    font-size: ${({ secondary }) => (secondary ? '19px' : '21px')};
