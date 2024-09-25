@@ -97,7 +97,7 @@ export const colors = {
       backgroundHover: '#046179',
       buttonBackground: '#000000',
       buttonFontHover: '#08586C',
-      buttonFont: '#046179'
+      buttonFont: '#046179',
     },
     aggregate: {
       background: '#ffffff',
@@ -112,8 +112,8 @@ export const colors = {
       buttonBackground: '#000000',
       buttonFont: '#00728F',
       buttonFontHover: '#08586C',
-    }
-  }
+    },
+  },
 };
 
 // grommet text
