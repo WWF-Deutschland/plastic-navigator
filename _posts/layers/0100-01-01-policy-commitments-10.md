@@ -15,7 +15,7 @@ The Global Plastic Navigator tracks the states’ level of support for the inclu
 * Aligned financial flows and sufficient resources for systems change, including a comprehensive finance package; and
 * Evidence-based and decision-making mechanisms that guarantee measures can be adapted and strengthened over time.
 
-States’ convergence on the need for all four essential elements in the treaty is taken to indicate their support for an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
+States’ convergence on the need for all four essential elements in the treaty is taken to indicate their support for an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 ## How to read the data
 
