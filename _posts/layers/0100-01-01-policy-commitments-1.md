@@ -12,7 +12,7 @@ and avoidable plastic products and chemicals of concern. Priority must be those 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of problematic
 and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
 
-States’ convergence on the need to eliminate these plastic products and chemicals is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](paste link here) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
+States’ convergence on the need to eliminate these plastic products and chemicals is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
