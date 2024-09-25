@@ -6,27 +6,23 @@ lang: de
 title: Circulate
 ---
 
-Das Abkommen muss sicherstellen, dass die verbleibenden Kunststoffe – also solche, die nicht verboten oder schrittweise aus dem Verkehr gezogen werden – tatsächlich in einer ungiftigen Kreislaufwirtschaft zirkulieren und Anforderungen und Normen zur Wiederverwendung und zum wirksamen Recycling unterliegen. Dabei muss mit Sofortmaßnahmen für die Kunststoffkategorien begonnen werden, die das größte Risiko darstellen.  Dies ist einer der unverzichtbaren Bestandteile eines ambitionierten Abkommens zur Beendigung der Plastikverschmutzung. Zur Festlegung dieser Anforderungen und Normen sollten sowohl Positivlisten („erlaubt“) als auch Negativlisten („verboten“) in Betracht gezogen werden.
+_Übersetzung folgt in Kürze_
 
-Zu vergleichbaren globalen Anforderungen und Standards in anderen Bereichen zählen unter anderem die folgenden:
+The treaty must establish binding, global requirements on product design and performance
+to ensure reduction, reuse, and safe recycling for the remaining plastics. Establishing these requirements must go hand-in-hand with a dedicated focus on setting up the systems needed to enable collection, reuse and recycling. As a starting point, the measures should target products that are consumed in high volumes, likely to become pollution and cause more harm due to their design, such as beverage bottles and food containers. Initial requirements should focus on priority plastic products’ reusability and recyclability, on recycled plastics, and on setting up essential systems to facilitate the circular economy transition.
 
-* Standards für das recyclinggerechte Design von risikoreichen Produktkategorien oder Anwendungen (z.B. Verpackungen)
-* Standards für die Verwendung von Materialien, Farben und Zusatzstoffen, die in bestimmten Produkten verwendet werden dürfen
-* die Abschaffung giftiger Zusatzstoffe, die die Wiederverwendung und das Recycling von Materialien gesundheits- und umweltschädlich machen
-* Verpflichtungen zur Offenlegung von Produktinformationen zur Verbesserung der globalen Transparenz (z.B. Polymere und chemische Zusatzstoffe von Produkten)
+The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic circular economy.
 
-Der Global Plastic Navigator zeigt auf, inwieweit die Staaten die Aufnahme  globaler Anforderungen und Standards für Produkte und relevante Systeme in das Abkommen unterstützen, die darauf abzielen, die verbleibenden (nicht abgeschafften) Kunststoffe in einer ungiftigen Kreislaufwirtschaft in Umlauf zu bringen.
-
-Einigkeit der Staaten darüber, dass es notwendig ist, eine ungiftige Kreislaufwirtschaft für Kunststoffe sicherzustellen, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.
+States’ convergence on the need to ensure a non-toxic circular economy of plastics, through product design requirements and systems, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global product design requirements and systems, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
-## Wie die Karte zu lesen ist
+## How to read the data
 
-Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich dafür ausgesprochen haben, dass das Abkommen Anforderungen und Normen für eine ungiftige Kreislaufwirtschaft für verbleibende (nicht verbotene) Kunststoffe umfasst.
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
 
-* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **gefordert** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
-* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme von Anforderungen und Normen für Produkte und relevante Systeme in das Abkommen **unterstützt** haben, damit die verbleibenden Kunststoffe in eine ungiftige Kreislaufwirtschaft eingehen können.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht dafür ausgesprochen, dass Anforderungen und Normen für eine ungiftige Kunststoff-Kreislaufwirtschaft in das Abkommen aufgenommen werden sollen.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global product design requirements and systems for the transition toward a non-toxic cricular economy.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of any global product design requirements and systems for the transition toward a non-toxic cricular economy in their latest verbal or written public statement.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 

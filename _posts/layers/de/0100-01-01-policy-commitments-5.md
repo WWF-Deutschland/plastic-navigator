@@ -6,21 +6,24 @@ lang: de
 title: Global Strengthening
 ---
 
-TODO: Zeitnahe, verlässliche, zugängliche und ausreichende Unterstützung ist besonders wichtig für die wirksame Umsetzung der Kernverpflichtungen und Kontrollmaßnahmen des Vertrags. Hierzu zählen finanzielle und technische Ressourcen, Technologietransfers und Kompetenzausbau. Dies ist einer der unverzichtbaren Bestandteile eines ambitionierten Abkommens zur Beendigung der Plastikverschmutzung. Um gleiche Ausgangsbedingungen für alle Unterzeichnerstaaten sicherzustellen, sollte gleich zu Beginn eine primäre Umsetzungshilfe (beispielsweise technische und finanzielle Unterstützung) eingerichtet werden.
+_Übersetzung folgt in Kürze_
 
-So könnte das Abkommen neben der Verpflichtung, Entwicklungs- und Schwellenländer bei der Umsetzung zu unterstützen, unter anderem auch finanzielle und andere Mechanismen zur direkten Unterstützung der Umsetzung von Kontrollmaßnahmen umfassen. Mögliche Mechanismen wären ein zweckgebundener multilateraler Fonds (beispielsweise nach dem Vorbild des Montrealer Protokolls über Stoffe, die zu einem Abbau der Ozonschicht führen), sowie Mechanismen zur Erleichterung des Transfers von technischem Know-how und Technologien an Entwicklungs- und Schwellenländer.
+The treaty must include mechanisms to allow for the strengthening of control measures and implementation measures beyond the treaty’s adoption. To achieve the goal of ending plastic pollution, states must progressively expand and dial up their efforts over time, beyond the initial priority measures, in accordance with emerging scientific evidence, assessments and monitoring of the treaty’s effectiveness.
 
-Der Global Plastic Navigator zeigt auf, in welchem Maß die einzelnen Staaten es unterstützen, dass Mechanismen in das Abkommen aufgenommen werden, die den Staaten die erforderliche Unterstützung zur wirksamen Umsetzung ihrer Verpflichtungen zusichern.
+The Global Plastic Navigator tracks the states’ level of support for the inclusion of:
 
-Einigkeit der Staaten darüber, dass eine Unterstützung zur Umsetzung der Verpflichtungen notwendig ist, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.
+* Evidence-based mechanisms to report, assess and review progress and effectiveness of measures, and potential necessary improvements;
+* Effective decision-making mechanisms, including in the absence of consensus among parties, to enable future adoption of necessary amendments to strengthen the treaty
 
-## Wie die Karte zu lesen ist
+States’ convergence on the need for evidence-based and decision-making mechanisms, that guarantee measures can be adapted and strengthened over time, is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
-TODO: Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, sich öffentlich dafür ausgesprochen haben, dass das Abkommen Mechanismen enthält, die den Ländern die notwendige Unterstützung zur wirksamen Umsetzung ihrer Verpflichtung gewähren.
+## How to read the data
 
-* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **gefordert** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung unterstützt werden.
-* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme mindestens eines Mechanismus in das Abkommen **unterstützt** haben, mit dem Länder bei der effektiven Umsetzung ihrer Verpflichtung befähigt werden.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) Erklärungen nicht für Mechanismen ausgesprochen, die Länder bei der wirksamen Umsetzung ihrer Verpflichtungen unterstützen.
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of evidence-based mechanisms to report, assess and review progress, and effective decision-making mechanisms to enable future adoption of necessary amendments and strengthen the treaty over time.
+
+* Dark green indicates states that have publicly called for the treaty’s inclusion of evidence-based mechanisms to report, assess and review progress, and effective decision-making mechanisms to enable future adoption of necessary amendments and strengthen the treaty over time.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of evidence-based mechanisms to report, assess and review progress, and effective decision-making mechanisms to enable future adoption of necessary amendments and strengthen the treaty over time.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of mechanisms to enable future adoption of necessary amendments and strengthen the treaty over time.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 

@@ -566,18 +566,6 @@
           }
         },
         {
-          "id": "3",
-          "content-id": "policy-commitments-3",
-          "short": {
-            "en" : "Safely manage",
-            "de" : "Abfallmanagement"
-          },
-          "title": {
-            "en" : "Support for global requirements and standards to ensure environmentally sound management of the plastics that becomes waste",
-            "de" : "Unterstützung für globale Vorgaben und Standards, die ein umweltverträgliches Abfallmanagement von Kunststoffabfällen gewährleisten"
-          }
-        },
-        {
           "id": "4",
           "content-id": "policy-commitments-4",
           "short": {
@@ -593,24 +581,25 @@
           "id": "5",
           "content-id": "policy-commitments-5",
           "short": {
-            "en": "Global Strengthening",
-            "de": "Global Strengthening (DE)"
+            "en": "Gradual Strengthening",
+            "de": "Gradual Strengthening"
           },
           "title": {
-            "en": "Support for Global Strengthening (TODO)",
-            "de": "Support for Global Strengthening (TODO, DE)"
+            "en": "Gradual Strengthening",
+            "de": "Gradual Strengthening"
           }
         },
         {
           "id": "10",
           "content-id": "policy-commitments-10",
+          "aggregate": "1",
           "short": {
-            "en": "Red Lines",
-            "de": "Red Lines (DE)"
+            "en": "Must-haves in the treaty",
+            "de": "Must-haves in the treaty"
           },
           "title": {
-            "en": "Support for Red Lines (TODO)",
-            "de": "Support for Red Lines (TODO, DE)"
+            "en": "Must-haves in the treaty",
+            "de": "Must-haves in the treaty"
           }
         }
       ],
