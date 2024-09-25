@@ -133,7 +133,6 @@ export function CountryFeatureContent({
   const indicatorPositions = getIndicatorScoresForCountry({
     country,
     layerInfo,
-    indicatorId,
   });
   const currentIndicator =
     indicatorPositions && indicatorPositions.find(i => qe(i.id, indicatorId));
@@ -176,6 +175,10 @@ export function CountryFeatureContent({
                     onClick={() => onSetIndicator(indicator.id)}
                     active={qe(indicator.id, indicatorId)}
                     disabled={qe(indicator.id, indicatorId)}
+                    title={
+                      indicator[`title_${locale}`] ||
+                      indicator[`title_${DEFAULT_LOCALE}`]
+                    }
                   >
                     <IconWrap
                       color={

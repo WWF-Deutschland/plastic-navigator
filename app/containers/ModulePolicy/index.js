@@ -240,7 +240,7 @@ export function ModulePolicy({
 
   const topicsArchived =
     topicsData && topicsData.filter(t => !isAggregate(t) && isArchived(t));
-
+  const hasArchived = topicsArchived && topicsArchived.length > 0;
   const aggregateTopic = topicsData && topicsData.find(t => isAggregate(t));
 
   if (aggregateTopic) {
@@ -249,6 +249,7 @@ export function ModulePolicy({
       .map(id => id.trim());
     topicsCurrent = topicsCurrent.filter(t => childTopicIds.indexOf(t.id) > -1);
   }
+  const hasCurrent = topicsCurrent && topicsCurrent.length > 0;
 
   const size = React.useContext(ResponsiveContext);
 
@@ -286,7 +287,7 @@ export function ModulePolicy({
                   {
                     tag: '[SELECT-TOPICS-CURRENT]',
                     el:
-                      aggregateTopic || topicsCurrent ? (
+                      aggregateTopic || hasCurrent ? (
                         <Box margin={{ top: 'ml', bottom: 'medium' }}>
                           <TitleSelect>
                             <FormattedMessage
@@ -342,7 +343,7 @@ export function ModulePolicy({
                   },
                   {
                     tag: '[SELECT-TOPICS-ARCHIVE]',
-                    el: (
+                    el: hasArchived ? (
                       <ArchivedTopicsWrapper
                         margin={{ top: 'medium', bottom: 'small' }}
                       >
@@ -369,7 +370,7 @@ export function ModulePolicy({
                             ))}
                         </Box>
                       </ArchivedTopicsWrapper>
-                    ),
+                    ) : null,
                   },
                 ]}
               />
