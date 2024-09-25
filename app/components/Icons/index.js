@@ -31,6 +31,8 @@ import PolicyTopic1 from './PolicyTopic1';
 import PolicyTopic2 from './PolicyTopic2';
 import PolicyTopic3 from './PolicyTopic3';
 import PolicyTopic4 from './PolicyTopic4';
+import PolicyTopic5 from './PolicyTopic5';
+import PolicyTopic10 from './PolicyTopic10';
 
 export {
   ArrowDown,
@@ -66,4 +68,6 @@ export {
   PolicyTopic2,
   PolicyTopic3,
   PolicyTopic4,
+  PolicyTopic5,
+  PolicyTopic10,
 };

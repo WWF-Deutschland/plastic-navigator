@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 import { Text } from 'grommet';
 
-import { getCountryStatements } from 'utils/policy';
+import { getCountryStatements, isAggregate } from 'utils/policy';
+// import Hint from 'components/Hint';
+
 import CountryPolicySingleStatement from './CountryPolicySingleStatement';
 
 import messages from '../messages';
+
+const Hint = styled(p => <Text size="small" {...p} />)``;
 
 const Styled = styled.div``;
 
@@ -29,15 +33,18 @@ const StatementListHeaderText = styled(p => <Text size="xsmall" {...p} />)`
 
 const CountryPolicyCommitments = ({
   country,
-  indicatorId,
+  indicator,
   layerInfo,
   onSelectStatement,
 }) => {
-  const statements = getCountryStatements({
-    countryCode: country.code,
-    tables: layerInfo.data.tables,
-    topicId: indicatorId,
-  });
+  const isTopicAggregate = isAggregate(indicator);
+  const statements =
+    !isTopicAggregate &&
+    getCountryStatements({
+      countryCode: country.code,
+      tables: layerInfo.data.tables,
+      topicId: indicator.id,
+    });
   return (
     <Styled>
       <StatementListHeader>
@@ -50,14 +57,15 @@ const CountryPolicyCommitments = ({
           )}
         </StatementListHeaderText>
       </StatementListHeader>
-      {(!statements || statements.length === 0) && (
+      {!isTopicAggregate && (!statements || statements.length === 0) && (
         <NoStatement>
           <Text size="small" color="textSecondary">
             <FormattedMessage {...messages.noStatement} />
           </Text>
         </NoStatement>
       )}
-      {statements &&
+      {!isTopicAggregate &&
+        statements &&
         statements.length > 0 &&
         statements.map(statement => (
           <CountryPolicySingleStatement
@@ -66,10 +74,15 @@ const CountryPolicyCommitments = ({
             multiple={statements.length > 1}
             config={layerInfo.config}
             tables={layerInfo.data.tables}
-            indicatorId={indicatorId}
+            indicatorId={indicator.id}
             onSelectStatement={onSelectStatement}
           />
         ))}
+      {isTopicAggregate && (
+        <Hint>
+          <FormattedMessage {...messages.noStatementsAggregateTopicHint} />
+        </Hint>
+      )}
     </Styled>
   );
 };
@@ -77,7 +90,7 @@ const CountryPolicyCommitments = ({
 CountryPolicyCommitments.propTypes = {
   country: PropTypes.object,
   layerInfo: PropTypes.object,
-  indicatorId: PropTypes.string,
+  indicator: PropTypes.object,
   onSelectStatement: PropTypes.func,
 };
 

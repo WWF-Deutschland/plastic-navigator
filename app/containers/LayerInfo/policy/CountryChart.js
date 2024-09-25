@@ -33,11 +33,8 @@ import saga from 'containers/Map/saga';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { isMinSize } from 'utils/responsive';
+import { isAggregate } from 'utils/policy';
 import formatDate from 'utils/format-date';
-import {
-  // getCountryPositionStatsForTopicAndDate,
-  getCountryPositionsOverTimeFromCountryFeatures,
-} from 'utils/policy';
 
 import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
@@ -145,7 +142,7 @@ const KeySourceMarker = styled.div`
   display: block;
   width: 8px;
   height: 8px;
-  background: ${({ keyStyle }) => keyStyle.fillColor || 'red'};
+  background: ${({ fillColor }) => fillColor || 'red'};
   border-radius: 9999px;
   opacity: 0.7;
 `;
@@ -172,22 +169,26 @@ const myTimeFormat = (value, intl) => {
 //   }
 // `;
 
+// TODO move to topics csv file
 const MINDATE = {
   0: '2018-10-01',
   1: '2023-01-01',
   2: '2023-01-01',
   3: '2023-01-01',
   4: '2023-01-01',
+  5: '2024-01-01',
+  10: '2023-01-01',
 };
 
 export function CountryChart({
   config,
   layerInfo,
   onSelectStatement,
-  indicatorId,
+  indicator,
   intl,
   onSetChartDate,
   isArchive,
+  positionsOverTime,
   // chartDate,
 }) {
   useInjectSaga({ key: 'map', saga });
@@ -199,19 +200,6 @@ export function CountryChart({
 
   const { locale } = intl;
 
-  const positionsOverTime =
-    layerInfo &&
-    layerInfo.data &&
-    getCountryPositionsOverTimeFromCountryFeatures({
-      indicatorId,
-      layerInfo,
-      includeOpposing: false,
-      includeWithout: false,
-      includeHidden: false,
-    });
-  // console.log('positionsOverTime', positionsOverTime)
-  // console.log('countryStats', countryStats)
-  // console.log('positionsOverTime', positionsOverTime)
   const lastDate =
     layerInfo &&
     layerInfo.data &&
@@ -258,17 +246,19 @@ export function CountryChart({
   //     ];
   //   }
   // }
-  const statsForKey = prepChartKey({
-    positionsCurrentDate: positionsOverTime[currentDate].positions,
-    positionsLatestDate: positionsOverTime[lastDate].positions,
-    tables: layerInfo.data.tables,
-    indicatorId,
-    config,
-    locale,
-    intl,
-  });
+  const statsForKey =
+    positionsOverTime &&
+    positionsOverTime[currentDate] &&
+    prepChartKey({
+      positionsCurrentDate: positionsOverTime[currentDate].positions,
+      positionsLatestDate: positionsOverTime[lastDate].positions,
+      tables: layerInfo.data.tables,
+      indicatorId: indicator.id,
+      config,
+      locale,
+      intl,
+    });
 
-  // console.log('statsForKey', statsForKey)
   // const statsForKeyByStatic = groupBy(statsForKey, s =>
   //   config.key.static && config.key.static.indexOf(s.id) > -1
   //     ? 'static'
@@ -290,17 +280,28 @@ export function CountryChart({
   //   featuresEx,
   //   locale,
   // );
-  const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
-  // console.log('mouseOverSoure', mouseOverSource)
-  const activeSource =
-    mouseOverSource &&
-    mouseOverSource.sources &&
-    mouseOverSource.sources[Object.keys(mouseOverSource.sources)[0]];
+  const isAggregateTopic = isAggregate(indicator);
+  const chartDataSources = prepChartDataSources(
+    positionsOverTime,
+    dataStyles,
+    isAggregateTopic,
+  );
+  let activeSource;
+  if (mouseOverSource) {
+    if (isAggregateTopic) {
+      activeSource = mouseOverSource.sdate;
+    } else {
+      activeSource =
+        mouseOverSource.sources &&
+        mouseOverSource.sources[Object.keys(mouseOverSource.sources)[0]];
+    }
+  }
+
   // mouseOverSource && chartDataSources[mouseOverSource.sid];
   // const activePositions = mouseOverSource && positionsOverTime[mouseOverSource.sdate];
   //
   // chart stuff
-  const minDate = MINDATE[parseInt(indicatorId, 10)];
+  const minDate = MINDATE[parseInt(indicator.id, 10)];
   const maxDate = getMaxDate(lastDate, isArchive);
   const chartData = prepChartData({
     positions: positionsOverTime,
@@ -308,11 +309,6 @@ export function CountryChart({
     maxDate,
   });
   const tickValuesX = getTickValuesX({ chartData, minDate, maxDate });
-  // console.log('minDate', minDate)
-  // console.log('maxDate', maxDate)
-  // console.log('lastDate', lastDate)
-  // console.log('tickValuesX', tickValuesX)
-  // console.log('chartData', chartData)
   // console.log('isArchived', isArchive)
   const countryCount = layerInfo.data.features.length;
   const dataForceYRange = getYRange({
@@ -332,7 +328,6 @@ export function CountryChart({
     });
   // console.log(getFlatCSVFromSources(sources, locale))
   // console.log('dataMouseOverCover', dataMouseOverCover)
-
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -370,6 +365,7 @@ export function CountryChart({
                     </Box>
                     {statsForKey.map(keyItem => {
                       const {count} = keyItem;
+                      const hasCount = typeof count !== 'undefined' && count !== null;
                       return (
                         <SquareLabelWrap key={keyItem.id}>
                           <KeyAreaWrap>
@@ -378,16 +374,16 @@ export function CountryChart({
                           <KeyLabelWrap fill="horizontal">
                             <Box>
                               <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-                                <Markdown source={count ? `${keyItem.title}: ` : keyItem.title} />
+                                <Markdown source={hasCount ? `${keyItem.title}: ` : keyItem.title} />
                               </StyledKeyLabel>
                             </Box>
                             <Box flex={{ grow: 0, shrink: 0 }}>
-                              {!!count && (
+                              {hasCount && (
                                 <StyledKeyCount>
                                   {count}
                                 </StyledKeyCount>
                               )}
-                              {!count && (
+                              {!hasCount && (
                                 <StyledKeyCountPlaceHolder />
                               )}
                             </Box>
@@ -396,27 +392,47 @@ export function CountryChart({
                       );
                     })}
                   </Box>
-                  <SquareLabelWrap align="center">
-                    <KeyStatements>
-                      {statsForKey.map(
-                        stat => (
-                          <KeySourceMarker
-                            key={stat.id}
-                            keyStyle={stat.style}
-                            style={{
-                              width: '4px',
-                              height: '4px',
-                            }}
-                          />
-                        )
-                      )}
-                    </KeyStatements>
-                    <KeyLabelWrap>
-                      <StyledKeyLabel>
-                        <FormattedMessage {...messages.countryChartNoSources} />
-                      </StyledKeyLabel>
-                    </KeyLabelWrap>
-                  </SquareLabelWrap>
+                  {!isAggregateTopic && (
+                    <SquareLabelWrap align="center">
+                      <KeyStatements>
+                        {statsForKey.map(
+                          stat => (
+                            <KeySourceMarker
+                              key={stat.id}
+                              fillColor={stat.style.fillColor}
+                              style={{
+                                width: '4px',
+                                height: '4px',
+                              }}
+                            />
+                          )
+                        )}
+                      </KeyStatements>
+                      <KeyLabelWrap>
+                        <StyledKeyLabel>
+                          <FormattedMessage {...messages.countryChartNoSources} />
+                        </StyledKeyLabel>
+                      </KeyLabelWrap>
+                    </SquareLabelWrap>
+                  )}
+                  {isAggregateTopic && (
+                    <SquareLabelWrap align="center">
+                      <KeyStatements>
+                        <KeySourceMarker
+                          fillColor="rgba(0,0,0,0.5)"
+                          style={{
+                            width: '6px',
+                            height: '6px',
+                          }}
+                        />
+                      </KeyStatements>
+                      <KeyLabelWrap>
+                        <StyledKeyLabel>
+                          <FormattedMessage {...messages.countryChartDates} />
+                        </StyledKeyLabel>
+                      </KeyLabelWrap>
+                    </SquareLabelWrap>
+                  )}
                 </Box>
               </Box>
             </Box>
@@ -647,20 +663,24 @@ export function CountryChart({
                         <Text size="xxxsmall" color="textSecondary">
                           {formatDate(locale, new Date(mouseOverSource.sdate).getTime())}
                         </Text>
-                        <Text size="xxsmall" weight="bold">
-                          {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
-                        </Text>
-                        <Text size="xxsmall">
-                          <FormattedMessage
-                            {...coreMessages.countries}
-                            values={{
-                              count: activeSource.countryCodes.length,
-                              isSingle: activeSource.countryCodes.length === 1,
-                            }}
-                          />
-                        </Text>
+                        {!isAggregateTopic && (
+                          <Text size="xxsmall" weight="bold">
+                            {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
+                          </Text>
+                        )}
+                        {!isAggregateTopic && (
+                          <Text size="xxsmall">
+                            <FormattedMessage
+                              {...coreMessages.countries}
+                              values={{
+                                count: activeSource.countryCodes.length,
+                                isSingle: activeSource.countryCodes.length === 1,
+                              }}
+                            />
+                          </Text>
+                        )}
                       </Box>
-                      {Object.keys(mouseOverSource.sources) && Object.keys(mouseOverSource.sources).length > 1 && (
+                      {!isAggregateTopic && Object.keys(mouseOverSource.sources) && Object.keys(mouseOverSource.sources).length > 1 && (
                         <Box margin={{ top: 'xsmall' }}>
                           <Text size="xxxsmall" color="textSecondary">
                             <FormattedMessage
@@ -689,7 +709,7 @@ export function CountryChart({
                   }}
                   onValueMouseOver={point => setMouseOverSource(point)}
                   onValueMouseOut={() => setMouseOverSource(null)}
-                  onValueClick={point => onSelectStatement(point.sid)}
+                  onValueClick={point => point.sid ? onSelectStatement(point.sid) : null}
                 />
               </FlexibleWidthXYPlot>
             )}
@@ -704,11 +724,12 @@ export function CountryChart({
 CountryChart.propTypes = {
   config: PropTypes.object,
   layerInfo: PropTypes.object,
-  indicatorId: PropTypes.string,
+  indicator: PropTypes.object,
   onSelectStatement: PropTypes.func,
   intl: intlShape.isRequired,
   onSetChartDate: PropTypes.func,
   isArchive: PropTypes.bool,
+  positionsOverTime: PropTypes.object,
   // chartDate: PropTypes.string,
 };
 

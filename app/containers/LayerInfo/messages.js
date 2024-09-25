@@ -63,7 +63,11 @@ export default defineMessages({
   },
   countryChartNoSources: {
     id: `${scope}.countryChartNoSources`,
-    defaultMessage: 'Individual statements: ',
+    defaultMessage: 'Statements',
+  },
+  countryChartDates: {
+    id: `${scope}.countryChartDates`,
+    defaultMessage: 'Dates',
   },
   countryChartDateLabel: {
     id: `${scope}.countryChartDateLabel`,
@@ -148,6 +152,15 @@ export default defineMessages({
     id: `${scope}.tabStatements`,
     defaultMessage: 'Statements',
   },
+  tabTopics: {
+    id: `${scope}.tabTopics`,
+    defaultMessage: 'Topics',
+  },
+  topicsTabTitle: {
+    id: `${scope}.topicsTabTitle`,
+    defaultMessage:
+      'Explore the four topics of must-haves in the treaty and their relevant statements',
+  },
   selectArchivedTopics: {
     id: `${scope}.selectArchivedTopics`,
     defaultMessage: 'Archived topics',
@@ -155,5 +168,10 @@ export default defineMessages({
   selectCurrentTopics: {
     id: `${scope}.selectCurrentTopics`,
     defaultMessage: 'Current topics',
+  },
+  noStatementsAggregateTopicHint: {
+    id: `${scope}.noStatementsAggregateTopicHint`,
+    defaultMessage:
+      'Please refer to the underlying topics for country statements',
   },
 });

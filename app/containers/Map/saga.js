@@ -241,11 +241,24 @@ export function* loadDataSaga({ key, config, args }) {
                 // console.log('responsesdata', responsesdata)
                 responsesdata.forEach((x, index) => {
                   const configKey = Object.keys(config.tables)[index];
+                  const data = Papa.parse(x, {
+                    header: true,
+                    skipEmptyLines: true,
+                  });
+
                   tables[configKey] = {
-                    data: Papa.parse(x, {
-                      header: true,
-                      skipEmptyLines: true,
-                    }),
+                    data: {
+                      ...data,
+                      data: data.data.reduce((memo, d) => {
+                        if (
+                          typeof d.hidden === 'undefined' ||
+                          [1, '1', 'true', 'TRUE'].indexOf(d.hidden) === -1
+                        ) {
+                          return [...memo, d];
+                        }
+                        return memo;
+                      }, []),
+                    },
                     config: config.tables[configKey],
                   };
                 });

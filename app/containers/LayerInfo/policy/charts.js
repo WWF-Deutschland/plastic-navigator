@@ -146,39 +146,51 @@ export const prepChartData = ({ positions, minDate, maxDate }) => {
 // const Y_OFFSET = 9;
 const Y_OFFSET_MIN = 9;
 
-export const prepChartDataSources = (positionsByDate, dataStyles) => {
+export const prepChartDataSources = (
+  positionsByDate,
+  dataStyles,
+  isAggregateTopic,
+) => {
   const sourceMarkers = Object.keys(positionsByDate).reduce(
     (memoSourceMarkers, dateKey) => {
       const positionsForDate = positionsByDate[dateKey];
-      if (positionsForDate && positionsForDate.sources) {
-        const statementsForDate = positionsForDate.sources;
-        const y = Y_OFFSET_MIN * -1;
+      if (positionsForDate) {
+        const statementsForDate = !isAggregateTopic && positionsForDate.sources;
         const x = getXTime(dateKey);
-        const sortedStatements = Object.values(statementsForDate).sort(
-          (a, b) => {
+        const sortedStatements =
+          !isAggregateTopic &&
+          statementsForDate &&
+          Object.values(statementsForDate).sort((a, b) => {
             // const posValueA = parseInt(a.position.value, 10);
             // const posValueB = parseInt(b.position.value, 10);
             // return posValueA < posValueB ? 1 : -1;
             const countA = a.countryCodes.length;
             const countB = b.countryCodes.length;
             return countA < countB ? 1 : -1;
-          },
-          -99,
-        );
+          }, -99);
+        let color = 'red';
+        if (isAggregateTopic) {
+          color = 'black';
+        } else if (
+          sortedStatements &&
+          dataStyles &&
+          dataStyles[sortedStatements[0].position.value]
+        ) {
+          color = dataStyles[sortedStatements[0].position.value].fillColor;
+        }
         return [
           ...memoSourceMarkers,
           {
             sdate: dateKey,
-            sposition: sortedStatements[0].position.value,
-            sid: sortedStatements[0].id,
-            y,
+            sposition: sortedStatements
+              ? sortedStatements[0].position.value
+              : null,
+            sid: sortedStatements ? sortedStatements[0].id : null,
+            y: Y_OFFSET_MIN * -1,
             x,
             sources: sortedStatements,
-            opacity: 0.66,
-            color:
-              dataStyles && dataStyles[sortedStatements[0].position.value]
-                ? dataStyles[sortedStatements[0].position.value].fillColor
-                : 'red',
+            opacity: isAggregateTopic ? 0.33 : 0.66,
+            color,
           },
         ];
       }

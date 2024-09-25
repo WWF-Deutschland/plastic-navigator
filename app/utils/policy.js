@@ -34,6 +34,7 @@ export const getStatementWithPositionsAndCountries = ({
   return {
     ...statement,
     positions: tables.topics.data.data.reduce((memoPositions, topic) => {
+      if (isHidden(topic)) return memoPositions;
       const p = getPositionForStatement({
         topicId: topic.id,
         statement,
@@ -61,9 +62,10 @@ export const getCountryStatements = ({
   let countryStatements =
     countryStatementIds &&
     tables.sources &&
-    countryStatementIds.map(id =>
-      tables.sources.data.data.find(s => qe(id, s.id)),
-    );
+    countryStatementIds.reduce((memo, id) => {
+      const statement = tables.sources.data.data.find(s => qe(id, s.id));
+      return statement ? [...memo, statement] : memo;
+    }, []);
   if (dateString) {
     countryStatements = countryStatements.filter(
       s => new Date(s.date) <= new Date(dateString),
@@ -142,6 +144,78 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
       tp => qe(tp.position_id, value) && qe(tp.topic_id, topicId),
     );
   return mergePositions({ topicPosition, position });
+};
+export const getCountryPositionForAnyTopicAndDate = ({
+  countryCode,
+  topic,
+  dateString,
+  // countries,
+  tables,
+  locale,
+}) => {
+  if (!isAggregate(topic)) {
+    return getCountryPositionForTopicAndDate({
+      countryCode,
+      topicId: topic.id,
+      dateString,
+      tables,
+      locale,
+    });
+  }
+  // is Aggregate
+  const childIds = topic.aggregate.split(',');
+  const childPositions = childIds.reduce((memo, id) => {
+    const positionForTopic = getCountryPositionForTopicAndDate({
+      countryCode,
+      topicId: id,
+      dateString,
+      tables,
+      locale,
+    });
+    return {
+      ...memo,
+      [id]: positionForTopic,
+    };
+  }, {});
+  const countPositions =
+    childPositions &&
+    Object.values(childPositions).reduce(
+      (memo, child) => {
+        const { value } = child;
+        return {
+          ...memo,
+          [value]: (memo[value] || 0) + 1,
+        };
+      },
+      {
+        0: 0,
+        1: 0,
+        2: 0,
+        3: 0,
+      },
+    );
+  let value = 0;
+  // all value of 3 => agg value 3
+  if (countPositions[3] === childIds.length) {
+    value = 3;
+    // all have value 2 or 3 => agg value 2
+  } else if (countPositions[3] + countPositions[2] === childIds.length) {
+    value = 2;
+    // some have value 2 or 3 ==> agg value 1
+  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    value = 1;
+  }
+  const position = getPositionForValueAndTopic({
+    value,
+    topicId: topic.id,
+    tables,
+  });
+  // else 0
+  return {
+    value,
+    topic: topic[`title_${locale}`],
+    latestPosition: position,
+  };
 };
 export const getCountryPositionForTopicAndDate = ({
   countryCode,
@@ -224,7 +298,13 @@ export const getTopicsFromData = layerInfo => {
       if (a.archived !== '1' && b.archived === '1') {
         return -1;
       }
-      return a.id > b.id ? 1 : -1;
+      if (isAggregate(a)) {
+        return -1;
+      }
+      if (isAggregate(b)) {
+        return 1;
+      }
+      return parseInt(a.id, 10) > parseInt(b.id, 10) ? 1 : -1;
     });
   }
   return null;
@@ -237,7 +317,9 @@ export const getTopicFromData = ({ indicatorId, layerInfo }) => {
     layerInfo.data.tables.topics &&
     layerInfo.data.tables.topics.data.data
   ) {
-    return layerInfo.data.tables.topics.data.data[indicatorId];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, indicatorId),
+    );
   }
   return null;
 };
@@ -259,7 +341,9 @@ export const getPreviousTopicFromData = ({
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const prevIndex =
       currentIndex === 0 ? validTopicIds.length - 1 : currentIndex - 1;
-    return layerInfo.data.tables.topics.data.data[validTopicIds[prevIndex]];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, validTopicIds[prevIndex]),
+    );
   }
   return null;
 };
@@ -277,7 +361,9 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
     const currentIndex = validTopicIds.indexOf(parseInt(indicatorId, 10));
     const nextIndex =
       currentIndex === validTopicIds.length - 1 ? 0 : currentIndex + 1;
-    return layerInfo.data.tables.topics.data.data[validTopicIds[nextIndex]];
+    return layerInfo.data.tables.topics.data.data.find(d =>
+      qe(d.id, validTopicIds[nextIndex]),
+    );
   }
   return null;
 };
@@ -352,16 +438,76 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
     return listMemo;
   }, []);
 
+const getAggregateScore = ({ parent, children, tables }) => {
+  const countChildren = children.length;
+  const countPositions = children.reduce(
+    (memo, child) => {
+      const { value } = child.position;
+      return {
+        ...memo,
+        [value]: (memo[value] || 0) + 1,
+      };
+    },
+    {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+    },
+  );
+  let value = 0;
+  // all value of 3 => agg value 3
+  if (countPositions[3] === countChildren) {
+    value = 3;
+    // all have value 2 or 3 => agg value 2
+  } else if (countPositions[3] + countPositions[2] === countChildren) {
+    value = 2;
+    // some have value 2 or 3 ==> agg value 1
+  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    value = 1;
+  }
+  // else 0
+  const position = getPositionForValueAndTopic({
+    value,
+    topicId: parent.id,
+    tables,
+  });
+  return {
+    value,
+    latestPosition: position,
+  };
+};
+
 export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
   const topics = getTopicsFromData(layerInfo);
-  return topics.map(t => ({
-    ...t,
-    position: getCountryPositionForTopicAndDate({
-      countryCode: country.code,
-      topicId: t.id,
-      tables: layerInfo.data.tables,
-    }),
-  }));
+  const tables = layerInfo && layerInfo.data && layerInfo.data.tables;
+  const indicatorScores = topics
+    .filter(t => !isAggregate(t) && !isHidden(t))
+    .map(t => ({
+      ...t,
+      position: getCountryPositionForTopicAndDate({
+        countryCode: country.code,
+        topicId: t.id,
+        tables,
+      }),
+    }));
+  const aggIndicatorScores = topics
+    .filter(t => isAggregate(t) && !isHidden(t))
+    .map(t => {
+      const childIds = t.aggregate.split(',');
+      const childIndicators = indicatorScores.filter(
+        child => childIds.indexOf(child.id) > -1,
+      );
+      return {
+        ...t,
+        position: getAggregateScore({
+          parent: t,
+          children: childIndicators,
+          tables,
+        }),
+      };
+    });
+  return [...aggIndicatorScores, ...indicatorScores];
 };
 
 export const filterCountries = (item, test) => {
@@ -494,6 +640,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   includeWithout = false,
   includeOpposing = false,
 }) => {
+  // console.log('getCountryPositionsOverTimeFromCountryFeatures: indicatorId, layerInfo', indicatorId, layerInfo, typeof indicatorId)
   if (
     layerInfo &&
     layerInfo.data &&
@@ -612,4 +759,290 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
     return positionsByDate;
   }
   return [];
+};
+
+export const isAggregate = topic =>
+  !!topic && topic.aggregate && topic.aggregate.trim() !== '';
+export const isArchived = topic =>
+  checkAttribute(topic, 'archived', ['1', 'true', 'TRUE']) && !isHidden(topic);
+export const isHidden = topic =>
+  checkAttribute(topic, 'hidden', ['1', 'true', 'TRUE']);
+
+const checkAttribute = (item, attribute, values = ['1'], inverse) =>
+  inverse
+    ? !!item && item[attribute] && values.indexOf(item[attribute]) === -1
+    : !!item && item[attribute] && values.indexOf(item[attribute]) > -1;
+
+export const getChildTopics = (parentTopic, topics, locale) => {
+  const childIds = parentTopic.aggregate && parentTopic.aggregate.split(',');
+  return topics
+    .filter(child => childIds.indexOf(child.id) > -1)
+    .map(child => ({
+      ...child,
+      label: child[`short_${locale}`] || child[`short_${DEFAULT_LOCALE}`],
+    }));
+};
+
+export const getCountryAggregatePositionsOverTime = ({
+  indicator,
+  layerInfo,
+}) => {
+  const childIds = indicator.aggregate && indicator.aggregate.split(',');
+  // console.log('childIds.length', childIds.length)
+  // let positionsOverTime
+  const childPositions = childIds.reduce((memo, id) => {
+    const positionsOverTime =
+      layerInfo &&
+      layerInfo.data &&
+      getCountryPositionsOverTimeFromCountryFeatures({
+        indicatorId: id,
+        layerInfo,
+        includeOpposing: false,
+        includeWithout: false,
+        includeHidden: false,
+      });
+    // console.log('id, positionsOverTime', id, positionsOverTime)
+    // order all positions for all topics by date
+    return Object.keys(positionsOverTime).reduce((m2, date) => {
+      if (m2[date]) {
+        return {
+          ...m2,
+          [date]: {
+            ...m2[date],
+            [id]: positionsOverTime[date],
+          },
+        };
+      }
+      return {
+        ...m2,
+        [date]: {
+          [id]: positionsOverTime[date],
+        },
+      };
+    }, memo);
+    // return {
+    //   ...memo,
+    //   [id]: positionsOverTime,
+    // };
+  }, {});
+  // console.log('childPositions', childPositions)
+  // for every date, check every country and all its positions
+  // re-organise by country
+  // also need for
+  const dates = Object.keys(childPositions).sort((a, b) => {
+    const aDate = new Date(a).getTime();
+    const bDate = new Date(b).getTime();
+    return aDate > bDate ? 1 : -1;
+  });
+
+  // figure out child positions by date and country
+  const positionsByDateAndCountry = dates.reduce((memo, date, index) => {
+    const positions = childPositions[date];
+    const positionsPreviousByCountry = index > 0 ? memo[dates[index - 1]] : {};
+    // from this:
+    // {
+    //   [topicid]: {
+    //     positions: {
+    //       [supportlevel]: [ ...countrycodes ]
+    //     }
+    //   }
+    // }
+    // to this:
+    // {
+    //   [countrycode]: {
+    //     [topicid1]: [supportlevel1]
+    //     [topicid2]: [supportlevel2]
+    //     [topicid3]: [supportlevel3]
+    //     [topicid4]: [supportlevel4]
+    //   }
+    // }
+    const byCountry = Object.keys(positions).reduce((memo2, topicId) => {
+      const countryPositions = positions[topicId].positions;
+      const byLevelOfSupport = Object.keys(countryPositions).reduce(
+        (memo3, levelOfSupport) => {
+          const countriesForTopicAndLevel = countryPositions[levelOfSupport];
+          const byCountryAndTopic = countriesForTopicAndLevel.reduce(
+            (memo4, countryCode) => {
+              if (memo4[countryCode]) {
+                // this should not be needed as each country should have one position on a topic only
+                return {
+                  ...memo4,
+                  [countryCode]: {
+                    ...memo4[countryCode],
+                    [topicId]: levelOfSupport,
+                  },
+                };
+              }
+              return {
+                ...memo4,
+                [countryCode]: {
+                  [topicId]: levelOfSupport,
+                },
+              };
+            },
+            memo3,
+          );
+          return byCountryAndTopic;
+        },
+        memo2,
+      );
+      return byLevelOfSupport;
+    }, positionsPreviousByCountry);
+    return {
+      ...memo,
+      [date]: byCountry,
+    };
+  }, {});
+  // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
+
+  // now aggregate for each date and country
+  return Object.keys(positionsByDateAndCountry).reduce((memo, date) => {
+    const positionsForDate = positionsByDateAndCountry[date];
+    const positionValuesForDate = Object.keys(positionsForDate).reduce(
+      (memo2, countryCode) => {
+        const countryPositions = positionsForDate[countryCode];
+        const countPositions = Object.values(countryPositions).reduce(
+          (memo3, levelOfSupport) => ({
+            ...memo3,
+            [levelOfSupport]: (memo3[levelOfSupport] || 0) + 1,
+          }),
+          { 0: 0, 1: 0, 2: 0, 3: 0 },
+        );
+        let value = 0;
+        // all value of 3 => agg value 3
+        if (countPositions[3] === childIds.length) {
+          value = 3;
+          // all have value 2 or 3 => agg value 2
+        } else if (countPositions[3] + countPositions[2] === childIds.length) {
+          value = 2;
+          // some have value 2 or 3 ==> agg value 1
+        } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+          value = 1;
+        }
+        return {
+          ...memo2,
+          [value]: [...memo2[value], countryCode],
+        };
+      },
+      { 1: [], 2: [], 3: [] },
+    );
+    // console.log('positionValuesForDate', positionValuesForDate)
+    return {
+      ...memo,
+      [date]: {
+        positions: positionValuesForDate,
+      },
+    };
+  }, {});
+};
+
+export const getCountriesWithStrongestPositionAggregated = ({
+  indicator,
+  layerInfo,
+  locale,
+}) => {
+  const childIds = indicator.aggregate && indicator.aggregate.split(',');
+  const childPositions = childIds.reduce((memo, id) => {
+    const countries = getCountriesWithStrongestPosition({
+      indicatorId: id,
+      layerInfo,
+      locale,
+    });
+
+    return {
+      ...memo,
+      [id]: countries,
+    };
+  }, {});
+  // from this:
+  // {
+  // [topicid]: [
+  //   {
+  //     code: [code],
+  //     other: [countryAttributes],
+  //     positions: {
+  //       value: [value],
+  //     }
+  //   }
+  // ]
+  // to this:
+  // {
+  //   [countrycode]: {
+  //     code: [code],
+  //     other: [countryAttributes],
+  //     positions: {
+  //       [topicid1]: [supportlevel1]
+  //       [topicid2]: [supportlevel2]
+  //       [topicid3]: [supportlevel3]
+  //       [topicid4]: [supportlevel4]
+  //     },
+  // }
+  const positionsLatest = Object.keys(childPositions).reduce(
+    (memo, indicatorId) => {
+      // data for one topic and all countries
+      const countryIndicatorData = childPositions[indicatorId];
+      return countryIndicatorData.reduce((memo2, countryData) => {
+        // countryData : data for one topic and 1 country
+        if (memo[countryData.code]) {
+          return {
+            ...memo2,
+            [countryData.code]: {
+              ...memo[countryData.code],
+              positions: {
+                ...memo[countryData.code].positions,
+                [indicatorId]: countryData.position,
+              },
+            },
+          };
+        }
+        return {
+          ...memo2,
+          [countryData.code]: {
+            ...countryData,
+            positions: {
+              [indicatorId]: countryData.position,
+            },
+          },
+        };
+      }, memo);
+    },
+    {},
+  );
+  // now aggregate for each country
+  const countryPositionValues = Object.keys(positionsLatest).reduce(
+    (memo, countryCode) => {
+      // countryData
+      const countryData = positionsLatest[countryCode];
+      const countPositions = Object.values(countryData.positions).reduce(
+        (memo2, countryPosition) => {
+          const levelOfSupport = countryPosition.value;
+          return {
+            ...memo2,
+            [levelOfSupport]: (memo2[levelOfSupport] || 0) + 1,
+          };
+        },
+        { 0: 0, 1: 0, 2: 0, 3: 0 },
+      );
+      let value = 0;
+      // all value of 3 => agg value 3
+      if (countPositions[3] === childIds.length) {
+        value = 3;
+        // all have value 2 or 3 => agg value 2
+      } else if (countPositions[3] + countPositions[2] === childIds.length) {
+        value = 2;
+        // some have value 2 or 3 ==> agg value 1
+      } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+        value = 1;
+      }
+      return [
+        ...memo,
+        {
+          ...countryData,
+          position: { value },
+        },
+      ];
+    },
+    [],
+  );
+  return countryPositionValues;
 };

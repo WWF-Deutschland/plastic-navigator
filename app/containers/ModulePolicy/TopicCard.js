@@ -14,132 +14,145 @@ import styled, { withTheme } from 'styled-components';
 import { Text, Box, Button, ResponsiveContext } from 'grommet';
 
 import { POLICY_TOPIC_ICONS } from 'config';
-import { isMinSize } from 'utils/responsive';
 
 // import commonMessages from 'messages';
 import messages from './messages';
 
+// prettier-ignore
 const TopicButton = styled(p => <Button plain {...p} />)`
+  background: ${({ theme, archived }) =>
+    !archived
+      ? theme.global.colors.topicCards.default.background
+      : theme.global.colors.topicCards.archived.background};
+  box-shadow: ${({ archived }) =>
+    archived ? '0px 4px 8px rgba(0,0,0,0.20)' : 'none'};
+  border: ${({ archived }) => archived ? 'none' : '1px solid white'};
+
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+    background: ${({ theme, archived }) =>
+    !archived
+      ? theme.global.colors.topicCards.default.backgroundHover
+      : theme.global.colors.topicCards.archived.background};
+    box-shadow: ${({ archived }) =>
+    archived ? '0px 4px 8px rgba(0,0,0,0.30)' : '0px 4px 8px rgba(0,0,0,0.20)'};
   }
 `;
+// prettier-ignore
 const TopicInner = styled(p => (
-  <Box elevation="small" pad="small" responsive={false} {...p} />
+  <Box pad="small" responsive={false} {...p} />
 ))`
   position: relative;
-  background-color: ${({ isHover, theme }) =>
-    isHover ? theme.global.colors.brand : 'white'};
+  box-shadow: none;
 `;
 
 const Styled = styled(props => <Box {...props} />)`
   width: 100%;
-  min-width: 200px;
   hyphens: auto;
+
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
     width: 50%;
     padding: 0 6px;
   }
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    width: ${({ count, secondary }) => (secondary ? 25 : 100 / count)}%;
+    width: ${({ count, archived }) => (archived ? 50 : 100 / count)}%;
   }
 `;
 const Teaser = styled(p => <Text size="small" {...p} />)`
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.text.light : 'white'};
+  color: ${({ theme, archived }) =>
+    archived ? theme.global.colors.text.light : 'white'};
 `;
 const TitleShort = styled(p => <Text size="xlarge" {...p} />)`
   font-family: 'wwfregular';
   text-transform: uppercase;
   line-height: 1;
   margin-top: 3px;
-  text-align: center;
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : 'white'};
+  text-align: ${({ archived }) => (archived ? 'left' : 'center')};
+  color: ${({ theme, archived }) =>
+    archived ? theme.global.colors.brand : 'white'};
 `;
 
-const Select = styled.div`
+// prettier-ignore
+const ShowButton = styled(props => <Box {...props} />)`
   position: absolute;
-  bottom: ${({ isOffset }) => (isOffset ? 0 : 8)}px;
-  left: ${({ isOffset }) => (isOffset ? '50%' : 'auto')};
-  right: ${({ isOffset }) => (isOffset ? 'auto' : '12px')};
-  transform: translate(0, ${({ isOffset }) => (isOffset ? 50 : 0)}%);
-`;
-const SelectText = styled.div`
-  background-color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : theme.global.colors.brandDarker};
+  bottom: ${({ archived }) => (!archived ? 0 : 8)}px;
+  left: ${({ archived }) => (!archived ? '50%' : 'auto')};
+  right: ${({ archived }) => (!archived ? 'auto' : '12px')};
+  transform: translate(${({ archived }) => (!archived ? '-50%,50%' : '0,0')});
+  box-shadow: ${({ isHover }) => (isHover ? '2px 2px 6px rgba(0,0,0,0.15)' : '2px 2px 6px rgba(0,0,0,0.10)')};
+  padding: 8px 21px;
+  background-color: white;
   border-radius: 99999px;
-  color: white;
-  font-family: wwfregular;
-  text-transform: uppercase;
-  font-size: 20px;
-  line-height: 1;
-  transform: translate(${({ isOffset }) => (isOffset ? -50 : 0)}%, 0);
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-  padding: 4px 16px 5px;
-  font-size: 16px;
+  color: ${({ archived, isHover, theme }) => {
+    const topicCardStyles =
+    theme.global.colors.topicCards[archived ? 'archived' : 'default'];
+    return topicCardStyles[isHover ? 'buttonFont' : 'buttonFontHover'];
+  }};
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    font-size: 18px;
-    padding: 6px 16px 8px;
+    padding: ${({ archived }) => (archived ? '8px 21px' : '8px 23px')};
   }
-  @media (min-width: ${({ theme }) => theme.sizes.xlarge.minpx}) {
-    font-size: 20px;
-    padding: 9px 25px 11px;
-  }
-`;
-const SelectTextSecondary = styled.div`
-  color: ${({ isHover, theme }) =>
-    !isHover ? theme.global.colors.brand : 'white'};
+  `;
+// prettier-ignore
+const ShowText = styled(p => <Text {...p} />)`
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
+  margin-top: -1px;
+  font-size: 19px;
+  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
+   font-size: ${({ archived }) => (archived ? '19px' : '21px')};
+  }
 `;
+function getIconSize(archived, screenSize) {
+  if (archived) {
+    return '40px';
+  }
+  if (screenSize === 'small') {
+    return '60px';
+  }
+  return '70px';
+}
 
-export function TopicCard({
-  intl,
-  onTopicSelect,
-  topic,
-  count,
-  theme,
-  secondary,
-}) {
+export function TopicCard({ intl, onTopicSelect, topic, count, archived }) {
   const { locale } = intl;
   const [isHover, setIsHover] = useState(false);
   const Icon = p => POLICY_TOPIC_ICONS[topic.id](p);
   const size = React.useContext(ResponsiveContext);
-  const hasSelectButtonOffset = isMinSize(size, 'large') && !secondary;
+
   return (
     <Styled
       className="mpx-topic-select"
       count={count}
-      secondary={secondary}
-      margin={{ bottom: hasSelectButtonOffset ? 'large' : 'medium' }}
+      archived={archived}
+      responsive={false}
+      margin={{ bottom: !archived ? 'large' : 'medium' }}
     >
       <TopicButton
         plain
         hoverIndicator={false}
+        archived={archived}
         onClick={() => onTopicSelect(topic.id)}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <TopicInner isHover={isHover}>
-          {!secondary && (
-            <Box align="center">
-              <Icon color={isHover ? 'white' : theme.global.colors.brand} />
-              <TitleShort isHover={isHover}>
-                {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
-              </TitleShort>
-            </Box>
-          )}
+        <TopicInner>
+          <Box align={archived ? 'start' : 'center'}>
+            <Icon
+              color={archived ? 'brand' : 'white'}
+              size={getIconSize(archived, size)}
+            />
+            <TitleShort isHover={isHover} archived={archived}>
+              {topic[`short_${locale}`] || topic[`short_${DEFAULT_LOCALE}`]}
+            </TitleShort>
+          </Box>
           <Box
-            align="center"
+            align={archived ? 'start' : 'center'}
             responsive={false}
             margin={{
               top: 'small',
-              bottom: hasSelectButtonOffset ? 'medium' : 'ml',
+              bottom: !archived ? 'medium' : 'ml',
             }}
           >
-            <Teaser isHover={isHover}>
+            <Teaser isHover={isHover} archived={archived}>
               <Markdown
                 source={
                   topic[`teaser_${locale}`] || topic[`teaser_${DEFAULT_LOCALE}`]
@@ -147,25 +160,11 @@ export function TopicCard({
               />
             </Teaser>
           </Box>
-          <Select
-            secondary={secondary}
-            isHover={isHover}
-            isOffset={hasSelectButtonOffset}
-          >
-            {!secondary && (
-              <SelectText isHover={isHover} isOffset={hasSelectButtonOffset}>
-                <FormattedMessage {...messages.select} />
-              </SelectText>
-            )}
-            {secondary && (
-              <SelectTextSecondary
-                isHover={isHover}
-                isOffset={hasSelectButtonOffset}
-              >
-                <FormattedMessage {...messages.select} />
-              </SelectTextSecondary>
-            )}
-          </Select>
+          <ShowButton archived={archived} isHover={isHover}>
+            <ShowText archived={archived}>
+              <FormattedMessage {...messages.show} />
+            </ShowText>
+          </ShowButton>
         </TopicInner>
       </TopicButton>
     </Styled>
@@ -178,8 +177,7 @@ TopicCard.propTypes = {
   topic: PropTypes.object,
   intl: intlShape.isRequired,
   theme: PropTypes.object,
-  secondary: PropTypes.bool,
+  archived: PropTypes.bool,
 };
 
 export default injectIntl(withTheme(TopicCard));
-// export default ModuleExplore;

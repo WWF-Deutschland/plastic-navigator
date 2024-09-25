@@ -6,24 +6,20 @@ lang: en
 title: Implementation support
 ---
 
-Timely, predictable, accessible, and sufficient support, including both financial and technical resources, technology transfer and capacity strengthening, is particularly important for effective implementation of the treaty’s core obligations and control measures. This is one of the indispensable components of an ambitious treaty to end plastic pollution. To ensure that the Parties start out from a more level playing field, primary implementation assistance (e.g., technical, and financial assistance) should be established right at the beginning.
-
-For example, the treaty may include, _inter alia_, an obligation to provide implementation assistance to developing countries and economies in transition, financial mechanisms to directly support the implementation of control measures, for example through a dedicated multilateral fund (e.g., similar to that of the Montreal Protocol on Substances that Deplete the Ozone Layer), and mechanisms to facilitate transfers of technical know-how and technologies to developing countries and economies in transition.
+The treaty must include a comprehensive finance package that leverages all available sources and aligns financial flows, including public and private financing, with the objectives of the treaty and the implementation of its measures. This package will ensure predictable, adequate, equitable and accessible financial support to enable all parties to effectively implement the treaty. To complement the financial package, the treaty should ensure the provision of non-financial resources to enable effective implementation, particularly through technology transfer, technical assistance and capacity building.
 
 The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 
-States’ convergence on the need to ensure necessary support to countries for the effective implementation of their obligations is taken as one of the key indicators for the development of an ambitious and effective treaty to end plastic pollution.
-
+States’ convergence on the need to ensure necessary support to countries for the effective implementation of their obligations is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
 ## How to read the data
 
-
 The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of mechanisms to provide necessary support to countries for the effective implementation of their obligations.
 
-* Dark green indicates states that have publicly called for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
-* Light green indicates states that have publicly expressed support for the treaty’s inclusion of at least one or more mechanisms to provide necessary support to countries for the effective implementation of their obligations.
-* Grey indicates states that have not expressed support for the treaty’s inclusion of any mechanism to provide necessary support to countries for the effective implementation of their obligations in their latest verbal or written statement.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of a comprehensive finance package, and complementary technical assistance and technology transfers, to enable countries' effective implementation of their obligations.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of a comprehensive finance package, and complementary technical assistance and technology transfers, to enable countries' effective implementation of their obligations.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of a comprehensive finance package, and complementary technical assistance and technology transfers, to enable countries' effective implementation of their obligations.
 
 _Clicking on the States shows a brief overview of the state’s level of support and clicking on “Read more” displays detailed information with source._
 
