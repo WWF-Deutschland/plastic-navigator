@@ -85,6 +85,7 @@ const TitleShort = styled(p => <Text size="xlarge" {...p} />)`
     secondary ? theme.global.colors.brand : 'white'};
 `;
 
+// prettier-ignore
 const ShowButton = styled(props => <Box {...props} />)`
   position: absolute;
   bottom: ${({ isOffset }) => (isOffset ? 0 : 8)}px;
@@ -92,9 +93,9 @@ const ShowButton = styled(props => <Box {...props} />)`
   right: ${({ isOffset }) => (isOffset ? 'auto' : '12px')};
   transform: translate(${({ isOffset }) => (isOffset ? '-50%,50%' : '0,0')});
   box-shadow: ${({ secondary, theme }) =>
-  (secondary
+    (secondary
       ? 'rgba(0, 0, 0, 0.2)'
-    : theme.global.colors.topicCards.default.buttonFontHover)} 0px 2px 4px;
+      : theme.global.colors.topicCards.default.buttonFontHover)} 0px 2px 4px;
   padding: 4px 16px 5px;
   background-color: white;
   border-radius: 99999px;
@@ -102,6 +103,7 @@ const ShowButton = styled(props => <Box {...props} />)`
     padding: ${({ secondary }) => (secondary ? '5px 28px 7px' : '6px 26px 8px')};
   }
   `;
+// prettier-ignore
 const ShowText = styled(p => <Text {...p} />)`
   color: ${({ isHover, secondary, theme }) => {
     const topicCardStyles =
@@ -115,9 +117,9 @@ const ShowText = styled(p => <Text {...p} />)`
   font-family: wwfregular;
   text-transform: uppercase;
   line-height: 1;
-  font-size: 16px;
+  font-size: 19px;
   @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-   font-size: ${({ secondary }) => (secondary ? '20px' : '24px')};
+   font-size: ${({ secondary }) => (secondary ? '19px' : '21px')};
   }
 `;
 function getIconSize(secondary, screenSize) {

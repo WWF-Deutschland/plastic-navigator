@@ -62,9 +62,6 @@ const ShowText = styled(p => <Text {...p} />)`
   text-transform: uppercase;
   line-height: 1;
   font-size: 24px;
-  @media (min-width: ${({ theme }) => theme.sizes.large.minpx}) {
-    font-size: 28px;
-  }
 `;
 
 export function AggregateTopicCard({ intl, onTopicSelect, topic, theme }) {
