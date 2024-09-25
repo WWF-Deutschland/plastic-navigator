@@ -34,6 +34,7 @@ export const getStatementWithPositionsAndCountries = ({
   return {
     ...statement,
     positions: tables.topics.data.data.reduce((memoPositions, topic) => {
+      if (isHidden(topic)) return memoPositions;
       const p = getPositionForStatement({
         topicId: topic.id,
         statement,
