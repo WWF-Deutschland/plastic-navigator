@@ -119,9 +119,6 @@ const TitleSelectWrapper = styled(p => (
 const TopicCardWrap = styled(p => <Box {...p} />)`
   width: 100%;
 `;
-const AggregateCardWrap = styled(p => <Box {...p} background="white" />)`
-  box-shadow: 4px 4px 4px ${({ theme }) => theme.global.colors.brandDark};
-`;
 
 const COMPONENT_KEY = 'mpol';
 
@@ -299,18 +296,16 @@ export function ModulePolicy({
                           </TitleSelect>
                           <CurrentTopicsWrapper>
                             {aggregateTopic && (
-                              <AggregateCardWrap>
-                                <AggregateTopicCard
-                                  key={aggregateTopic.id}
-                                  topic={aggregateTopic}
-                                  onTopicSelect={id =>
-                                    onSetLayers([
-                                      ...activeLayers,
-                                      `${POLICY_LAYER}_${id}`,
-                                    ])
-                                  }
-                                />
-                              </AggregateCardWrap>
+                              <AggregateTopicCard
+                                key={aggregateTopic.id}
+                                topic={aggregateTopic}
+                                onTopicSelect={id =>
+                                  onSetLayers([
+                                    ...activeLayers,
+                                    `${POLICY_LAYER}_${id}`,
+                                  ])
+                                }
+                              />
                             )}
                             {topicsCurrent && (
                               <TitleSelectWrapper>
