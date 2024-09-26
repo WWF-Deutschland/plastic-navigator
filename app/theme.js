@@ -54,7 +54,8 @@ export const dimensions = {
   },
   modal: {
     // by breakpoint
-    width: [300, 600, 800, 1000, 1200],
+    // s, m, l, xl, xxl
+    width: [300, 600, 850, 1050, 1200],
   },
 };
 
@@ -90,6 +91,29 @@ export const colors = {
   },
   // other custom colours (also understood by grommet conmponents)
   map: '#fdfdfd',
+
+  topicCards: {
+    default: {
+      background: '#00728F',
+      backgroundHover: '#046179',
+      buttonBackground: '#000000',
+      buttonFontHover: '#08586C',
+      buttonFont: '#046179',
+    },
+    aggregate: {
+      background: '#ffffff',
+      buttonBackground: '#08586C',
+      buttonFont: '#000000',
+      buttonFontHover: '#08586C',
+    },
+    archived: {
+      background: '#ffffff',
+      backgroundHover: '#ffffff',
+      buttonBackground: '#000000',
+      buttonFont: '#00728F',
+      buttonFontHover: '#08586C',
+    },
+  },
 };
 
 // grommet text

@@ -6,20 +6,24 @@ lang: de
 title: Ban & phase out
 ---
 
-Das Abkommen sollte nach Möglichkeit konkrete, verbindliche Maßnahmen vorsehen, mit denen die Produktion und der Verbrauch von als bedenklich eingestuften Kunststoffen deutlich eingeschränkt oder ganz unterbunden werden können. Dies ist einer der unverzichtbaren Bestandteile eines ambitionierten Abkommens zur Beendigung der Plastikverschmutzung. Im Einklang mit einem risikobasierten Ansatz sollte der Schwerpunkt zunächst auf Produkten, Zusatzstoffen oder Materialien liegen, die das System am stärksten belasten und die größten Risiken darstellen.  Für diese Produkte, Zusatzstoffe und Materialien sollten dringend Prioritätenlisten erstellt werden.
+_Übersetzung folgt in Kürze_
 
-Der Global Plastic Navigator zeigt an, inwieweit die Staaten die Aufnahme globaler Verbote und Auslaufregelungen in das Abkommen unterstützen, mit denen Produktion, Verbrauch und Handel von/mit bestimmten bedenklichen Kunststoffkategorien unterbunden werden. Hierzu zählen Produkte, Materialien oder Stoffe, die besonders gefährdend sind, sowohl hinsichtlich der Wahrscheinlichkeit und Schwere potenzieller Schäden für den Menschen (sowie der menschlichen Gesundheit) als auch für andere Lebewesen und die Umwelt.
+As a starting point, the treaty must include binding, global bans and phase-outs of problematic
+and avoidable plastic products and chemicals of concern. Priority must be those that are most harmful to human health and the environment and can be immediately banned and gradually phased out. The treaty must include global criteria and initial lists to identify and specify these plastic products and chemicals.
 
-Einigkeit der Staaten darüber, dass es notwendig ist, diese Kunststoffkategorien abzuschaffen oder erheblich zu verringern, wird als einer der Schlüsselindikatoren für die Entwicklung eines ambitionierten und wirksamen Abkommens zur Beendigung der Kunststoffverschmutzung angesehen.  Die [Vorlage (pdf)](https://apps1.unep.org/resolutions/uploads/230106_wwfs_submission_on_potential_options_for_elements_towards_an_international_legally_binding_instrument_0.pdf) des WWF an den zwischenstaatlichen Verhandlungsausschuss enthält weitere Informationen über die wichtigsten Empfehlungen des WWF zu  möglichen Optionen für Elemente eines internationalen rechtsverbindlichen Abkommens.
+The Global Plastic Navigator tracks the states’ level of support for the treaty’s inclusion of global bans and phase-out requirements to eliminate the production, consumption, and trade of problematic
+and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
+
+States’ convergence on the need to eliminate these plastic products and chemicals is taken as one of the indicators for the development of an ambitious and effective treaty to end plastic pollution. WWF’s [statement on the treaty must-haves (pdf)](https://wwfint.awsassets.panda.org/downloads/a-global-treaty-to-end-plastic-pollution-must-haves.pdf) provides further information on global bans and phaseouts, as one of the four essential elements in the treaty that together provide a strong starting point and a credible, well-supported pathway to end plastic pollution.
 
 
-## Wie die Karte zu lesen ist
+## How to read the data
 
-Die Visualisierung zeigt, in welchem Ausmaß sich Staaten, die an der Ausarbeitung des Abkommens beteiligt sind, öffentlich für weltweite Verbote und Auslaufregelungen ausgesprochen haben, die darauf abzielen, Produktion, Verbrauch und Handel von/mit bestimmten, als problematisch eingestuften Kunststoffen zu beenden.
+The visualisation shows the level of support, publicly expressed by states participating in the negotiation of a new treaty on plastic pollution, for the inclusion of global bans and phase-out requirements to eliminate the production, consumption and trade of problematic and avoidable plastic products and chemicals of concern.
 
-* Dunkelgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **gefordert** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
-* Hellgrün kennzeichnet Staaten, die in ihren jüngsten mündlichen oder schriftlichen Erklärungen zu diesem Thema die Aufnahme globaler Verbote und Ausstiegsregelungen in den Vertrag **unterstützt** haben, mit denen Produktion, Verbrauch und Handel von/mit mindestens einer bedenklichen Kunststoffkategorie unterbunden werden sollen.
-* Grau gekennzeichnete Staaten haben sich in ihren jüngsten (mündlichen oder schriftlichen) öffentlichen Erklärungen nicht dafür ausgesprochen, dass globale Verbote und Ausstiegsauflagen für irgendeine der bedenklichen Kunststoffkategorien aufgenommen werden sollen.
+* Dark green indicates states that have publicly called for the treaty’s inclusion of global bans and phaseouts of problematic and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
+* Light green indicates states that have publicly expressed support for the treaty’s inclusion of global bans and phaseouts of problematic and avoidable plastic products and chemicals of concern, which are identified and specified through global criteria and lists.
+* Grey indicates states that have not expressed support for the treaty’s inclusion of global bans and phase-outs of any plastic category of concern in their latest verbal or written public statement.
 
 _Klicken Sie auf das Land, um eine kurze Übersicht der unterstützenden Aussagen/Erklärungen zu sehen. Klicken Sie auf „Mehr“, um detailliertere Informationen mit Quellen angezeigt zu bekommen._
 

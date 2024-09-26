@@ -12,15 +12,38 @@ import { compose } from 'redux';
 import { ResponsiveContext } from 'grommet';
 
 import { setItemInfo } from 'containers/App/actions';
-import { filterCountries } from 'utils/policy';
+import {
+  filterCountries,
+  getCountriesWithStrongestPosition,
+  getCountriesWithStrongestPositionAggregated,
+  isAggregate,
+} from 'utils/policy';
 
 import coreMessages from 'messages';
 
 import FeatureList from '../FeatureList';
 import messages from '../messages';
 
-export function CountryList({ countries, intl, config, topic, onSetItemInfo }) {
+export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
+  const { locale } = intl;
   const size = React.useContext(ResponsiveContext);
+  let countries;
+  if (isAggregate(topic)) {
+    countries =
+      layerInfo &&
+      layerInfo.data &&
+      getCountriesWithStrongestPositionAggregated({
+        indicator: topic,
+        layerInfo,
+        locale,
+      });
+  } else {
+    countries = getCountriesWithStrongestPosition({
+      indicatorId: topic.id,
+      layerInfo,
+      locale,
+    });
+  }
   return countries ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {
@@ -43,7 +66,7 @@ export function CountryList({ countries, intl, config, topic, onSetItemInfo }) {
 CountryList.propTypes = {
   config: PropTypes.object,
   topic: PropTypes.object,
-  countries: PropTypes.array,
+  layerInfo: PropTypes.object,
   onSetItemInfo: PropTypes.func,
   intl: intlShape.isRequired,
 };

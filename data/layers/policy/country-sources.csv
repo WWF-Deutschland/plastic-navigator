@@ -1,4 +1,4 @@
-﻿country_code,country_en,source_id
+country_code,country_en,source_id
 AFG,Afghanistan,G77CPR157
 AFG,Afghanistan,UNEA-5.2
 ALB,Albania,ANTALYA21
@@ -1166,3 +1166,192 @@ GAB,Gabon,HAC-joint-INC2
 EST,Estonia,HAC-joint-INC2
 MUS,Mauritius,HAC-joint-INC2
 ESP,Spain,HAC-joint-INC2
+DZA,Algeria,DZA-INC2
+COL,Colombia,COL-INC2
+COD,Democractic Republic of the Congo,COD-INC2
+AGO,Antigua & Barbuda,HAC-INC3
+ARM,Armenia,HAC-INC3
+AUS,Australia,HAC-INC3
+AUT,Austria,HAC-INC3
+AZE,Azerbaijan,HAC-INC3
+BEL,Belgium,HAC-INC3
+BGR,Bulgaria,HAC-INC3
+BGR,Burkina,HAC-INC3
+ETH,Faso,HAC-INC3
+CPV,Cabo Verde,HAC-INC3
+CAN,Canada,HAC-INC3
+CHL,Chile,HAC-INC3
+COL,Colombia,HAC-INC3
+COG,Cook Island,HAC-INC3
+CRI,Costa Rica,HAC-INC3
+DNK,Denmark,HAC-INC3
+DOM,Dominican Republic,HAC-INC3
+ECU,Ecuador,HAC-INC3
+EST,Estonia,HAC-INC3
+FIN,Finland,HAC-INC3
+FRA,France,HAC-INC3
+GAB,Gabon,HAC-INC3
+GEO,Georgia,HAC-INC3
+DEU,Germany,HAC-INC3
+GHA,Ghana,HAC-INC3
+GIN,Guinea,HAC-INC3
+ISL,Iceland,HAC-INC3
+IRL,Ireland,HAC-INC3
+ISR,Israel,HAC-INC3
+JPN,Japan,HAC-INC3
+JOR,Jordan,HAC-INC3
+LUX,Luxembourg,HAC-INC3
+MDV,Maldives,HAC-INC3
+MLI,Mali,HAC-INC3
+MUS,Mauritius,HAC-INC3
+MEX,Mexico,HAC-INC3
+FSM,Micronesia,HAC-INC3
+MCO,Monaco,HAC-INC3
+MNE,Montenegro,HAC-INC3
+NLD,Netherlands,HAC-INC3
+NZL,New Zealand,HAC-INC3
+NGA,Nigeria,HAC-INC3
+NOR,Norway,HAC-INC3
+PLW,Palau,HAC-INC3
+PAN,Panama,HAC-INC3
+PER,Peru,HAC-INC3
+PRT,Portugal,HAC-INC3
+KOR,Republic of Korea,HAC-INC3
+ROU,Romania,HAC-INC3
+RWA,Rwanda,HAC-INC3
+SEN,Senegal,HAC-INC3
+SYC,Seychelles,HAC-INC3
+SVN,Slovenia,HAC-INC3
+ESP,Spain,HAC-INC3
+SWE,Sweden,HAC-INC3
+CHE,Switzerland,HAC-INC3
+TGO,Togo,HAC-INC3
+GBR,United Kingdom,HAC-INC3
+URY,Uruguay,HAC-INC3
+ATG,Antigua and Barbuda,HAC-INC4
+ARM,Armenia,HAC-INC4
+AUS,Australia,HAC-INC4
+AUT,Austria,HAC-INC4
+AZE,Azerbaijan,HAC-INC4
+BEN,Benin,HAC-INC4
+BEL,Belgium,HAC-INC4
+BGR,Bulgaria,HAC-INC4
+BFA,Burkina Faso,HAC-INC4
+CPV,Cabo Verde,HAC-INC4
+CAN,Canada,HAC-INC4
+CHL,Chile,HAC-INC4
+COL,Colombia,HAC-INC4
+COG,Cook Island,HAC-INC4
+CRI,Costa Rica,HAC-INC4
+DNK,Denmark,HAC-INC4
+DOM,Dominican Republic,HAC-INC4
+ECU,Ecuador,HAC-INC4
+EST,Estonia,HAC-INC4
+FIN,Finland,HAC-INC4
+FRA,France,HAC-INC4
+GAB,Gabon,HAC-INC4
+GEO,Georgia,HAC-INC4
+DEU,Germany,HAC-INC4
+GHA,Ghana,HAC-INC4
+GIN,Guinea,HAC-INC4
+ISL,Iceland,HAC-INC4
+IRL,Ireland,HAC-INC4
+ISR,Israel,HAC-INC4
+MNE,Montenegro,HAC-INC4
+SEN,Senegal,HAC-INC4
+JPN,Japan,HAC-INC4
+JOR,Jordan,HAC-INC4
+LUX,Luxembourg,HAC-INC4
+MWI,Malawi,HAC-INC4
+MDV,Maldives,HAC-INC4
+MLI,Mali,HAC-INC4
+MUS,Mauritius,HAC-INC4
+MEX,Mexico,HAC-INC4
+FSM,Micronesia,HAC-INC4
+MDA,Republic of Moldova,HAC-INC4
+MCO,Monaco,HAC-INC4
+NLD,Netherlands,HAC-INC4
+NZL,New Zealand,HAC-INC4
+NGA,Nigeria,HAC-INC4
+NOR,Norway,HAC-INC4
+PLW,Palau,HAC-INC4
+PAN,Panama,HAC-INC4
+PER,Peru,HAC-INC4
+PRT,Portugal,HAC-INC4
+KOR,Republic of Korea,HAC-INC4
+ROU,Romania,HAC-INC4
+RWA,Rwanda,HAC-INC4
+SYC,Seychelles,HAC-INC4
+SVN,Slovenia,HAC-INC4
+SLB,Solomon Islands,HAC-INC4
+ESP,Spain,HAC-INC4
+SWE,Sweden,HAC-INC4
+CHE,Switzerland,HAC-INC4
+TGO,Togo,HAC-INC4
+UKR,Ukraine,HAC-INC4
+GBR,United Kingdom,HAC-INC4
+URY,Uruguay,HAC-INC4
+ATG,Antigua & Barbuda,HAC-INC5
+ARM,Armenia,HAC-INC5
+AUS,Australia,HAC-INC5
+AUT,Austria,HAC-INC5
+AZE,Azerbaijan,HAC-INC5
+BEN,Benin,HAC-INC5
+BEL,Belgium,HAC-INC5
+BGR,Bulgaria,HAC-INC5
+BFA,Burkina Faso,HAC-INC5
+CPV,Cabo Verde,HAC-INC5
+CAN,Canada,HAC-INC5
+CHL,Chile,HAC-INC5
+COL,Colombia,HAC-INC5
+COG,Cook Island,HAC-INC5
+CRI,Costa Rica,HAC-INC5
+DNK,Denmark,HAC-INC5
+DOM,Dominican Republic,HAC-INC5
+ECU,Ecuador,HAC-INC5
+EST,Estonia,HAC-INC5
+FIN,Finland,HAC-INC5
+FRA,France,HAC-INC5
+GAB,Gabon,HAC-INC5
+GEO,Georgia,HAC-INC5
+DEU,Germany,HAC-INC5
+GHA,Ghana,HAC-INC5
+GIN,Guinea,HAC-INC5
+ISL,Iceland,HAC-INC5
+IRL,Ireland,HAC-INC5
+ISR,Israel,HAC-INC5
+KEN,Kenya,HAC-INC5
+JPN,Japan,HAC-INC5
+JOR,Jordan,HAC-INC5
+LUX,Luxembourg,HAC-INC5
+MWI,Malawi,HAC-INC5
+MDV,Maldives,HAC-INC5
+MLI,Mali,HAC-INC5
+MUS,Mauritius,HAC-INC5
+MEX,Mexico,HAC-INC5
+FSM,Micronesia,HAC-INC5
+MDA,Republic of Moldova,HAC-INC5
+MCO,Monaco,HAC-INC5
+MNE,Montenegro,HAC-INC5
+NLD,Netherlands,HAC-INC5
+NZL,New Zealand,HAC-INC5
+NGA,Nigeria,HAC-INC5
+NOR,Norway,HAC-INC5
+PLW,Palau,HAC-INC5
+PAN,Panama,HAC-INC5
+PER,Peru,HAC-INC5
+PRT,Portugal,HAC-INC5
+KOR,Republic of Korea,HAC-INC5
+ROU,Romania,HAC-INC5
+RWA,Rwanda,HAC-INC5
+SEN,Senegal,HAC-INC5
+SYC,Seychelles,HAC-INC5
+SVN,Slovenia,HAC-INC5
+SLB,Solomon Islands,HAC-INC5
+ESP,Spain,HAC-INC5
+SWE,Sweden,HAC-INC5
+CHE,Switzerland,HAC-INC5
+TGO,Togo,HAC-INC5
+UKR,Ukraine,HAC-INC5
+GBR,United Kingdom,HAC-INC5
+URY,Uruguay,HAC-INC5

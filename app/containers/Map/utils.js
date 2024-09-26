@@ -3,7 +3,7 @@ import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
 import qe from 'utils/quasi-equals';
-import { getCountryPositionForTopicAndDate } from 'utils/policy';
+import { getCountryPositionForAnyTopicAndDate } from 'utils/policy';
 import { formatMessageForValues } from 'utils/string';
 import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
@@ -652,6 +652,12 @@ const prepareGeometry = ({
   locale,
   intl,
 }) => {
+  const topic =
+    tables &&
+    tables.topics &&
+    tables.topics.data &&
+    tables.topics.data.data &&
+    tables.topics.data.data.find(t => qe(t.id, indicatorId));
   if (config.indicators) {
     const geometryX = {
       type: geometry.type,
@@ -663,9 +669,9 @@ const prepareGeometry = ({
         // console.log('gf', gf)
         // console.log('feature', feature)?
         if (feature) {
-          const position = getCountryPositionForTopicAndDate({
+          const position = getCountryPositionForAnyTopicAndDate({
             countryCode: feature.code,
-            topicId: indicatorId,
+            topic,
             dateString,
             tables,
             locale,

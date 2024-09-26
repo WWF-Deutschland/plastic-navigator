@@ -10,7 +10,12 @@ import { POLICY_LAYER } from 'config';
 
 import formatDate from 'utils/format-date';
 import quasiEquals from 'utils/quasi-equals';
-import { getCountryPositionsOverTimeFromCountryFeatures } from 'utils/policy';
+import {
+  getCountryPositionsOverTimeFromCountryFeatures,
+  getCountryAggregatePositionsOverTime,
+  isAggregate,
+  getTopicFromData,
+} from 'utils/policy';
 import { prepChartKey } from 'containers/LayerInfo/policy/charts';
 // import {
 //   excludeCountryFeatures,
@@ -64,17 +69,30 @@ export function Areas({
   let squares = [];
   const isPolicy = POLICY_LAYER === config.id;
   // console.log('layerInfo', layerInfo);
-  const positionsOverTime =
-    isPolicy &&
-    layerInfo &&
-    layerInfo.data &&
-    getCountryPositionsOverTimeFromCountryFeatures({
-      indicatorId,
-      layerInfo,
-      includeOpposing: false,
-      includeWithout: false,
-      includeHidden: false,
-    });
+  let positionsOverTime;
+  if (isPolicy) {
+    const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
+    if (topic && isAggregate(topic)) {
+      positionsOverTime =
+        layerInfo &&
+        layerInfo.data &&
+        getCountryAggregatePositionsOverTime({
+          indicator: topic,
+          layerInfo,
+        });
+    } else {
+      positionsOverTime =
+        layerInfo &&
+        layerInfo.data &&
+        getCountryPositionsOverTimeFromCountryFeatures({
+          indicatorId,
+          layerInfo,
+          includeOpposing: false,
+          includeWithout: false,
+          includeHidden: false,
+        });
+    }
+  }
   const lastDate =
     positionsOverTime &&
     Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];

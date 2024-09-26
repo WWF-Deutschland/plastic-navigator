@@ -13,7 +13,6 @@ import styled, { withTheme } from 'styled-components';
 import { Box, Text, Button, DropButton } from 'grommet';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import qe from 'utils/quasi-equals';
-
 import { DEFAULT_LOCALE } from 'i18n';
 import { POLICY_TOPIC_ICONS } from 'config';
 
@@ -38,12 +37,15 @@ import {
   getTopicsFromData,
   getPreviousTopicFromData,
   getNextTopicFromData,
-  getCountriesWithStrongestPosition,
   getStatementsForTopic,
+  isArchived,
+  isAggregate,
+  getChildTopics,
 } from 'utils/policy';
-import CountryChart from './policy/CountryChart';
+import CountryDetails from './policy/CountryDetails';
 import CountryList from './policy/CountryList';
 import SourceList from './policy/SourceList';
+import TopicsList from './policy/TopicsList';
 // import SourceContent from './policy/SourceContent';
 // import CountryFeatureContent from './policy/CountryFeatureContent';
 // import FeatureContent from './FeatureContent';
@@ -51,7 +53,6 @@ import SourceList from './policy/SourceList';
 // import TitleIconPolicy from './TitleIconPolicy';
 // import LayerReference from './LayerReference';
 import PolicyOptionList from './PolicyOptionList';
-import LayerContent from './LayerContent';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
 import PanelBody from './PanelBody';
@@ -177,8 +178,8 @@ export function PolicyContent({
   theme,
   onClose,
   onSetTab,
-  onSelectStatement,
   onLoadLayer,
+  onSelectStatement,
   onSetChartDate,
   chartDate,
 }) {
@@ -197,7 +198,8 @@ export function PolicyContent({
   const tab = subView || 'details';
   const topicOptions = getTopicsFromData(layerInfo);
   const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
-  const isTopicArchived = topic && qe(topic.archived, 1);
+  const isTopicArchived = !!isArchived(topic);
+  const isTopicAggregate = !!isAggregate(topic);
   const nextTopic =
     topic &&
     getNextTopicFromData({
@@ -329,32 +331,52 @@ export function PolicyContent({
                   }
                 />
               </TabLinkWrapper>
-              <TabLinkWrapper>
-                <TabLink
-                  onClick={() => onSetTab('statements', layerId)}
-                  active={qe(tab, 'statements')}
-                  disabled={qe(tab, 'statements')}
-                  label={
-                    <TabLinkAnchor active={qe(tab, 'statements')}>
-                      <FormattedMessage {...messages.tabStatements} />
-                    </TabLinkAnchor>
-                  }
-                />
-              </TabLinkWrapper>
+              {!isTopicAggregate && (
+                <TabLinkWrapper>
+                  <TabLink
+                    onClick={() => onSetTab('statements', layerId)}
+                    active={qe(tab, 'statements')}
+                    disabled={qe(tab, 'statements')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'statements')}>
+                        <FormattedMessage {...messages.tabStatements} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                </TabLinkWrapper>
+              )}
+              {isTopicAggregate && (
+                <TabLinkWrapper>
+                  <TabLink
+                    onClick={() => onSetTab('topics', layerId)}
+                    active={qe(tab, 'topics')}
+                    disabled={qe(tab, 'topics')}
+                    label={
+                      <TabLinkAnchor active={qe(tab, 'topics')}>
+                        <FormattedMessage {...messages.tabTopics} />
+                      </TabLinkAnchor>
+                    }
+                  />
+                </TabLinkWrapper>
+              )}
             </Tabs>
           </PanelHeader>
         )}
+        {layerInfo && tab === 'details' && (
+          <CountryDetails
+            layerInfo={layerInfo}
+            topic={topic}
+            onSelectStatement={onSelectStatement}
+            onSetChartDate={onSetChartDate}
+            chartDate={chartDate}
+            config={config}
+            layerId={layerId}
+            isTopicArchived={isTopicArchived}
+          />
+        )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
-            <CountryList
-              countries={getCountriesWithStrongestPosition({
-                indicatorId,
-                layerInfo,
-                locale,
-              })}
-              topic={topic}
-              config={config}
-            />
+            <CountryList layerInfo={layerInfo} topic={topic} config={config} />
           </PanelBody>
         )}
         {config && tab === 'statements' && layerInfo && (
@@ -370,20 +392,13 @@ export function PolicyContent({
             />
           </PanelBody>
         )}
-        {layerInfo && tab === 'details' && (
+        {config && tab === 'topics' && layerInfo && (
           <PanelBody>
-            <Box margin={{ top: 'medium' }} responsive={false}>
-              <CountryChart
-                config={config}
-                indicatorId={indicatorId}
-                layerInfo={layerInfo}
-                onSelectStatement={sid => onSelectStatement(sid, layerId)}
-                onSetChartDate={onSetChartDate}
-                chartDate={chartDate}
-                isArchive={isTopicArchived}
-              />
-            </Box>
-            <LayerContent fullLayerId={layerId} config={config} />
+            <TopicsList
+              topics={getChildTopics(topic, topicOptions, locale)}
+              config={config}
+              onSetTopic={id => onSetTopic(id)}
+            />
           </PanelBody>
         )}
       </ContentWrap>

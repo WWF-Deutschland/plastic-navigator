@@ -566,18 +566,6 @@
           }
         },
         {
-          "id": "3",
-          "content-id": "policy-commitments-3",
-          "short": {
-            "en" : "Safely manage",
-            "de" : "Abfallmanagement"
-          },
-          "title": {
-            "en" : "Support for global requirements and standards to ensure environmentally sound management of the plastics that becomes waste",
-            "de" : "Unterstützung für globale Vorgaben und Standards, die ein umweltverträgliches Abfallmanagement von Kunststoffabfällen gewährleisten"
-          }
-        },
-        {
           "id": "4",
           "content-id": "policy-commitments-4",
           "short": {
@@ -587,6 +575,31 @@
           "title": {
             "en": "Support for treaty’s mechanisms to provide necessary support to countries for the effective implementation of their obligations",
             "de": "Unterstützung der Aufnahme von Mechanismen zur Unterstützung bei der Umsetzung in das Abkommen, mit dem Ziel, Länder zur effektiven Umsetzung der Verpflichtungen zu befähigen"
+          }
+        },
+        {
+          "id": "5",
+          "content-id": "policy-commitments-5",
+          "short": {
+            "en": "Gradual Strengthening",
+            "de": "Gradual Strengthening"
+          },
+          "title": {
+            "en": "Gradual Strengthening",
+            "de": "Gradual Strengthening"
+          }
+        },
+        {
+          "id": "10",
+          "content-id": "policy-commitments-10",
+          "aggregate": "1",
+          "short": {
+            "en": "Must-haves in the treaty",
+            "de": "Must-haves in the treaty"
+          },
+          "title": {
+            "en": "Must-haves in the treaty",
+            "de": "Must-haves in the treaty"
           }
         }
       ],

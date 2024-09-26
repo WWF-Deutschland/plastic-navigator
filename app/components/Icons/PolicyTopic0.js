@@ -1,6 +1,6 @@
 import React from 'react';
 import StyledIcon from './StyledIcon';
-function Implement(props) {
+function PolicyTopic0(props) {
   return (
     <StyledIcon
       size="38px"
@@ -59,4 +59,4 @@ function Implement(props) {
   );
 }
 
-export default Implement;
+export default PolicyTopic0;

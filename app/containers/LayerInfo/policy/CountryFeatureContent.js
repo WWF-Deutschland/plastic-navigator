@@ -61,19 +61,18 @@ const IndicatorLink = styled(p => <Button plain {...p} />)`
   text-transform: uppercase;
   font-weight: normal;
   line-height: 1;
-  padding: 0 ${({ theme }) => theme.global.edgeSize.small};
   color: ${({ theme, active }) =>
     theme.global.colors[active ? 'brand' : 'textSecondary']};
   opacity: 1;
   border-bottom: 6px solid;
   border-color: ${({ theme, active }) =>
     active ? theme.global.colors.brand : 'transparent'};
-  padding: 7px;
+  padding: 5px;
   &:hover {
     color: ${({ theme }) => theme.global.colors.brandDark};
   }
   @media (min-width: ${({ theme }) => theme.sizes.medium.minpx}) {
-    padding: 10px;
+    padding: 8px;
   }
 `;
 // const IndicatorLinkAnchor = styled(p => <Text size="xlarge" {...p} />)``;
@@ -81,7 +80,7 @@ const IndicatorLink = styled(p => <Button plain {...p} />)`
 const IconWrap = styled.div`
   border-radius: 99999px;
   background: ${({ color, theme }) => color || theme.global.colors.brand};
-  padding: 7px;
+  padding: 5px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
 `;
 // const getCountryPath = (info, locale) =>
@@ -134,10 +133,18 @@ export function CountryFeatureContent({
   const indicatorPositions = getIndicatorScoresForCountry({
     country,
     layerInfo,
-    indicatorId,
   });
   const currentIndicator =
     indicatorPositions && indicatorPositions.find(i => qe(i.id, indicatorId));
+
+  let scoreCardIconSize = '30px';
+  if (isMinSize(size, 'medium')) {
+    scoreCardIconSize = '36px';
+  } else if (isMinSize(size, 'large')) {
+    scoreCardIconSize = '42px';
+  } else if (isMinSize(size, 'xlarge')) {
+    scoreCardIconSize = '48px';
+  }
   return (
     <>
       <PanelHeader>
@@ -168,6 +175,10 @@ export function CountryFeatureContent({
                     onClick={() => onSetIndicator(indicator.id)}
                     active={qe(indicator.id, indicatorId)}
                     disabled={qe(indicator.id, indicatorId)}
+                    title={
+                      indicator[`title_${locale}`] ||
+                      indicator[`title_${DEFAULT_LOCALE}`]
+                    }
                   >
                     <IconWrap
                       color={
@@ -180,10 +191,7 @@ export function CountryFeatureContent({
                         ].fillColor
                       }
                     >
-                      <Icon
-                        color="white"
-                        size={isMinSize(size, 'medium') ? '48px' : '30px'}
-                      />
+                      <Icon color="white" size={scoreCardIconSize} />
                     </IconWrap>
                   </IndicatorLink>
                 </IndicatorLinkWrapper>
@@ -250,7 +258,7 @@ export function CountryFeatureContent({
         <CountryPolicyCommitments
           country={country}
           layerInfo={layerInfo}
-          indicatorId={indicatorId}
+          indicator={currentIndicator}
           onSelectStatement={onSelectStatement}
         />
       </PanelBody>
