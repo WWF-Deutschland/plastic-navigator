@@ -825,7 +825,6 @@ export const getCountryAggregatePositionsOverTime = ({
     //   [id]: positionsOverTime,
     // };
   }, {});
-  // console.log('childPositions', childPositions)
   // for every date, check every country and all its positions
   // re-organise by country
   // also need for
@@ -838,12 +837,32 @@ export const getCountryAggregatePositionsOverTime = ({
   // figure out child positions by date and country
   const positionsByDateAndCountry = dates.reduce((memo, date, index) => {
     const positions = childPositions[date];
-    const positionsPreviousByCountry = index > 0 ? memo[dates[index - 1]] : {};
+
+    const sourcesForDate = Object.keys(positions).reduce(
+      (sourceMemo, topicId) => {
+        const sourcesForDateAndTopic = positions[topicId].sources;
+        const sources = Object.keys(sourcesForDateAndTopic).reduce(
+          (sourceMemo2, sourceId) =>
+            sourceMemo2[sourceId]
+              ? sourceMemo2
+              : { ...sourceMemo, [sourceId]: sourcesForDateAndTopic[sourceId] },
+          sourceMemo,
+        );
+        return sources;
+      },
+      {},
+    );
+    // console.log('memo', memo)
+    const positionsPreviousByCountry =
+      index > 0 ? memo[dates[index - 1]].countries : {};
     // from this:
     // {
     //   [topicid]: {
     //     positions: {
     //       [supportlevel]: [ ...countrycodes ]
+    //     },
+    //     sources: {
+    //       [sourceid]: { ...source details }
     //     }
     //   }
     // }
@@ -857,7 +876,9 @@ export const getCountryAggregatePositionsOverTime = ({
     //   }
     // }
     const byCountry = Object.keys(positions).reduce((memo2, topicId) => {
+      // console.log('positions[topicId]', positions[topicId])
       const countryPositions = positions[topicId].positions;
+      // console.log('positions', positions)
       const byLevelOfSupport = Object.keys(countryPositions).reduce(
         (memo3, levelOfSupport) => {
           const countriesForTopicAndLevel = countryPositions[levelOfSupport];
@@ -886,18 +907,23 @@ export const getCountryAggregatePositionsOverTime = ({
         },
         memo2,
       );
+      // console.log('byLevelOfSupport', byLevelOfSupport)
       return byLevelOfSupport;
     }, positionsPreviousByCountry);
     return {
       ...memo,
-      [date]: byCountry,
+      [date]: {
+        countries: byCountry,
+        sources: sourcesForDate,
+      },
     };
   }, {});
   // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
 
   // now aggregate for each date and country
   return Object.keys(positionsByDateAndCountry).reduce((memo, date) => {
-    const positionsForDate = positionsByDateAndCountry[date];
+    const positionsForDate = positionsByDateAndCountry[date].countries;
+    // console.log('positionsForDate', positionsForDate);
     const positionValuesForDate = Object.keys(positionsForDate).reduce(
       (memo2, countryCode) => {
         const countryPositions = positionsForDate[countryCode];
@@ -931,6 +957,7 @@ export const getCountryAggregatePositionsOverTime = ({
       ...memo,
       [date]: {
         positions: positionValuesForDate,
+        sources: positionsByDateAndCountry[date].sources,
       },
     };
   }, {});

@@ -44,6 +44,7 @@ export function CountryDetails({
       });
   }
   // console.log('positionsOverTime', positionsOverTime)
+  // console.log('layerInfo.data', layerInfo && layerInfo.data)
   return (
     <PanelBody>
       <Box margin={{ top: 'medium' }} responsive={false}>

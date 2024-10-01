@@ -146,19 +146,14 @@ export const prepChartData = ({ positions, minDate, maxDate }) => {
 // const Y_OFFSET = 9;
 const Y_OFFSET_MIN = 9;
 
-export const prepChartDataSources = (
-  positionsByDate,
-  dataStyles,
-  isAggregateTopic,
-) => {
+export const prepChartDataSources = (positionsByDate, dataStyles) => {
   const sourceMarkers = Object.keys(positionsByDate).reduce(
     (memoSourceMarkers, dateKey) => {
       const positionsForDate = positionsByDate[dateKey];
       if (positionsForDate) {
-        const statementsForDate = !isAggregateTopic && positionsForDate.sources;
+        const statementsForDate = positionsForDate.sources;
         const x = getXTime(dateKey);
         const sortedStatements =
-          !isAggregateTopic &&
           statementsForDate &&
           Object.values(statementsForDate).sort((a, b) => {
             // const posValueA = parseInt(a.position.value, 10);
@@ -169,9 +164,7 @@ export const prepChartDataSources = (
             return countA < countB ? 1 : -1;
           }, -99);
         let color = 'red';
-        if (isAggregateTopic) {
-          color = 'black';
-        } else if (
+        if (
           sortedStatements &&
           dataStyles &&
           dataStyles[sortedStatements[0].position.value]
@@ -189,7 +182,7 @@ export const prepChartDataSources = (
             y: Y_OFFSET_MIN * -1,
             x,
             sources: sortedStatements,
-            opacity: isAggregateTopic ? 0.33 : 0.66,
+            opacity: 0.66,
             color,
           },
         ];
