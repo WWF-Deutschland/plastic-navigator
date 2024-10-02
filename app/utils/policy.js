@@ -145,6 +145,31 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
     );
   return mergePositions({ topicPosition, position });
 };
+
+const getAggregateValueFromCounts = (countPositions, noOfTopics) => {
+  let value = 0;
+  // all value of 3 => agg value 3
+  if (countPositions[3] === noOfTopics) {
+    value = 3;
+    // all have value 2 or 3 => agg value 2
+  } else if (countPositions[3] + countPositions[2] === noOfTopics) {
+    value = 2;
+    // some have value 2 or 3 ==> agg value 1
+  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    value = 1;
+  }
+  return value;
+};
+
+const countPositionValues = countryPositionValues =>
+  Object.values(countryPositionValues).reduce(
+    (memo3, levelOfSupport) => ({
+      ...memo3,
+      [levelOfSupport]: (memo3[levelOfSupport] || 0) + 1,
+    }),
+    { 0: 0, 1: 0, 2: 0, 3: 0 },
+  );
+
 export const getCountryPositionForAnyTopicAndDate = ({
   countryCode,
   topic,
@@ -179,32 +204,8 @@ export const getCountryPositionForAnyTopicAndDate = ({
   }, {});
   const countPositions =
     childPositions &&
-    Object.values(childPositions).reduce(
-      (memo, child) => {
-        const { value } = child;
-        return {
-          ...memo,
-          [value]: (memo[value] || 0) + 1,
-        };
-      },
-      {
-        0: 0,
-        1: 0,
-        2: 0,
-        3: 0,
-      },
-    );
-  let value = 0;
-  // all value of 3 => agg value 3
-  if (countPositions[3] === childIds.length) {
-    value = 3;
-    // all have value 2 or 3 => agg value 2
-  } else if (countPositions[3] + countPositions[2] === childIds.length) {
-    value = 2;
-    // some have value 2 or 3 ==> agg value 1
-  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
-    value = 1;
-  }
+    countPositionValues(Object.values(childPositions).map(p => p.value));
+  const value = getAggregateValueFromCounts(countPositions, childIds.length);
   const position = getPositionForValueAndTopic({
     value,
     topicId: topic.id,
@@ -217,6 +218,21 @@ export const getCountryPositionForAnyTopicAndDate = ({
     latestPosition: position,
   };
 };
+export const getAggregateValueForStatement = (statement, childTopicIds) => {
+  const countPositions =
+    childTopicIds &&
+    countPositionValues(
+      childTopicIds.map(topicId => {
+        let levelOfSupport = statement[`position_t${topicId}`];
+        if (levelOfSupport === '') {
+          levelOfSupport = 0;
+        }
+        return levelOfSupport;
+      }),
+    );
+  return getAggregateValueFromCounts(countPositions, childTopicIds.length);
+};
+
 export const getCountryPositionForTopicAndDate = ({
   countryCode,
   topicId,
@@ -438,35 +454,15 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
     return listMemo;
   }, []);
 
-const getAggregateScore = ({ parent, children, tables }) => {
-  const countChildren = children.length;
-  const countPositions = children.reduce(
-    (memo, child) => {
-      const { value } = child.position;
-      return {
-        ...memo,
-        [value]: (memo[value] || 0) + 1,
-      };
-    },
-    {
-      0: 0,
-      1: 0,
-      2: 0,
-      3: 0,
-    },
-  );
-  let value = 0;
-  // all value of 3 => agg value 3
-  if (countPositions[3] === countChildren) {
-    value = 3;
-    // all have value 2 or 3 => agg value 2
-  } else if (countPositions[3] + countPositions[2] === countChildren) {
-    value = 2;
-    // some have value 2 or 3 ==> agg value 1
-  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
-    value = 1;
-  }
-  // else 0
+const getAggregateScore = ({ parent, childTopics, tables }) => {
+  const countPositions =
+    childTopics &&
+    countPositionValues(
+      Object.values(childTopics).map(topic => topic.position.value),
+    );
+  const value =
+    countPositions &&
+    getAggregateValueFromCounts(countPositions, childTopics.length);
   const position = getPositionForValueAndTopic({
     value,
     topicId: parent.id,
@@ -495,14 +491,14 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
     .filter(t => isAggregate(t) && !isHidden(t))
     .map(t => {
       const childIds = t.aggregate.split(',');
-      const childIndicators = indicatorScores.filter(
+      const childTopics = indicatorScores.filter(
         child => childIds.indexOf(child.id) > -1,
       );
       return {
         ...t,
         position: getAggregateScore({
           parent: t,
-          children: childIndicators,
+          childTopics,
           tables,
         }),
       };
@@ -927,24 +923,11 @@ export const getCountryAggregatePositionsOverTime = ({
     const positionValuesForDate = Object.keys(positionsForDate).reduce(
       (memo2, countryCode) => {
         const countryPositions = positionsForDate[countryCode];
-        const countPositions = Object.values(countryPositions).reduce(
-          (memo3, levelOfSupport) => ({
-            ...memo3,
-            [levelOfSupport]: (memo3[levelOfSupport] || 0) + 1,
-          }),
-          { 0: 0, 1: 0, 2: 0, 3: 0 },
+        const countPositions = countPositionValues(countryPositions);
+        const value = getAggregateValueFromCounts(
+          countPositions,
+          childIds.length,
         );
-        let value = 0;
-        // all value of 3 => agg value 3
-        if (countPositions[3] === childIds.length) {
-          value = 3;
-          // all have value 2 or 3 => agg value 2
-        } else if (countPositions[3] + countPositions[2] === childIds.length) {
-          value = 2;
-          // some have value 2 or 3 ==> agg value 1
-        } else if (countPositions[3] > 0 || countPositions[2] > 0) {
-          value = 1;
-        }
         return {
           ...memo2,
           [value]: [...memo2[value], countryCode],
@@ -1040,27 +1023,13 @@ export const getCountriesWithStrongestPositionAggregated = ({
     (memo, countryCode) => {
       // countryData
       const countryData = positionsLatest[countryCode];
-      const countPositions = Object.values(countryData.positions).reduce(
-        (memo2, countryPosition) => {
-          const levelOfSupport = countryPosition.value;
-          return {
-            ...memo2,
-            [levelOfSupport]: (memo2[levelOfSupport] || 0) + 1,
-          };
-        },
-        { 0: 0, 1: 0, 2: 0, 3: 0 },
+      const countPositions = countPositionValues(
+        Object.values(countryData.positions).map(p => p.value),
       );
-      let value = 0;
-      // all value of 3 => agg value 3
-      if (countPositions[3] === childIds.length) {
-        value = 3;
-        // all have value 2 or 3 => agg value 2
-      } else if (countPositions[3] + countPositions[2] === childIds.length) {
-        value = 2;
-        // some have value 2 or 3 ==> agg value 1
-      } else if (countPositions[3] > 0 || countPositions[2] > 0) {
-        value = 1;
-      }
+      const value = getAggregateValueFromCounts(
+        countPositions,
+        childIds.length,
+      );
       return [
         ...memo,
         {

@@ -1,6 +1,9 @@
 import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
-import { getPositionForTopicAndValue } from 'utils/policy';
+import {
+  getPositionForTopicAndValue,
+  getAggregateValueForStatement,
+} from 'utils/policy';
 import { formatMessageForValues } from 'utils/string';
 const DATE_BUFFER_ARCHIVED = 60;
 const DATE_BUFFER_CURRENT = 3;
@@ -146,7 +149,12 @@ export const prepChartData = ({ positions, minDate, maxDate }) => {
 // const Y_OFFSET = 9;
 const Y_OFFSET_MIN = 9;
 
-export const prepChartDataSources = (positionsByDate, dataStyles) => {
+export const prepChartDataSources = (
+  positionsByDate,
+  dataStyles,
+  childTopicIds,
+) => {
+  console.log('childTopicIds', childTopicIds)
   const sourceMarkers = Object.keys(positionsByDate).reduce(
     (memoSourceMarkers, dateKey) => {
       const positionsForDate = positionsByDate[dateKey];
@@ -164,12 +172,17 @@ export const prepChartDataSources = (positionsByDate, dataStyles) => {
             return countA < countB ? 1 : -1;
           }, -99);
         let color = 'red';
-        if (
-          sortedStatements &&
-          dataStyles &&
-          dataStyles[sortedStatements[0].position.value]
-        ) {
-          color = dataStyles[sortedStatements[0].position.value].fillColor;
+        if (sortedStatements && dataStyles) {
+          if (childTopicIds) {
+            // console.log('sortedStatements[0]', sortedStatements[0])
+            const value = getAggregateValueForStatement(
+              sortedStatements[0],
+              childTopicIds,
+            );
+            color = dataStyles[value].fillColor;
+          } else if (dataStyles[sortedStatements[0].position.value]) {
+            color = dataStyles[sortedStatements[0].position.value].fillColor;
+          }
         }
         return [
           ...memoSourceMarkers,

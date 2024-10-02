@@ -280,7 +280,12 @@ export function CountryChart({
   //   featuresEx,
   //   locale,
   // );
-  const chartDataSources = prepChartDataSources(positionsOverTime, dataStyles);
+  const isAggregateTopic = isAggregate(indicator);
+  const chartDataSources = prepChartDataSources(
+    positionsOverTime,
+    dataStyles,
+    isAggregateTopic && indicator.aggregate.split(',').map(id => id.trim()),
+  );
   let activeSource;
   if (mouseOverSource) {
     activeSource =
@@ -652,7 +657,7 @@ export function CountryChart({
                         <Box margin={{ top: 'xsmall' }}>
                           <Text size="xxxsmall" color="textSecondary">
                             <FormattedMessage
-                              {...messages[isAggregate(indicator) ? 'otherStatementsAggregate' : 'otherStatements']}
+                              {...messages[isAggregateTopic ? 'otherStatementsAggregate' : 'otherStatements']}
                               values={{
                                 isSingle: Object.keys(mouseOverSource.sources).length === 2,
                                 countOther: Object.keys(mouseOverSource.sources).length - 1,
