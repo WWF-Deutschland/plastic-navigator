@@ -64,6 +64,7 @@
   "app.containers.LayerInfo.noStatement": "Keine Erklärung dokumentiert",
   "app.containers.LayerInfo.noStatementsAggregateTopicHint": "Informationen zu den Erklärungen finden Sie bei den einzelnen Themen",
   "app.containers.LayerInfo.otherStatements": "{countOther} andere {isSingle, select, true {Erklärung} false {Erklärungen}} (siehe Tab)",
+  "app.containers.LayerInfo.otherStatementsAggregate": "{countOther} andere {isSingle, select, true {Erklärung} false {Erklärungen}} (siehe Themen)",
   "app.containers.LayerInfo.placeholderCountries": "{isSmall, select, true {Nach} false {Liste nach}} Ländernamen oder -code filtern",
   "app.containers.LayerInfo.placeholderDefault": "Liste nach Namen filtern",
   "app.containers.LayerInfo.position": "Position",
