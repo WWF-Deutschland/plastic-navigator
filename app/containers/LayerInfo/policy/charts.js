@@ -154,7 +154,6 @@ export const prepChartDataSources = (
   dataStyles,
   childTopicIds,
 ) => {
-  console.log('childTopicIds', childTopicIds)
   const sourceMarkers = Object.keys(positionsByDate).reduce(
     (memoSourceMarkers, dateKey) => {
       const positionsForDate = positionsByDate[dateKey];
