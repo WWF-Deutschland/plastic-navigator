@@ -1,6 +1,9 @@
 import { DEFAULT_LOCALE } from 'i18n';
 import { isMinSize } from 'utils/responsive';
-import { getPositionForTopicAndValue } from 'utils/policy';
+import {
+  getPositionForTopicAndValue,
+  getAggregateValueForStatement,
+} from 'utils/policy';
 import { formatMessageForValues } from 'utils/string';
 const DATE_BUFFER_ARCHIVED = 60;
 const DATE_BUFFER_CURRENT = 3;
@@ -149,16 +152,15 @@ const Y_OFFSET_MIN = 9;
 export const prepChartDataSources = (
   positionsByDate,
   dataStyles,
-  isAggregateTopic,
+  childTopicIds,
 ) => {
   const sourceMarkers = Object.keys(positionsByDate).reduce(
     (memoSourceMarkers, dateKey) => {
       const positionsForDate = positionsByDate[dateKey];
       if (positionsForDate) {
-        const statementsForDate = !isAggregateTopic && positionsForDate.sources;
+        const statementsForDate = positionsForDate.sources;
         const x = getXTime(dateKey);
         const sortedStatements =
-          !isAggregateTopic &&
           statementsForDate &&
           Object.values(statementsForDate).sort((a, b) => {
             // const posValueA = parseInt(a.position.value, 10);
@@ -169,14 +171,17 @@ export const prepChartDataSources = (
             return countA < countB ? 1 : -1;
           }, -99);
         let color = 'red';
-        if (isAggregateTopic) {
-          color = 'black';
-        } else if (
-          sortedStatements &&
-          dataStyles &&
-          dataStyles[sortedStatements[0].position.value]
-        ) {
-          color = dataStyles[sortedStatements[0].position.value].fillColor;
+        if (sortedStatements && dataStyles) {
+          if (childTopicIds) {
+            // console.log('sortedStatements[0]', sortedStatements[0])
+            const value = getAggregateValueForStatement(
+              sortedStatements[0],
+              childTopicIds,
+            );
+            color = dataStyles[value].fillColor;
+          } else if (dataStyles[sortedStatements[0].position.value]) {
+            color = dataStyles[sortedStatements[0].position.value].fillColor;
+          }
         }
         return [
           ...memoSourceMarkers,
@@ -189,7 +194,7 @@ export const prepChartDataSources = (
             y: Y_OFFSET_MIN * -1,
             x,
             sources: sortedStatements,
-            opacity: isAggregateTopic ? 0.33 : 0.66,
+            opacity: 0.66,
             color,
           },
         ];

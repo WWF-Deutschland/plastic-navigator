@@ -140,6 +140,11 @@ export default defineMessages({
     defaultMessage:
       '{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)',
   },
+  otherStatementsAggregate: {
+    id: `${scope}.otherStatementsAggregate`,
+    defaultMessage:
+      '{countOther} other {isSingle, select, true {statement} false {statements}} (see topics)',
+  },
   tabDetails: {
     id: `${scope}.tabDetails`,
     defaultMessage: 'Details',

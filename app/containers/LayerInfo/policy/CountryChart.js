@@ -284,17 +284,13 @@ export function CountryChart({
   const chartDataSources = prepChartDataSources(
     positionsOverTime,
     dataStyles,
-    isAggregateTopic,
+    isAggregateTopic && indicator.aggregate.split(',').map(id => id.trim()),
   );
   let activeSource;
   if (mouseOverSource) {
-    if (isAggregateTopic) {
-      activeSource = mouseOverSource.sdate;
-    } else {
-      activeSource =
-        mouseOverSource.sources &&
-        mouseOverSource.sources[Object.keys(mouseOverSource.sources)[0]];
-    }
+    activeSource =
+      mouseOverSource.sources &&
+      mouseOverSource.sources[Object.keys(mouseOverSource.sources)[0]];
   }
 
   // mouseOverSource && chartDataSources[mouseOverSource.sid];
@@ -392,47 +388,27 @@ export function CountryChart({
                       );
                     })}
                   </Box>
-                  {!isAggregateTopic && (
-                    <SquareLabelWrap align="center">
-                      <KeyStatements>
-                        {statsForKey.map(
-                          stat => (
-                            <KeySourceMarker
-                              key={stat.id}
-                              fillColor={stat.style.fillColor}
-                              style={{
-                                width: '4px',
-                                height: '4px',
-                              }}
-                            />
-                          )
-                        )}
-                      </KeyStatements>
-                      <KeyLabelWrap>
-                        <StyledKeyLabel>
-                          <FormattedMessage {...messages.countryChartNoSources} />
-                        </StyledKeyLabel>
-                      </KeyLabelWrap>
-                    </SquareLabelWrap>
-                  )}
-                  {isAggregateTopic && (
-                    <SquareLabelWrap align="center">
-                      <KeyStatements>
-                        <KeySourceMarker
-                          fillColor="rgba(0,0,0,0.5)"
-                          style={{
-                            width: '6px',
-                            height: '6px',
-                          }}
-                        />
-                      </KeyStatements>
-                      <KeyLabelWrap>
-                        <StyledKeyLabel>
-                          <FormattedMessage {...messages.countryChartDates} />
-                        </StyledKeyLabel>
-                      </KeyLabelWrap>
-                    </SquareLabelWrap>
-                  )}
+                  <SquareLabelWrap align="center">
+                    <KeyStatements>
+                      {statsForKey.map(
+                        stat => (
+                          <KeySourceMarker
+                            key={stat.id}
+                            fillColor={stat.style.fillColor}
+                            style={{
+                              width: '4px',
+                              height: '4px',
+                            }}
+                          />
+                        )
+                      )}
+                    </KeyStatements>
+                    <KeyLabelWrap>
+                      <StyledKeyLabel>
+                        <FormattedMessage {...messages.countryChartNoSources} />
+                      </StyledKeyLabel>
+                    </KeyLabelWrap>
+                  </SquareLabelWrap>
                 </Box>
               </Box>
             </Box>
@@ -663,28 +639,25 @@ export function CountryChart({
                         <Text size="xxxsmall" color="textSecondary">
                           {formatDate(locale, new Date(mouseOverSource.sdate).getTime())}
                         </Text>
-                        {!isAggregateTopic && (
-                          <Text size="xxsmall" weight="bold">
-                            {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
-                          </Text>
-                        )}
-                        {!isAggregateTopic && (
-                          <Text size="xxsmall">
-                            <FormattedMessage
-                              {...coreMessages.countries}
-                              values={{
-                                count: activeSource.countryCodes.length,
-                                isSingle: activeSource.countryCodes.length === 1,
-                              }}
-                            />
-                          </Text>
-                        )}
+                        <Text size="xxsmall" weight="bold">
+                          {activeSource[`title_${locale}`] || activeSource[`title_${DEFAULT_LOCALE}`]}
+                        </Text>
+
+                        <Text size="xxsmall">
+                          <FormattedMessage
+                            {...coreMessages.countries}
+                            values={{
+                              count: activeSource.countryCodes.length,
+                              isSingle: activeSource.countryCodes.length === 1,
+                            }}
+                          />
+                        </Text>
                       </Box>
-                      {!isAggregateTopic && Object.keys(mouseOverSource.sources) && Object.keys(mouseOverSource.sources).length > 1 && (
+                      {indicator && Object.keys(mouseOverSource.sources) && Object.keys(mouseOverSource.sources).length > 1 && (
                         <Box margin={{ top: 'xsmall' }}>
                           <Text size="xxxsmall" color="textSecondary">
                             <FormattedMessage
-                              {...messages.otherStatements}
+                              {...messages[isAggregateTopic ? 'otherStatementsAggregate' : 'otherStatements']}
                               values={{
                                 isSingle: Object.keys(mouseOverSource.sources).length === 2,
                                 countOther: Object.keys(mouseOverSource.sources).length - 1,

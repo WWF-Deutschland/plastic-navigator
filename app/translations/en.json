@@ -64,6 +64,7 @@
   "app.containers.LayerInfo.noStatement": "No statement recorded",
   "app.containers.LayerInfo.noStatementsAggregateTopicHint": "Please refer to the underlying topics for country statements",
   "app.containers.LayerInfo.otherStatements": "{countOther} other {isSingle, select, true {statement} false {statements}} (see tab)",
+  "app.containers.LayerInfo.otherStatementsAggregate": "{countOther} other {isSingle, select, true {statement} false {statements}} (see topics)",
   "app.containers.LayerInfo.placeholderCountries": "Filter list by country name or code",
   "app.containers.LayerInfo.placeholderDefault": "Filter list by name",
   "app.containers.LayerInfo.position": "Position",
