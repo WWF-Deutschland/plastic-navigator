@@ -51,7 +51,7 @@
   "app.containers.LayerInfo.countryChartNoSources": "Erklärungen",
   "app.containers.LayerInfo.countryChartTitle": "Anzahl der Staaten nach Positionierung",
   "app.containers.LayerInfo.countryStatementLinkLabel": "Zur Erklärung",
-  "app.containers.LayerInfo.downloadPolicyData": "Länder-Positionierungen herunterladen (CSV)",
+  "app.containers.LayerInfo.downloadPolicyData": "Themen-Positionierungen herunterladen (CSV)",
   "app.containers.LayerInfo.hidePanel": "Ausblenden",
   "app.containers.LayerInfo.hidePanelSmall": "Karte zeigen",
   "app.containers.LayerInfo.latestPositionLabel": "Aktuelle Positionierung",
