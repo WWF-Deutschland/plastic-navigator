@@ -8,7 +8,9 @@ import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
 import { Button, Box, Heading, Text, ResponsiveContext } from 'grommet';
+import { Download } from 'grommet-icons';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import CsvDownloader from 'react-csv-downloader';
 
 import { ArrowRightL, CloseXS } from 'components/Icons';
 
@@ -45,7 +47,17 @@ const FeatureButton = styled(p => (
     border-bottom: 1px solid ${({ theme }) => theme.global.colors['light-4']};
   }
 `;
-
+const ButtonDownload = styled(props => <Button plain {...props} />)`
+  color: ${({ theme }) => theme.global.colors.dark};
+  stroke: ${({ theme }) => theme.global.colors.dark};
+  text-decoration: underline;
+  opacity: 0.7;
+  &:hover {
+    opacity: 1;
+    color: ${({ theme }) => theme.global.colors.brand};
+    stroke: ${({ theme }) => theme.global.colors.brand};
+  }
+`;
 export function FeatureList({
   title,
   items,
@@ -55,6 +67,8 @@ export function FeatureList({
   placeholder,
   isSourceList,
   intl,
+  exportToCSV,
+  exportToCSVFilename,
 }) {
   const [test, setTest] = useState('');
   const textInputRef = useRef(null);
@@ -74,7 +88,33 @@ export function FeatureList({
     <ResponsiveContext.Consumer>
       {size => (
         <FeatureListWrap>
-          <ListTitle>{title}</ListTitle>
+          <Box direction="row" justify="between" align="center">
+            <ListTitle>{title}</ListTitle>
+            {exportToCSV && (
+              <Box>
+                <CsvDownloader
+                  wrapColumnChar={`"`}
+                  datas={() => exportToCSV(items)}
+                  filename={
+                    exportToCSVFilename ||
+                    `country-positions_${locale}_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`
+                  }
+                >
+                  <ButtonDownload
+                    plain
+                    reverse
+                    icon={<Download color="inherit" size="small" />}
+                    gap="xsmall"
+                    label={
+                      <Text weight={300} size="xsmall">
+                        <FormattedMessage {...messages.downloadPolicyData} />
+                      </Text>
+                    }
+                  />
+                </CsvDownloader>
+              </Box>
+            )}
+          </Box>
           {search && (
             <Box
               direction="row"
@@ -192,6 +232,8 @@ FeatureList.propTypes = {
   placeholder: PropTypes.string,
   search: PropTypes.func,
   intl: intlShape.isRequired,
+  exportToCSV: PropTypes.func,
+  exportToCSVFilename: PropTypes.string,
 };
 
 export default injectIntl(FeatureList);

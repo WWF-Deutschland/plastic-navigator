@@ -59,6 +59,16 @@ export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
       onSetItemInfo={id =>
         onSetItemInfo(`${config.id}_${topic.id}|country-${id}`)
       }
+      exportToCSV={items =>
+        items.map(item => ({
+          country_code: item.code,
+          country_label: item.label,
+          level_of_support: item.position && item.position.value,
+        }))
+      }
+      exportToCSVFilename={`country-positions_topic-${
+        topic.id
+      }_${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`}
     />
   ) : null;
 }

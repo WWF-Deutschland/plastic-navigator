@@ -53,7 +53,7 @@
   "app.containers.LayerInfo.countryChartNoSources": "Statements",
   "app.containers.LayerInfo.countryChartTitle": "Number of countries by policy position",
   "app.containers.LayerInfo.countryStatementLinkLabel": "Go to statement",
-  "app.containers.LayerInfo.downloadPolicyData": "Download all country positions (CSV)",
+  "app.containers.LayerInfo.downloadPolicyData": "Download topic positions (CSV)",
   "app.containers.LayerInfo.hidePanel": "Hide panel",
   "app.containers.LayerInfo.hidePanelSmall": "Show map",
   "app.containers.LayerInfo.latestPositionLabel": "Current position",
