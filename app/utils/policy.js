@@ -149,11 +149,8 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
 const getAggregateValueFromCounts = (countPositions, noOfTopics) => {
   let value = 0;
   // all value of 3 => agg value 3
-  if (countPositions[3] === noOfTopics) {
+  if (countPositions[3] + countPositions[2] === noOfTopics) {
     value = 3;
-    // all have value 2 or 3 => agg value 2
-  } else if (countPositions[3] + countPositions[2] === noOfTopics) {
-    value = 2;
     // some have value 2 or 3 ==> agg value 1
   } else if (countPositions[3] > 0 || countPositions[2] > 0) {
     value = 1;
@@ -649,9 +646,15 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
     layerInfo.data.tables['country-sources']
   ) {
     const { tables, features } = layerInfo.data;
+    const topicPositions = layerInfo.data.tables[
+      'topic-positions'
+    ].data.data.filter(tp => qe(tp.topic_id, indicatorId));
     const positionValues = tables.positions.data.data.reduce(
       (memoPosValues, p) => {
         const value = parseInt(p.id, 10);
+        if (!topicPositions.find(tp => qe(tp.position_id, value))) {
+          return memoPosValues;
+        }
         if (value === 0 && !includeWithout) {
           return memoPosValues;
         }
@@ -917,6 +920,28 @@ export const getCountryAggregatePositionsOverTime = ({
   // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
 
   // now aggregate for each date and country
+  let aggPositionValues = { 0: [], 1: [], 2: [], 3: [], 4: [] };
+  // make sure we only use positions that are defined for topic ( excluding 0)
+  const topicPositions =
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
+    layerInfo.data.tables['topic-positions'] &&
+    layerInfo.data.tables['topic-positions'].data &&
+    layerInfo.data.tables['topic-positions'].data.data.filter(row =>
+      qe(row.topic_id, indicator.id),
+    );
+  if (topicPositions) {
+    aggPositionValues = topicPositions.reduce((memo, tp) => {
+      if (parseInt(tp.position_id, 10) > 0) {
+        return {
+          ...memo,
+          [tp.position_id]: [],
+        };
+      }
+      return memo;
+    }, {});
+  }
   return Object.keys(positionsByDateAndCountry).reduce((memo, date) => {
     const positionsForDate = positionsByDateAndCountry[date].countries;
     // console.log('positionsForDate', positionsForDate);
@@ -933,9 +958,8 @@ export const getCountryAggregatePositionsOverTime = ({
           [value]: [...memo2[value], countryCode],
         };
       },
-      { 1: [], 2: [], 3: [] },
+      aggPositionValues,
     );
-    // console.log('positionValuesForDate', positionValuesForDate)
     return {
       ...memo,
       [date]: {
@@ -951,7 +975,8 @@ export const getCountriesWithStrongestPositionAggregated = ({
   layerInfo,
   locale,
 }) => {
-  const childIds = indicator.aggregate && indicator.aggregate.split(',');
+  const childIds =
+    indicator && indicator.aggregate && indicator.aggregate.split(',');
   const childPositions = childIds.reduce((memo, id) => {
     const countries = getCountriesWithStrongestPosition({
       indicatorId: id,
