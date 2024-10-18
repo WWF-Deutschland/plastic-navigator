@@ -517,49 +517,49 @@ const sanitiseCSVcontent = str => str.replaceAll(`"`, `'`);
 //   ...
 // }
 //
-export const getFlatCSVFromSources = (sources, locale) =>
-  Object.keys(sources)
-    .reduce((memo, sourceId) => {
-      const source = sources[sourceId];
-      const { position } = source.position;
-      // TODO: SANITISE quotes? _ " _ >>> _ ' _ double to single
-      // the position attributes
-      const positionAttributes = {
-        position_id: position.id,
-        position: sanitiseCSVcontent(getPositionLabel(position, locale)),
-      };
-      // the source attributes
-      const sourceAttributes = {
-        // statement_id: sanitiseCSVcontent(sourceId),
-        statement_date: source.date, // format yyy-mm-dd
-        statement_name: sanitiseCSVcontent(
-          getAttributeLabel(source, 'source', locale),
-        ),
-        statement_quote: sanitiseCSVcontent(
-          getAttributeLabel(source, 'quote', locale),
-        ),
-        source_title: sanitiseCSVcontent(
-          getAttributeLabel(source, 'title', locale),
-        ),
-        source_url: source.url,
-      };
-      const sourceCountries = source.countries
-        .filter(country => country.status !== 'exclude')
-        .map(country => ({
-          country_code: country.id,
-          country: country.label,
-          ...positionAttributes,
-          ...sourceAttributes,
-        }));
-      return memo.concat(sourceCountries);
-    }, [])
-    .sort((a, b) => (a.country > b.country ? 1 : -1))
-    .sort((a, b) => (a.statement_name > b.statement_name ? 1 : -1))
-    .sort((a, b) => {
-      const aDate = a.statement_date && new Date(a.statement_date);
-      const bDate = b.statement_date && new Date(b.statement_date);
-      if (aDate && !bDate) return -1;
-      if (!aDate && bDate) return 1;
-      if (aDate > bDate) return -1;
-      return 1;
-    });
+// export const getFlatCSVFromSources = (sources, locale) =>
+//   Object.keys(sources)
+//     .reduce((memo, sourceId) => {
+//       const source = sources[sourceId];
+//       const { position } = source.position;
+//       // TODO: SANITISE quotes? _ " _ >>> _ ' _ double to single
+//       // the position attributes
+//       const positionAttributes = {
+//         position_id: position.id,
+//         position: sanitiseCSVcontent(getPositionLabel(position, locale)),
+//       };
+//       // the source attributes
+//       const sourceAttributes = {
+//         // statement_id: sanitiseCSVcontent(sourceId),
+//         statement_date: source.date, // format yyy-mm-dd
+//         statement_name: sanitiseCSVcontent(
+//           getAttributeLabel(source, 'source', locale),
+//         ),
+//         statement_quote: sanitiseCSVcontent(
+//           getAttributeLabel(source, 'quote', locale),
+//         ),
+//         source_title: sanitiseCSVcontent(
+//           getAttributeLabel(source, 'title', locale),
+//         ),
+//         source_url: source.url,
+//       };
+//       const sourceCountries = source.countries
+//         .filter(country => country.status !== 'exclude')
+//         .map(country => ({
+//           country_code: country.id,
+//           country: country.label,
+//           ...positionAttributes,
+//           ...sourceAttributes,
+//         }));
+//       return memo.concat(sourceCountries);
+//     }, [])
+//     .sort((a, b) => (a.country > b.country ? 1 : -1))
+//     .sort((a, b) => (a.statement_name > b.statement_name ? 1 : -1))
+//     .sort((a, b) => {
+//       const aDate = a.statement_date && new Date(a.statement_date);
+//       const bDate = b.statement_date && new Date(b.statement_date);
+//       if (aDate && !bDate) return -1;
+//       if (!aDate && bDate) return 1;
+//       if (aDate > bDate) return -1;
+//       return 1;
+//     });
