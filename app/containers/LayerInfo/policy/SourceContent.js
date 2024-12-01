@@ -102,7 +102,6 @@ const P = styled.p`
   margin-top: 0;
   margin-bottom: 0;
 `;
-const Quote = styled(P)``;
 
 const SectionTitleWrap = styled.div`
   margin-bottom: 5px;
@@ -240,10 +239,11 @@ export function SourceContent({
                 <FormattedMessage {...messages.quote} />
               </SectionTitle>
             </SectionTitleWrap>
-            <Quote>
-              {sourceWithPositions[`quote_${locale}`] ||
+            <MarkdownText
+              content={sourceWithPositions[`quote_${locale}`] ||
                 sourceWithPositions[`quote_${DEFAULT_LOCALE}`]}
-            </Quote>
+              size={isMinSize(size, 'medium') ? 'medium' : 'small'}
+            />
           </Section>
         )}
         {sourceWithPositions &&
