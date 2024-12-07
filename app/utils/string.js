@@ -19,14 +19,14 @@ export const truncateText = (text, limit = 6, keepWords = true) => {
   if (text.length > limit) {
     // split at explicit more/less tag
     if (text.indexOf(MD_MORELESS_TAG) > -1) {
-      return text.split(MD_MORELESS_TAG)[0];
+      return `${text.split(MD_MORELESS_TAG)[0]} \u2026`;
     }
     // get only first three paragraphs (unless there are no more than 4)
     if (text.indexOf('\n\n') > -1 && text.split('\n\n').length > 5) {
-      return text
+      return `${text
         .split('\n\n')
         .slice(0, 3)
-        .join('\n\n');
+        .join('\n\n')} \n\n \u2026`;
     }
     // cut off by character length, ignoring words
     if (!keepWords) {
