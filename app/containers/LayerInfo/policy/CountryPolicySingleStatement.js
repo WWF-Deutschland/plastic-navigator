@@ -146,6 +146,13 @@ const CountryPolicySingleStatement = ({
             content={statement[`quote_${locale}`] ||
               statement[`quote_${DEFAULT_LOCALE}`]}
             size={isMinSize(size, 'medium') ? 'medium' : 'small'}
+            moreLess={{
+              limit: 350,
+              labels: {
+                more: intl.formatMessage(messages.moreQuote),
+                less: intl.formatMessage(messages.lessQuote),
+              }
+            }}
           />
         </Section>
       )}

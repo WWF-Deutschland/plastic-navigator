@@ -179,4 +179,12 @@ export default defineMessages({
     defaultMessage:
       'Please refer to the underlying topics for country statements',
   },
+  moreQuote: {
+    id: `${scope}.moreQuote`,
+    defaultMessage: 'Show full quote',
+  },
+  lessQuote: {
+    id: `${scope}.lessQuote`,
+    defaultMessage: 'Show less',
+  },
 });

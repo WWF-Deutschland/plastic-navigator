@@ -243,6 +243,13 @@ export function SourceContent({
               content={sourceWithPositions[`quote_${locale}`] ||
                 sourceWithPositions[`quote_${DEFAULT_LOCALE}`]}
               size={isMinSize(size, 'medium') ? 'medium' : 'small'}
+              moreLess={{
+                limit: 350,
+                labels: {
+                  more: intl.formatMessage(messages.moreQuote),
+                  less: intl.formatMessage(messages.lessQuote),
+                }
+              }}
             />
           </Section>
         )}
