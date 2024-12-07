@@ -190,3 +190,5 @@ export const MAP_OPTIONS = {
 };
 
 export const LOCALE_TOGGLE = true;
+
+export const MD_MORELESS_TAG = '[MORELESS]';
