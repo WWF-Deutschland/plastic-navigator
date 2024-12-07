@@ -26,7 +26,7 @@ export const truncateText = (text, limit = 6, keepWords = true) => {
       return `${text
         .split('\n\n')
         .slice(0, 3)
-        .join('\n\n')} \n\n \u2026`;
+        .join('\n\n')} \u2026`;
     }
     // cut off by character length, ignoring words
     if (!keepWords) {
