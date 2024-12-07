@@ -32,7 +32,6 @@ const P = styled.p`
   margin-top: 0;
   margin-bottom: 0;
 `;
-const Quote = styled(P)``;
 
 const SectionTitleWrap = styled.div`
   margin-bottom: 5px;
@@ -143,10 +142,11 @@ const CountryPolicySingleStatement = ({
               <FormattedMessage {...messages.quote} />
             </SectionTitle>
           </SectionTitleWrap>
-          <Quote>
-            {statement[`quote_${locale}`] ||
+          <MarkdownText
+            content={statement[`quote_${locale}`] ||
               statement[`quote_${DEFAULT_LOCALE}`]}
-          </Quote>
+            size={isMinSize(size, 'medium') ? 'medium' : 'small'}
+          />
         </Section>
       )}
       <Section>

@@ -174,7 +174,21 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
   .mpx-markdown-text p {
-    margin: 0;
+    margin-top: 0;
+    margin-block-start: 0;
+    font-size: 15px;
+    line-height: 22.5px;
+  }
+  .mpx-markdown-text li {
+    margin-bottom: 0.5em;
+    font-size: 15px;
+    line-height: 22.5px;
+  }
+  .mpx-markdown-text a {
+    color: #00728F;
+  }
+  .mpx-markdown-text a:hover {
+    color: #08586C;
   }
   .mpx-markdown-text-settings p {
     line-height: 1.2;
