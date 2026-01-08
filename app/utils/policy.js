@@ -271,6 +271,20 @@ export const getCountryPositionForTopicAndDate = ({
           topicId,
           tables,
         });
+    // const isConflict =
+    //   latestCountryPositionStatement.value <
+    //   strongestCountryPositionStatement.value;
+    // if (isConflict) {
+    //   console.log(
+    //     'isConflict, latestCountryPositionStatement.value, strongestCountryPositionStatement.value',
+    //     isConflict,
+    //     countryCode,
+    //     latestCountryPositionStatement.value,
+    //     strongestCountryPositionStatement.value,
+    //     latestCountryPositionStatement,
+    //     strongestCountryPositionStatement,
+    //   );
+    // }
     return {
       latest: latestCountryPositionStatement,
       strongest: strongestCountryPositionStatement,
