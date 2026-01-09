@@ -486,7 +486,7 @@
         "table-type": "lookup",
         "file": "layers/policy/v2/topics.csv",
         "type": "csv",
-        "content-id": "policy-commitments-{id}"
+        "content-id": "policy-commitments-{id}",
         "extend": {
           "path": "topics",
           "type": "json",
