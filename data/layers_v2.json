@@ -541,34 +541,6 @@
     },
     "indicators": {
       "table": "topics",
-      "indicators": [
-        {
-          "id": "0",
-          "content-id": "policy-commitments-0",
-          "archive": "1",
-          "short": {
-            "en" : "Support for global treaty",
-            "de" : "Unterstützung des globalen Abkommens"
-          },
-          "title": {
-            "en" : "UN Member States’ level of support for treaty",
-            "en" : "Grad der Unterstützung der Mitgliedstaaten für das Abkommen"
-          }
-        },
-        {
-          "id": "10",
-          "content-id": "policy-commitments-10",
-          "aggregate": "1",
-          "short": {
-            "en": "Must-haves in the treaty",
-            "de": "Must-haves in the treaty"
-          },
-          "title": {
-            "en": "Must-haves in the treaty",
-            "de": "Must-haves in the treaty"
-          }
-        }
-      ],
       "labels": {
         "single": {
           "en": "Topic",
