@@ -207,6 +207,7 @@ export function PolicyContent({
       layerInfo,
       archived: isTopicArchived,
     });
+
   const prevTopic =
     topic &&
     getPreviousTopicFromData({
@@ -362,7 +363,7 @@ export function PolicyContent({
             </Tabs>
           </PanelHeader>
         )}
-        {layerInfo && tab === 'details' && (
+        {topic && layerInfo && tab === 'details' && (
           <CountryDetails
             layerInfo={layerInfo}
             topic={topic}

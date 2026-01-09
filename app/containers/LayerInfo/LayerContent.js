@@ -57,13 +57,16 @@ export function LayerContent({
     // kick off loading of page content
     if (fullLayerId && config.indicators) {
       const [, indiId] = fullLayerId.split('_');
-      const indicatorConfig = config.indicators.indicators.find(l =>
-        qe(l.id, indiId),
-      );
+      const indicatorConfig =
+        config.tables && config.indicators.table
+          ? config.tables[config.indicators.table]
+          : null;
+      // );
       if (indicatorConfig) {
-        onLoadContent(
-          indicatorConfig['content-id'] || config['content-id'] || config.id,
-        );
+        const contentId =
+          indicatorConfig['content-id'].indexOf('{id}') > -1 &&
+          indicatorConfig['content-id'].replace('{id}', indiId);
+        onLoadContent(contentId || config['content-id'] || config.id);
       }
     } else {
       onLoadContent(config['content-id'] || config.id);

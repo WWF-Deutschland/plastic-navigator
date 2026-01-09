@@ -225,43 +225,112 @@ export function* loadDataSaga({ key, config, args }) {
 
               // console.log('geomtries',geometries)
               if (config.tables) {
-                let responsesdata = yield all(
-                  Object.values(config.tables).map(x =>
-                    fetch(`${RESOURCES.DATA}/${x.file}`),
+                const tableEntries = Object.entries(config.tables);
+
+                const csvRequests = tableEntries.map(([, table]) =>
+                  fetch(`${RESOURCES.DATA}/${table.file}`),
+                );
+                const apiRequests = tableEntries.map(([, table]) =>
+                  table.extendAPI
+                    ? fetch(`${RESOURCES.DATA_API}${table.extendAPI.path}`)
+                    : null,
+                );
+
+                const [csvResponseData, apiResponseData] = yield all([
+                  all(csvRequests),
+                  all(apiRequests),
+                ]);
+                const csvData = yield all(
+                  csvResponseData.map(r => (r.text ? r.text() : r)),
+                );
+                const apiData = yield all(
+                  apiResponseData.map(r =>
+                    r && r.json ? r.json() : Promise.resolve(null),
                   ),
                 );
-                responsesdata = yield all(
-                  responsesdata.map(r => {
-                    if (r.text) {
-                      return r.text();
-                    }
-                    return r;
-                  }),
-                );
-                // console.log('responsesdata', responsesdata)
-                responsesdata.forEach((x, index) => {
-                  const configKey = Object.keys(config.tables)[index];
-                  const data = Papa.parse(x, {
+                //
+                // let responsesdata = yield all(
+                //   Object.values(config.tables).map(table =>
+                //     fetch(`${RESOURCES.DATA}/${table.file}`),
+                //   ),
+                // );
+                // responsesdata = yield all(
+                //   responsesdata.map(r => {
+                //     if (r.text) {
+                //       return r.text();
+                //     }
+                //     return r;
+                //   }),
+                // );
+                csvData.forEach((csvText, index) => {
+                  const [configKey, table] = tableEntries[index];
+                  // const configKey = Object.keys(config.tables)[index];
+                  const parsedCsv = Papa.parse(csvText, {
                     header: true,
                     skipEmptyLines: true,
                   });
+                  let finalData = parsedCsv.data;
 
-                  tables[configKey] = {
-                    data: {
-                      ...data,
-                      data: data.data.reduce((memo, d) => {
-                        if (
-                          typeof d.hidden === 'undefined' ||
-                          [1, '1', 'true', 'TRUE'].indexOf(d.hidden) === -1
-                        ) {
-                          return [...memo, d];
+                  if (apiData[index]) {
+                    const mapping =
+                      (table.extendAPI && table.extendAPI.map) || {};
+
+                    const transformedApiData = apiData[index].reduce(
+                      (memo, apiRow) => {
+                        if (apiRow) {
+                          const mappedRow = { ...apiRow };
+                          Object.entries(mapping).forEach(
+                            ([apiField, csvColumn]) => {
+                              if (
+                                apiField !== csvColumn &&
+                                apiField in apiRow
+                              ) {
+                                mappedRow[csvColumn] = apiRow[apiField];
+                                delete mappedRow[apiField]; // Remove original field name
+                              }
+                            },
+                          );
+                          return [...memo, mappedRow];
                         }
                         return memo;
-                      }, []),
-                    },
-                    config: config.tables[configKey],
+                      },
+                      [],
+                    );
+
+                    finalData = [...finalData, ...transformedApiData];
+                  }
+
+                  finalData = finalData.reduce((memo, d) => {
+                    if (
+                      typeof d.hidden === 'undefined' ||
+                      [1, '1', 'true', 'TRUE'].indexOf(d.hidden) === -1
+                    ) {
+                      return [...memo, d];
+                    }
+                    return memo;
+                  }, []);
+                  console.log('finalData', finalData)
+                  tables[configKey] = {
+                    data: { ...parsedCsv, data: finalData },
+                    config: table,
                   };
+                  // tables[configKey] = {
+                  //   data: {
+                  //     ...data,
+                  //     data: data.data.reduce((memo, d) => {
+                  //       if (
+                  //         typeof d.hidden === 'undefined' ||
+                  //         [1, '1', 'true', 'TRUE'].indexOf(d.hidden) === -1
+                  //       ) {
+                  //         return [...memo, d];
+                  //       }
+                  //       return memo;
+                  //     }, []),
+                  //   },
+                  //   config: config.tables[configKey],
+                  // };
                 });
+                console.log('tables', tables)
                 json = {
                   features: features.data,
                   tables,
@@ -358,6 +427,7 @@ export function* loadDataSaga({ key, config, args }) {
           throw new Error(response.statusText);
         }
       } catch (err) {
+        console.log('err', err)
         yield put(setLayerRequested(key, false));
         // throw error
         throw new Error(err);

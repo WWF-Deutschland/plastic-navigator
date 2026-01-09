@@ -68,7 +68,8 @@ export const MODULES = {
 };
 
 // data/config & content locations
-export const APP_ENV = (process && process.env && process.env.APP_ENV) || 'production';
+export const APP_ENV =
+  (process && process.env && process.env.APP_ENV) || 'production';
 export const IS_TEST = APP_ENV !== 'production';
 
 // use local, relative resources for production and remote resources during development
@@ -94,7 +95,7 @@ export const LAYER_CONTENT_PATH = 'layers';
 export const CONFIG = {
   stories: 'stories.json',
   explore: 'explore.json',
-  layers: 'layers.json',
+  layers: IS_TEST ? 'layers_v2.json' : 'layers.json',
   projects: {
     file: 'projects.csv',
     type: 'csv',

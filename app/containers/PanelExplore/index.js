@@ -29,6 +29,9 @@ import {
   selectUIURLByKey,
   selectActiveLayers,
 } from 'containers/App/selectors';
+
+import { selectLayerByKey } from 'containers/Map/selectors';
+
 import {
   setUIURL,
   setLayerInfo,
@@ -37,11 +40,14 @@ import {
   showLayerInfoModule,
 } from 'containers/App/actions';
 
+import { loadLayer } from 'containers/Map/actions';
+
 import {
   PROJECT_CATEGORY,
   POLICY_CATEGORY,
   POLICY_LAYER,
   PROJECT_CONFIG,
+  MODULES,
 } from 'config';
 
 import GroupLayers from 'components/GroupLayers';
@@ -186,14 +192,27 @@ export function PanelExplore({
   uiState,
   activeLayers,
   onSetLayers,
+  policyLayer,
+  onLoadLayer,
 }) {
   const { tab } = uiState
     ? Object.assign({}, DEFAULT_UI_URL_STATE, uiState)
     : DEFAULT_UI_URL_STATE;
   const cRef = useRef();
+
   useEffect(() => {
     cRef.current.scrollTop = 0;
   }, [uiState]);
+  useEffect(() => {
+    if (
+      layersConfig &&
+      activeCategory &&
+      activeCategory.id === POLICY_CATEGORY
+    ) {
+      const policyConfig = layersConfig.find(l => l.id === POLICY_LAYER);
+      onLoadLayer(POLICY_LAYER, policyConfig);
+    }
+  }, [activeCategory, layersConfig]);
 
   const activeCategory = exploreConfig && exploreConfig[tab];
   const activeTabLayers =
@@ -206,6 +225,9 @@ export function PanelExplore({
 
   const isProjectTab = activeCategory && activeCategory.id === PROJECT_CATEGORY;
   const isPolicyTab = activeCategory && activeCategory.id === POLICY_CATEGORY;
+  console.log('projects', projects)
+  console.log('policyLayer', policyLayer)
+  console.log('isPolicyTab', isPolicyTab)
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>
@@ -314,6 +336,7 @@ export function PanelExplore({
               {!isProjectTab &&
                 isPolicyTab &&
                 layersConfig &&
+                policyLayer &&
                 activeCategory &&
                 activeCategory.groups &&
                 activeCategory.groups.map(group => (
@@ -344,6 +367,7 @@ export function PanelExplore({
                       locale={locale}
                       activeLayers={activeLayers}
                       onLayerInfo={onLayerInfo}
+                      policyLayer={policyLayer}
                       onToggleLayer={id => {
                         onSetLayers(activeLayers.indexOf(id) > -1
                           ? otherTabLayers // remove all active group layers
@@ -373,6 +397,8 @@ PanelExplore.propTypes = {
   activeLayers: PropTypes.array,
   locale: PropTypes.string,
   uiState: PropTypes.object,
+  policyLayer: PropTypes.object,
+  onLoadLayer: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -382,6 +408,7 @@ const mapStateToProps = createStructuredSelector({
   locale: state => selectLocale(state),
   uiState: state => selectUIURLByKey(state, { key: COMPONENT_KEY }),
   activeLayers: state => selectActiveLayers(state),
+  policyLayer: state => selectLayerByKey(state, MODULES.policy.featuredLayer),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -399,6 +426,7 @@ function mapDispatchToProps(dispatch) {
     },
     onSetLayers: layers => dispatch(setLayers(layers)),
     onToggleLayer: id => dispatch(toggleLayer(id)),
+    onLoadLayer: (key, config) => dispatch(loadLayer(key, config)),
   };
 }
 

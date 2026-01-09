@@ -100,7 +100,11 @@ const appReducer = (state = initialState, action) =>
         draft.configReady[action.key] = action.time;
         break;
       case CONFIG_LOAD_ERROR:
-        console.log('Error loading config file ... giving up!', action.key);
+        console.log(
+          'Error loading config file ... giving up!',
+          action.key,
+          action.error,
+        );
         draft.configRequested[action.key] = action.time;
         break;
       case SET_UI_STATE:

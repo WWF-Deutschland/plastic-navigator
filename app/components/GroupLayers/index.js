@@ -100,6 +100,7 @@ function GroupLayers({
   projects,
   isPolicy,
   showArchived,
+  policyLayer,
   // group,
 }) {
   let layers = [];
@@ -107,26 +108,36 @@ function GroupLayers({
     layersConfig.forEach(config => {
       let id;
       let title;
-      if (isPolicy && config.indicators) {
-        config.indicators.indicators
+      if (
+        isPolicy &&
+        policyLayer &&
+        policyLayer.data &&
+        policyLayer.data.tables &&
+        config.indicators &&
+        config.indicators.table &&
+        policyLayer.data.tables[config.indicators.table] &&
+        policyLayer.data.tables[config.indicators.table].data
+      ) {
+        const policyData =
+          policyLayer.data.tables[config.indicators.table].data.data;
+        policyData
           .filter(indicator => {
-            const isArchive = indicator.archive && qe(indicator.archive, 1);
-            // console.log(layer, isArchiveLayer, showArchived)
+            const isArchive = indicator.archived && qe(indicator.archived, 1);
             return showArchived ? isArchive : !isArchive;
           })
           .forEach(indicator => {
-            // note indicator from layers.json config file not csv data files
+            // indicator from csv data files
             layers.push({
               id: `${config.id}_${indicator.id}`,
-              title: indicator.short
-                ? indicator.short[locale] || indicator.short[DEFAULT_LOCALE]
-                : indicator.title[locale] || indicator.title[DEFAULT_LOCALE],
-              isArchive: indicator.archive ? qe(indicator.archive, 1) : false,
-              isAggregate: indicator.aggregate
-                ? qe(indicator.aggregate, 1)
-                : false,
+              title:
+                indicator[`short_${locale}`] ||
+                indicator[`title_${locale}`] ||
+                indicator[`short_${DEFAULT_LOCALE}`] ||
+                indicator[`title_${DEFAULT_LOCALE}`],
+              isArchive: indicator.archived && qe(indicator.archive, 1),
+              isAggregate:
+                indicator.aggregate && indicator.aggregate.trim().length > 0,
               config,
-              configIndicator: indicator,
             });
           });
         layers = layers.sort((a, b) => {
@@ -212,7 +223,6 @@ function GroupLayers({
 }
 
 GroupLayers.propTypes = {
-  // group: PropTypes.object,
   layersConfig: PropTypes.array,
   projects: PropTypes.bool,
   isPolicy: PropTypes.bool,
@@ -221,6 +231,7 @@ GroupLayers.propTypes = {
   onLayerInfo: PropTypes.func,
   locale: PropTypes.string,
   showArchived: PropTypes.bool,
+  policyLayer: PropTypes.object,
 };
 
 export default GroupLayers;
