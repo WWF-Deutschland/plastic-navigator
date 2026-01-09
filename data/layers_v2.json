@@ -503,7 +503,7 @@
             "country_code": "country_code",
             "statement_id": "source_id"
           }
-        },
+        }
       },
       "sources": {
         "table-type": "join",
