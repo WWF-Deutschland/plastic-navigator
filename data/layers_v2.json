@@ -498,7 +498,7 @@
         "feature": "country_code",
         "related": "source_id",
         "extendAPI": {
-          "path": "country_statements",
+          "path": "country-statements",
           "map": {
             "country_code": "country_code",
             "statement_id": "source_id"
