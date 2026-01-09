@@ -487,17 +487,16 @@
         "file": "layers/policy/v2/topics.csv",
         "type": "csv",
         "content-id": "policy-commitments-{id}",
-        "extend": {
+        "extendAPI": {
           "path": "topics",
           "type": "json",
-          "api": true,
           "map": {
-            "id": "code",
-            "title_{locale}": "title",
-            "short_{locale}": "short_title",
-            "teaser_{locale}": "teaser",
-            "description_{locale}": "description",
-            "annotation_{locale}": "annotation"
+            "code": "id",
+            "title": "title_en",
+            "short_title": "short_en",
+            "teaser": "teaser_en",
+            "description": "description_en",
+            "annotation": "annotation_en"
           }
         },
         "self": "id",
