@@ -487,18 +487,6 @@
         "file": "layers/policy/v2/topics.csv",
         "type": "csv",
         "content-id": "policy-commitments-{id}",
-        "extendAPI": {
-          "path": "topics",
-          "type": "json",
-          "map": {
-            "code": "id",
-            "title": "title_en",
-            "short_title": "short_en",
-            "teaser": "teaser_en",
-            "description": "description_en",
-            "annotation": "annotation_en"
-          }
-        },
         "self": "id",
         "attributes": ["archived"],
         "attributes-by-locale": ["title_{locale}", "short_{locale}"]
@@ -508,7 +496,14 @@
         "file": "layers/policy/v2/country-sources.csv",
         "type": "csv",
         "feature": "country_code",
-        "related": "source_id"
+        "related": "source_id",
+        "extendAPI": {
+          "path": "country_statements",
+          "map": {
+            "country_code": "country_code",
+            "statement_id": "source_id"
+          }
+        },
       },
       "sources": {
         "table-type": "join",
@@ -518,7 +513,17 @@
         "date": "date",
         "attributes": ["date", "url"],
         "attributes-by-locale": ["title_{locale}", "source_{locale}", "code_{locale}"],
-        "feature-value-by-layerid-column": "position_t{id}"
+        "feature-value-by-layerid-column": "position_t{id}",
+        "extendAPI": {
+          "path": "statements",
+          "map": {
+            "gpat_id": "id",
+            "title": "title_en",
+            "source": "source_en",
+            "quote": "quote_en",
+            "date": "date"
+          }
+        }
       },
       "topic-positions": {
         "table-type": "join",
