@@ -290,6 +290,17 @@ export function* loadDataSaga({ key, config, args }) {
                               }
                             },
                           );
+                          // Convert all values to strings to match CSV data
+                          Object.keys(mappedRow).forEach(apiField => {
+                            if (
+                              mappedRow[apiField] !== null &&
+                              mappedRow[apiField] !== undefined
+                            ) {
+                              mappedRow[apiField] = `${mappedRow[apiField]}`;
+                            } else {
+                              mappedRow[apiField] = '';
+                            }
+                          });
                           return [...memo, mappedRow];
                         }
                         return memo;
@@ -309,28 +320,11 @@ export function* loadDataSaga({ key, config, args }) {
                     }
                     return memo;
                   }, []);
-                  console.log('finalData', finalData)
                   tables[configKey] = {
                     data: { ...parsedCsv, data: finalData },
                     config: table,
                   };
-                  // tables[configKey] = {
-                  //   data: {
-                  //     ...data,
-                  //     data: data.data.reduce((memo, d) => {
-                  //       if (
-                  //         typeof d.hidden === 'undefined' ||
-                  //         [1, '1', 'true', 'TRUE'].indexOf(d.hidden) === -1
-                  //       ) {
-                  //         return [...memo, d];
-                  //       }
-                  //       return memo;
-                  //     }, []),
-                  //   },
-                  //   config: config.tables[configKey],
-                  // };
                 });
-                console.log('tables', tables)
                 json = {
                   features: features.data,
                   tables,

@@ -56,7 +56,7 @@ export function LayerContent({
   useEffect(() => {
     // kick off loading of page content
     if (fullLayerId && config.indicators) {
-      const [, indiId] = fullLayerId.split('_');
+      const [, indId] = fullLayerId.split('_');
       const indicatorConfig =
         config.tables && config.indicators.table
           ? config.tables[config.indicators.table]
@@ -65,7 +65,7 @@ export function LayerContent({
       if (indicatorConfig) {
         const contentId =
           indicatorConfig['content-id'].indexOf('{id}') > -1 &&
-          indicatorConfig['content-id'].replace('{id}', indiId);
+          indicatorConfig['content-id'].replace('{id}', indId);
         onLoadContent(contentId || config['content-id'] || config.id);
       }
     } else {
@@ -134,13 +134,21 @@ const mapStateToProps = createStructuredSelector({
   content: (state, { config, fullLayerId }) => {
     if (fullLayerId && config.indicators) {
       const [, indId] = fullLayerId.split('_');
-      const indicatorConfig = config.indicators.indicators.find(l =>
-        qe(l.id, indId),
-      );
-      return selectContentByKey(state, {
-        contentType: 'layers',
-        key: indicatorConfig['content-id'] || config['content-id'] || config.id,
-      });
+      const indicatorConfig =
+        config.tables && config.indicators.table
+          ? config.tables[config.indicators.table]
+          : null;
+      // );
+      if (indicatorConfig) {
+        const contentId =
+          indicatorConfig['content-id'].indexOf('{id}') > -1 &&
+          indicatorConfig['content-id'].replace('{id}', indId);
+        return selectContentByKey(state, {
+          contentType: 'layers',
+          key: contentId || config['content-id'] || config.id,
+        });
+      }
+      return null;
     }
     return selectContentByKey(state, {
       contentType: 'layers',

@@ -73,7 +73,10 @@ export const getCountryStatements = ({
   }
   if (topicId) {
     countryStatements = countryStatements.filter(
-      s => s[`position_t${topicId}`] && s[`position_t${topicId}`].trim() !== '',
+      s =>
+        typeof s[`position_t${topicId}`] !== 'undefined' &&
+        `${s[`position_t${topicId}`]}` &&
+        `${s[`position_t${topicId}`]}`.trim() !== '',
     );
   }
   return countryStatements.sort((a, b) => {
@@ -417,8 +420,6 @@ export const getCountriesWithStrongestPosition = ({
       includeOpposing,
       dateString,
     });
-    // console.log('country', country.code)
-    // console.log('position', position.value)
     if (!includeWithout && position && position.value === 0) {
       return listMemo;
     }
@@ -445,8 +446,9 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
   layerInfo.data.tables.sources &&
   layerInfo.data.tables.sources.data.data.reduce((listMemo, statement) => {
     if (
-      statement[`position_t${indicatorId}`] !== '' &&
-      !qe(statement[`position_t${indicatorId}`], 0)
+      typeof statement[`position_t${indicatorId}`] !== 'undefined' &&
+      statement[`position_t${indicatorId}`] !== null &&
+      statement[`position_t${indicatorId}`] !== ''
     ) {
       return [
         ...listMemo,
@@ -558,7 +560,7 @@ export const getTopicTitle = ({ layerInfo, indicatorId, locale, tables }) => {
     xtables.topics &&
     xtables.topics.data
   ) {
-    const topic = xtables.topics.data.data.find(t => qe(t.id, indicatorId));
+    const topic = xtables.topics.data.data.find(t => (t.id, indicatorId));
     if (topic) {
       return (
         topic[`short_${locale}`] ||
@@ -581,7 +583,7 @@ export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
     layerInfo.data.tables.topics.data
   ) {
     const topic = layerInfo.data.tables.topics.data.data.find(t =>
-      qe(t.id, indicatorId),
+      (t.id, indicatorId),
     );
     if (topic) {
       return (

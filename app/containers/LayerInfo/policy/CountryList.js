@@ -44,6 +44,7 @@ export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
       locale,
     });
   }
+  console.log(countries)
   return countries ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {
