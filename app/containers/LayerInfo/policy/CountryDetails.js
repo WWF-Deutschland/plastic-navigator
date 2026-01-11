@@ -43,7 +43,7 @@ export function CountryDetails({
         includeHidden: false,
       });
   }
-  // console.log('positionsOverTime', positionsOverTime)
+  // console.log('', positionsOverTime)
   // console.log('layerInfo.data', layerInfo && layerInfo.data)
   return (
     <PanelBody>

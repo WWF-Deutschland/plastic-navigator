@@ -560,7 +560,8 @@ export const getTopicTitle = ({ layerInfo, indicatorId, locale, tables }) => {
     xtables.topics &&
     xtables.topics.data
   ) {
-    const topic = xtables.topics.data.data.find(t => (t.id, indicatorId));
+    const topic = xtables.topics.data.data.find(t => qe(t.id, indicatorId));
+
     if (topic) {
       return (
         topic[`short_${locale}`] ||
@@ -583,7 +584,7 @@ export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
     layerInfo.data.tables.topics.data
   ) {
     const topic = layerInfo.data.tables.topics.data.data.find(t =>
-      (t.id, indicatorId),
+      qe(t.id, indicatorId),
     );
     if (topic) {
       return (
@@ -593,38 +594,6 @@ export const getTopicMapAnnotation = ({ layerInfo, indicatorId, locale }) => {
   }
 
   return null;
-};
-
-const concatIfMissing = (arr, values) =>
-  values.reduce((memo, val) => {
-    if (memo.indexOf(val) > -1) {
-      return memo;
-    }
-    return memo.concat([val]);
-  }, arr);
-
-const cleanupPositions = positions => {
-  const cleaned = Object.keys(positions)
-    // lowest first
-    .sort((a, b) => (parseInt(a, 10) > parseInt(b, 10) ? 1 : -1))
-    .reduce((memoPositions, posValue) => {
-      const posCountryCodes = positions[posValue];
-      const val = parseInt(posValue, 10);
-      const higherPosCountryCodes = Object.keys(positions).reduce(
-        (memo, otherPosValue) => {
-          if (parseInt(otherPosValue, 10) > val) {
-            return [...memo, ...positions[otherPosValue]];
-          }
-          return memo;
-        },
-        [],
-      );
-      const cleanedCodes = posCountryCodes.filter(
-        code => higherPosCountryCodes.indexOf(code) < 0,
-      );
-      return Object.assign({}, memoPositions, { [posValue]: cleanedCodes });
-    }, {});
-  return cleaned;
 };
 
 export const getPositionForTopicAndValue = ({
@@ -669,12 +638,6 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
       (memoPosValues, p) => {
         const value = parseInt(p.id, 10);
         if (!topicPositions.find(tp => qe(tp.position_id, value))) {
-          return memoPosValues;
-        }
-        if (value === 0 && !includeWithout) {
-          return memoPosValues;
-        }
-        if (value < 0 && !includeOpposing) {
           return memoPosValues;
         }
         return [...memoPosValues, value];
@@ -725,52 +688,98 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
         const bDate = new Date(b.date).getTime();
         return aDate > bDate ? 1 : -1;
       });
-    // console.log('statementsWithCountryCodes', statementsWithCountryCodes)
 
-    const positionsByDate = statementsWithCountryCodes.reduce(
+    // First pass: Group statements by date
+    const statementsByDate = statementsWithCountryCodes.reduce(
       (memo, source) => {
+        const existing = memo[source.date] || [];
+        return {
+          ...memo,
+          [source.date]: [...existing, source],
+        };
+      },
+      {},
+    );
+
+    const positionsByDate = Object.keys(statementsByDate)
+      .sort() // Ensure chronological order
+      .reduce((memo, date) => {
+        const statementsForDate = statementsByDate[date];
+        // const uniqueCountryCodes = [...new Set(source.countryCodes)];
         // console.log(memo, source);
         const previousPositions =
           Object.keys(memo).length > 0
             ? Object.values(memo)[Object.keys(memo).length - 1].positions
             : null;
-        let positions;
-        if (previousPositions) {
-          // prettier-ignore
-          positions = Object.assign({}, previousPositions, {
-            [source.position.id]: previousPositions[source.position.id]
-              ? concatIfMissing(
-                previousPositions[source.position.id],
-                source.countryCodes,
-              )
-              : source.countryCodes,
+        const positions = { ...previousPositions };
+        const sources = {};
+
+        // Track highest position per country for THIS date
+        const countryPositions = {}; // { countryCode: positionValue }
+        statementsForDate.forEach(source => {
+          const uniqueCountryCodes = [...new Set(source.countryCodes)];
+          const sourcePositionValue = parseInt(source.position.id, 10);
+
+          // Store source
+          sources[source.id] = source;
+
+          // Track highest position for each country
+          uniqueCountryCodes.forEach(code => {
+            if (
+              !countryPositions[code] ||
+              sourcePositionValue > countryPositions[code]
+            ) {
+              countryPositions[code] = sourcePositionValue;
+            }
           });
-          positions = cleanupPositions(positions);
-        } else {
-          positions = { [source.position.id]: source.countryCodes };
-        }
-        if (!memo[source.date]) {
-          // remember source
-          const date = {
-            sources: { [source.id]: source },
-            positions,
-          };
-          return Object.assign({}, memo, { [source.date]: date });
-        }
-        if (memo[source.date]) {
-          const dateSources = Object.assign({}, memo[source.date].sources, {
-            [source.id]: source,
+        });
+        // Now apply the positions
+        Object.entries(countryPositions).forEach(([code, posValue]) => {
+          // Remove country from all positions
+          Object.keys(positions).forEach(posId => {
+            positions[posId] = positions[posId].filter(c => c !== code);
           });
-          const date = Object.assign({}, memo[source.date], {
-            sources: dateSources,
-            positions,
-          });
-          return Object.assign({}, memo, { [source.date]: date });
-        }
-        return memo;
-      },
-      {},
-    );
+
+          // Add to new position
+          const posId = String(posValue);
+          if (!positions[posId]) {
+            positions[posId] = [];
+          }
+          if (!positions[posId].includes(code)) {
+            positions[posId].push(code);
+          }
+        });
+
+        // Clean up empty arrays
+        // Object.keys(positions).forEach(posId => {
+        //   if (positions[posId].length === 0) {
+        //     delete positions[posId];
+        //   }
+        // });
+        // Filter out unwanted positions at the end
+        const filteredPositions = Object.keys(positions).reduce(
+          (filtered, posId) => {
+            const posValue = parseInt(posId, 10);
+            // Skip position 0 if !includeWithout
+            if (posValue === 0 && !includeWithout) {
+              return filtered;
+            }
+            // Skip negative positions if !includeOpposing
+            if (posValue < 0 && !includeOpposing) {
+              return filtered;
+            }
+            return { ...filtered, [posId]: positions[posId] };
+          },
+          {},
+        );
+        return {
+          ...memo,
+          [date]: {
+            sources,
+            positions: filteredPositions,
+          },
+        };
+      }, {});
     return positionsByDate;
   }
   return [];
