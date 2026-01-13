@@ -191,6 +191,7 @@ export function CountryChart({
   positionsOverTime,
   // chartDate,
 }) {
+  console.log('positionsOverTime', positionsOverTime)
   useInjectSaga({ key: 'map', saga });
   const [mouseOver, setMouseOver] = useState(false);
   const [nearestXDate, setNearestXDate] = useState(null);

@@ -41,17 +41,15 @@ import {
   isArchived,
   isAggregate,
   getChildTopics,
+  getCountryPositionsOverTimeFromCountryFeatures,
+  getCountryAggregatePositionsOverTime,
 } from 'utils/policy';
+
 import CountryDetails from './policy/CountryDetails';
 import CountryList from './policy/CountryList';
 import SourceList from './policy/SourceList';
 import TopicsList from './policy/TopicsList';
-// import SourceContent from './policy/SourceContent';
-// import CountryFeatureContent from './policy/CountryFeatureContent';
-// import FeatureContent from './FeatureContent';
-// import Alternates from './Alternates';
-// import TitleIconPolicy from './TitleIconPolicy';
-// import LayerReference from './LayerReference';
+
 import PolicyOptionList from './PolicyOptionList';
 import ButtonHide from './ButtonHide';
 import ButtonClose from './ButtonClose';
@@ -216,6 +214,27 @@ export function PolicyContent({
       archived: isTopicArchived,
     });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
+  let positionsOverTime;
+  if (isAggregate(topic)) {
+    positionsOverTime =
+      layerInfo &&
+      layerInfo.data &&
+      getCountryAggregatePositionsOverTime({
+        indicator: topic,
+        layerInfo,
+      });
+  } else {
+    positionsOverTime =
+      layerInfo &&
+      layerInfo.data &&
+      getCountryPositionsOverTimeFromCountryFeatures({
+        indicatorId,
+        layerInfo,
+        includeOpposing: false,
+        includeWithout: false,
+        includeHidden: false,
+      });
+  }
   return (
     <>
       <ContentWrap ref={cRef}>
@@ -373,11 +392,17 @@ export function PolicyContent({
             config={config}
             layerId={layerId}
             isTopicArchived={isTopicArchived}
+            positionsOverTime={positionsOverTime}
           />
         )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
-            <CountryList layerInfo={layerInfo} topic={topic} config={config} />
+            <CountryList
+              layerInfo={layerInfo}
+              topic={topic}
+              config={config}
+              positionsOverTime={positionsOverTime}
+            />
           </PanelBody>
         )}
         {config && tab === 'statements' && layerInfo && (

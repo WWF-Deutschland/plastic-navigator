@@ -2,12 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from 'grommet';
 
-import {
-  getCountryPositionsOverTimeFromCountryFeatures,
-  getCountryAggregatePositionsOverTime,
-  isAggregate,
-} from 'utils/policy';
-
 import LayerContent from '../LayerContent';
 import PanelBody from '../PanelBody';
 import CountryChart from './CountryChart';
@@ -20,30 +14,9 @@ export function CountryDetails({
   config,
   layerId,
   isTopicArchived,
+  positionsOverTime,
 }) {
-  const topicId = topic.id;
-  let positionsOverTime;
-  if (isAggregate(topic)) {
-    positionsOverTime =
-      layerInfo &&
-      layerInfo.data &&
-      getCountryAggregatePositionsOverTime({
-        indicator: topic,
-        layerInfo,
-      });
-  } else {
-    positionsOverTime =
-      layerInfo &&
-      layerInfo.data &&
-      getCountryPositionsOverTimeFromCountryFeatures({
-        indicatorId: topicId,
-        layerInfo,
-        includeOpposing: false,
-        includeWithout: false,
-        includeHidden: false,
-      });
-  }
-  // console.log('', positionsOverTime)
+  console.log('positionsOverTime', positionsOverTime)
   // console.log('layerInfo.data', layerInfo && layerInfo.data)
   return (
     <PanelBody>
@@ -68,6 +41,7 @@ export function CountryDetails({
 
 CountryDetails.propTypes = {
   layerInfo: PropTypes.object,
+  positionsOverTime: PropTypes.object,
   topic: PropTypes.object,
   config: PropTypes.object,
   onSelectStatement: PropTypes.func,

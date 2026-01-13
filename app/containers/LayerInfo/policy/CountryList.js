@@ -14,7 +14,7 @@ import { ResponsiveContext } from 'grommet';
 import { setItemInfo } from 'containers/App/actions';
 import {
   filterCountries,
-  getCountriesWithStrongestPosition,
+  getCountriesWithPosition,
   getCountriesWithStrongestPositionAggregated,
   isAggregate,
 } from 'utils/policy';
@@ -24,7 +24,14 @@ import coreMessages from 'messages';
 import FeatureList from '../FeatureList';
 import messages from '../messages';
 
-export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
+export function CountryList({
+  layerInfo,
+  intl,
+  config,
+  topic,
+  onSetItemInfo,
+  positionsOverTime,
+}) {
   const { locale } = intl;
   const size = React.useContext(ResponsiveContext);
   let countries;
@@ -38,13 +45,15 @@ export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
         locale,
       });
   } else {
-    countries = getCountriesWithStrongestPosition({
+    countries = getCountriesWithPosition({
       indicatorId: topic.id,
       layerInfo,
       locale,
+      positionsOverTime,
     });
   }
-  // console.log('countries', countries)
+  console.log('positionsOverTime', positionsOverTime)
+  console.log('countries', countries)
   return countries ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {
@@ -77,6 +86,7 @@ export function CountryList({ layerInfo, intl, config, topic, onSetItemInfo }) {
 CountryList.propTypes = {
   config: PropTypes.object,
   topic: PropTypes.object,
+  positionsOverTime: PropTypes.object,
   layerInfo: PropTypes.object,
   onSetItemInfo: PropTypes.func,
   intl: intlShape.isRequired,

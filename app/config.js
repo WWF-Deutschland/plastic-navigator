@@ -71,7 +71,7 @@ export const MODULES = {
 export const APP_ENV =
   (process && process.env && process.env.APP_ENV) || 'production';
 export const IS_TEST = APP_ENV !== 'production';
-
+console.log('APP_ENV', APP_ENV)
 // use local, relative resources for production and remote resources during development
 export const RESOURCES = {
   // TODO: consider local resource for data

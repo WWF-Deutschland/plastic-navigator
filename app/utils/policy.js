@@ -92,17 +92,14 @@ export const getCountryStatements = ({
   });
 };
 
-export const getLatestCountryPositionStatement = ({
-  countryStatements,
-  topicId,
-}) => {
+const getLatestCountryPositionStatement = ({ countryStatements, topicId }) => {
   const latestStatement = countryStatements[0];
   return {
     statement: latestStatement,
     value: parseInt(latestStatement[`position_t${topicId}`], 10),
   };
 };
-export const getStrongestCountryPositionStatement = ({
+const getStrongestCountryPositionStatement = ({
   countryStatements,
   topicId,
 }) => {
@@ -179,7 +176,7 @@ export const getCountryPositionForAnyTopicAndDate = ({
   locale,
 }) => {
   if (!isAggregate(topic)) {
-    return getCountryPositionForTopicAndDate({
+    return getCountryPositionForTopicAndDateDeprecated({
       countryCode,
       topicId: topic.id,
       dateString,
@@ -190,7 +187,7 @@ export const getCountryPositionForAnyTopicAndDate = ({
   // is Aggregate
   const childIds = topic.aggregate.split(',');
   const childPositions = childIds.reduce((memo, id) => {
-    const positionForTopic = getCountryPositionForTopicAndDate({
+    const positionForTopic = getCountryPositionForTopicAndDateDeprecated({
       countryCode,
       topicId: id,
       dateString,
@@ -233,7 +230,7 @@ export const getAggregateValueForStatement = (statement, childTopicIds) => {
   return getAggregateValueFromCounts(countPositions, childTopicIds.length);
 };
 
-export const getCountryPositionForTopicAndDate = ({
+export const getCountryPositionForTopicAndDateDeprecated = ({
   countryCode,
   topicId,
   dateString,
@@ -309,6 +306,66 @@ export const getCountryPositionForTopicAndDate = ({
     latestPosition: positionWithoutStatement,
     strongestPosition: positionWithoutStatement,
     value: 0,
+    topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
+  };
+};
+export const getCountryPositionForTopicAndDate = ({
+  positionsOverTime,
+  countryCode,
+  topicId,
+  dateString,
+  // countries,
+  tables,
+  locale,
+}) => {
+  if (!positionsOverTime || Object.keys(positionsOverTime).length === 0) {
+    return null;
+  }
+  const dates = Object.keys(positionsOverTime).sort();
+  const targetDate = dateString || dates[dates.length - 1]; // Most recent if no date given
+  // If specific date requested but doesn't exist, find most recent before it
+  let dateToUse = targetDate;
+  if (dateString && !positionsOverTime[dateString]) {
+    const requestedTime = new Date(dateString).getTime();
+    const validDates = dates.filter(
+      d => new Date(d).getTime() <= requestedTime,
+    );
+    if (validDates.length === 0) return null; // No data before requested date
+    dateToUse = validDates[validDates.length - 1];
+  }
+  const positions =
+    positionsOverTime[dateToUse] && positionsOverTime[dateToUse].positions;
+  if (!positions) return null;
+
+  // Find which position this country is in
+  // for (const [positionId, countryCodes] of Object.entries(positions)) {
+  //   if (countryCodes.includes(countryCode)) {
+  //     return parseInt(positionId, 10);
+  //   }
+  // }
+  // const country = countries.find(c => c.code === countryCode);
+  // const countryStatements = getCountryStatements({
+  //   countryCode,
+  //   tables,
+  //   dateString,
+  //   topicId,
+  // });
+  // if (countryStatements && countryStatements.length > 0) {
+  const countryPositionEntry = Object.entries(positions).find(
+    ([, countryCodes]) => countryCodes.includes(countryCode),
+  );
+  const countryPositionValue = countryPositionEntry
+    ? parseInt(countryPositionEntry[0], 10)
+    : 0;
+  // get position from position table, contains generic descriptions for each position
+  const datePosition = getPositionForValueAndTopic({
+    value: countryPositionValue,
+    topicId,
+    tables,
+  });
+  return {
+    datePosition,
+    value: countryPositionValue,
     topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
   };
 };
@@ -398,10 +455,11 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
   return null;
 };
 
-export const getCountriesWithStrongestPosition = ({
+export const getCountriesWithPosition = ({
   indicatorId,
   layerInfo,
   locale,
+  positionsOverTime,
   dateString,
   includeOpposing = true,
   includeWithout = false,
@@ -414,6 +472,7 @@ export const getCountriesWithStrongestPosition = ({
       return listMemo;
     }
     const position = getCountryPositionForTopicAndDate({
+      positionsOverTime,
       countryCode: country.code,
       topicId: indicatorId,
       tables: layerInfo.data.tables,
@@ -494,7 +553,7 @@ export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
     .filter(t => !isAggregate(t) && !isHidden(t))
     .map(t => ({
       ...t,
-      position: getCountryPositionForTopicAndDate({
+      position: getCountryPositionForTopicAndDateDeprecated({
         countryCode: country.code,
         topicId: t.id,
         tables,
@@ -615,10 +674,15 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   layerInfo,
   indicatorId,
   includeHidden = false,
-  includeWithout = false,
-  includeOpposing = false,
+  // includeWithout = false,
+  // includeOpposing = false,
 }) => {
-  // console.log('getCountryPositionsOverTimeFromCountryFeatures: indicatorId, layerInfo', indicatorId, layerInfo, typeof indicatorId)
+  console.log(
+    'getCountryPositionsOverTimeFromCountryFeatures: indicatorId, layerInfo',
+    indicatorId,
+    layerInfo,
+    typeof indicatorId,
+  );
   if (
     layerInfo &&
     layerInfo.data &&
@@ -631,9 +695,55 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
     layerInfo.data.tables['country-sources']
   ) {
     const { tables, features } = layerInfo.data;
+
+    // Helper: Check if statement is from a group for a specific country
+    const isGroupStatement = (statementId, countryCode) => {
+      const cs = tables['country-sources'].data.data.find(
+        csx =>
+          csx.source_id === statementId && csx.country_code === countryCode,
+      );
+      return cs && cs.via_group_id && `${cs.via_group_id}`.trim() !== '';
+    };
+
+    // Helper: Get event_id for a statement
+    const getEventId = statementId => {
+      const source = tables.sources.data.data.find(s => qe(s.id, statementId));
+      return source && source.event_id && `${source.event_id}`.trim() !== ''
+        ? source.event_id
+        : null;
+    };
+
+    // Helper: Check if individual statement exists for same event (same date or earlier)
+    const hasEarlierIndividualForEvent = (eventId, countryCode, currentDate) =>
+      tables['country-sources'].data.data.some(cs => {
+        if (cs.country_code !== countryCode) {
+          return false;
+        }
+        if (cs.via_group_id || cs.via_group_code) {
+          return false; // Must be individual
+        }
+
+        const statement = tables.sources.data.data.find(s =>
+          qe(s.id, cs.source_id),
+        );
+        if (!statement || statement.event_id !== eventId) {
+          return false;
+        }
+
+        const positionRawValue = statement[`position_t${indicatorId}`];
+        if (!positionRawValue || `${positionRawValue}`.trim() === '') {
+          return false;
+        }
+
+        const statementDate = new Date(statement.date).getTime();
+        const checkDate = new Date(currentDate).getTime();
+        return statementDate <= checkDate;
+      });
+
     const topicPositions = layerInfo.data.tables[
       'topic-positions'
     ].data.data.filter(tp => qe(tp.topic_id, indicatorId));
+
     const positionValues = tables.positions.data.data.reduce(
       (memoPosValues, p) => {
         const value = parseInt(p.id, 10);
@@ -700,6 +810,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
       },
       {},
     );
+    // console.log('positionsByDate start ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 
     const positionsByDate = Object.keys(statementsByDate)
       .sort() // Ensure chronological order
@@ -711,6 +822,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
           Object.keys(memo).length > 0
             ? Object.values(memo)[Object.keys(memo).length - 1].positions
             : null;
+
         const positions = { ...previousPositions };
         const sources = {};
 
@@ -719,12 +831,31 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
         statementsForDate.forEach(source => {
           const uniqueCountryCodes = [...new Set(source.countryCodes)];
           const sourcePositionValue = parseInt(source.position.id, 10);
+          const eventId = getEventId(source.id);
 
           // Store source
           sources[source.id] = source;
 
-          // Track highest position for each country
+          // Process each country in this statement
           uniqueCountryCodes.forEach(code => {
+            const isGroup = isGroupStatement(source.id, code);
+            // Ignore group statement if earlier individual statement exist
+            // if (code === 'CUB') {
+            //   console.log('date------------------', date)
+            //   console.log('source', source.code, source.title_en)
+            //   console.log('source date', source.date)
+            //   console.log('isGroup', isGroup)
+            //   console.log('eventId', eventId)
+            //   console.log('hasEarlierIndividualForEvent', hasEarlierIndividualForEvent(eventId, code, date))
+            // }
+            if (
+              isGroup &&
+              eventId &&
+              hasEarlierIndividualForEvent(eventId, code, date)
+            ) {
+              return; // Skip this country for this statement
+            }
+            // Track highest position for each country
             if (
               !countryPositions[code] ||
               sourcePositionValue > countryPositions[code]
@@ -757,28 +888,22 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
         //   }
         // });
         // Filter out unwanted positions at the end
-        const filteredPositions = Object.keys(positions).reduce(
-          (filtered, posId) => {
-            const posValue = parseInt(posId, 10);
-            // Skip position 0 if !includeWithout
-            if (posValue === 0 && !includeWithout) {
-              return filtered;
-            }
-            // Skip negative positions if !includeOpposing
-            if (posValue < 0 && !includeOpposing) {
-              return filtered;
-            }
-            return { ...filtered, [posId]: positions[posId] };
-          },
-          {},
-        );
-        return {
-          ...memo,
-          [date]: {
-            sources,
-            positions: filteredPositions,
-          },
-        };
+        // const filteredPositions = Object.keys(positions).reduce(
+        //   (filtered, posId) => {
+        //     const posValue = parseInt(posId, 10);
+        //     // Skip position 0 if !includeWithout
+        //     if (posValue === 0 && !includeWithout) {
+        //       return filtered;
+        //     }
+        //     // Skip negative positions if !includeOpposing
+        //     if (posValue < 0 && !includeOpposing) {
+        //       return filtered;
+        //     }
+        //     return { ...filtered, [posId]: positions[posId] };
+        //   },
+        //   {},
+        // );
+        return { ...memo, [date]: { sources, positions } };
       }, {});
     return positionsByDate;
   }
@@ -1003,7 +1128,7 @@ export const getCountriesWithStrongestPositionAggregated = ({
   const childIds =
     indicator && indicator.aggregate && indicator.aggregate.split(',');
   const childPositions = childIds.reduce((memo, id) => {
-    const countries = getCountriesWithStrongestPosition({
+    const countries = getCountriesWithPosition({
       indicatorId: id,
       layerInfo,
       locale,

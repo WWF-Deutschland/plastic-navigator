@@ -14,7 +14,7 @@ import Gradient from './Gradient';
 import Circles from './Circles';
 import Areas from './Areas';
 import Icon from './Icon';
-import IconAlt from './IconAlt';
+// import IconAlt from './IconAlt';
 import SubTitle from './SubTitle';
 
 import messages from './messages';
@@ -38,7 +38,7 @@ export function KeyFull({
   excludeEmpty,
   chartDate,
 }) {
-  const { key, render, style, data, icon, featureStyle } = config;
+  const { key, render, style, data, featureStyle } = config;
   const myId = id || config.id;
   const { locale } = intl;
   const isGradient = key && key.stops && key.type === 'continuous';
@@ -46,10 +46,13 @@ export function KeyFull({
   const isArea =
     (key && render && render.type === 'area' && !!featureStyle) ||
     config['styles-by-value'];
-  const isIcon =
-    (key && key.icon && !!key.icon.datauri) ||
-    (render && render.type === 'marker' && !!icon.datauri);
-  const isIconAlt = isIcon && key.style;
+  const isIcon = false;
+  const isIconAlt = false;
+  // const isIcon =
+  //   (key && key.icon && !!key.icon.datauri) ||
+  //   (render && render.type === 'marker' && !!icon.datauri);
+  // const isIconAlt = isIcon && key.style;
+  // console.log('KeyFull', isIcon && key.style)
   /* eslint-disable react/no-danger */
   // prettier-ignore
   const range =
@@ -100,21 +103,6 @@ export function KeyFull({
               ? intl.formatMessage(coreMessages.projectLocation)
               : null
           }
-          excludeEmpty={excludeEmpty}
-        />
-      )}
-      {isIconAlt && (
-        <IconAlt
-          id={myId}
-          config={config}
-          simple={simple}
-          dark={dark}
-          title={
-            myId === PROJECT_CONFIG.id
-              ? intl.formatMessage(coreMessages.projectLocation)
-              : null
-          }
-          layerInfo={layerInfo}
           excludeEmpty={excludeEmpty}
         />
       )}

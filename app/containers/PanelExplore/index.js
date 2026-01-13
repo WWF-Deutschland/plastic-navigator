@@ -225,9 +225,9 @@ export function PanelExplore({
 
   const isProjectTab = activeCategory && activeCategory.id === PROJECT_CATEGORY;
   const isPolicyTab = activeCategory && activeCategory.id === POLICY_CATEGORY;
-  console.log('projects', projects)
-  console.log('policyLayer', policyLayer)
-  console.log('isPolicyTab', isPolicyTab)
+  // console.log('projects', projects)
+  // console.log('policyLayer', policyLayer)
+  // console.log('isPolicyTab', isPolicyTab)
   // prettier-ignore
   return (
     <ResponsiveContext.Consumer>

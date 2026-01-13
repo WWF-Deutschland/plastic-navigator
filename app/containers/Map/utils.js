@@ -5,13 +5,27 @@ import { uniq, intersection } from 'lodash/array';
 import qe from 'utils/quasi-equals';
 import { getCountryPositionForAnyTopicAndDate } from 'utils/policy';
 import { formatMessageForValues } from 'utils/string';
-import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
+// import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
 // import { lineString } from '@turf/helpers';
 import 'leaflet.vectorgrid';
 
 import { PROJECT_CONFIG, MAP_OPTIONS } from 'config';
 import { DEFAULT_LOCALE } from 'i18n';
+
+const excludeDependentCountries = feature =>
+  !feature.properties.code_sovereign ||
+  feature.properties.code_sovereign === '';
+
+const excludeObserverCountries = feature =>
+  !feature.properties.status ||
+  (feature.properties.status !== 'observer' &&
+    feature.properties.status !== 'exclude');
+
+const excludeCountryFeatures = (config, features) =>
+  features
+    .filter(f => excludeDependentCountries(f))
+    .filter(f => excludeObserverCountries(f));
 
 export const getRange = (allFeatures, attribute) =>
   allFeatures.reduce(
