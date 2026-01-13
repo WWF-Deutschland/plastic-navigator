@@ -29,7 +29,6 @@ import { isMaxSize, isMinSize } from 'utils/responsive';
 
 import {
   selectUIStateByKey,
-  selectChartDate,
   selectLayerGeometries,
 } from 'containers/App/selectors';
 import {
@@ -40,7 +39,7 @@ import {
 } from 'containers/App/actions';
 
 import KeyIcon from 'components/KeyIcon';
-import KeyFull from 'components/KeyFull';
+import KeyFullWrapper from './KeyFullWrapper';
 
 // import commonMessages from 'messages';
 import LayerSettings from './LayerSettings';
@@ -243,6 +242,7 @@ export function PanelKey({
   chartDate,
   layerGeometries,
   onSetLayerGeometries,
+  positionsOverTime,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -470,7 +470,7 @@ export function PanelKey({
                         />
                       )}
                     </LayerTitleWrap>
-                    <KeyFull
+                    <KeyFullWrapper
                       config={config}
                       layerInfo={activeJsonLayerInfo}
                       excludeEmpty
@@ -592,15 +592,14 @@ PanelKey.propTypes = {
   intl: intlShape.isRequired,
   uiState: PropTypes.object,
   currentModule: PropTypes.object,
+  positionsOverTime: PropTypes.object,
   onSetOpen: PropTypes.func,
-  chartDate: PropTypes.string,
   layerGeometries: PropTypes.array,
   onSetLayerGeometries: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   uiState: state => selectUIStateByKey(state, { key: COMPONENT_KEY }),
-  chartDate: state => selectChartDate(state),
   layerGeometries: state => selectLayerGeometries(state),
 });
 

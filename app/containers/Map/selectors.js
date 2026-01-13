@@ -1,9 +1,12 @@
 import { createSelector } from 'reselect';
+import createCachedSelector from 're-reselect';
 
 import {
   selectConfigByKey,
   selectRouterSearchParams,
 } from 'containers/App/selectors';
+
+import { getCountryPositionsOverTimeFromCountryFeatures } from 'utils/policy';
 
 import { initialState } from './reducer';
 
@@ -80,3 +83,17 @@ export const selectMapPosition = createSelector(
   selectRouterSearchParams,
   search => (search.has('mview') ? search.get('mview') : ''),
 );
+
+// Main selector - cached per topicId
+export const selectPositionsOverTimeForTopic = createCachedSelector(
+  (state, { layerKey }) => selectLayerByKey(state, layerKey),
+  (state, { indicatorId }) => indicatorId,
+  (layerInfo, indicatorId) => {
+    if (!layerInfo || !layerInfo.data) return null;
+    console.log('selectPositionsOverTimeForTopic', indicatorId, layerInfo)
+    return getCountryPositionsOverTimeFromCountryFeatures({
+      indicatorId,
+      layerInfo,
+    });
+  },
+)((state, { indicatorId }) => indicatorId);

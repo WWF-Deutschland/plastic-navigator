@@ -7,8 +7,8 @@
     "url": "git://github.com/unfolddata/marine-plastic-explorer"
   },
   "engines": {
-    "npm": ">=5",
-    "node": ">=8.15.1"
+    "npm": ">=8",
+    "node": ">=16.20.2"
   },
   "author": "tmfrnz",
   "license": "MIT",
@@ -98,6 +98,7 @@
     "minimist": "^1.2.6",
     "papaparse": "^5.2.0",
     "prop-types": "15.7.2",
+    "re-reselect": "^4.0.1",
     "react": "16.8.6",
     "react-csv-downloader": "^2.7.0",
     "react-dom": "16.8.6",

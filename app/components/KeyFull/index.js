@@ -37,6 +37,7 @@ export function KeyFull({
   config,
   excludeEmpty,
   chartDate,
+  positionsOverTime,
 }) {
   const { key, render, style, data, featureStyle } = config;
   const myId = id || config.id;
@@ -128,6 +129,7 @@ export function KeyFull({
           excludeEmpty={excludeEmpty}
           chartDate={chartDate}
           indicatorId={indicatorId}
+          positionsOverTime={positionsOverTime}
         />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
@@ -149,6 +151,7 @@ export function KeyFull({
 KeyFull.propTypes = {
   layerInfo: PropTypes.object, // { config, data }
   config: PropTypes.object, // { config, data }
+  positionsOverTime: PropTypes.object,
   id: PropTypes.string,
   indicatorId: PropTypes.string,
   chartDate: PropTypes.string,

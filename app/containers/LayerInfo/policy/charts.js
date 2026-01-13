@@ -207,14 +207,21 @@ export const prepChartDataSources = (
 };
 
 export const prepChartKey = ({
-  positionsCurrentDate,
-  positionsLatestDate, // includes all positions
+  positionsOverTime,
+  chartDate, //  optional
   indicatorId,
   tables,
   config,
   locale,
   intl,
 }) => {
+  const lastDate =
+    positionsOverTime &&
+    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
+  const cleanChartDate = chartDate || lastDate;
+
+  const positionsCurrentDate = positionsOverTime[lastDate].positions;
+  const positionsLatestDate = positionsOverTime[cleanChartDate].positions;
   if (positionsCurrentDate && config['styles-by-value']) {
     return Object.keys(positionsLatestDate)
       .reduce((memo, posValue) => {

@@ -30,7 +30,10 @@ import {
 } from 'containers/App/actions';
 import { selectChartDate } from 'containers/App/selectors';
 import { loadLayer } from 'containers/Map/actions';
-import { selectLayerByKey } from 'containers/Map/selectors';
+import {
+  selectLayerByKey,
+  selectPositionsOverTimeForTopic,
+} from 'containers/Map/selectors';
 import { decodeInfoView } from 'utils/layers';
 import {
   getTopicFromData,
@@ -41,8 +44,6 @@ import {
   isArchived,
   isAggregate,
   getChildTopics,
-  getCountryPositionsOverTimeFromCountryFeatures,
-  getCountryAggregatePositionsOverTime,
 } from 'utils/policy';
 
 import CountryDetails from './policy/CountryDetails';
@@ -180,6 +181,7 @@ export function PolicyContent({
   onSelectStatement,
   onSetChartDate,
   chartDate,
+  positionsOverTime,
 }) {
   const { locale } = intl;
   const cRef = useRef();
@@ -214,27 +216,7 @@ export function PolicyContent({
       archived: isTopicArchived,
     });
   const Icon = p => POLICY_TOPIC_ICONS[indicatorId](p);
-  let positionsOverTime;
-  if (isAggregate(topic)) {
-    positionsOverTime =
-      layerInfo &&
-      layerInfo.data &&
-      getCountryAggregatePositionsOverTime({
-        indicator: topic,
-        layerInfo,
-      });
-  } else {
-    positionsOverTime =
-      layerInfo &&
-      layerInfo.data &&
-      getCountryPositionsOverTimeFromCountryFeatures({
-        indicatorId,
-        layerInfo,
-        includeOpposing: false,
-        includeWithout: false,
-        includeHidden: false,
-      });
-  }
+
   return (
     <>
       <ContentWrap ref={cRef}>
@@ -437,6 +419,7 @@ PolicyContent.propTypes = {
   view: PropTypes.string,
   config: PropTypes.object,
   layerInfo: PropTypes.object,
+  positionsOverTime: PropTypes.object,
   theme: PropTypes.object,
   intl: intlShape,
   onHome: PropTypes.func,
@@ -453,6 +436,14 @@ PolicyContent.propTypes = {
 const mapStateToProps = createStructuredSelector({
   layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
   chartDate: state => selectChartDate(state),
+  positionsOverTime: (state, { view, config }) => {
+    const [layerId] = decodeInfoView(view);
+    const [, indicatorId] = layerId.split('_');
+    return selectPositionsOverTimeForTopic(state, {
+      indicatorId,
+      layerKey: config.id,
+    });
+  },
 });
 
 function mapDispatchToProps(dispatch) {

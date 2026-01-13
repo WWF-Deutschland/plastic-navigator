@@ -15,8 +15,8 @@ import { setItemInfo } from 'containers/App/actions';
 import {
   filterCountries,
   getCountriesWithPosition,
-  getCountriesWithStrongestPositionAggregated,
-  isAggregate,
+  // getCountriesWithStrongestPositionAggregated,
+  // isAggregate,
 } from 'utils/policy';
 
 import coreMessages from 'messages';
@@ -34,26 +34,23 @@ export function CountryList({
 }) {
   const { locale } = intl;
   const size = React.useContext(ResponsiveContext);
-  let countries;
-  if (isAggregate(topic)) {
-    countries =
-      layerInfo &&
-      layerInfo.data &&
-      getCountriesWithStrongestPositionAggregated({
-        indicator: topic,
-        layerInfo,
-        locale,
-      });
-  } else {
-    countries = getCountriesWithPosition({
-      indicatorId: topic.id,
-      layerInfo,
-      locale,
-      positionsOverTime,
-    });
-  }
-  console.log('positionsOverTime', positionsOverTime)
-  console.log('countries', countries)
+  // if (isAggregate(topic)) {
+  //   countries =
+  //     layerInfo &&
+  //     layerInfo.data &&
+  //     getCountriesWithStrongestPositionAggregated({
+  //       indicator: topic,
+  //       layerInfo,
+  //       locale,
+  //     });
+  // } else {
+  const countries = getCountriesWithPosition({
+    indicatorId: topic.id,
+    layerInfo,
+    locale,
+    positionsOverTime,
+  });
+  // }
   return countries ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {

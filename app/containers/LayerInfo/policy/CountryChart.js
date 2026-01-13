@@ -40,15 +40,7 @@ import KeyArea from 'components/KeyArea';
 import KeyLabel from 'components/KeyFull/KeyLabel';
 
 import coreMessages from 'messages';
-// import {
-//   // excludeCountryFeatures,
-//   // getPositionStatsFromCountries,
-//   // featuresToCountriesWithStrongestPosition,
-//   // // getCountryPositionsOverTimeFromCountryFeatures,
-//   // getSourceCountFromPositions,
-//   // getSourcesFromCountryFeaturesWithPosition,
-//   // getFlatCSVFromSources,
-// } from './utils';
+
 import messages from '../messages';
 import {
   getMaxDate,
@@ -191,7 +183,7 @@ export function CountryChart({
   positionsOverTime,
   // chartDate,
 }) {
-  console.log('positionsOverTime', positionsOverTime)
+  // console.log('positionsOverTime', positionsOverTime)
   useInjectSaga({ key: 'map', saga });
   const [mouseOver, setMouseOver] = useState(false);
   const [nearestXDate, setNearestXDate] = useState(null);
@@ -222,37 +214,13 @@ export function CountryChart({
     mouseOverEffect && nearestXDate && positionsOverTime[nearestXDate]
       ? nearestXDate
       : lastDate;
-  // const mouseOverEffect = !mouseOverSource && mouseOver
-  // // figure out stats for key if static positions present ----------------------
-  // let positionsOverTimeKey = positionsOverTime;
-  // if (config.key.static) {
-  //   positionsOverTimeKey = getCountryPositionsOverTimeFromCountryFeatures(
-  //     config,
-  //     featuresEx,
-  //     true, // excludeStatic
-  //   );
-  // }
-  // let currentDateKey = currentDate;
-  // if (config.key.static) {
-  //   if (
-  //     !mouseOverSource &&
-  //     mouseOver &&
-  //     nearestXDate &&
-  //     positionsOverTimeKey[nearestXDate]
-  //   ) {
-  //     currentDateKey = nearestXDate;
-  //   } else {
-  //     currentDateKey = Object.keys(positionsOverTimeKey)[
-  //       Object.keys(positionsOverTimeKey).length - 1
-  //     ];
-  //   }
-  // }
+
   const statsForKey =
     positionsOverTime &&
     positionsOverTime[currentDate] &&
     prepChartKey({
-      positionsCurrentDate: positionsOverTime[currentDate].positions,
-      positionsLatestDate: positionsOverTime[lastDate].positions,
+      positionsOverTime,
+      chartDate: currentDate,
       tables: layerInfo.data.tables,
       indicatorId: indicator.id,
       config,
@@ -260,11 +228,6 @@ export function CountryChart({
       intl,
     });
 
-  // const statsForKeyByStatic = groupBy(statsForKey, s =>
-  //   config.key.static && config.key.static.indexOf(s.id) > -1
-  //     ? 'static'
-  //     : 'dynamic',
-  // );
   const statusTime = new Date(currentDate).getTime();
   // styles for each position ==================================================
   const dataStyles = config['styles-by-value'];

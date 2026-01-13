@@ -10,18 +10,8 @@ import { POLICY_LAYER } from 'config';
 
 import formatDate from 'utils/format-date';
 import quasiEquals from 'utils/quasi-equals';
-import {
-  getCountryPositionsOverTimeFromCountryFeatures,
-  getCountryAggregatePositionsOverTime,
-  isAggregate,
-  getTopicFromData,
-} from 'utils/policy';
+
 import { prepChartKey } from 'containers/LayerInfo/policy/charts';
-// import {
-//   excludeCountryFeatures,
-//   getPositionStatsFromCountries,
-//   featuresToCountriesWithStrongestPosition,
-// } from 'containers/LayerInfo/policy/utils';
 
 import asArray from 'utils/as-array';
 
@@ -62,6 +52,7 @@ export function Areas({
   simple,
   layerInfo,
   indicatorId,
+  positionsOverTime,
   // chartDate,
 }) {
   const { key, featureStyle } = config;
@@ -69,40 +60,16 @@ export function Areas({
   let squares = [];
   const isPolicy = POLICY_LAYER === config.id;
   // console.log('layerInfo', layerInfo);
-  let positionsOverTime;
-  if (isPolicy) {
-    const topic = layerInfo && getTopicFromData({ indicatorId, layerInfo });
-    if (topic && isAggregate(topic)) {
-      positionsOverTime =
-        layerInfo &&
-        layerInfo.data &&
-        getCountryAggregatePositionsOverTime({
-          indicator: topic,
-          layerInfo,
-        });
-    } else {
-      positionsOverTime =
-        layerInfo &&
-        layerInfo.data &&
-        getCountryPositionsOverTimeFromCountryFeatures({
-          indicatorId,
-          layerInfo,
-          includeOpposing: false,
-          includeWithout: false,
-          includeHidden: false,
-        });
-    }
-  }
   const lastDate =
     positionsOverTime &&
     Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
   const chartDate = lastDate;
 
   const statsForKey =
-    lastDate &&
+    positionsOverTime &&
+    Object.keys(positionsOverTime).length > 0 &&
     prepChartKey({
-      positionsCurrentDate: positionsOverTime[chartDate].positions,
-      positionsLatestDate: positionsOverTime[lastDate].positions,
+      positionsOverTime,
       tables: layerInfo.data.tables,
       indicatorId,
       config,
@@ -204,6 +171,7 @@ export function Areas({
 Areas.propTypes = {
   config: PropTypes.object,
   layerInfo: PropTypes.object,
+  positionsOverTime: PropTypes.object,
   indicatorId: PropTypes.string,
   // chartDate: PropTypes.string,
   simple: PropTypes.bool,
