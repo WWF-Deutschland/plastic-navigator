@@ -138,6 +138,25 @@ function setProperties(json, config, parsed) {
   };
 }
 
+const inFlightByKey = {};
+
+function* guardedLoadDataSaga(action) {
+  const { key } = action;
+
+  // prevent duplicate loads for the same key
+  if (inFlightByKey[key]) {
+    return;
+  }
+
+  inFlightByKey[key] = true;
+
+  try {
+    yield* loadDataSaga(action);
+  } finally {
+    delete inFlightByKey[key];
+  }
+}
+
 export function* loadDataSaga({ key, config, args }) {
   const { type, path, properties } = config;
   let { file } = config;
@@ -433,6 +452,6 @@ export function* loadDataSaga({ key, config, args }) {
 export default function* defaultSaga() {
   yield takeEvery(
     LOAD_LAYER,
-    autoRestart(loadDataSaga, loadDataErrorHandler, MAX_LOAD_ATTEMPTS),
+    autoRestart(guardedLoadDataSaga, loadDataErrorHandler, MAX_LOAD_ATTEMPTS),
   );
 }

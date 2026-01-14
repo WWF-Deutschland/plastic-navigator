@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import LayerContent from '../LayerContent';
 import PanelBody from '../PanelBody';
 import CountryChart from './CountryChart';
-export function CountryDetails({
+export function TopicDetails({
   layerInfo,
   topic,
   onSelectStatement,
@@ -16,8 +16,6 @@ export function CountryDetails({
   isTopicArchived,
   positionsOverTime,
 }) {
-  console.log('positionsOverTime', positionsOverTime)
-  // console.log('layerInfo.data', layerInfo && layerInfo.data)
   return (
     <PanelBody>
       <Box margin={{ top: 'medium' }} responsive={false}>
@@ -39,7 +37,7 @@ export function CountryDetails({
   );
 }
 
-CountryDetails.propTypes = {
+TopicDetails.propTypes = {
   layerInfo: PropTypes.object,
   positionsOverTime: PropTypes.object,
   topic: PropTypes.object,
@@ -50,4 +48,4 @@ CountryDetails.propTypes = {
   layerId: PropTypes.string,
   isTopicArchived: PropTypes.bool,
 };
-export default CountryDetails;
+export default TopicDetails;

@@ -92,31 +92,6 @@ export const getCountryStatements = ({
   });
 };
 
-const getLatestCountryPositionStatement = ({ countryStatements, topicId }) => {
-  const latestStatement = countryStatements[0];
-  return {
-    statement: latestStatement,
-    value: parseInt(latestStatement[`position_t${topicId}`], 10),
-  };
-};
-const getStrongestCountryPositionStatement = ({
-  countryStatements,
-  topicId,
-}) => {
-  const strongestStatement = countryStatements.reduce((memo, statement) => {
-    if (memo) {
-      const sValue = parseInt(statement[`position_t${topicId}`], 10);
-      const smValue = parseInt(memo[`position_t${topicId}`], 10);
-      return sValue > smValue ? statement : memo;
-    }
-    return statement;
-  }, null);
-  return {
-    statement: strongestStatement,
-    value: parseInt(strongestStatement[`position_t${topicId}`], 10),
-  };
-};
-
 const mergePositions = ({ topicPosition, position }) => {
   let merged = position;
   if (merged && topicPosition) {
@@ -133,7 +108,7 @@ const mergePositions = ({ topicPosition, position }) => {
   }
   return null;
 };
-export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
+const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
   // get position from positions table, contains generic descriptions for each position
   const position =
     tables.positions && tables.positions.data.data.find(p => qe(p.id, value));
@@ -148,7 +123,7 @@ export const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
 
 const getAggregateValueFromCounts = (countPositions, noOfTopics) => {
   let value = 0;
-  // all value of 3 => agg value 3
+  // all at least value 2 => agg value 3
   if (countPositions[3] + countPositions[2] === noOfTopics) {
     value = 3;
     // some have value 2 or 3 ==> agg value 1
@@ -160,61 +135,13 @@ const getAggregateValueFromCounts = (countPositions, noOfTopics) => {
 
 const countPositionValues = countryPositionValues =>
   Object.values(countryPositionValues).reduce(
-    (memo3, levelOfSupport) => ({
-      ...memo3,
-      [levelOfSupport]: (memo3[levelOfSupport] || 0) + 1,
+    (memo, levelOfSupport) => ({
+      ...memo,
+      [levelOfSupport]: (memo[levelOfSupport] || 0) + 1,
     }),
-    { 0: 0, 1: 0, 2: 0, 3: 0 },
+    { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0 },
   );
 
-export const getCountryPositionForAnyTopicAndDate = ({
-  countryCode,
-  topic,
-  dateString,
-  // countries,
-  tables,
-  locale,
-}) => {
-  if (!isAggregate(topic)) {
-    return getCountryPositionForTopicAndDateDeprecated({
-      countryCode,
-      topicId: topic.id,
-      dateString,
-      tables,
-      locale,
-    });
-  }
-  // is Aggregate
-  const childIds = topic.aggregate.split(',');
-  const childPositions = childIds.reduce((memo, id) => {
-    const positionForTopic = getCountryPositionForTopicAndDateDeprecated({
-      countryCode,
-      topicId: id,
-      dateString,
-      tables,
-      locale,
-    });
-    return {
-      ...memo,
-      [id]: positionForTopic,
-    };
-  }, {});
-  const countPositions =
-    childPositions &&
-    countPositionValues(Object.values(childPositions).map(p => p.value));
-  const value = getAggregateValueFromCounts(countPositions, childIds.length);
-  const position = getPositionForValueAndTopic({
-    value,
-    topicId: topic.id,
-    tables,
-  });
-  // else 0
-  return {
-    value,
-    topic: topic[`title_${locale}`],
-    latestPosition: position,
-  };
-};
 export const getAggregateValueForStatement = (statement, childTopicIds) => {
   const countPositions =
     childTopicIds &&
@@ -230,91 +157,11 @@ export const getAggregateValueForStatement = (statement, childTopicIds) => {
   return getAggregateValueFromCounts(countPositions, childTopicIds.length);
 };
 
-export const getCountryPositionForTopicAndDateDeprecated = ({
-  countryCode,
-  topicId,
-  dateString,
-  // countries,
-  tables,
-  locale,
-}) => {
-  // const country = countries.find(c => c.code === countryCode);
-  const countryStatements = getCountryStatements({
-    countryCode,
-    tables,
-    dateString,
-    topicId,
-  });
-  if (countryStatements && countryStatements.length > 0) {
-    const latestCountryPositionStatement = getLatestCountryPositionStatement({
-      countryStatements,
-      topicId,
-    });
-    const strongestCountryPositionStatement = getStrongestCountryPositionStatement(
-      {
-        countryStatements,
-        topicId,
-      },
-    );
-    // get position from position table, contains generic descriptions for each position
-    const latestPosition = getPositionForValueAndTopic({
-      value: latestCountryPositionStatement.value,
-      topicId,
-      tables,
-    });
-    // prettier-ignore
-    const strongestPosition =
-      latestCountryPositionStatement.statement.id === strongestCountryPositionStatement.statement.id
-        ? latestPosition
-        : getPositionForValueAndTopic({
-          value: strongestCountryPositionStatement.value,
-          topicId,
-          tables,
-        });
-    // const isConflict =
-    //   latestCountryPositionStatement.value <
-    //   strongestCountryPositionStatement.value;
-    // if (isConflict) {
-    //   console.log(
-    //     'isConflict, latestCountryPositionStatement.value, strongestCountryPositionStatement.value',
-    //     isConflict,
-    //     countryCode,
-    //     latestCountryPositionStatement.value,
-    //     strongestCountryPositionStatement.value,
-    //     latestCountryPositionStatement,
-    //     strongestCountryPositionStatement,
-    //   );
-    // }
-    return {
-      latest: latestCountryPositionStatement,
-      strongest: strongestCountryPositionStatement,
-      latestPosition,
-      strongestPosition,
-      conflicting:
-        latestCountryPositionStatement.value <
-        strongestCountryPositionStatement.value,
-      value: latestCountryPositionStatement.value,
-      topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
-    };
-  }
-  const positionWithoutStatement = getPositionForValueAndTopic({
-    value: 0,
-    topicId,
-    tables,
-  });
-  return {
-    latestPosition: positionWithoutStatement,
-    strongestPosition: positionWithoutStatement,
-    value: 0,
-    topic: getTopicTitle({ indicatorId: topicId, tables, locale }),
-  };
-};
 export const getCountryPositionForTopicAndDate = ({
   positionsOverTime,
   countryCode,
   topicId,
   dateString,
-  // countries,
   tables,
   locale,
 }) => {
@@ -455,6 +302,7 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
   return null;
 };
 
+// TODO consider calling from selector
 export const getCountriesWithPosition = ({
   indicatorId,
   layerInfo,
@@ -498,6 +346,7 @@ export const getCountriesWithPosition = ({
     ];
   }, []);
 
+// TODO call from selector
 export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
   layerInfo &&
   layerInfo.data &&
@@ -525,58 +374,6 @@ export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
     }
     return listMemo;
   }, []);
-
-const getAggregateScore = ({ parent, childTopics, tables }) => {
-  const countPositions =
-    childTopics &&
-    countPositionValues(
-      Object.values(childTopics).map(topic => topic.position.value),
-    );
-  const value =
-    countPositions &&
-    getAggregateValueFromCounts(countPositions, childTopics.length);
-  const position = getPositionForValueAndTopic({
-    value,
-    topicId: parent.id,
-    tables,
-  });
-  return {
-    value,
-    latestPosition: position,
-  };
-};
-
-export const getIndicatorScoresForCountry = ({ country, layerInfo }) => {
-  const topics = getTopicsFromData(layerInfo);
-  const tables = layerInfo && layerInfo.data && layerInfo.data.tables;
-  const indicatorScores = topics
-    .filter(t => !isAggregate(t) && !isHidden(t))
-    .map(t => ({
-      ...t,
-      position: getCountryPositionForTopicAndDateDeprecated({
-        countryCode: country.code,
-        topicId: t.id,
-        tables,
-      }),
-    }));
-  const aggIndicatorScores = topics
-    .filter(t => isAggregate(t) && !isHidden(t))
-    .map(t => {
-      const childIds = t.aggregate.split(',');
-      const childTopics = indicatorScores.filter(
-        child => childIds.indexOf(child.id) > -1,
-      );
-      return {
-        ...t,
-        position: getAggregateScore({
-          parent: t,
-          childTopics,
-          tables,
-        }),
-      };
-    });
-  return [...aggIndicatorScores, ...indicatorScores];
-};
 
 export const filterCountries = (item, test) => {
   if (!test || test.length < 2) return true;
@@ -910,6 +707,163 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   return [];
 };
 
+export const getAggregatePositionsOverTime = childPositionsOverTime => {
+  console.log('getAggregatePositionsOverTime', childPositionsOverTime)
+  const childIds = Object.keys(childPositionsOverTime);
+  const childPositionsByDate = childIds.reduce((memo, topicId) => {
+    const topicPositions = childPositionsOverTime[topicId];
+    return Object.keys(topicPositions).reduce((memo2, date) => {
+      if (memo2[date]) {
+        return {
+          ...memo2,
+          [date]: {
+            ...memo2[date],
+            [topicId]: topicPositions[date],
+          },
+        };
+      }
+      return {
+        ...memo2,
+        [date]: {
+          [topicId]: topicPositions[date],
+        },
+      };
+    }, memo);
+  }, {});
+
+  const dates = Object.keys(childPositionsByDate).sort((a, b) => {
+    const aDate = new Date(a).getTime();
+    const bDate = new Date(b).getTime();
+    return aDate > bDate ? 1 : -1;
+  });
+  // figure out child positions by date and country
+  const positionsByDateAndCountry = dates.reduce((memo, date, index) => {
+    const positions = childPositionsByDate[date];
+
+    const sourcesForDate = Object.keys(positions).reduce(
+      (sourceMemo, topicId) => {
+        const sourcesForDateAndTopic = positions[topicId].sources;
+        const sources = Object.keys(sourcesForDateAndTopic).reduce(
+          (sourceMemo2, sourceId) =>
+            sourceMemo2[sourceId]
+              ? sourceMemo2
+              : { ...sourceMemo, [sourceId]: sourcesForDateAndTopic[sourceId] },
+          sourceMemo,
+        );
+        return sources;
+      },
+      {},
+    );
+    // console.log('memo', memo)
+    const positionsPreviousByCountry =
+      index > 0 ? memo[dates[index - 1]].countries : {};
+    // from this:
+    // {
+    //   [topicid]: {
+    //     positions: {
+    //       [supportlevel]: [ ...countrycodes ]
+    //     },
+    //     sources: {
+    //       [sourceid]: { ...source details }
+    //     }
+    //   }
+    // }
+    // to this:
+    // {
+    //   [countrycode]: {
+    //     [topicid1]: [supportlevel1]
+    //     [topicid2]: [supportlevel2]
+    //     [topicid3]: [supportlevel3]
+    //     [topicid4]: [supportlevel4]
+    //   }
+    // }
+    const byCountry = Object.keys(positions).reduce((memo2, topicId) => {
+      // console.log('positions[topicId]', positions[topicId])
+      const countryPositions = positions[topicId].positions;
+      // console.log('positions', positions)
+      const byLevelOfSupport = Object.keys(countryPositions).reduce(
+        (memo3, levelOfSupport) => {
+          const countriesForTopicAndLevel = countryPositions[levelOfSupport];
+          const byCountryAndTopic = countriesForTopicAndLevel.reduce(
+            (memo4, countryCode) => {
+              if (memo4[countryCode]) {
+                // this should not be needed as each country should have one position on a topic only
+                return {
+                  ...memo4,
+                  [countryCode]: {
+                    ...memo4[countryCode],
+                    [topicId]: levelOfSupport,
+                  },
+                };
+              }
+              return {
+                ...memo4,
+                [countryCode]: {
+                  [topicId]: levelOfSupport,
+                },
+              };
+            },
+            memo3,
+          );
+          return byCountryAndTopic;
+        },
+        memo2,
+      );
+      // console.log('byLevelOfSupport', byLevelOfSupport)
+      return byLevelOfSupport;
+    }, positionsPreviousByCountry);
+    return {
+      ...memo,
+      [date]: {
+        countries: byCountry,
+        sources: sourcesForDate,
+      },
+    };
+  }, {});
+  // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
+  console.log('childIds', childIds)
+  const aggPositionValues = childIds.reduce(
+    (memo, id) => ({
+      ...memo,
+      [id]: [],
+    }),
+    { 0: [] },
+  );
+  //
+  console.log('aggPositionValues', aggPositionValues)
+  const aggPositionsOverTime = Object.keys(positionsByDateAndCountry).reduce(
+    (memo, date) => {
+      const positionsForDate = positionsByDateAndCountry[date].countries;
+      // console.log('positionsForDate', positionsForDate);
+      const positionValuesForDate = Object.keys(positionsForDate).reduce(
+        (memo2, countryCode) => {
+          const countryPositions = positionsForDate[countryCode];
+          const countPositions = countPositionValues(countryPositions);
+          const value = getAggregateValueFromCounts(
+            countPositions,
+            childIds.length,
+          );
+          const temp = memo2[value] || [];
+          return {
+            ...memo2,
+            [value]: [...temp, countryCode],
+          };
+        },
+        {},
+      );
+      return {
+        ...memo,
+        [date]: {
+          positions: positionValuesForDate,
+          sources: positionsByDateAndCountry[date].sources,
+        },
+      };
+    },
+    {},
+  );
+  return aggPositionsOverTime;
+};
+
 export const isAggregate = topic =>
   !!topic && topic.aggregate && topic.aggregate.trim() !== '';
 export const isArchived = topic =>
@@ -931,291 +885,3 @@ export const getChildTopics = (parentTopic, topics, locale) => {
       label: child[`short_${locale}`] || child[`short_${DEFAULT_LOCALE}`],
     }));
 };
-
-export const getCountryAggregatePositionsOverTime = ({
-  // indicator,
-  // layerInfo,
-}) => {
-  return null;
-}
-//   const childIds = indicator.aggregate && indicator.aggregate.split(',');
-//   // console.log('childIds.length', childIds.length)
-//   // let positionsOverTime
-//   const childPositions = childIds.reduce((memo, id) => {
-//     const positionsOverTime =
-//       layerInfo &&
-//       layerInfo.data &&
-//       getCountryPositionsOverTimeFromCountryFeatures({
-//         indicatorId: id,
-//         layerInfo,
-//         includeOpposing: false,
-//         includeWithout: false,
-//         includeHidden: false,
-//       });
-//     // console.log('id, positionsOverTime', id, positionsOverTime)
-//     // order all positions for all topics by date
-//     return Object.keys(positionsOverTime).reduce((m2, date) => {
-//       if (m2[date]) {
-//         return {
-//           ...m2,
-//           [date]: {
-//             ...m2[date],
-//             [id]: positionsOverTime[date],
-//           },
-//         };
-//       }
-//       return {
-//         ...m2,
-//         [date]: {
-//           [id]: positionsOverTime[date],
-//         },
-//       };
-//     }, memo);
-//     // return {
-//     //   ...memo,
-//     //   [id]: positionsOverTime,
-//     // };
-//   }, {});
-//   // for every date, check every country and all its positions
-//   // re-organise by country
-//   // also need for
-//   const dates = Object.keys(childPositions).sort((a, b) => {
-//     const aDate = new Date(a).getTime();
-//     const bDate = new Date(b).getTime();
-//     return aDate > bDate ? 1 : -1;
-//   });
-//
-//   // figure out child positions by date and country
-//   const positionsByDateAndCountry = dates.reduce((memo, date, index) => {
-//     const positions = childPositions[date];
-//
-//     const sourcesForDate = Object.keys(positions).reduce(
-//       (sourceMemo, topicId) => {
-//         const sourcesForDateAndTopic = positions[topicId].sources;
-//         const sources = Object.keys(sourcesForDateAndTopic).reduce(
-//           (sourceMemo2, sourceId) =>
-//             sourceMemo2[sourceId]
-//               ? sourceMemo2
-//               : { ...sourceMemo, [sourceId]: sourcesForDateAndTopic[sourceId] },
-//           sourceMemo,
-//         );
-//         return sources;
-//       },
-//       {},
-//     );
-//     // console.log('memo', memo)
-//     const positionsPreviousByCountry =
-//       index > 0 ? memo[dates[index - 1]].countries : {};
-//     // from this:
-//     // {
-//     //   [topicid]: {
-//     //     positions: {
-//     //       [supportlevel]: [ ...countrycodes ]
-//     //     },
-//     //     sources: {
-//     //       [sourceid]: { ...source details }
-//     //     }
-//     //   }
-//     // }
-//     // to this:
-//     // {
-//     //   [countrycode]: {
-//     //     [topicid1]: [supportlevel1]
-//     //     [topicid2]: [supportlevel2]
-//     //     [topicid3]: [supportlevel3]
-//     //     [topicid4]: [supportlevel4]
-//     //   }
-//     // }
-//     const byCountry = Object.keys(positions).reduce((memo2, topicId) => {
-//       // console.log('positions[topicId]', positions[topicId])
-//       const countryPositions = positions[topicId].positions;
-//       // console.log('positions', positions)
-//       const byLevelOfSupport = Object.keys(countryPositions).reduce(
-//         (memo3, levelOfSupport) => {
-//           const countriesForTopicAndLevel = countryPositions[levelOfSupport];
-//           const byCountryAndTopic = countriesForTopicAndLevel.reduce(
-//             (memo4, countryCode) => {
-//               if (memo4[countryCode]) {
-//                 // this should not be needed as each country should have one position on a topic only
-//                 return {
-//                   ...memo4,
-//                   [countryCode]: {
-//                     ...memo4[countryCode],
-//                     [topicId]: levelOfSupport,
-//                   },
-//                 };
-//               }
-//               return {
-//                 ...memo4,
-//                 [countryCode]: {
-//                   [topicId]: levelOfSupport,
-//                 },
-//               };
-//             },
-//             memo3,
-//           );
-//           return byCountryAndTopic;
-//         },
-//         memo2,
-//       );
-//       // console.log('byLevelOfSupport', byLevelOfSupport)
-//       return byLevelOfSupport;
-//     }, positionsPreviousByCountry);
-//     return {
-//       ...memo,
-//       [date]: {
-//         countries: byCountry,
-//         sources: sourcesForDate,
-//       },
-//     };
-//   }, {});
-//   // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
-//
-//   // now aggregate for each date and country
-//   let aggPositionValues = { 0: [], 1: [], 2: [], 3: [], 4: [] };
-//   // make sure we only use positions that are defined for topic ( excluding 0)
-//   const topicPositions =
-//     layerInfo &&
-//     layerInfo.data &&
-//     layerInfo.data.tables &&
-//     layerInfo.data.tables['topic-positions'] &&
-//     layerInfo.data.tables['topic-positions'].data &&
-//     layerInfo.data.tables['topic-positions'].data.data.filter(row =>
-//       qe(row.topic_id, indicator.id),
-//     );
-//   if (topicPositions) {
-//     aggPositionValues = topicPositions.reduce((memo, tp) => {
-//       if (parseInt(tp.position_id, 10) > 0) {
-//         return {
-//           ...memo,
-//           [tp.position_id]: [],
-//         };
-//       }
-//       return memo;
-//     }, {});
-//   }
-//   return Object.keys(positionsByDateAndCountry).reduce((memo, date) => {
-//     const positionsForDate = positionsByDateAndCountry[date].countries;
-//     // console.log('positionsForDate', positionsForDate);
-//     const positionValuesForDate = Object.keys(positionsForDate).reduce(
-//       (memo2, countryCode) => {
-//         const countryPositions = positionsForDate[countryCode];
-//         const countPositions = countPositionValues(countryPositions);
-//         const value = getAggregateValueFromCounts(
-//           countPositions,
-//           childIds.length,
-//         );
-//         return {
-//           ...memo2,
-//           [value]: [...memo2[value], countryCode],
-//         };
-//       },
-//       aggPositionValues,
-//     );
-//     return {
-//       ...memo,
-//       [date]: {
-//         positions: positionValuesForDate,
-//         sources: positionsByDateAndCountry[date].sources,
-//       },
-//     };
-//   }, {});
-// };
-//
-// export const getCountriesWithStrongestPositionAggregated = ({
-//   indicator,
-//   layerInfo,
-//   locale,
-// }) => {
-//   const childIds =
-//     indicator && indicator.aggregate && indicator.aggregate.split(',');
-//   const childPositions = childIds.reduce((memo, id) => {
-//     const countries = getCountriesWithPosition({
-//       indicatorId: id,
-//       layerInfo,
-//       locale,
-//     });
-//
-//     return {
-//       ...memo,
-//       [id]: countries,
-//     };
-//   }, {});
-//   // from this:
-//   // {
-//   // [topicid]: [
-//   //   {
-//   //     code: [code],
-//   //     other: [countryAttributes],
-//   //     positions: {
-//   //       value: [value],
-//   //     }
-//   //   }
-//   // ]
-//   // to this:
-//   // {
-//   //   [countrycode]: {
-//   //     code: [code],
-//   //     other: [countryAttributes],
-//   //     positions: {
-//   //       [topicid1]: [supportlevel1]
-//   //       [topicid2]: [supportlevel2]
-//   //       [topicid3]: [supportlevel3]
-//   //       [topicid4]: [supportlevel4]
-//   //     },
-//   // }
-//   const positionsLatest = Object.keys(childPositions).reduce(
-//     (memo, indicatorId) => {
-//       // data for one topic and all countries
-//       const countryIndicatorData = childPositions[indicatorId];
-//       return countryIndicatorData.reduce((memo2, countryData) => {
-//         // countryData : data for one topic and 1 country
-//         if (memo[countryData.code]) {
-//           return {
-//             ...memo2,
-//             [countryData.code]: {
-//               ...memo[countryData.code],
-//               positions: {
-//                 ...memo[countryData.code].positions,
-//                 [indicatorId]: countryData.position,
-//               },
-//             },
-//           };
-//         }
-//         return {
-//           ...memo2,
-//           [countryData.code]: {
-//             ...countryData,
-//             positions: {
-//               [indicatorId]: countryData.position,
-//             },
-//           },
-//         };
-//       }, memo);
-//     },
-//     {},
-//   );
-//   // now aggregate for each country
-//   const countryPositionValues = Object.keys(positionsLatest).reduce(
-//     (memo, countryCode) => {
-//       // countryData
-//       const countryData = positionsLatest[countryCode];
-//       const countPositions = countPositionValues(
-//         Object.values(countryData.positions).map(p => p.value),
-//       );
-//       const value = getAggregateValueFromCounts(
-//         countPositions,
-//         childIds.length,
-//       );
-//       return [
-//         ...memo,
-//         {
-//           ...countryData,
-//           position: { value },
-//         },
-//       ];
-//     },
-//     [],
-//   );
-//   return countryPositionValues;
-// };

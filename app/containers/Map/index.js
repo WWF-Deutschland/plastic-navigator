@@ -66,6 +66,7 @@ import {
   selectHighlightFeature,
   selectLayersLoading,
   selectMapPosition,
+  selectPositionsOverTimeForTopic,
 } from './selectors';
 import { loadLayer, setMapLayers, setHighlightFeature } from './actions';
 
@@ -147,6 +148,7 @@ export function Map({
   chartDate,
   layerGeometrySettings,
   intl,
+  positionsOverTimeForTopic,
 }) {
   useInjectReducer({ key: 'map', reducer });
   useInjectSaga({ key: 'map', saga });
@@ -427,7 +429,6 @@ export function Map({
 
   // update layers
   useEffect(() => {
-    // console.log('activelayers (according to url) ', activeLayerIds);
     // console.log('mapLayers (currently on map) ', mapLayers);
     // console.log('jsonLayers (loaded into state) ', jsonLayers);
     // console.log('Map: layers config present ', !!layersConfig);
@@ -537,6 +538,7 @@ export function Map({
             ) {
               // kick of loading of vector data for group if not present
               if (!jsonLayers[configLayerId]) {
+                console.log('update layers')
                 onLoadLayer(configLayerId, config);
               }
               if (jsonLayers[configLayerId] && mapRef) {
@@ -549,6 +551,7 @@ export function Map({
                   locale,
                   layerGeometrySettings,
                   intl,
+                  positionsOverTimeForTopic,
                   // also pass date
                 });
                 hideForZoom({ layer, zoom });
@@ -571,6 +574,7 @@ export function Map({
     projects,
     chartDate,
     layerGeometrySettings,
+    positionsOverTimeForTopic,
   ]);
 
   // preload featured layers
@@ -586,6 +590,7 @@ export function Map({
           c => c.id === currentModule.featuredLayer,
         );
         if (config) {
+          console.log('preload featured layers')
           onLoadLayer(currentModule.featuredLayer, config);
         }
       }
@@ -967,6 +972,7 @@ Map.propTypes = {
   mapLayers: PropTypes.object,
   jsonLayers: PropTypes.object,
   currentModule: PropTypes.object,
+  positionsOverTimeForTopic: PropTypes.object,
   onSetMapLayers: PropTypes.func,
   onLoadLayer: PropTypes.func,
   onSetLayerInfo: PropTypes.func,
@@ -999,6 +1005,16 @@ const mapStateToProps = createStructuredSelector({
   hasKey: state => selectShowKey(state),
   chartDate: state => selectChartDate(state),
   layerGeometrySettings: state => selectLayerGeometries(state),
+  positionsOverTimeForTopic: state => {
+    const activeLayerIds = selectActiveLayers(state);
+    const policyLayerId =
+      activeLayerIds && activeLayerIds.find(id => startsWith(id, POLICY_LAYER));
+    if (policyLayerId) {
+      const [, indicatorId] = policyLayerId.split('_');
+      return selectPositionsOverTimeForTopic(state, { indicatorId });
+    }
+    return null;
+  },
 });
 
 // function mapDispatchToProps(dispatch, ownProps) {

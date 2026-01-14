@@ -3,7 +3,7 @@ import 'leaflet-polylinedecorator';
 import { scalePow } from 'd3-scale';
 import { uniq, intersection } from 'lodash/array';
 import qe from 'utils/quasi-equals';
-import { getCountryPositionForAnyTopicAndDate } from 'utils/policy';
+import { getCountryPositionForTopicAndDate } from 'utils/policy';
 import { formatMessageForValues } from 'utils/string';
 // import { excludeCountryFeatures } from 'containers/LayerInfo/policy/utils';
 // import bezierSpline from '@turf/bezier-spline';
@@ -665,14 +665,16 @@ const prepareGeometry = ({
   dateString,
   locale,
   intl,
+  positionsOverTimeForTopic,
 }) => {
-  const topic =
-    tables &&
-    tables.topics &&
-    tables.topics.data &&
-    tables.topics.data.data &&
-    tables.topics.data.data.find(t => qe(t.id, indicatorId));
-  if (config.indicators) {
+  // const topic =
+  //   indicatorId &&
+  //   tables &&
+  //   tables.topics &&
+  //   tables.topics.data &&
+  //   tables.topics.data.data &&
+  //   tables.topics.data.data.find(t => qe(t.id, indicatorId));
+  if (indicatorId && config.indicators) {
     const geometryX = {
       type: geometry.type,
       config: geometry.config,
@@ -683,13 +685,16 @@ const prepareGeometry = ({
         // console.log('gf', gf)
         // console.log('feature', feature)?
         if (feature) {
-          const position = getCountryPositionForAnyTopicAndDate({
+          // console.log('positionsOverTimeForTopic', positionsOverTimeForTopic)
+          const position = getCountryPositionForTopicAndDate({
+            positionsOverTime: positionsOverTimeForTopic,
             countryCode: feature.code,
-            topic,
+            topicId: indicatorId,
             dateString,
             tables,
             locale,
           });
+          // console.log('position', position)
           let positionTitle = '';
           if (position && position.latestPosition) {
             // prettier-ignore
@@ -756,6 +761,7 @@ export const getVectorLayer = ({
   locale,
   layerGeometrySettings,
   intl,
+  positionsOverTimeForTopic,
 }) => {
   const { data } = jsonLayer;
   // polyline
@@ -805,6 +811,7 @@ export const getVectorLayer = ({
         dateString,
         locale,
         intl,
+        positionsOverTimeForTopic,
       });
       const layerGeoSettings = getLayerGeoSettings(layerSettings, index);
       let active = true;

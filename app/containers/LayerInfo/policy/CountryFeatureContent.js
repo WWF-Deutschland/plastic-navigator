@@ -6,6 +6,9 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import styled from 'styled-components';
 import { Box, Button, Text, ResponsiveContext } from 'grommet';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
@@ -15,8 +18,13 @@ import { DEFAULT_LOCALE } from 'i18n';
 
 // import { findFeature } from 'utils/layers';
 import qe from 'utils/quasi-equals';
-import { getIndicatorScoresForCountry } from 'utils/policy';
+import { getCountryPositionForTopicAndDate } from 'utils/policy';
 import { isMinSize } from 'utils/responsive';
+
+import {
+  selectTopics,
+  selectPositionsOverTimeForTopic,
+} from 'containers/Map/selectors';
 
 import MarkdownText from 'components/MarkdownText';
 import CountryPositionSymbol from './CountryPositionSymbol';
@@ -116,24 +124,15 @@ export function CountryFeatureContent({
   onSetIndicator,
   intl,
   onSelectStatement,
+  indicatorPositions,
 }) {
-  // const [showLink, setShowLink] = useState(false);
-  // const inputRef = useRef();
-  // useEffect(() => {
-  //   if (inputRef && inputRef.current) {
-  //     inputRef.current.select();
-  //   }
-  // }, [showLink, inputRef]);
   const size = React.useContext(ResponsiveContext);
   const { locale } = intl;
   if (!featureId || !layerInfo) return null;
   const country = layerInfo.data.features.find(f => f.code === featureId);
   if (!country) return null;
   const title = country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`];
-  const indicatorPositions = getIndicatorScoresForCountry({
-    country,
-    layerInfo,
-  });
+
   const currentIndicator =
     indicatorPositions && indicatorPositions.find(i => qe(i.id, indicatorId));
 
@@ -166,6 +165,8 @@ export function CountryFeatureContent({
           {indicatorPositions &&
             indicatorPositions.map(indicator => {
               const Icon = p => POLICY_TOPIC_ICONS[indicator.id](p);
+              const positionValue =
+                (indicator.position && indicator.position.value) || 0;
               return (
                 <IndicatorLinkWrapper
                   key={indicator.id}
@@ -183,12 +184,9 @@ export function CountryFeatureContent({
                     <IconWrap
                       color={
                         layerInfo.config['styles-by-value'] &&
-                        layerInfo.config['styles-by-value'][
-                          indicator.position.value
-                        ] &&
-                        layerInfo.config['styles-by-value'][
-                          indicator.position.value
-                        ].fillColor
+                        layerInfo.config['styles-by-value'][positionValue] &&
+                        layerInfo.config['styles-by-value'][positionValue]
+                          .fillColor
                       }
                     >
                       <Icon color="white" size={scoreCardIconSize} />
@@ -234,13 +232,13 @@ export function CountryFeatureContent({
                     inKey={false}
                   />
                   <Box flex={{ grow: 1, shrink: 1 }}>
-                    {currentIndicator.position.latestPosition && (
+                    {currentIndicator.position.datePosition && (
                       <MarkdownText
                         content={
-                          currentIndicator.position.latestPosition[
+                          currentIndicator.position.datePosition[
                             `position_${locale}`
                           ] ||
-                          currentIndicator.position.latestPosition[
+                          currentIndicator.position.datePosition[
                             `position_${DEFAULT_LOCALE}`
                           ]
                         }
@@ -271,6 +269,7 @@ CountryFeatureContent.propTypes = {
   onLoadLayer: PropTypes.func,
   onSetLayerInfo: PropTypes.func,
   config: PropTypes.object,
+  indicatorPositions: PropTypes.array,
   featureId: PropTypes.string,
   locale: PropTypes.string,
   supTitle: PropTypes.string,
@@ -282,4 +281,39 @@ CountryFeatureContent.propTypes = {
   headerFallback: PropTypes.node,
   intl: intlShape.isRequired,
 };
-export default injectIntl(CountryFeatureContent);
+
+const mapStateToProps = createStructuredSelector({
+  indicatorPositions: (state, { layerInfo, featureId, locale }) => {
+    if (!layerInfo) return null;
+    const topics = selectTopics(state, { layerInfo });
+    if (!topics) return null;
+    return topics.reduce((memo, topic) => {
+      const positionsOverTime = selectPositionsOverTimeForTopic(state, {
+        indicatorId: topic.id,
+      });
+      const position = getCountryPositionForTopicAndDate({
+        positionsOverTime,
+        countryCode: featureId,
+        topicId: topic.id,
+        dateString: null, // Latest
+        tables: layerInfo.data.tables,
+        locale,
+      });
+
+      return [
+        ...memo,
+        {
+          ...topic,
+          position,
+        },
+      ];
+    }, []);
+  },
+});
+
+const withConnect = connect(
+  mapStateToProps,
+  // mapDispatchToProps,
+);
+
+export default compose(withConnect)(injectIntl(CountryFeatureContent));

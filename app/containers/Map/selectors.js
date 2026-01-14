@@ -1,12 +1,21 @@
 import { createSelector } from 'reselect';
 import createCachedSelector from 're-reselect';
+import memoizeOne from 'memoize-one';
+
+import { POLICY_LAYER } from 'config';
 
 import {
   selectConfigByKey,
   selectRouterSearchParams,
 } from 'containers/App/selectors';
 
-import { getCountryPositionsOverTimeFromCountryFeatures } from 'utils/policy';
+import qe from 'utils/quasi-equals';
+import {
+  getCountryPositionsOverTimeFromCountryFeatures,
+  getTopicsFromData,
+  isAggregate,
+  getAggregatePositionsOverTime,
+} from 'utils/policy';
 
 import { initialState } from './reducer';
 
@@ -84,16 +93,75 @@ export const selectMapPosition = createSelector(
   search => (search.has('mview') ? search.get('mview') : ''),
 );
 
-// Main selector - cached per topicId
-export const selectPositionsOverTimeForTopic = createCachedSelector(
-  (state, { layerKey }) => selectLayerByKey(state, layerKey),
-  (state, { indicatorId }) => indicatorId,
-  (layerInfo, indicatorId) => {
+export const selectTopics = createSelector(
+  (state, props) =>
+    (props && props.layerInfo) || selectLayerByKey(state, POLICY_LAYER),
+  layerInfo => {
     if (!layerInfo || !layerInfo.data) return null;
-    console.log('selectPositionsOverTimeForTopic', indicatorId, layerInfo)
-    return getCountryPositionsOverTimeFromCountryFeatures({
+    return getTopicsFromData(layerInfo);
+  },
+);
+
+// Main selector - cached per topicId
+const selectPositionsOverTimeForTopicBase = createCachedSelector(
+  (state, { layerInfo }) => layerInfo,
+  (state, { indicatorId }) => indicatorId,
+  (layerInfo, indicatorId) =>
+    getCountryPositionsOverTimeFromCountryFeatures({
       indicatorId,
       layerInfo,
-    });
+    }),
+)((state, { indicatorId }) => indicatorId);
+
+const memoizedAggregate = memoizeOne(
+  childPositions => getAggregatePositionsOverTime(childPositions),
+  (newArgs, oldArgs) => {
+    const [newObj] = newArgs;
+    const [oldObj] = oldArgs;
+
+    const newKeys = Object.keys(newObj);
+    const oldKeys = Object.keys(oldObj);
+
+    // Check if key count differs
+    if (newKeys.length !== oldKeys.length) return false;
+
+    // Compare each value by reference
+    return newKeys.every(
+      key =>
+        Object.prototype.hasOwnProperty.call(oldObj, key) &&
+        newObj[key] === oldObj[key],
+    );
+  },
+);
+
+export const selectPositionsOverTimeForTopic = createCachedSelector(
+  state => state,
+  (state, props) =>
+    (props && props.layerInfo) || selectLayerByKey(state, POLICY_LAYER),
+  (state, { indicatorId }) => indicatorId,
+  selectTopics,
+  (state, layerInfo, indicatorId, topics) => {
+    if (!layerInfo || !layerInfo.data) return null;
+    const topic = topics && topics.find(t => qe(t.id, indicatorId));
+    const isTopicAggregate = topic && !!isAggregate(topic);
+    if (!isTopicAggregate) {
+      return selectPositionsOverTimeForTopicBase(state, {
+        layerInfo,
+        indicatorId,
+      });
+    }
+    // Aggregate - call selector for each child
+    const childTopicIds = topic.aggregate.trim().split(',');
+    const childPositionsOverTime = childTopicIds.reduce(
+      (memo, childId) => ({
+        ...memo,
+        [childId]: selectPositionsOverTimeForTopic(state, {
+          indicatorId: childId,
+          layerInfo,
+        }),
+      }),
+      {},
+    );
+    return memoizedAggregate(childPositionsOverTime);
   },
 )((state, { indicatorId }) => indicatorId);

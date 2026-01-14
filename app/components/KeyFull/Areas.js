@@ -53,23 +53,29 @@ export function Areas({
   layerInfo,
   indicatorId,
   positionsOverTime,
-  // chartDate,
+  chartDate,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
   let squares = [];
   const isPolicy = POLICY_LAYER === config.id;
   // console.log('layerInfo', layerInfo);
-  const lastDate =
-    positionsOverTime &&
-    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
-  const chartDate = lastDate;
-
+  let keyDate;
+  if (chartDate && positionsOverTime && positionsOverTime[chartDate]) {
+    keyDate = chartDate;
+  } else if (positionsOverTime) {
+    keyDate = Object.keys(positionsOverTime)[
+      Object.keys(positionsOverTime).length - 1
+    ];
+  }
+  // const chartDate = lastDate;
   const statsForKey =
     positionsOverTime &&
+    positionsOverTime[keyDate] &&
+    positionsOverTime[keyDate].positions &&
     Object.keys(positionsOverTime).length > 0 &&
     prepChartKey({
-      positionsOverTime,
+      positionsForDate: positionsOverTime[keyDate].positions,
       tables: layerInfo.data.tables,
       indicatorId,
       config,
@@ -134,12 +140,12 @@ export function Areas({
   const size = React.useContext(ResponsiveContext);
   return (
     <Box gap={size === 'small' ? 'small' : 'xsmall'} responsive={false}>
-      {config['styles-by-value'] && statsForKey && chartDate && (
+      {config['styles-by-value'] && statsForKey && keyDate && (
         <Box justify="start" flex={{ shrink: 0 }}>
           <Text color="textSecondary" size="xxxsmall">
             {formatDate(
               locale,
-              chartDate ? new Date(chartDate).getTime() : new Date().getTime(),
+              keyDate ? new Date(keyDate).getTime() : new Date().getTime(),
             )}
           </Text>
         </Box>
@@ -173,7 +179,7 @@ Areas.propTypes = {
   layerInfo: PropTypes.object,
   positionsOverTime: PropTypes.object,
   indicatorId: PropTypes.string,
-  // chartDate: PropTypes.string,
+  chartDate: PropTypes.string,
   simple: PropTypes.bool,
   // excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,

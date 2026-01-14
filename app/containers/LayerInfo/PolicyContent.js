@@ -46,8 +46,8 @@ import {
   getChildTopics,
 } from 'utils/policy';
 
-import CountryDetails from './policy/CountryDetails';
-import CountryList from './policy/CountryList';
+import TopicDetails from './policy/TopicDetails';
+import TopicCountryList from './policy/TopicCountryList';
 import SourceList from './policy/SourceList';
 import TopicsList from './policy/TopicsList';
 
@@ -365,7 +365,7 @@ export function PolicyContent({
           </PanelHeader>
         )}
         {topic && layerInfo && tab === 'details' && (
-          <CountryDetails
+          <TopicDetails
             layerInfo={layerInfo}
             topic={topic}
             onSelectStatement={onSelectStatement}
@@ -379,7 +379,7 @@ export function PolicyContent({
         )}
         {config && tab === 'countries' && layerInfo && (
           <PanelBody>
-            <CountryList
+            <TopicCountryList
               layerInfo={layerInfo}
               topic={topic}
               config={config}
@@ -436,13 +436,10 @@ PolicyContent.propTypes = {
 const mapStateToProps = createStructuredSelector({
   layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
   chartDate: state => selectChartDate(state),
-  positionsOverTime: (state, { view, config }) => {
+  positionsOverTime: (state, { view }) => {
     const [layerId] = decodeInfoView(view);
     const [, indicatorId] = layerId.split('_');
-    return selectPositionsOverTimeForTopic(state, {
-      indicatorId,
-      layerKey: config.id,
-    });
+    return selectPositionsOverTimeForTopic(state, { indicatorId });
   },
 });
 

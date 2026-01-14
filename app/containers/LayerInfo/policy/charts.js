@@ -207,32 +207,27 @@ export const prepChartDataSources = (
 };
 
 export const prepChartKey = ({
-  positionsOverTime,
-  chartDate, //  optional
+  positionsForDate,
   indicatorId,
   tables,
   config,
   locale,
   intl,
 }) => {
-  const lastDate =
-    positionsOverTime &&
-    Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
-  const cleanChartDate = chartDate || lastDate;
-
-  const positionsCurrentDate = positionsOverTime[lastDate].positions;
-  const positionsLatestDate = positionsOverTime[cleanChartDate].positions;
-  if (positionsCurrentDate && config['styles-by-value']) {
-    return Object.keys(positionsLatestDate)
+  if (positionsForDate && config['styles-by-value']) {
+    return Object.keys(positionsForDate)
       .reduce((memo, posValue) => {
-        const count = positionsCurrentDate[posValue]
-          ? positionsCurrentDate[posValue].length
+        const count = positionsForDate[posValue]
+          ? positionsForDate[posValue].length
           : 0;
         const positionClean = getPositionForTopicAndValue({
           tables,
           indicatorId,
           positionValue: posValue,
         });
+        if (!positionClean) {
+          return memo;
+        }
         // prettier-ignore
         const title = intl
           ? formatMessageForValues({

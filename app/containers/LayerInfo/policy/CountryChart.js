@@ -4,7 +4,8 @@
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import styled from 'styled-components';
@@ -187,7 +188,6 @@ export function CountryChart({
   useInjectSaga({ key: 'map', saga });
   const [mouseOver, setMouseOver] = useState(false);
   const [nearestXDate, setNearestXDate] = useState(null);
-  // const nearestXDate = chartDate || null;
   // const setNearestXDate = onSetChartDate || null;
   const [mouseOverSource, setMouseOverSource] = useState(null);
 
@@ -198,29 +198,40 @@ export function CountryChart({
     layerInfo.data &&
     Object.keys(positionsOverTime)[Object.keys(positionsOverTime).length - 1];
 
+  const currentDate =
+    mouseOver && nearestXDate && positionsOverTime[nearestXDate]
+      ? nearestXDate
+      : lastDate;
+
+  // Debounce global state updates
+  const debouncedSetChartDate = useRef(
+    debounce(date => {
+      if (onSetChartDate) {
+        onSetChartDate(date);
+      }
+    }, 150),
+  ).current;
+
   useEffect(() => {
-    if (lastDate && onSetChartDate) {
-      onSetChartDate(lastDate);
+    if (currentDate) {
+      debouncedSetChartDate(currentDate);
     }
-  }, [lastDate]);
+
+    // Cleanup
+    return () => {
+      debouncedSetChartDate.cancel();
+    };
+  }, [currentDate]);
 
   if (!layerInfo || !layerInfo.data) {
     return null;
   }
 
-  // prettier-ignore
-  const mouseOverEffect = mouseOver;
-  const currentDate =
-    mouseOverEffect && nearestXDate && positionsOverTime[nearestXDate]
-      ? nearestXDate
-      : lastDate;
-
   const statsForKey =
     positionsOverTime &&
     positionsOverTime[currentDate] &&
     prepChartKey({
-      positionsOverTime,
-      chartDate: currentDate,
+      positionsForDate: positionsOverTime[currentDate].positions,
       tables: layerInfo.data.tables,
       indicatorId: indicator.id,
       config,
@@ -278,7 +289,7 @@ export function CountryChart({
     maxDate,
   });
   const dataMouseOverCover =
-    mouseOverEffect &&
+    mouseOver &&
     nearestXDate &&
     getMouseOverCover({
       chartData,
@@ -307,7 +318,7 @@ export function CountryChart({
                 horizontal: isMinSize(size, 'medium') ? 'small' : 'xsmall',
               }}
               gap="xxsmall"
-              elevation={mouseOverEffect ? 'small' : 'none'}
+              elevation={mouseOver ? 'small' : 'none'}
             >
               <Box justify="between">
                 <Box gap="xsmall" responsive={false}>
@@ -667,7 +678,7 @@ CountryChart.propTypes = {
   onSetChartDate: PropTypes.func,
   isArchive: PropTypes.bool,
   positionsOverTime: PropTypes.object,
-  // chartDate: PropTypes.string,
+  chartDate: PropTypes.string,
 };
 
 export default injectIntl(CountryChart);

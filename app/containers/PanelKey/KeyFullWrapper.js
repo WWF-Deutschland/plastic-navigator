@@ -46,10 +46,9 @@ KeyFullWrapper.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   chartDate: state => selectChartDate(state),
-  positionsOverTime: (state, { indicatorId, config }) =>
+  positionsOverTime: (state, { indicatorId }) =>
     selectPositionsOverTimeForTopic(state, {
       indicatorId,
-      layerKey: config.id,
     }),
 });
 

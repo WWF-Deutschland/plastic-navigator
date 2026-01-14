@@ -1,6 +1,6 @@
 /**
  *
- * CountryList
+ * TopicCountryList
  *
  */
 
@@ -24,7 +24,7 @@ import coreMessages from 'messages';
 import FeatureList from '../FeatureList';
 import messages from '../messages';
 
-export function CountryList({
+export function TopicCountryList({
   layerInfo,
   intl,
   config,
@@ -80,7 +80,7 @@ export function CountryList({
   ) : null;
 }
 
-CountryList.propTypes = {
+TopicCountryList.propTypes = {
   config: PropTypes.object,
   topic: PropTypes.object,
   positionsOverTime: PropTypes.object,
@@ -102,4 +102,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default compose(withConnect)(injectIntl(CountryList));
+export default compose(withConnect)(injectIntl(TopicCountryList));
