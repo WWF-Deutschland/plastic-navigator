@@ -302,7 +302,6 @@ export const getNextTopicFromData = ({ indicatorId, layerInfo, archived }) => {
   return null;
 };
 
-// TODO consider calling from selector
 export const getCountriesWithPosition = ({
   indicatorId,
   layerInfo,
@@ -346,7 +345,6 @@ export const getCountriesWithPosition = ({
     ];
   }, []);
 
-// TODO call from selector
 export const getStatementsForTopic = ({ indicatorId, layerInfo, locale }) =>
   layerInfo &&
   layerInfo.data &&
@@ -474,12 +472,12 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   // includeWithout = false,
   // includeOpposing = false,
 }) => {
-  console.log(
-    'getCountryPositionsOverTimeFromCountryFeatures: indicatorId, layerInfo',
-    indicatorId,
-    layerInfo,
-    typeof indicatorId,
-  );
+  // console.log(
+  //   'getCountryPositionsOverTimeFromCountryFeatures: indicatorId, layerInfo',
+  //   indicatorId,
+  //   layerInfo,
+  //   typeof indicatorId,
+  // );
   if (
     layerInfo &&
     layerInfo.data &&
@@ -708,7 +706,7 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
 };
 
 export const getAggregatePositionsOverTime = childPositionsOverTime => {
-  console.log('getAggregatePositionsOverTime', childPositionsOverTime)
+  // console.log('getAggregatePositionsOverTime', childPositionsOverTime)
   const childIds = Object.keys(childPositionsOverTime);
   const childPositionsByDate = childIds.reduce((memo, topicId) => {
     const topicPositions = childPositionsOverTime[topicId];
@@ -821,16 +819,16 @@ export const getAggregatePositionsOverTime = childPositionsOverTime => {
     };
   }, {});
   // console.log('positionsByDateAndCountry', positionsByDateAndCountry)
-  console.log('childIds', childIds)
-  const aggPositionValues = childIds.reduce(
-    (memo, id) => ({
-      ...memo,
-      [id]: [],
-    }),
-    { 0: [] },
-  );
+  // console.log('childIds', childIds)
+  // const aggPositionValues = childIds.reduce(
+  //   (memo, id) => ({
+  //     ...memo,
+  //     [id]: [],
+  //   }),
+  //   { 0: [] },
+  // );
   //
-  console.log('aggPositionValues', aggPositionValues)
+  // console.log('aggPositionValues', aggPositionValues)
   const aggPositionsOverTime = Object.keys(positionsByDateAndCountry).reduce(
     (memo, date) => {
       const positionsForDate = positionsByDateAndCountry[date].countries;

@@ -8,7 +8,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+
+import { selectStatementsForTopic } from 'containers/Map/selectors';
 
 import { setItemInfo } from 'containers/App/actions';
 import { filterSources } from 'utils/policy';
@@ -42,7 +45,12 @@ SourceList.propTypes = {
   onSetItemInfo: PropTypes.func,
   intl: intlShape.isRequired,
 };
-
+const mapStateToProps = createStructuredSelector({
+  sources: (state, { topic }) =>
+    selectStatementsForTopic(state, {
+      indicatorId: topic.id,
+    }),
+});
 function mapDispatchToProps(dispatch) {
   return {
     onSetItemInfo: id => {
@@ -52,7 +60,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

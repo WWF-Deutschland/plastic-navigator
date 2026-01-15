@@ -8,16 +8,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { intlShape, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { ResponsiveContext } from 'grommet';
 
+import { selectCountriesForTopic } from 'containers/Map/selectors';
+
 import { setItemInfo } from 'containers/App/actions';
-import {
-  filterCountries,
-  getCountriesWithPosition,
-  // getCountriesWithStrongestPositionAggregated,
-  // isAggregate,
-} from 'utils/policy';
+import { filterCountries } from 'utils/policy';
 
 import coreMessages from 'messages';
 
@@ -25,14 +23,12 @@ import FeatureList from '../FeatureList';
 import messages from '../messages';
 
 export function TopicCountryList({
-  layerInfo,
   intl,
   config,
   topic,
   onSetItemInfo,
-  positionsOverTime,
+  countriesWithPosition,
 }) {
-  const { locale } = intl;
   const size = React.useContext(ResponsiveContext);
   // if (isAggregate(topic)) {
   //   countries =
@@ -44,20 +40,20 @@ export function TopicCountryList({
   //       locale,
   //     });
   // } else {
-  const countries = getCountriesWithPosition({
-    indicatorId: topic.id,
-    layerInfo,
-    locale,
-    positionsOverTime,
-  });
+  // const countries = getCountriesWithPosition({
+  //   indicatorId: topic.id,
+  //   layerInfo,
+  //   locale,
+  //   positionsOverTime,
+  // });
   // }
-  return countries ? (
+  return countriesWithPosition ? (
     <FeatureList
       title={intl.formatMessage(coreMessages.countries, {
-        count: countries.length,
-        isSingle: countries.length === 1,
+        count: countriesWithPosition.length,
+        isSingle: countriesWithPosition.length === 1,
       })}
-      items={countries}
+      items={countriesWithPosition}
       config={config}
       search={filterCountries}
       placeholder={intl.formatMessage(messages.placeholderCountries, {
@@ -83,11 +79,14 @@ export function TopicCountryList({
 TopicCountryList.propTypes = {
   config: PropTypes.object,
   topic: PropTypes.object,
-  positionsOverTime: PropTypes.object,
-  layerInfo: PropTypes.object,
+  countriesWithPosition: PropTypes.array,
   onSetItemInfo: PropTypes.func,
   intl: intlShape.isRequired,
 };
+const mapStateToProps = createStructuredSelector({
+  countriesWithPosition: (state, { topic }) =>
+    selectCountriesForTopic(state, { indicatorId: topic.id }),
+});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -98,7 +97,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

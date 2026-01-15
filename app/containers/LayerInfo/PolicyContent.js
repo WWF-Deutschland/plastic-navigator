@@ -30,17 +30,13 @@ import {
 } from 'containers/App/actions';
 import { selectChartDate } from 'containers/App/selectors';
 import { loadLayer } from 'containers/Map/actions';
-import {
-  selectLayerByKey,
-  selectPositionsOverTimeForTopic,
-} from 'containers/Map/selectors';
+import { selectLayerByKey } from 'containers/Map/selectors';
 import { decodeInfoView } from 'utils/layers';
 import {
   getTopicFromData,
   getTopicsFromData,
   getPreviousTopicFromData,
   getNextTopicFromData,
-  getStatementsForTopic,
   isArchived,
   isAggregate,
   getChildTopics,
@@ -181,7 +177,6 @@ export function PolicyContent({
   onSelectStatement,
   onSetChartDate,
   chartDate,
-  positionsOverTime,
 }) {
   const { locale } = intl;
   const cRef = useRef();
@@ -374,7 +369,6 @@ export function PolicyContent({
             config={config}
             layerId={layerId}
             isTopicArchived={isTopicArchived}
-            positionsOverTime={positionsOverTime}
           />
         )}
         {config && tab === 'countries' && layerInfo && (
@@ -383,24 +377,15 @@ export function PolicyContent({
               layerInfo={layerInfo}
               topic={topic}
               config={config}
-              positionsOverTime={positionsOverTime}
             />
           </PanelBody>
         )}
         {config && tab === 'statements' && layerInfo && (
           <PanelBody>
-            <SourceList
-              sources={getStatementsForTopic({
-                indicatorId,
-                layerInfo,
-                locale,
-              })}
-              topic={topic}
-              config={config}
-            />
+            <SourceList topic={topic} config={config} />
           </PanelBody>
         )}
-        {config && tab === 'topics' && layerInfo && (
+        {config && tab === 'topics' && layerInfo && onSetTopic && (
           <PanelBody>
             <TopicsList
               topics={getChildTopics(topic, topicOptions, locale)}
@@ -419,7 +404,6 @@ PolicyContent.propTypes = {
   view: PropTypes.string,
   config: PropTypes.object,
   layerInfo: PropTypes.object,
-  positionsOverTime: PropTypes.object,
   theme: PropTypes.object,
   intl: intlShape,
   onHome: PropTypes.func,
@@ -436,11 +420,6 @@ PolicyContent.propTypes = {
 const mapStateToProps = createStructuredSelector({
   layerInfo: (state, { config }) => selectLayerByKey(state, config.id),
   chartDate: state => selectChartDate(state),
-  positionsOverTime: (state, { view }) => {
-    const [layerId] = decodeInfoView(view);
-    const [, indicatorId] = layerId.split('_');
-    return selectPositionsOverTimeForTopic(state, { indicatorId });
-  },
 });
 
 function mapDispatchToProps(dispatch) {

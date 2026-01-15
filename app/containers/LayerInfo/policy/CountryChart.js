@@ -90,12 +90,12 @@ const StyledKeyLabel = styled(p => <KeyLabel {...p} />)`
 const StyledKeyCount = styled(p => <KeyLabel {...p} />)`
   white-space: normal;
   font-weight: bold;
-  min-width: 80px;
+  min-width: 33px;
   text-align: right;
 `;
 const StyledKeyCountPlaceHolder = styled.div`
   display: block;
-  min-width: 80px;
+  min-width: 33px;
 `;
 
 const Title = styled(Text)`
@@ -231,7 +231,8 @@ export function CountryChart({
     positionsOverTime &&
     positionsOverTime[currentDate] &&
     prepChartKey({
-      positionsForDate: positionsOverTime[currentDate].positions,
+      positionsOverTime,
+      keyDate: currentDate,
       tables: layerInfo.data.tables,
       indicatorId: indicator.id,
       config,
@@ -338,11 +339,17 @@ export function CountryChart({
                       const {count} = keyItem;
                       const hasCount = typeof count !== 'undefined' && count !== null;
                       return (
-                        <SquareLabelWrap key={keyItem.id}>
+                        <SquareLabelWrap key={keyItem.id} fill="horizontal">
                           <KeyAreaWrap>
                             <KeyArea areaStyles={[keyItem.style]} />
                           </KeyAreaWrap>
-                          <KeyLabelWrap fill="horizontal">
+                          <Box
+                            direction="row"
+                            justify="between"
+                            align="center"
+                            fill="horizontal"
+                            gap="xxsmall"
+                          >
                             <Box>
                               <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
                                 <Markdown source={hasCount ? `${keyItem.title}: ` : keyItem.title} />
@@ -358,7 +365,7 @@ export function CountryChart({
                                 <StyledKeyCountPlaceHolder />
                               )}
                             </Box>
-                          </KeyLabelWrap>
+                          </Box>
                         </SquareLabelWrap>
                       );
                     })}

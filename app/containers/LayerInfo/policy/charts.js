@@ -207,50 +207,80 @@ export const prepChartDataSources = (
 };
 
 export const prepChartKey = ({
-  positionsForDate,
+  positionsOverTime,
+  keyDate,
   indicatorId,
   tables,
   config,
   locale,
   intl,
+  includeOpposing,
 }) => {
-  if (positionsForDate && config['styles-by-value']) {
-    return Object.keys(positionsForDate)
-      .reduce((memo, posValue) => {
-        const count = positionsForDate[posValue]
-          ? positionsForDate[posValue].length
-          : 0;
-        const positionClean = getPositionForTopicAndValue({
-          tables,
-          indicatorId,
-          positionValue: posValue,
-        });
-        if (!positionClean) {
-          return memo;
-        }
-        // prettier-ignore
-        const title = intl
-          ? formatMessageForValues({
-            intl,
-            message:
-              positionClean[`position_short_${locale}`] ||
-              positionClean[`position_short_${DEFAULT_LOCALE}`],
-            values: { isSingle: false },
-          })
-          : positionClean[`position_short_${locale}`] ||
-            positionClean[`position_short_${DEFAULT_LOCALE}`];
-        return [
-          ...memo,
-          {
-            id: posValue,
-            value: posValue,
-            style: config['styles-by-value'][posValue],
-            title,
-            count,
-          },
-        ];
-      }, [])
-      .sort((a, b) => (parseInt(a.value, 10) < parseInt(b.value, 10) ? 1 : -1));
+  // 1. figure out data set positions
+  const positionValues =
+    positionsOverTime &&
+    tables &&
+    config['styles-by-value'] &&
+    Object.keys(positionsOverTime).reduce((memo, date) => {
+      if (!positionsOverTime[date] || !positionsOverTime[date].positions) {
+        return memo;
+      }
+      return Object.keys(positionsOverTime[date].positions).reduce(
+        (memo2, posValue) => {
+          if (Object.keys(memo2).indexOf(posValue) > -1) {
+            return memo2;
+          }
+          if (!includeOpposing && posValue <= 0) {
+            return memo2;
+          }
+          const positionClean = getPositionForTopicAndValue({
+            tables,
+            indicatorId,
+            positionValue: posValue,
+          });
+          if (!positionClean) return memo2;
+          // prettier-ignore
+          const title = intl
+            ? formatMessageForValues({
+              intl,
+              message:
+                positionClean[`position_short_${locale}`] ||
+                positionClean[`position_short_${DEFAULT_LOCALE}`],
+              values: { isSingle: false },
+            })
+            : positionClean[`position_short_${locale}`] ||
+              positionClean[`position_short_${DEFAULT_LOCALE}`];
+          return {
+            ...memo2,
+            [posValue]: {
+              id: posValue,
+              value: posValue,
+              style: config['styles-by-value'][posValue],
+              title,
+              count: 0,
+            },
+          };
+        },
+        memo,
+      );
+    }, {});
+  // 2. get positions for date
+  const positionsForDate =
+    positionsOverTime[keyDate] && positionsOverTime[keyDate].positions;
+  // 3. figure out number of positions for that date
+  if (positionsForDate) {
+    Object.keys(positionsForDate).forEach(posValue => {
+      const position = positionValues[posValue];
+      if (position && positionsForDate[posValue]) {
+        positionValues[posValue] = {
+          ...position,
+          count: positionsForDate[posValue].length,
+        };
+      }
+    });
+    return Object.values(positionValues).sort((a, b) =>
+      parseInt(a.value, 10) < parseInt(b.value, 10) ? 1 : -1,
+    );
   }
   return null;
 };

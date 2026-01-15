@@ -29,6 +29,7 @@ import {
   navigate,
   setLayerInfo,
   setItemInfo,
+  setLayers,
   showLayerInfoModule,
 } from 'containers/App/actions';
 import {
@@ -51,7 +52,7 @@ import ItemInfo from 'containers/LayerInfo/ItemInfo';
 
 import CookieConsent from 'containers/CookieConsent';
 
-import { ROUTES, CONFIG, MODULES } from 'config';
+import { ROUTES, CONFIG, MODULES, POLICY_LAYER } from 'config';
 import GlobalStyle from 'global-styles';
 import { appLocales, DEFAULT_LOCALE } from 'i18n';
 
@@ -104,6 +105,8 @@ function App({
   intl,
   layerInfoVisible,
   onSetItemInfo,
+  onSetLayers,
+  onLayerInfo,
   itemInfo,
 }) {
   useInjectReducer({ key: 'global', reducer });
@@ -174,6 +177,11 @@ function App({
                   view={info}
                   onClose={() => onCloseLayerInfo()}
                   currentModule={currentModule}
+                  onSetTopic={topicId => {
+                    // console.log('onSetTopic', topicId)
+                    onLayerInfo(`${POLICY_LAYER}_${topicId}`);
+                    // onSetItemInfo(`${layerIdX}_${topicId}|${type}-${itemId}`);
+                  }}
                 />
               )}
               {showItemInfo && (
@@ -183,6 +191,10 @@ function App({
                   onClose={() => onSetItemInfo()}
                   onSetTopic={({ layerIdX, topicId, itemId, type }) => {
                     onSetItemInfo(`${layerIdX}_${topicId}|${type}-${itemId}`);
+                    onSetLayers([
+                      MODULES.policy.layers,
+                      `${POLICY_LAYER}_${topicId}`,
+                    ]);
                   }}
                   currentModule={currentModule}
                 />
@@ -202,6 +214,8 @@ App.propTypes = {
   onLoadConfig: PropTypes.func,
   onClosePage: PropTypes.func,
   onSetItemInfo: PropTypes.func,
+  onLayerInfo: PropTypes.func,
+  onSetLayers: PropTypes.func,
   onCloseLayerInfo: PropTypes.func,
   path: PropTypes.string,
   page: PropTypes.string,
@@ -230,6 +244,9 @@ export function mapDispatchToProps(dispatch) {
     onSetItemInfo: id => {
       dispatch(setItemInfo(id));
     },
+    onLayerInfo: id => {
+      dispatch(setLayerInfo({ layerId: id }));
+    },
     onClosePage: () =>
       dispatch(
         navigate(null, {
@@ -240,6 +257,7 @@ export function mapDispatchToProps(dispatch) {
       dispatch(showLayerInfoModule(false));
       dispatch(setLayerInfo());
     },
+    onSetLayers: layers => dispatch(setLayers(layers)),
   };
 }
 

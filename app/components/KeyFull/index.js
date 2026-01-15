@@ -38,6 +38,7 @@ export function KeyFull({
   excludeEmpty,
   chartDate,
   positionsOverTime,
+  includeOpposing = false,
 }) {
   const { key, render, style, data, featureStyle } = config;
   const myId = id || config.id;
@@ -130,6 +131,7 @@ export function KeyFull({
           chartDate={chartDate}
           indicatorId={indicatorId}
           positionsOverTime={positionsOverTime}
+          includeOpposing={includeOpposing}
         />
       )}
       {!simple && data && data.unit && data['unit-additional'] && (
@@ -158,6 +160,7 @@ KeyFull.propTypes = {
   simple: PropTypes.bool,
   dark: PropTypes.bool,
   excludeEmpty: PropTypes.bool,
+  includeOpposing: PropTypes.bool,
   intl: intlShape.isRequired,
 };
 

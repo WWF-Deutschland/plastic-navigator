@@ -7,6 +7,7 @@ import { POLICY_LAYER } from 'config';
 import {
   selectConfigByKey,
   selectRouterSearchParams,
+  selectLocale,
 } from 'containers/App/selectors';
 
 import qe from 'utils/quasi-equals';
@@ -15,6 +16,8 @@ import {
   getTopicsFromData,
   isAggregate,
   getAggregatePositionsOverTime,
+  getStatementsForTopic,
+  getCountriesWithPosition,
 } from 'utils/policy';
 
 import { initialState } from './reducer';
@@ -34,10 +37,15 @@ export const selectLayers = createSelector(
   domain => domain.layers,
 );
 
-export const selectLayerByKey = createSelector(
+export const selectLayerByKey = createCachedSelector(
   (state, key) => key,
   selectLayers,
-  (key, data) => data[key],
+  (key, layers) => layers[key],
+)((state, key) => key);
+
+export const selectPolicyLayer = createSelector(
+  selectLayers,
+  layers => layers[POLICY_LAYER],
 );
 
 const selectLayersRequested = createSelector(
@@ -94,8 +102,7 @@ export const selectMapPosition = createSelector(
 );
 
 export const selectTopics = createSelector(
-  (state, props) =>
-    (props && props.layerInfo) || selectLayerByKey(state, POLICY_LAYER),
+  selectPolicyLayer,
   layerInfo => {
     if (!layerInfo || !layerInfo.data) return null;
     return getTopicsFromData(layerInfo);
@@ -136,8 +143,7 @@ const memoizedAggregate = memoizeOne(
 
 export const selectPositionsOverTimeForTopic = createCachedSelector(
   state => state,
-  (state, props) =>
-    (props && props.layerInfo) || selectLayerByKey(state, POLICY_LAYER),
+  selectPolicyLayer,
   (state, { indicatorId }) => indicatorId,
   selectTopics,
   (state, layerInfo, indicatorId, topics) => {
@@ -163,5 +169,35 @@ export const selectPositionsOverTimeForTopic = createCachedSelector(
       {},
     );
     return memoizedAggregate(childPositionsOverTime);
+  },
+)((state, { indicatorId }) => indicatorId);
+
+export const selectStatementsForTopic = createCachedSelector(
+  selectLocale,
+  selectPolicyLayer,
+  (state, { indicatorId }) => indicatorId,
+  (locale, layerInfo, indicatorId) => {
+    if (!layerInfo || !layerInfo.data) return null;
+    return getStatementsForTopic({
+      layerInfo,
+      indicatorId,
+      locale,
+    });
+  },
+)((state, { indicatorId }) => indicatorId);
+
+export const selectCountriesForTopic = createCachedSelector(
+  selectLocale,
+  selectPolicyLayer,
+  selectPositionsOverTimeForTopic,
+  (state, { indicatorId }) => indicatorId,
+  (locale, layerInfo, positions, indicatorId) => {
+    if (!layerInfo || !layerInfo.data) return null;
+    return getCountriesWithPosition({
+      layerInfo,
+      indicatorId,
+      locale,
+      positionsOverTime: positions,
+    });
   },
 )((state, { indicatorId }) => indicatorId);

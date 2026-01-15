@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'redux';
 import { Box } from 'grommet';
+
+import { selectPositionsOverTimeForTopic } from 'containers/Map/selectors';
 
 import LayerContent from '../LayerContent';
 import PanelBody from '../PanelBody';
@@ -48,4 +53,9 @@ TopicDetails.propTypes = {
   layerId: PropTypes.string,
   isTopicArchived: PropTypes.bool,
 };
-export default TopicDetails;
+const mapStateToProps = createStructuredSelector({
+  positionsOverTime: (state, { topic }) =>
+    selectPositionsOverTimeForTopic(state, { indicatorId: topic.id }),
+});
+const withConnect = connect(mapStateToProps);
+export default compose(withConnect)(TopicDetails);

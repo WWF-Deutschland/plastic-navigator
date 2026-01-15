@@ -242,7 +242,6 @@ export function PanelKey({
   chartDate,
   layerGeometries,
   onSetLayerGeometries,
-  positionsOverTime,
 }) {
   const { open } = uiState
     ? Object.assign({}, DEFAULT_UI_STATE, uiState)
@@ -592,10 +591,10 @@ PanelKey.propTypes = {
   intl: intlShape.isRequired,
   uiState: PropTypes.object,
   currentModule: PropTypes.object,
-  positionsOverTime: PropTypes.object,
   onSetOpen: PropTypes.func,
   layerGeometries: PropTypes.array,
   onSetLayerGeometries: PropTypes.func,
+  chartDate: PropTypes.string,
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -54,6 +54,7 @@ export function Areas({
   indicatorId,
   positionsOverTime,
   chartDate,
+  includeOpposing,
 }) {
   const { key, featureStyle } = config;
   const { locale } = intl;
@@ -69,18 +70,24 @@ export function Areas({
     ];
   }
   // const chartDate = lastDate;
+
   const statsForKey =
+    layerInfo &&
+    layerInfo.data &&
+    layerInfo.data.tables &&
     positionsOverTime &&
     positionsOverTime[keyDate] &&
     positionsOverTime[keyDate].positions &&
     Object.keys(positionsOverTime).length > 0 &&
     prepChartKey({
-      positionsForDate: positionsOverTime[keyDate].positions,
+      positionsOverTime,
+      keyDate,
       tables: layerInfo.data.tables,
       indicatorId,
       config,
       locale,
       intl,
+      includeOpposing,
     });
 
   if (featureStyle && featureStyle.multiple === 'true') {
@@ -155,18 +162,26 @@ export function Areas({
         .map(sq => {
           const hasCount = typeof sq.count !== 'undefined' && !simple;
           return (
-            <SquareLabelWrap key={sq.id}>
+            <SquareLabelWrap fill="horizontal" key={sq.id}>
               <KeyAreaWrap>
                 <KeyArea areaStyles={[sq.style]} />
               </KeyAreaWrap>
-              <KeyLabelWrap>
-                <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
-                  <Markdown source={hasCount ? `${sq.title}: ` : sq.title} />
-                </StyledKeyLabel>
-              </KeyLabelWrap>
-              <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
-                {hasCount && <StyledKeyCount>{sq.count}</StyledKeyCount>}
-              </KeyLabelWrap>
+              <Box
+                direction="row"
+                justify="between"
+                align="center"
+                fill="horizontal"
+                gap="xxsmall"
+              >
+                <KeyLabelWrap>
+                  <StyledKeyLabel className="mpx-wrap-markdown-stat-title">
+                    <Markdown source={hasCount ? `${sq.title}: ` : sq.title} />
+                  </StyledKeyLabel>
+                </KeyLabelWrap>
+                <KeyLabelWrap flex={{ grow: 0, shrink: 0 }}>
+                  {hasCount && <StyledKeyCount>{sq.count}</StyledKeyCount>}
+                </KeyLabelWrap>
+              </Box>
             </SquareLabelWrap>
           );
         })}
@@ -181,6 +196,7 @@ Areas.propTypes = {
   indicatorId: PropTypes.string,
   chartDate: PropTypes.string,
   simple: PropTypes.bool,
+  includeOpposing: PropTypes.bool,
   // excludeEmpty: PropTypes.bool,
   intl: intlShape.isRequired,
 };
