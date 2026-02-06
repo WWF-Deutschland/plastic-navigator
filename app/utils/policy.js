@@ -24,13 +24,21 @@ export const getStatementWithPositionsAndCountries = ({
   const statement = tables.sources.data.data.find(s => qe(s.id, statementId));
   const statementCountries = tables['country-sources'].data.data
     .filter(cs => qe(cs.source_id, statementId))
-    .map(cs => {
+    .reduce((memo, cs) => {
       const country = features.find(f => qe(f.code, cs.country_code));
-      return {
-        id: country.code,
-        label: country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
-      };
-    });
+      if (country) {
+        return [
+          ...memo,
+          {
+            id: country.code,
+            label: country[`name_${locale}`] || country[`name_${DEFAULT_LOCALE}`],
+          },
+        ];
+      }
+      return memo;
+    },
+    [],
+  );
   return {
     ...statement,
     positions: tables.topics.data.data.reduce((memoPositions, topic) => {
