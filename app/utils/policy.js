@@ -131,11 +131,11 @@ const getPositionForValueAndTopic = ({ value, topicId, tables }) => {
 
 const getAggregateValueFromCounts = (countPositions, noOfTopics) => {
   let value = 0;
-  // all at least value 2 => agg value 3
-  if (countPositions[3] + countPositions[2] === noOfTopics) {
+  // all at least value 3 => agg value 3
+  if (countPositions[3] === noOfTopics) {
     value = 3;
-    // some have value 2 or 3 ==> agg value 1
-  } else if (countPositions[3] > 0 || countPositions[2] > 0) {
+    // some have value 3 ==> agg value 1
+  } else if (countPositions[3] > 0) {
     value = 1;
   }
   return value;
