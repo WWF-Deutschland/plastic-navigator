@@ -499,50 +499,6 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
   ) {
     const { tables, features } = layerInfo.data;
 
-    // Helper: Check if statement is from a group for a specific country
-    const isGroupStatement = (statementId, countryCode) => {
-      const cs = tables['country-sources'].data.data.find(
-        csx =>
-          csx.source_id === statementId && csx.country_code === countryCode,
-      );
-      return cs && cs.via_group_id && `${cs.via_group_id}`.trim() !== '';
-    };
-
-    // Helper: Get event_id for a statement
-    const getEventId = statementId => {
-      const source = tables.sources.data.data.find(s => qe(s.id, statementId));
-      return source && source.event_id && `${source.event_id}`.trim() !== ''
-        ? source.event_id
-        : null;
-    };
-
-    // Helper: Check if individual statement exists for same event (same date or earlier)
-    const hasEarlierIndividualForEvent = (eventId, countryCode, currentDate) =>
-      tables['country-sources'].data.data.some(cs => {
-        if (cs.country_code !== countryCode) {
-          return false;
-        }
-        if (cs.via_group_id || cs.via_group_code) {
-          return false; // Must be individual
-        }
-
-        const statement = tables.sources.data.data.find(s =>
-          qe(s.id, cs.source_id),
-        );
-        if (!statement || statement.event_id !== eventId) {
-          return false;
-        }
-
-        const positionRawValue = statement[`position_t${indicatorId}`];
-        if (!positionRawValue || `${positionRawValue}`.trim() === '') {
-          return false;
-        }
-
-        const statementDate = new Date(statement.date).getTime();
-        const checkDate = new Date(currentDate).getTime();
-        return statementDate <= checkDate;
-      });
-
     const topicPositions = layerInfo.data.tables[
       'topic-positions'
     ].data.data.filter(tp => qe(tp.topic_id, indicatorId));
@@ -629,52 +585,46 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
         const positions = { ...previousPositions };
         const sources = {};
 
-        // Track highest position per country for THIS date
+        // Track highest or most relevant position per country for THIS date
         const countryPositions = {}; // { countryCode: positionValue }
+
         statementsForDate.forEach(source => {
           const uniqueCountryCodes = [...new Set(source.countryCodes)];
           const sourcePositionValue = parseInt(source.position.id, 10);
-          const eventId = getEventId(source.id);
+          const hasPrecedence = source.has_precedence === 'true' || source.has_precedence === true;
 
           // Store source
           sources[source.id] = source;
 
           // Process each country in this statement
           uniqueCountryCodes.forEach(code => {
-            const isGroup = isGroupStatement(source.id, code);
-            // Ignore group statement if earlier individual statement exist
-            // if (code === 'CUB') {
-            //   console.log('date------------------', date)
-            //   console.log('source', source.code, source.title_en)
-            //   console.log('source date', source.date)
-            //   console.log('isGroup', isGroup)
-            //   console.log('eventId', eventId)
-            //   console.log('hasEarlierIndividualForEvent', hasEarlierIndividualForEvent(eventId, code, date))
-            // }
+            // Find current carried-forward position for this country
+            const currentPosId = Object.keys(positions).find(
+              posId => positions[posId] && positions[posId].includes(code)
+            );
+            const currentValue = currentPosId ? parseInt(currentPosId, 10) : null;
+
+            // Can this statement replace the carried-forward position?
+            const canReplace = currentValue === null
+              || sourcePositionValue > currentValue
+              || (sourcePositionValue < currentValue && hasPrecedence);
+
+            if (!canReplace) return;
+
+            // Among qualifying statements, keep the strongest
             if (
-              isGroup &&
-              eventId &&
-              hasEarlierIndividualForEvent(eventId, code, date)
-            ) {
-              return; // Skip this country for this statement
-            }
-            // Track highest position for each country
-            if (
-              !countryPositions[code] ||
-              sourcePositionValue > countryPositions[code]
+              typeof countryPositions[code] === 'undefined'
+              || sourcePositionValue > countryPositions[code]
             ) {
               countryPositions[code] = sourcePositionValue;
             }
           });
         });
-        // Now apply the positions
+        // Apply the winning positions
         Object.entries(countryPositions).forEach(([code, posValue]) => {
-          // Remove country from all positions
           Object.keys(positions).forEach(posId => {
             positions[posId] = positions[posId].filter(c => c !== code);
           });
-
-          // Add to new position
           const posId = String(posValue);
           if (!positions[posId]) {
             positions[posId] = [];
@@ -683,29 +633,6 @@ export const getCountryPositionsOverTimeFromCountryFeatures = ({
             positions[posId].push(code);
           }
         });
-
-        // Clean up empty arrays
-        // Object.keys(positions).forEach(posId => {
-        //   if (positions[posId].length === 0) {
-        //     delete positions[posId];
-        //   }
-        // });
-        // Filter out unwanted positions at the end
-        // const filteredPositions = Object.keys(positions).reduce(
-        //   (filtered, posId) => {
-        //     const posValue = parseInt(posId, 10);
-        //     // Skip position 0 if !includeWithout
-        //     if (posValue === 0 && !includeWithout) {
-        //       return filtered;
-        //     }
-        //     // Skip negative positions if !includeOpposing
-        //     if (posValue < 0 && !includeOpposing) {
-        //       return filtered;
-        //     }
-        //     return { ...filtered, [posId]: positions[posId] };
-        //   },
-        //   {},
-        // );
         return { ...memo, [date]: { sources, positions } };
       }, {});
     return positionsByDate;
